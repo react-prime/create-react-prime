@@ -3,6 +3,7 @@
 var program = require('commander');
 var cmd = require('node-cmd');
 var fs = require('fs');
+var Promise = require('bluebird');
 var pkg = require('./package.json');
 
 program
@@ -15,4 +16,13 @@ if (fs.existsSync(projectName)) {
   return console.error(`Error: directory '${projectName}' already exists.`);
 }
 
-cmd.run(`git clone https://github.com/JBostelaar/react-prime.git ${projectName} && rm -rf ${projectName}/.git`);
+var commands = [
+  `git clone https://github.com/JBostelaar/react-prime.git ${projectName}`,
+  `cd ${projectName}`,
+  'rm -rf .git',
+  'npm i',
+].join(' && ');
+
+cmd.run(commands);
+
+console.log('Installing...');
