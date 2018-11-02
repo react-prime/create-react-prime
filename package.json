@@ -6,6 +6,11 @@
   "bin": {
     "create-react-prime": "./index.js"
   },
+  "scripts": {
+    "pub:patch": "npm version patch && npm publish",
+    "pub:minor": "npm version minor && npm publish",
+    "pub:major": "npm version major && npm publish"
+  },
   "dependencies": {
     "commander": "2.19.0",
     "node-cmd": "3.0.0"

@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var program = require('commander');
 var cmd = require('node-cmd');
 var fs = require('fs');
