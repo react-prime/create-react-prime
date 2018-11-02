@@ -3,7 +3,6 @@
 var program = require('commander');
 var cmd = require('node-cmd');
 var fs = require('fs');
-var Promise = require('bluebird');
 var pkg = require('./package.json');
 
 program
