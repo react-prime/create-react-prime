@@ -1,0 +1,15 @@
+{
+  "name": "create-react-prime",
+  "version": "0.0.1",
+  "description": "Installs the latest version of React-Prime boilerplate.",
+  "main": "index.js",
+  "bin": {
+    "create-react-prime": "./index.js"
+  },
+  "dependencies": {
+    "commander": "2.19.0",
+    "node-cmd": "3.0.0"
+  },
+  "author": "Sander Vispoel <contact@sandervispoel.com>",
+  "license": "MIT"
+}

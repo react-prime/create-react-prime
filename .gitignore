@@ -1,0 +1,7 @@
+.DS_Store
+.vscode
+.gitattributes
+
+node_modules
+test
+react-prime
