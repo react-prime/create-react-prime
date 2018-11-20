@@ -9,14 +9,15 @@ program
   .version(pkg.version)
   .parse(process.argv);
 
-var projectName = program.args[0] || 'react-prime';
+var repoName = 'react-prime';
+var projectName = program.args[0] || repoName;
 
 if (fs.existsSync(projectName)) {
   return console.error(`Error: directory '${projectName}' already exists.`);
 }
 
 var commands = [
-  `git clone https://github.com/JBostelaar/react-prime.git ${projectName}`,
+  `git clone https://github.com/JBostelaar/${repoName}.git ${projectName}`,
   `cd ${projectName}`,
   'rm -rf .git',
   'rm .travis.yml',
@@ -25,7 +26,7 @@ var commands = [
 
 cmd.run(commands);
 
-console.log('Cloning React-Prime...');
+console.log(`Cloning ${repoName}...`);
 
 // Wait for project folder to exist
 while(!fs.existsSync(`./${projectName}`)) {}
@@ -39,7 +40,7 @@ var projectPkgPath = `${projectName}/package.json`;
 var pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
 var pkgParsed = JSON.parse(pkgRead);
 
-// Overwrite react-prime defaults
+// Overwrite boilerplate defaults
 pkgParsed.name = projectName;
 pkgParsed.version = '0.0.1';
 pkgParsed.description = projectName;
