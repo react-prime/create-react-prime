@@ -19,6 +19,7 @@ var commands = [
   `git clone https://github.com/JBostelaar/react-prime.git ${projectName}`,
   `cd ${projectName}`,
   'rm -rf .git',
+  'rm .travis.yml',
   'npm i',
 ].join(' && ');
 
