@@ -26,7 +26,7 @@ var commands = [
 
 cmd.run(commands);
 
-console.log(`Cloning ${repoName}...`);
+console.log(`Cloning ${repoName} in ${projectName}...`);
 
 // Wait for project folder to exist
 while(!fs.existsSync(`./${projectName}`)) {}
