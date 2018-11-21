@@ -6,7 +6,6 @@ This package installs [react-prime](https://github.com/JBostelaar/react-prime), 
 
 # Create React Prime
 ## Quick start
-Use [create-react-prime](https://www.npmjs.com/package/create-react-prime).
 ```
 npx create-react-prime my-app
 cd my-app
