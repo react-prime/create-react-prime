@@ -1,7 +1,7 @@
 .DS_Store
 .vscode
 .gitattributes
-.progress-estimation
+.progress-estimations
 
 node_modules
 test
