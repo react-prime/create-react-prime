@@ -51,7 +51,7 @@ const run = async () => {
   // Wait for project folder to exist
   await logProgress(
     wait(() => fs.existsSync(`./${projectName}`)),
-    `Cloning ${repoName} in ${projectName}...`,
+    `🚚 Cloning ${repoName} in ${projectName}...`,
     200,
   );
 
@@ -75,12 +75,12 @@ const run = async () => {
         fs.writeFileSync(projectPkgPath, JSON.stringify(pkgParsed, null, 2));
       }
     ),
-    'Installing packages...',
+    '📦 Installing packages...',
     15000,
   )
 }
 
 run().then(() => {
-  console.log('Done!');
+  console.log(`⚡️ Succesfully installed ${repoName}!`);
   process.exit();
 });
