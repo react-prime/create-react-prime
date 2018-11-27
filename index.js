@@ -12,6 +12,7 @@ program
   .version(pkg.version)
   .parse(process.argv);
 
+// Configure path to store progress estimations for future reference
 progressConfigure({
   storagePath: path.join(__dirname, '.progress-estimations'),
 });
@@ -19,10 +20,12 @@ progressConfigure({
 const repoName = 'react-prime';
 const projectName = program.args[0] || repoName;
 
+// Check if directory already exists to prevent overwriting existind data
 if (fs.existsSync(projectName)) {
   return console.error(`Error: directory '${projectName}' already exists.`);
 }
 
+// All commands to run to guarantee a successful and clean installation
 const commands = [
   `git clone https://github.com/JBostelaar/${repoName}.git ${projectName}`,
   `cd ${projectName}`,
@@ -31,9 +34,11 @@ const commands = [
   'npm i',
 ].join(' && ');
 
-cmd.run(commands);
+/*
+  Show visuals while cloning and installing packages
+*/
 
-// Show visuals while cloning and installing packages
+// Function that resolves when a conditional function returns true
 const wait = async (existsFn, callback = noop) => new Promise((resolve) => {
   const check = () => {
     if (existsFn()) {
@@ -47,7 +52,11 @@ const wait = async (existsFn, callback = noop) => new Promise((resolve) => {
   check();
 });
 
-const run = async () => {
+// While commands are running we show the progress of the installation
+const install = async () => {
+  // Run all commands
+  cmd.run(commands);
+
   // Wait for project folder to exist
   await logProgress(
     wait(() => fs.existsSync(`./${projectName}`)),
@@ -80,7 +89,8 @@ const run = async () => {
   )
 }
 
-run().then(() => {
+// Start visuals
+install().then(() => {
   console.log(`⚡️ Succesfully installed ${repoName}!`);
   process.exit();
 });
