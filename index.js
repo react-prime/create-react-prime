@@ -4,7 +4,6 @@ require('./polyfill');
 const program = require('commander');
 const { exec } = require('child_process');
 const fs = require('fs');
-const path = require('path');
 const createLogger = require('progress-estimator');
 const pkg = require('./package.json');
 
