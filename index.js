@@ -28,7 +28,7 @@ if (fs.existsSync(PROJECT_NAME)) {
 const commands = [
   {
     cmd: `git clone https://github.com/JBostelaar/${REPO_NAME}.git ${PROJECT_NAME}`,
-    message: `🚚 Cloning ${REPO_NAME} in ${PROJECT_NAME}...`,
+    message: `🚚 Cloning ${REPO_NAME} into '${PROJECT_NAME}'...`,
     time: 3000,
   },
   {
