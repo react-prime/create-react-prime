@@ -7,35 +7,37 @@ const fs = require('fs');
 const createLogger = require('progress-estimator');
 const pkg = require('./package.json');
 
+// Create estimations logger
+const logger = createLogger();
+
+// Setup our program
 program
   .version(pkg.version)
   .parse(process.argv);
 
-// Configure path to store progress estimations for future reference
-const logger = createLogger();
+// Naming constants
+const REPO_NAME = 'react-prime';
+const PROJECT_NAME = program.args[0] || REPO_NAME;
 
-const repoName = 'react-prime';
-const projectName = program.args[0] || repoName;
-
-// Check if directory already exists to prevent overwriting existind data
-if (fs.existsSync(projectName)) {
-  return console.error(`Error: directory '${projectName}' already exists.`);
+// Check if directory already exists to prevent overwriting existing data
+if (fs.existsSync(PROJECT_NAME)) {
+  return console.error(`Error: directory '${PROJECT_NAME}' already exists.`);
 }
 
-// All commands to run to guarantee a successful and clean installation
+// All commands needed to run to guarantee a successful and clean installation
 const commands = [
   {
-    cmd: `git clone https://github.com/JBostelaar/${repoName}.git ${projectName}`,
-    message: `🚚 Cloning ${repoName} in ${projectName}...`,
+    cmd: `git clone https://github.com/JBostelaar/${REPO_NAME}.git ${PROJECT_NAME}`,
+    message: `🚚 Cloning ${REPO_NAME} in ${PROJECT_NAME}...`,
     time: 3000,
   },
   {
-    cmd: `npm --prefix ${projectName} install`,
+    cmd: `npm --prefix ${PROJECT_NAME} install`,
     message: '📦 Installing packages...',
     time: 40000,
   },
   {
-    cmd: `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
+    cmd: `rm -rf ${PROJECT_NAME}/.git ${PROJECT_NAME}/.travis.yml`,
     message: '🔨 Preparing...',
     time: 50,
   },
@@ -72,6 +74,6 @@ const install = () => new Promise((resolve, reject) => {
 
 // Start process
 install()
-  .then(() => console.log(`⚡️ Succesfully installed ${repoName}!`))
+  .then(() => console.log(`⚡️ Succesfully installed ${REPO_NAME}!`))
   .catch((err) => console.error(err))
   .finally(() => process.exit());
