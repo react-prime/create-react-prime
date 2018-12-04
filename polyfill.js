@@ -1,3 +1,10 @@
+/**
+ * Promise.prototype.finally
+ *
+ * Pulled from https://github.com/domenic/promises-unwrapping/issues/18#issuecomment-57801572
+ * @author @stefanpenner, @matthew-andrews
+ */
+
 (function() {
 	// Get a handle on the global object
 	var local;
