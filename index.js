@@ -48,15 +48,15 @@ const install = () => new Promise((resolve, reject) => {
   const run = async () => {
     await logger(
       new Promise((loggerResolve) => exec(commands[step].cmd, (err) => {
-        if (err) {
-          reject(err);
-          return;
-        }
+        if (err) return reject(err);
     
         loggerResolve();
       })),
       commands[step].message || '',
-      commands[step].time || 0,
+      {
+        id: step.toString(),
+        estimate: commands[step].time || 0,
+      },
     );
 
     if (step < commands.length - 1) {
