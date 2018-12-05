@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "commander": "2.19.0",
-    "node-cmd": "3.0.0",
-    "progress-estimator": "^0.1.1"
+    "progress-estimator": "^0.2.2"
   },
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT"
