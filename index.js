@@ -24,6 +24,22 @@ if (fs.existsSync(PROJECT_NAME)) {
   return console.error(`Error: directory '${PROJECT_NAME}' already exists.`);
 }
 
+const updatePackage = () => {
+  const projectPkgPath = `${PROJECT_NAME}/package.json`;
+  const pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
+  const pkgParsed = JSON.parse(pkgRead);
+
+  // Overwrite boilerplate defaults
+  pkgParsed.name = PROJECT_NAME;
+  pkgParsed.version = '0.0.1';
+  pkgParsed.description = `Code for ${PROJECT_NAME}.`;
+  pkgParsed.author = 'Label A [labela.nl]';
+  pkgParsed.repository.url = '';
+  pkgParsed.keywords = [];
+
+  fs.writeFileSync(projectPkgPath, JSON.stringify(pkgParsed, null, 2));
+};
+
 // All commands needed to run to guarantee a successful and clean installation
 const commands = [
   {
@@ -38,6 +54,7 @@ const commands = [
   },
   {
     cmd: `rm -rf ${PROJECT_NAME}/.git ${PROJECT_NAME}/.travis.yml`,
+    fn: updatePackage,
     message: '🔨 Preparing...',
     time: 50,
   },
@@ -48,16 +65,20 @@ const install = () => new Promise((resolve, reject) => {
   let step = 0;
 
   const run = async () => {
+    const installStep = commands[step];
+
     await logger(
-      new Promise((loggerResolve) => exec(commands[step].cmd, (err) => {
+      new Promise((loggerResolve) => exec(installStep.cmd, (err) => {
         if (err) return reject(err);
+
+        if (installStep.fn) installStep.fn();
     
         loggerResolve();
       })),
-      commands[step].message || '',
+      installStep.message || '',
       {
         id: step.toString(),
-        estimate: commands[step].time || 0,
+        estimate: installStep.time || 0,
       },
     );
 
