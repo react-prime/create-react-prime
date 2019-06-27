@@ -10,14 +10,33 @@ const pkg = require('./package.json');
 // Create estimations logger
 const logger = createLogger();
 
+// Argument names
+const ARGS = {
+  PROJECT_NAME: 0,
+};
+
+// Program options
+program
+  .option(
+    '-t, --type <type>',
+    'Install a type of react-prime. Options: client, ssr. Default: client',
+    'client',
+  );
+
 // Setup our program
 program
   .version(pkg.version)
   .parse(process.argv);
 
-// Naming constants
-const REPO_NAME = 'react-prime';
-const PROJECT_NAME = program.args[0] || REPO_NAME;
+// Repo selector. Defaults to react-prime.
+let REPO_NAME = 'react-prime';
+
+if (program.type) {
+  REPO_NAME = `${REPO_NAME}-${program.type}`;
+}
+
+// Project folder name. Defaults to repo name.
+const PROJECT_NAME = program.args[ARGS.PROJECT_NAME] || REPO_NAME;
 
 // Check if directory already exists to prevent overwriting existing data
 if (fs.existsSync(PROJECT_NAME)) {
