@@ -10,8 +10,11 @@ const updatePackage = (projectName) => {
   pkgParsed.version = '0.0.1';
   pkgParsed.description = `Code for ${projectName}.`;
   pkgParsed.author = 'Label A [labela.nl]';
-  pkgParsed.repository.url = '';
   pkgParsed.keywords = [];
+
+  if (typeof pkgParsed.repository === 'object') {
+    pkgParsed.repository.url = '';
+  }
 
   fs.writeFileSync(projectPkgPath, JSON.stringify(pkgParsed, null, 2));
 };
