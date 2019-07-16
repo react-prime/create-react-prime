@@ -32,7 +32,8 @@ program
 let REPO_NAME = 'react-prime';
 
 if (program.type) {
-  REPO_NAME = `${REPO_NAME}-${program.type}`;
+  const typeAffix = program.type === 'client' ? '' : `-${program.type}`;
+  REPO_NAME = `${REPO_NAME}${typeAffix}`;
 }
 
 // Project folder name. Defaults to repo name.
@@ -67,16 +68,18 @@ const install = () => new Promise((resolve, reject) => {
   let step = 0;
 
   const run = async () => {
+    const installStep = commands[step];
+
     await logger(
-      new Promise((loggerResolve) => exec(commands[step].cmd, (err) => {
+      new Promise((loggerResolve) => exec(installStep.cmd, (err) => {
         if (err) return reject(err);
     
         loggerResolve();
       })),
-      commands[step].message || '',
+      installStep.message || '',
       {
         id: step.toString(),
-        estimate: commands[step].time || 0,
+        estimate: installStep.time || 0,
       },
     );
 
