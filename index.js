@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 require('./polyfill');
-
 const program = require('commander');
 const { exec } = require('child_process');
 const fs = require('fs');
@@ -10,6 +9,8 @@ const pkg = require('./package.json');
 
 // Create estimations logger
 const logger = createLogger();
+
+const BOILERPLATE_NAME = 'react-prime';
 
 // Argument names
 const ARGS = {
@@ -30,15 +31,24 @@ program
   .parse(process.argv);
 
 // Repo selector. Defaults to react-prime.
-let REPO_NAME = 'react-prime';
+let repoName;
+let repoAuthor;
 
-if (program.type) {
-  const typeAffix = program.type === 'client' ? '' : `-${program.type}`;
-  REPO_NAME = `${REPO_NAME}${typeAffix}`;
+console.log(program);
+
+switch (program.type) {
+  case 'ssr':
+    repoName = `${BOILERPLATE_NAME}-ssr`;
+    repoAuthor = 'sandervspl';
+    break;
+  case 'client':
+  default:
+    repoName = BOILERPLATE_NAME;
+    repoAuthor = 'JBostelaar';
 }
 
 // Project folder name. Defaults to repo name.
-const PROJECT_NAME = program.args[ARGS.PROJECT_NAME] || REPO_NAME;
+const PROJECT_NAME = program.args[ARGS.PROJECT_NAME] || repoName;
 
 // Check if directory already exists to prevent overwriting existing data
 if (fs.existsSync(PROJECT_NAME)) {
@@ -48,8 +58,8 @@ if (fs.existsSync(PROJECT_NAME)) {
 // All commands needed to run to guarantee a successful and clean installation
 const commands = [
   {
-    cmd: `git clone https://github.com/JBostelaar/${REPO_NAME}.git ${PROJECT_NAME}`,
-    message: `🚚 Cloning ${REPO_NAME} into '${PROJECT_NAME}'...`,
+    cmd: `git clone https://github.com/${repoAuthor}/${repoName}.git ${PROJECT_NAME}`,
+    message: `🚚 Cloning ${repoName} into '${PROJECT_NAME}'...`,
     time: 3000,
   },
   {
@@ -102,6 +112,6 @@ const install = () => new Promise((resolve, reject) => {
 
 // Start process
 install()
-  .then(() => console.log(`⚡️ Succesfully installed ${REPO_NAME}!`))
+  .then(() => console.log(`⚡️ Succesfully installed ${repoName}!`))
   .catch((err) => console.error(err))
   .finally(() => process.exit());
