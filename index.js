@@ -5,6 +5,7 @@ const program = require('commander');
 const { exec } = require('child_process');
 const fs = require('fs');
 const createLogger = require('progress-estimator');
+const updatePackage = require('./updatePackage');
 const pkg = require('./package.json');
 
 // Create estimations logger
@@ -58,6 +59,7 @@ const commands = [
   },
   {
     cmd: `rm -rf ${PROJECT_NAME}/.git ${PROJECT_NAME}/.travis.yml`,
+    fn: () => updatePackage(PROJECT_NAME),
     message: '🔨 Preparing...',
     time: 50,
   },
@@ -73,6 +75,10 @@ const install = () => new Promise((resolve, reject) => {
     await logger(
       new Promise((loggerResolve) => exec(installStep.cmd, (err) => {
         if (err) return reject(err);
+
+        if (typeof installStep.fn === 'function') {
+          installStep.fn();
+        }
     
         loggerResolve();
       })),
