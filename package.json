@@ -15,6 +15,11 @@
     "commander": "2.19.0",
     "progress-estimator": "^0.2.2"
   },
+  "keywords": [
+    "boilerplate",
+    "install",
+    "react"
+  ],
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT"
 }
