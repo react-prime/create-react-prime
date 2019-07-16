@@ -54,7 +54,7 @@ npm start
       false
     </td>
     <td>
-      Installs the TypeScript variant of the specified boilerplate type. <b>Note:</b> only works for client.
+      Installs the TypeScript variant of the specified boilerplate type. <br /><b>Note:</b> only works for client.
     </td>
   </tr>
 </table>
