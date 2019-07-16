@@ -23,6 +23,11 @@ program
     '-t, --type <type>',
     'Install a type of react-prime. Options: client, ssr. Default: client',
     'client',
+  )
+  .option(
+    '--typescript',
+    'Install react-prime with TypeScript. This is only available for client type.',
+    false,
   );
 
 // Setup our program
@@ -33,8 +38,7 @@ program
 // Repo selector. Defaults to react-prime.
 let repoName;
 let repoAuthor;
-
-console.log(program);
+let extraCmdScript = '';
 
 switch (program.type) {
   case 'ssr':
@@ -45,6 +49,16 @@ switch (program.type) {
   default:
     repoName = BOILERPLATE_NAME;
     repoAuthor = 'JBostelaar';
+}
+
+if (program.typescript) {
+  // Only client has a TypeScript branch
+  if (program.type !== 'client') {
+    console.error('TypeScript can only be installed with the \'client\' type.');
+    process.exit();
+  }
+
+  extraCmdScript = '--single-branch --branch typescript';
 }
 
 // Project folder name. Defaults to repo name.
@@ -58,7 +72,7 @@ if (fs.existsSync(PROJECT_NAME)) {
 // All commands needed to run to guarantee a successful and clean installation
 const commands = [
   {
-    cmd: `git clone https://github.com/${repoAuthor}/${repoName}.git ${PROJECT_NAME}`,
+    cmd: `git clone ${extraCmdScript} https://github.com/${repoAuthor}/${repoName}.git ${PROJECT_NAME}`,
     message: `🚚 Cloning ${repoName} into '${PROJECT_NAME}'...`,
     time: 3000,
   },
