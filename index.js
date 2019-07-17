@@ -103,7 +103,7 @@ const install = () => new Promise((resolve, reject) => {
         if (typeof installStep.fn === 'function') {
           installStep.fn();
         }
-    
+
         loggerResolve();
       })),
       installStep.message || '',
@@ -119,7 +119,7 @@ const install = () => new Promise((resolve, reject) => {
     } else {
       resolve();
     }
-  }
+  };
 
   run();
 });

@@ -21,5 +21,8 @@
     "react"
   ],
   "author": "Sander Vispoel <contact@sandervispoel.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "6.0.1"
+  }
 }

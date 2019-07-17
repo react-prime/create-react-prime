@@ -60,6 +60,5 @@ npm start
 </table>
 
 ## Roadmap
-- Add linter
 - Add tests
 - Add react-prime-native
