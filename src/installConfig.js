@@ -8,6 +8,7 @@ const boilerplate = boilerplates[program.type];
 
 // Options to add when cloning
 let cloneOptions = '';
+let boilerplateNameAffix = '';
 
 if (program.typescript) {
   // Only client has a TypeScript branch
@@ -17,6 +18,7 @@ if (program.typescript) {
   }
 
   cloneOptions = '--single-branch --branch typescript';
+  boilerplateNameAffix = ' (Typescript)';
 }
 
 
@@ -34,4 +36,5 @@ module.exports = {
   author: boilerplate.author,
   cloneOptions,
   projectName,
+  boilerplateNameAffix,
 };

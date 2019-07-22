@@ -1,5 +1,5 @@
 const updatePackage = require('./updatePackage');
-const { name, author, cloneOptions, projectName } = require('./installConfig');
+const { name, author, cloneOptions, projectName, boilerplateNameAffix } = require('./installConfig');
 
 /*
   All commands needed to run to guarantee a successful and clean installation
@@ -7,7 +7,7 @@ const { name, author, cloneOptions, projectName } = require('./installConfig');
 const generateCommands = () => [
   {
     cmd: `git clone ${cloneOptions} https://github.com/${author}/${name}.git ${projectName}`,
-    message: `🚚  Cloning ${name} into '${projectName}'...`,
+    message: `🚚  Cloning ${name}${boilerplateNameAffix} into '${projectName}'...`,
     time: 3000,
   },
   {
