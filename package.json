@@ -1,6 +1,6 @@
 {
   "name": "create-react-prime",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Installs the latest version of React-Prime boilerplate.",
   "main": "src/index.js",
   "bin": {
