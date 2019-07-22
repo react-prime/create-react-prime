@@ -27,7 +27,8 @@ const projectName = program.args[ARG.PROJECT_NAME] || boilerplate.name;
 
 // Check if directory already exists to prevent overwriting existing data
 if (fs.existsSync(projectName)) {
-  return console.error(`Error: directory '${projectName}' already exists.`);
+  console.error(`Error: directory '${projectName}' already exists.`);
+  process.exit();
 }
 
 
