@@ -14,8 +14,8 @@
     "pub:major": "npm version major && npm publish"
   },
   "dependencies": {
-    "commander": "2.19.0",
-    "progress-estimator": "^0.2.2"
+    "commander": "2.20.0",
+    "progress-estimator": "0.2.2"
   },
   "keywords": [
     "boilerplate",
