@@ -58,7 +58,3 @@ npm start
     </td>
   </tr>
 </table>
-
-## Roadmap
-- Add tests
-- Add react-prime-native
