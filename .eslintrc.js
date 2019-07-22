@@ -34,6 +34,7 @@ module.exports = {
             'always'
         ],
         'no-trailing-spaces': 1,
-        'no-multiple-empty-lines': 1
+        'no-multiple-empty-lines': 1,
+        'no-console': ["error", { "allow": ["warn", "error"] }],
     }
 };

@@ -7,6 +7,8 @@
     "create-react-prime": "./src/index.js"
   },
   "scripts": {
+    "lint": "eslint src/",
+    "prepublishOnly": "npm run lint",
     "pub:patch": "npm version patch && npm publish",
     "pub:minor": "npm version minor && npm publish",
     "pub:major": "npm version major && npm publish"
