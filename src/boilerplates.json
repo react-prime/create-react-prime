@@ -1,0 +1,14 @@
+{
+  "client": {
+    "name": "react-prime",
+    "author": "JBostelaar"
+  },
+  "ssr": {
+    "name": "react-prime-ssr",
+    "author": "sandervspl"
+  },
+  "native": {
+    "name": "react-prime-native",
+    "author": "rnnyrk"
+  }
+}

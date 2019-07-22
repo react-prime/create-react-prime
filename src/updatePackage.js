@@ -1,7 +1,8 @@
 const fs = require('fs');
+const path = require('path');
 
 const updatePackage = (projectName) => {
-  const projectPkgPath = `${projectName}/package.json`;
+  const projectPkgPath = path.resolve(`${projectName}/package.json`);
   const pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
   const pkgParsed = JSON.parse(pkgRead);
 
