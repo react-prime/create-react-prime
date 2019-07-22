@@ -17,10 +17,18 @@ const install = () => new Promise((resolve, reject) => {
 
     await logger(
       new Promise((loggerResolve) => exec(installStep.cmd, (err) => {
-        if (err) return reject(err);
+        if (err) {
+          reject(err);
+          throw new Error(err);
+        }
 
-        if (typeof installStep.fn === 'function') {
-          installStep.fn();
+        try {
+          if (typeof installStep.fn === 'function') {
+            installStep.fn();
+          }
+        } catch(err) {
+          reject(err);
+          throw new Error(err);
         }
 
         loggerResolve();

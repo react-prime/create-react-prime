@@ -4,7 +4,8 @@
 .progress-estimations
 
 node_modules
-test
 react-prime
 react-prime-ssr
 react-prime-native
+
+crp-test-*

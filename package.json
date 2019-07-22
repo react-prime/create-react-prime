@@ -8,6 +8,7 @@
   },
   "scripts": {
     "lint": "eslint src/",
+    "test": "node test/index.js",
     "prepublishOnly": "npm run lint",
     "pub:patch": "npm version patch && npm publish",
     "pub:minor": "npm version minor && npm publish",
