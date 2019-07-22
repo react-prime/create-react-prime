@@ -10,19 +10,25 @@ const pkg = require('./package.json');
 // Create estimations logger
 const logger = createLogger();
 
-const BOILERPLATE_NAME = 'react-prime';
+const BASE_REPO_NAME = 'react-prime';
 
 // Argument names
-const ARGS = {
+const ARG = {
   PROJECT_NAME: 0,
+};
+
+const TYPE = {
+  CLIENT: 'client',
+  SSR: 'ssr',
+  NATIVE: 'native',
 };
 
 // Program options
 program
   .option(
     '-t, --type <type>',
-    'Install a type of react-prime. Options: client, ssr. Default: client',
-    'client',
+    `Install a type of react-prime. Options: ${Object.values(TYPE).join(', ')}`,
+    TYPE.CLIENT,
   )
   .option(
     '--typescript',
@@ -41,20 +47,24 @@ let repoAuthor;
 let extraCmdScript = '';
 
 switch (program.type) {
-  case 'ssr':
-    repoName = `${BOILERPLATE_NAME}-ssr`;
+  case TYPE.SSR:
+    repoName = `${BASE_REPO_NAME}-ssr`;
     repoAuthor = 'sandervspl';
     break;
-  case 'client':
+  case TYPE.NATIVE:
+    repoName = `${BASE_REPO_NAME}-native`;
+    repoAuthor = 'rnnyrk';
+    break;
+  case TYPE.CLIENT:
   default:
-    repoName = BOILERPLATE_NAME;
+    repoName = BASE_REPO_NAME;
     repoAuthor = 'JBostelaar';
 }
 
 if (program.typescript) {
   // Only client has a TypeScript branch
-  if (program.type !== 'client') {
-    console.error('TypeScript can only be installed with the \'client\' type.');
+  if (program.type !== TYPE.CLIENT) {
+    console.error(`Error: TypeScript can only be installed with the '${TYPE.CLIENT}' type.`);
     process.exit();
   }
 
@@ -62,7 +72,7 @@ if (program.typescript) {
 }
 
 // Project folder name. Defaults to repo name.
-const PROJECT_NAME = program.args[ARGS.PROJECT_NAME] || repoName;
+const PROJECT_NAME = program.args[ARG.PROJECT_NAME] || repoName;
 
 // Check if directory already exists to prevent overwriting existing data
 if (fs.existsSync(PROJECT_NAME)) {
@@ -73,18 +83,18 @@ if (fs.existsSync(PROJECT_NAME)) {
 const commands = [
   {
     cmd: `git clone ${extraCmdScript} https://github.com/${repoAuthor}/${repoName}.git ${PROJECT_NAME}`,
-    message: `🚚 Cloning ${repoName} into '${PROJECT_NAME}'...`,
+    message: `🚚  Cloning ${repoName} into '${PROJECT_NAME}'...`,
     time: 3000,
   },
   {
     cmd: `npm --prefix ${PROJECT_NAME} install`,
-    message: '📦 Installing packages...',
+    message: '📦  Installing packages...',
     time: 40000,
   },
   {
     cmd: `rm -rf ${PROJECT_NAME}/.git ${PROJECT_NAME}/.travis.yml`,
     fn: () => updatePackage(PROJECT_NAME),
-    message: '🔨 Preparing...',
+    message: '🔨  Preparing...',
     time: 50,
   },
 ];
