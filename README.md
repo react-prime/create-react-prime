@@ -34,7 +34,7 @@ npm start
       -t, --type
     </td>
     <td>
-      client, ssr
+      client, ssr, native
     </td>
     <td>
       client
