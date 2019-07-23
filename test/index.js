@@ -1,3 +1,3 @@
-const run = require('./runTests');
+const installTests = require('./installTests');
 
-run();
+installTests();
