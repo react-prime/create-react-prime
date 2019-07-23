@@ -8,7 +8,7 @@
   },
   "scripts": {
     "lint": "eslint src/",
-    "test": "node test/index.js",
+    "test": "mocha",
     "prepublishOnly": "npm run lint && npm run test",
     "pub:patch": "npm version patch && npm publish",
     "pub:minor": "npm version minor && npm publish",
@@ -26,6 +26,7 @@
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "6.0.1"
+    "eslint": "6.0.1",
+    "mocha": "6.2.0"
   }
 }
