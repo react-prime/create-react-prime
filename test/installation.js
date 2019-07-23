@@ -32,29 +32,38 @@ const removeDirectory = (i, cb) => {
   exec(`rm -rf ${path.resolve(TEST_DIRECTORY)}-${i}`, cb);
 };
 
+const removeAllDirectories = () => {
+  tests.forEach((_, i) => {
+    removeDirectory(i);
+  });
+};
 
-const installation = async () => new Promise((res, rej) => {
+
+const installation = async () => new Promise((res) => {
   const runTest = (i) => {
     const test = tests[i];
 
-    console.log(`🛠  Running test '${test.name}'`);
+    console.log(`🛠  Installing '${test.name}'...`);
 
     // Run test script
     exec(test.script, (err) => {
       if (err) {
-        console.error(`❌  Test '${test.name}' failed`);
+        console.error(`❌  Installation for '${test.name}' failed`);
         finishTest(false);
 
         return;
       }
 
-      // Finish up test
-      removeDirectory(i, (err) => {
-        if (err) return console.error(`❌  Removing directory for test '${test.name}' failed`);
+      console.log(`✅  Installation '${test.name}' succeeded!`);
+      finishTest(true);
 
-        console.log(`✅  Test '${test.name}' passed!`);
-        finishTest(true);
-      });
+      // Finish up test
+      // removeDirectory(i, (err) => {
+      //   if (err) return console.error(`❌  Removing directory for test '${test.name}' failed`);
+
+      //   console.log(`✅  Test '${test.name}' passed!`);
+      //   finishTest(true);
+      // });
     });
   };
 
@@ -74,11 +83,11 @@ const installation = async () => new Promise((res, rej) => {
 
       // Check if all tests are done.
       if (testsSucceeded >= tests.length) {
-        console.log('✅  All tests passed!');
+        console.log('✅  All installations succeeded!');
 
         res(true);
       } else {
-        console.error('❌  Test failed.');
+        console.error('❌  Installation test failed.');
 
         res(false);
       }
@@ -88,9 +97,7 @@ const installation = async () => new Promise((res, rej) => {
 
   const run = () => {
     // Remove all directories in case there is any left over
-    tests.forEach((_, i) => {
-      removeDirectory(i);
-    });
+    removeAllDirectories();
 
     // Run all test simultaneously
     tests.forEach((_, i) => {
@@ -102,4 +109,9 @@ const installation = async () => new Promise((res, rej) => {
 });
 
 
-module.exports = installation;
+module.exports = {
+  installation,
+  removeAllDirectories,
+  tests,
+  TEST_DIRECTORY,
+};
