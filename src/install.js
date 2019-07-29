@@ -33,14 +33,13 @@ const install = () => new Promise((resolve, reject) => {
         loggerResolve();
       },
     ));
-    const msg = installStep.message || '';
     const options = {
       id: step.toString(),
-      estimate: installStep.time || 0,
+      estimate: installStep.time,
     };
 
     // Run
-    await logger(fn, msg, options);
+    await logger(fn, installStep.message, options);
 
     if (step++ < commands.length - 1) {
       run();
