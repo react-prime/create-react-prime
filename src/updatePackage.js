@@ -1,23 +1,29 @@
 const fs = require('fs');
 const path = require('path');
+const { TYPE } = require('./constants');
+const program = require('./program');
 
 const updatePackage = (projectName) => {
   const projectPkgPath = path.resolve(`${projectName}/package.json`);
   const pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
-  const pkgParsed = JSON.parse(pkgRead);
+  const pkg = JSON.parse(pkgRead);
 
   // Overwrite boilerplate defaults
-  pkgParsed.name = projectName;
-  pkgParsed.version = '0.0.1';
-  pkgParsed.description = `Code for ${projectName}.`;
-  pkgParsed.author = 'Label A [labela.nl]';
-  pkgParsed.keywords = [];
+  pkg.name = projectName;
+  pkg.version = '0.0.1';
+  pkg.description = `Code for ${projectName}.`;
+  pkg.author = 'Label A [labela.nl]';
+  pkg.keywords = [];
 
-  if (typeof pkgParsed.repository === 'object') {
-    pkgParsed.repository.url = '';
+  if (typeof pkg.repository === 'object') {
+    pkg.repository.url = '';
   }
 
-  fs.writeFileSync(projectPkgPath, JSON.stringify(pkgParsed, null, 2));
+  if (program.type === TYPE.NATIVE) {
+    pkg.scripts.rename = `npx react-native-rename ${projectName}`;
+  }
+
+  fs.writeFileSync(projectPkgPath, JSON.stringify(pkg, null, 2));
 };
 
 module.exports = updatePackage;

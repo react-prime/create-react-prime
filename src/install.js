@@ -1,12 +1,9 @@
 const { exec } = require('child_process');
 const createLogger = require('progress-estimator');
-const generateCommands = require('./commands');
+const { commands } = require('./commands');
 
 // Create estimations logger
 const logger = createLogger();
-
-// Generate the commands to run a succesful installation
-const commands = generateCommands();
 
 // Installation cycles
 const install = () => new Promise((resolve, reject) => {
@@ -15,8 +12,10 @@ const install = () => new Promise((resolve, reject) => {
   const run = async () => {
     const installStep = commands[step];
 
-    await logger(
-      new Promise((loggerResolve) => exec(installStep.cmd, (err) => {
+    const fn = new Promise((loggerResolve) => exec(
+      installStep.cmd,
+      installStep.execOptions,
+      (err) => {
         if (err) {
           reject(err);
           throw new Error(err);
@@ -32,13 +31,16 @@ const install = () => new Promise((resolve, reject) => {
         }
 
         loggerResolve();
-      })),
-      installStep.message || '',
-      {
-        id: step.toString(),
-        estimate: installStep.time || 0,
       },
-    );
+    ));
+    const msg = installStep.message || '';
+    const options = {
+      id: step.toString(),
+      estimate: installStep.time || 0,
+    };
+
+    // Run
+    await logger(fn, msg, options);
 
     if (step++ < commands.length - 1) {
       run();

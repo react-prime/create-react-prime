@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint src/",
     "test": "mocha",
+    "rename": "echo 123",
     "prepublishOnly": "npm run lint && npm run test",
     "pub:patch": "npm version patch && npm publish",
     "pub:minor": "npm version minor && npm publish",
