@@ -12,12 +12,11 @@ const runSpawns = require('./runSpawns');
 */
 install()
   .then(runSpawns)
-  .then(() => {
+  .finally(() => {
     console.log(
       `⚡️ ${TEXT.BOLD} Succesfully installed ${name}${boilerplateNameAffix}! ${TEXT.DEFAULT}`
     );
-  })
-  .finally(() => {
+
     process.exit();
   });
 
