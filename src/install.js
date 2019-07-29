@@ -12,6 +12,7 @@ const install = () => new Promise((resolve, reject) => {
   const run = async () => {
     const installStep = commands[step];
 
+    // Install step executable
     const fn = new Promise((loggerResolve) => exec(
       installStep.cmd,
       installStep.execOptions,
@@ -33,14 +34,16 @@ const install = () => new Promise((resolve, reject) => {
         loggerResolve();
       },
     ));
-    const options = {
+
+    const loggerOptions = {
       id: step.toString(),
       estimate: installStep.time,
     };
 
     // Run
-    await logger(fn, installStep.message, options);
+    await logger(fn, installStep.message, loggerOptions);
 
+    // Run next step or resolve
     if (step++ < commands.length - 1) {
       run();
     } else {

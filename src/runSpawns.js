@@ -13,6 +13,7 @@ const runSpawns = () => new Promise((resolve, reject) => {
   const run = async () => {
     const installStep = commandsForType[step];
 
+    // Spawn function
     const fn = new Promise((loggerResolve) => installStep.fn((err) => {
       if (err) {
         reject(err);
@@ -21,14 +22,16 @@ const runSpawns = () => new Promise((resolve, reject) => {
 
       loggerResolve();
     }));
-    const options = {
+
+    const loggerOptions = {
       id: step.toString(),
       estimate: installStep.time,
     };
 
     // Run
-    await logger(fn, installStep.message, options);
+    await logger(fn, installStep.message, loggerOptions);
 
+    // Run next step or resolve
     if (step++ < commandsForType.length - 1) {
       run();
     } else {

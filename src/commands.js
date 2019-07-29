@@ -30,6 +30,9 @@ const commands = [
   },
 ];
 
+/*
+  All commands that need a spawn execute
+*/
 const spawnCommands = {
   [TYPE.NATIVE]: [
     {
@@ -38,6 +41,7 @@ const spawnCommands = {
       fn: (cb) => {
         if (program.type === TYPE.NATIVE) {
           const s = spawn('npm', ['run', 'rename'], {
+            // Execute in project folder
             cwd: path.resolve(projectName),
           });
 
