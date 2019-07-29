@@ -33,7 +33,7 @@ if (program.typescript) {
 
 module.exports = {
   name: boilerplate.name,
-  author: boilerplate.author,
+  owner: boilerplates.owner,
   cloneOptions,
   projectName,
   boilerplateNameAffix,

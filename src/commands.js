@@ -3,7 +3,7 @@ const path = require('path');
 const { spawn } = require('child_process');
 const updatePackage = require('./updatePackage');
 const {
-  name, author, cloneOptions, projectName, boilerplateNameAffix,
+  name, owner, cloneOptions, projectName, boilerplateNameAffix,
 } = require('./installConfig');
 const { TYPE } = require('./constants');
 const program = require('./program');
@@ -13,7 +13,7 @@ const program = require('./program');
 */
 const commands = [
   {
-    cmd: `git clone ${cloneOptions} https://github.com/${author}/${name}.git ${projectName}`,
+    cmd: `git clone ${cloneOptions} https://github.com/${owner}/${name}.git ${projectName}`,
     message: `🚚  Cloning ${name}${boilerplateNameAffix} into '${projectName}'...`,
     time: 3000,
   },
