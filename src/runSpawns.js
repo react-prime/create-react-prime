@@ -10,6 +10,11 @@ const runSpawns = () => new Promise((resolve, reject) => {
   const commandsForType = spawnCommands[program.type];
   let step = 0;
 
+  // No commands for this install type
+  if (!commandsForType) {
+    resolve();
+  }
+
   const run = async () => {
     const installStep = commandsForType[step];
 
