@@ -15,7 +15,7 @@
     "pub:major": "npm version major && npm publish"
   },
   "dependencies": {
-    "commander": "2.20.0",
+    "commander": "3.0.2",
     "progress-estimator": "0.2.2"
   },
   "keywords": [
@@ -26,7 +26,7 @@
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "6.0.1",
-    "mocha": "6.2.0"
+    "eslint": "6.5.1",
+    "mocha": "6.2.1"
   }
 }
