@@ -16,12 +16,13 @@ module.exports = {
   },
   rules: {
     indent: ['error', 2, { SwitchCase: 1 }],
+    'comma-dangle': ['error', 'always-multiline'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'max-len': ['error', { code: 100 }],
     'linebreak-style': ['error', 'unix'],
     'no-trailing-spaces': 1,
     'no-multiple-empty-lines': 1,
-    'no-console': ["error", { "allow": ["warn", "error"] }],
+    'no-console': ['error', { 'allow': ['warn', 'error'] }],
   }
 };
