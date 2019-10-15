@@ -22,8 +22,8 @@ let boilerplateNameAffix = '';
 
 if (program.typescript) {
   // Only client has a TypeScript branch
-  if (program.type !== TYPE.CLIENT) {
-    console.error(`Error: TypeScript can only be installed with the '${TYPE.CLIENT}' type.`);
+  if (program.type !== TYPE.CLIENT || program.type !== TYPE.NATIVE) {
+    console.error(`Error: TypeScript can only be installed with the '${TYPE.CLIENT}' or '${TYPE.NATIVE}' type.`);
     process.exit();
   }
 

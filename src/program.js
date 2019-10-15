@@ -15,7 +15,7 @@ program
   )
   .option(
     '--typescript',
-    'Install react-prime with TypeScript. This is only available for client type.',
+    'Install react-prime with TypeScript. This is available for client and native.',
     false,
   );
 
