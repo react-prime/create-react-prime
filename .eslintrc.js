@@ -19,7 +19,6 @@ module.exports = {
     'comma-dangle': ['error', 'always-multiline'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
-    'max-len': ['error', { code: 100 }],
     'linebreak-style': ['error', 'unix'],
     'no-trailing-spaces': 1,
     'no-multiple-empty-lines': 1,
