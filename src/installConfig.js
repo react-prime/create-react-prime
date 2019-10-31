@@ -21,12 +21,6 @@ let cloneOptions = '';
 let boilerplateNameAffix = '';
 
 if (program.typescript) {
-  // TypeScript branch only for type 'client' and 'native'
-  if (program.type !== TYPE.CLIENT && program.type !== TYPE.NATIVE) {
-    console.error(`Error: TypeScript can only be installed with the '${TYPE.CLIENT}' or '${TYPE.NATIVE}' type.`);
-    process.exit();
-  }
-
   cloneOptions = '--single-branch --branch typescript';
   boilerplateNameAffix = ' (Typescript)';
 }

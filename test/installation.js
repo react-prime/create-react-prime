@@ -29,6 +29,10 @@ const tests = [
     name: 'native + typescript',
     script: `${NODE_SCRIPT} -t native --typescript ${TEST_DIRECTORY}-4`,
   },
+  {
+    name: 'ssr + typescript',
+    script: `${NODE_SCRIPT} -t ssr --typescript ${TEST_DIRECTORY}-4`,
+  },
 ];
 
 
