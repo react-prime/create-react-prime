@@ -31,7 +31,7 @@ const tests = [
   },
   {
     name: 'ssr + typescript',
-    script: `${NODE_SCRIPT} -t ssr --typescript ${TEST_DIRECTORY}-4`,
+    script: `${NODE_SCRIPT} -t ssr --typescript ${TEST_DIRECTORY}-5`,
   },
 ];
 
@@ -64,14 +64,6 @@ const installation = async () => new Promise((res) => {
 
       console.log(`✅  Installation '${test.name}' succeeded!`);
       finishTest(true);
-
-      // Finish up test
-      // removeDirectory(i, (err) => {
-      //   if (err) return console.error(`❌  Removing directory for test '${test.name}' failed`);
-
-      //   console.log(`✅  Test '${test.name}' passed!`);
-      //   finishTest(true);
-      // });
     });
   };
 

@@ -4,7 +4,7 @@ const fs = require('fs');
 const { installation, removeAllDirectories, tests, TEST_DIRECTORY } = require('./installation');
 
 describe('Installation', function() {
-  this.timeout(300e3); // 5 mins
+  this.timeout(3e5); // 5 mins
 
   it('installs all boilerplate types without error', async function() {
     const result = await installation();
