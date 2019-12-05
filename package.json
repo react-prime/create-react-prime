@@ -7,6 +7,7 @@
     "create-react-prime": "./src/index.js"
   },
   "scripts": {
+    "build": "rm -rf dist && tsc",
     "lint": "eslint src/",
     "test": "mocha",
     "prepublishOnly": "npm run lint && npm run test",
@@ -26,7 +27,13 @@
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "12.12.14",
+    "@typescript-eslint/eslint-plugin": "2.10.0",
+    "@typescript-eslint/parser": "2.10.0",
     "eslint": "6.5.1",
-    "mocha": "6.2.1"
+    "mocha": "6.2.1",
+    "ts-node": "8.5.4",
+    "typescript": "3.7.3",
+    "typescript-eslint-parser": "22.0.0"
   }
 }

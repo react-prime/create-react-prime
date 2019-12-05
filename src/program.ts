@@ -1,6 +1,6 @@
-const program = require('commander');
-const { TYPE } = require('./constants');
-const pkg = require('../package.json');
+import program from 'commander';
+import { TYPE } from './constants';
+import pkg from '../package.json';
 
 /*
   Program setup
@@ -24,4 +24,4 @@ program
   .version(pkg.version)
   .parse(process.argv);
 
-module.exports = program;
+export default program;

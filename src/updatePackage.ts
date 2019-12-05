@@ -1,9 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const { TYPE } = require('./constants');
-const program = require('./program');
+import fs from 'fs';
+import path from 'path';
+import { TYPE } from './constants';
+import program from './program';
 
-const updatePackage = (projectName) => {
+const updatePackage = (projectName: string) => {
   const projectPkgPath = path.resolve(`${projectName}/package.json`);
   const pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
   const pkg = JSON.parse(pkgRead);
@@ -26,4 +26,4 @@ const updatePackage = (projectName) => {
   fs.writeFileSync(projectPkgPath, JSON.stringify(pkg, null, 2));
 };
 
-module.exports = updatePackage;
+export default updatePackage;

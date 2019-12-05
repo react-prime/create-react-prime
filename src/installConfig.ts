@@ -1,10 +1,10 @@
-const fs = require('fs');
-const { ARG, TYPE } = require('./constants');
-const program = require('./program');
-const boilerplates = require('./boilerplates');
+import fs from 'fs';
+import { ARG, TYPE } from './constants';
+import program from './program';
+import boilerplates from './boilerplates.json';
 
 // Repository selector
-const boilerplate = boilerplates[program.type];
+const boilerplate = boilerplates[program.type as 'client' | 'ssr' | 'native'];
 
 // Project folder name. Defaults to repository name.
 const projectName = program.args[ARG.PROJECT_NAME] || boilerplate.name;
@@ -25,9 +25,9 @@ if (program.typescript) {
   boilerplateNameAffix = ' (Typescript)';
 }
 
-module.exports = {
-  name: boilerplate.name,
-  owner: boilerplates.owner,
+export const { name } = boilerplate;
+export const { owner } = boilerplates;
+export {
   cloneOptions,
   projectName,
   boilerplateNameAffix,

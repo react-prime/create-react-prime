@@ -7,5 +7,6 @@ node_modules
 react-prime
 react-prime-ssr
 react-prime-native
+dist
 
 crp-test-*

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
-require('./polyfill');
-const { TEXT } = require('./constants');
-const { name, boilerplateNameAffix } = require('./installConfig');
-const install = require('./install');
-const runSpawns = require('./runSpawns');
+// import './polyfill';
+import { TEXT } from './constants';
+import { name, boilerplateNameAffix } from './installConfig';
+import install from './install';
+import runSpawns from './runSpawns';
 
 /*
   Start install process

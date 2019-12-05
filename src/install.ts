@@ -1,9 +1,9 @@
-const { exec } = require('child_process');
-const createLogger = require('progress-estimator');
-const { commands } = require('./commands');
+import { exec } from 'child_process';
+import createProgress from 'progress-estimator';
+import { commands } from './commands';
 
-// Create estimations logger
-const logger = createLogger();
+// @ts-ignore
+const progress = createProgress();
 
 // Installation cycles
 const install = () => new Promise((resolve, reject) => {
@@ -15,11 +15,10 @@ const install = () => new Promise((resolve, reject) => {
     // Install step executable
     const fn = new Promise((loggerResolve) => exec(
       installStep.cmd,
-      installStep.execOptions,
       (err) => {
         if (err) {
           reject(err);
-          throw new Error(err);
+          throw new Error(err.message);
         }
 
         try {
@@ -41,7 +40,7 @@ const install = () => new Promise((resolve, reject) => {
     };
 
     // Run
-    await logger(fn, installStep.message, loggerOptions);
+    await progress(fn, installStep.message, loggerOptions);
 
     // Run next step or resolve
     if (step++ < commands.length - 1) {
@@ -54,4 +53,4 @@ const install = () => new Promise((resolve, reject) => {
   run();
 });
 
-module.exports = install;
+export default install;

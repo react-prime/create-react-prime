@@ -1,17 +1,16 @@
-/* eslint-disable no-console */
-const path = require('path');
-const { spawn } = require('child_process');
-const updatePackage = require('./updatePackage');
-const {
+import path from 'path';
+import { spawn } from 'child_process';
+import updatePackage from './updatePackage';
+import {
   name, owner, cloneOptions, projectName, boilerplateNameAffix,
-} = require('./installConfig');
-const { TYPE } = require('./constants');
-const program = require('./program');
+} from './installConfig';
+import { TYPE } from './constants';
+import program from './program';
 
 /*
   All commands needed to run to guarantee a successful and clean installation
 */
-const commands = [
+export const commands = [
   {
     cmd: `git clone ${cloneOptions} https://github.com/${owner}/${name}.git ${projectName}`,
     message: `🚚  Cloning ${name}${boilerplateNameAffix} into '${projectName}'...`,
@@ -33,12 +32,12 @@ const commands = [
 /*
   All commands that need a spawn execute
 */
-const spawnCommands = {
+export const spawnCommands = {
   [TYPE.NATIVE]: [
     {
       message: `🔤  Renaming project files to '${projectName}'...`,
       time: 10000,
-      fn: (cb) => {
+      fn: (cb: () => void) => {
         if (program.type === TYPE.NATIVE) {
           const s = spawn('npm', ['run', 'rename'], {
             // Execute in project folder
@@ -51,10 +50,3 @@ const spawnCommands = {
     },
   ],
 };
-
-module.exports = {
-  commands,
-  spawnCommands,
-};
-
-/* eslint-enable no-console */

@@ -1,0 +1,132 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:import/typescript"
+  ],
+  "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+    }
+  },
+  "rules": {
+    "array-bracket-spacing": ["error", "never"],
+    "arrow-parens": 2,
+    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "block-spacing": ["error", "always"],
+    "comma-dangle": ["error", "always-multiline"],
+    "jsx-quotes": ["error", "prefer-double"],
+    "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
+    "keyword-spacing": ["error", {
+      "before": true,
+      "after": true,
+      "overrides": {
+        "return": { "after": true },
+        "throw": { "after": true },
+        "case": { "after": true }
+      }
+    }],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+    "no-console": [2, { "allow": ["info", "error"]}],
+    "no-trailing-spaces": ["error"],
+    "object-curly-spacing": ["error", "always"],
+    "prefer-const": ["error"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "space-before-blocks": "error",
+    "space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+    "space-in-parens": ["error", "never"],
+    "space-infix-ops": "error",
+    "eol-last": ["error", "always"],
+    "import/no-unresolved": false,
+    "import/named": false,
+    "import/order": ["error", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "index",
+        "parent",
+        "sibling"
+      ]
+    }],
+    "max-line-length": [true, 120],
+    "interface-name": false,
+    "align": false,
+    "import-name": false,
+    "no-angle-bracket-type-assertion": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "objects": "always",
+          "arrays": "always",
+          "functions": "never",
+          "typeLiterals": "ignore"
+        },
+        "singleline": "never",
+        "esSpecCompliant": true
+      }
+    ],
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "public-static-method",
+          "protected-static-field",
+          "protected-static-method",
+          "private-static-field",
+          "private-static-method",
+          "public-instance-field",
+          "protected-instance-field",
+          "private-instance-field",
+          "public-constructor",
+          "protected-constructor",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "quotemark": [true, "single", "avoid-escape"],
+    "no-shadowed-variable": false,
+    "semicolon": [true, "always", "ignore-interfaces"],
+    "array-type": [true, "array"],
+    "whitespace": [true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-typecast",
+      "check-type-operator",
+      "check-preblock"
+    ],
+    "no-magic-numbers": ["error", {
+      "ignore": [0, 1, 401],
+      "ignoreArrayIndexes": true
+    }],
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/explicit-function-return-type": false,
+    "@typescript-eslint/no-empty-interface": false,
+    "@typescript-eslint/prefer-interface": false,
+    "@typescript-eslint/explicit-member-accessibility": [true, "no-public"],
+    "@typescript-eslint/no-use-before-define": false,
+    "@typescript-eslint/no-object-literal-type-assertion": false,
+    "@typescript-eslint/no-parameter-properties": false,
+    "@typescript-eslint/no-non-null-assertion": false,
+    "@typescript-eslint/camelcase": false
+  }
+}

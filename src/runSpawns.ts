@@ -1,9 +1,9 @@
-const createLogger = require('progress-estimator');
-const { spawnCommands } = require('./commands');
-const program = require('./program');
+import createProgress from 'progress-estimator';
+import { spawnCommands } from './commands';
+import program from './program';
 
-// Create estimations logger
-const logger = createLogger();
+// @ts-ignore
+const progress = createProgress();
 
 // Installation cycles
 const runSpawns = () => new Promise((resolve, reject) => {
@@ -19,14 +19,7 @@ const runSpawns = () => new Promise((resolve, reject) => {
     const installStep = commandsForType[step];
 
     // Spawn function
-    const fn = new Promise((loggerResolve) => installStep.fn((err) => {
-      if (err) {
-        reject(err);
-        throw new Error(err);
-      }
-
-      loggerResolve();
-    }));
+    const fn = new Promise((loggerResolve) => installStep.fn(loggerResolve));
 
     const loggerOptions = {
       id: step.toString(),
@@ -34,7 +27,7 @@ const runSpawns = () => new Promise((resolve, reject) => {
     };
 
     // Run
-    await logger(fn, installStep.message, loggerOptions);
+    await progress(fn, installStep.message, loggerOptions);
 
     // Run next step or resolve
     if (step++ < commandsForType.length - 1) {
@@ -47,4 +40,4 @@ const runSpawns = () => new Promise((resolve, reject) => {
   run();
 });
 
-module.exports = runSpawns;
+export default runSpawns;
