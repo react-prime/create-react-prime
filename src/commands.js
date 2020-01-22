@@ -40,7 +40,7 @@ const spawnCommands = {
       time: 10000,
       fn: (cb) => {
         if (program.type === TYPE.NATIVE) {
-          const s = spawn('npm', ['run', 'renameNative', 'replaceWithinFiles', 'renameSchemes'], {
+          const s = spawn('npm', ['run', 'renameNative', 'replaceWithinFiles', 'replaceSchemeFilenames'], {
             // Execute in project folder
             cwd: path.resolve(projectName),
           });
