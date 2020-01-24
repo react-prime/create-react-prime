@@ -45,12 +45,12 @@ const spawnCommands = {
             cwd: path.resolve(projectName),
           });
 
-          sRename.on('exit', () => {
+          sRename.on('close', () => {
             const sReplace = spawn('npm', ['run', 'replaceWithinFiles'], {
               cwd: path.resolve(projectName),
             });
 
-            sReplace.on('exit', () => {
+            sReplace.on('close', () => {
               const sSchemes = spawn('npm', ['run', 'replaceSchemeFilenames'], {
                 cwd: path.resolve(projectName),
               });
