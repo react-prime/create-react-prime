@@ -12,11 +12,6 @@ program
     '-t, --type <type>',
     `Install a type of react-prime. Options: ${Object.values(TYPE).join(', ')}`,
     TYPE.CLIENT,
-  )
-  .option(
-    '--typescript',
-    'Install a type of react-prime with TypeScript.',
-    false,
   );
 
 // Init program

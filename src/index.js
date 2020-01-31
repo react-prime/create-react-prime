@@ -3,7 +3,7 @@
 
 require('./polyfill');
 const { TEXT } = require('./constants');
-const { name, boilerplateNameAffix } = require('./installConfig');
+const { name } = require('./installConfig');
 const install = require('./install');
 const runSpawns = require('./runSpawns');
 
@@ -14,7 +14,7 @@ install()
   .then(runSpawns)
   .finally(() => {
     console.log(
-      `⚡️ ${TEXT.BOLD} Succesfully installed ${name}${boilerplateNameAffix}! ${TEXT.DEFAULT}`
+      `⚡️ ${TEXT.BOLD} Succesfully installed ${name}! ${TEXT.DEFAULT}`
     );
 
     process.exit();

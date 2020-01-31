@@ -15,20 +15,8 @@ if (fs.existsSync(projectName)) {
   process.exit();
 }
 
-
-// Options to add when cloning
-let cloneOptions = '';
-let boilerplateNameAffix = '';
-
-if (program.typescript) {
-  cloneOptions = '--single-branch --branch typescript';
-  boilerplateNameAffix = ' (Typescript)';
-}
-
 module.exports = {
   name: boilerplate.name,
   owner: boilerplates.owner,
-  cloneOptions,
   projectName,
-  boilerplateNameAffix,
 };

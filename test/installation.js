@@ -19,16 +19,6 @@ const tests = [
     name: 'native',
     script: `${NODE_SCRIPT} -t native ${TEST_DIRECTORY}-2`,
   },
-
-  // Typescript
-  {
-    name: 'client + typescript',
-    script: `${NODE_SCRIPT} --typescript ${TEST_DIRECTORY}-3`,
-  },
-  {
-    name: 'ssr + typescript',
-    script: `${NODE_SCRIPT} -t ssr --typescript ${TEST_DIRECTORY}-4`,
-  },
 ];
 
 

@@ -43,18 +43,4 @@ npm start
       Installs one of the supported boilerplate types
     </td>
   </tr>
-  <tr>
-    <td>
-      --typescript
-    </td>
-    <td>
-      -
-    </td>
-    <td>
-      false
-    </td>
-    <td>
-      Installs the TypeScript variant of the specified boilerplate type
-    </td>
-  </tr>
 </table>
