@@ -40,24 +40,27 @@ const spawnCommands = {
       time: 10000,
       fn: (cb) => {
         if (program.type === TYPE.NATIVE) {
-          // Execute in project folder with cwd
-          const sRename = spawn('npm', ['run', 'renameNative'], {
+          let done = 0;
+
+          const isDone = () => {
+            if (++done === 3) {
+              cb();
+            }
+          };
+
+          const options = {
+            // Execute in project folder with cwd
             cwd: path.resolve(projectName),
-          });
+          };
 
-          sRename.on('close', () => {
-            const sReplace = spawn('npm', ['run', 'replaceWithinFiles'], {
-              cwd: path.resolve(projectName),
-            });
+          spawn('npm', ['run', 'renameNative'], options)
+            .on('close', isDone);
 
-            sReplace.on('close', () => {
-              const sSchemes = spawn('npm', ['run', 'replaceSchemeFilenames'], {
-                cwd: path.resolve(projectName),
-              });
+          spawn('npm', ['run', 'replaceWithinFiles'], options)
+            .on('close', isDone);
 
-              sSchemes.on('close', cb);
-            });
-          });
+          spawn('npm', ['run', 'replaceSchemeFilenames'], options)
+            .on('close', isDone);
         }
       },
     },

@@ -52,7 +52,7 @@ const installation = async () => new Promise((res) => {
     // Run test script
     exec(test.script, (err) => {
       if (err) {
-        console.error(`❌  Installation for '${test.name}' failed`);
+        console.error(`❌  Installation for '${test.name}' failed.`);
         finishTest(false);
 
         return;

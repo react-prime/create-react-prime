@@ -21,7 +21,7 @@ const updatePackage = (projectName) => {
 
   if (program.type === TYPE.NATIVE) {
     pkg.scripts.renameNative = `npx react-native-rename ${projectName}`;
-    pkg.scripts.replaceWithinFiles = `npx replace 'reactprimenative' '${projectName}' . -r`;
+    pkg.scripts.replaceWithinFiles = `npx replace 'reactprimenative' '${projectName}' . -r --exclude="package*.json"`;
     pkg.scripts.replaceSchemeFilenames = `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`;
   }
 
