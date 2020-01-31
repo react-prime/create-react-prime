@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { ARG, TYPE } = require('./constants');
+const { ARG } = require('./constants');
 const program = require('./program');
 const boilerplates = require('./boilerplates');
 
