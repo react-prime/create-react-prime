@@ -38,17 +38,20 @@ const spawnCommands = {
       time: 10000,
       fn: (cb) => {
         if (program.type === TYPE.NATIVE) {
+          // React-native does not allow non-alphanumeric characters in project name
+          const validProjectName = projectName.replace(/\W/g, '');
+
+          const options = {
+            // Execute in project folder with cwd
+            cwd: path.resolve(validProjectName),
+          };
+
           let done = 0;
 
           const isDone = () => {
             if (++done === 3) {
               cb();
             }
-          };
-
-          const options = {
-            // Execute in project folder with cwd
-            cwd: path.resolve(projectName),
           };
 
           spawn('npm', ['run', 'renameNative'], options)
