@@ -3,27 +3,27 @@ const path = require('path');
 const { exec } = require('child_process');
 
 const NODE_SCRIPT = `node ${path.resolve('src/index.js')}`;
-const TEST_DIRECTORY = 'crp-test';
+const TEST_DIRECTORY = 'crptest';
 
 const tests = [
   // Boilerplates
   {
     name: 'client',
-    script: `${NODE_SCRIPT} ${TEST_DIRECTORY}-0`,
+    script: `${NODE_SCRIPT} ${TEST_DIRECTORY}0`,
   },
   {
     name: 'ssr',
-    script: `${NODE_SCRIPT} -t ssr ${TEST_DIRECTORY}-1`,
+    script: `${NODE_SCRIPT} -t ssr ${TEST_DIRECTORY}1`,
   },
   {
     name: 'native',
-    script: `${NODE_SCRIPT} -t native ${TEST_DIRECTORY}-2`,
+    script: `${NODE_SCRIPT} -t native ${TEST_DIRECTORY}2`,
   },
 ];
 
 
 const removeDirectory = (i, cb) => {
-  exec(`rm -rf ${path.resolve(TEST_DIRECTORY)}-${i}`, cb);
+  exec(`rm -rf ${path.resolve(TEST_DIRECTORY)}${i}`, cb);
 };
 
 const removeAllDirectories = () => {
@@ -42,13 +42,13 @@ const installation = async () => new Promise((res) => {
     // Run test script
     exec(test.script, (err) => {
       if (err) {
-        console.error(`❌  Installation for '${test.name}' failed.`);
+        console.error(`❌ Installation for '${test.name}' failed.`);
         finishTest(false);
 
         return;
       }
 
-      console.log(`✅  Installation '${test.name}' succeeded!`);
+      console.log(`✅ Installation '${test.name}' succeeded!`);
       finishTest(true);
     });
   };
@@ -69,11 +69,11 @@ const installation = async () => new Promise((res) => {
 
       // Check if all tests are done.
       if (testsSucceeded >= tests.length) {
-        console.log('✅  All installations succeeded!');
+        console.log('✅ All installations succeeded!');
 
         res(true);
       } else {
-        console.error('❌  Installation test failed.');
+        console.error('❌ Installation test failed.');
 
         res(false);
       }

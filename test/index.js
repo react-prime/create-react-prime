@@ -14,7 +14,7 @@ describe('Installation', function() {
 
   it('set values in package.json to the correct values', function() {
     tests.forEach((_, i) => {
-      const projectName = `${TEST_DIRECTORY}-${i}`;
+      const projectName = `${TEST_DIRECTORY}${i}`;
 
       // Parse package.json to JSON
       const projectPkgPath = path.resolve(`${projectName}/package.json`);
