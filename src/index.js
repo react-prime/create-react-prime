@@ -13,9 +13,7 @@ const runSpawns = require('./runSpawns');
 install()
   .then(runSpawns)
   .finally(() => {
-    console.log(
-      `⚡️ ${TEXT.BOLD} Succesfully installed ${name}! ${TEXT.DEFAULT}`
-    );
+    console.log(`⚡️ ${TEXT.BOLD} Succesfully installed ${name}! ${TEXT.DEFAULT}`);
 
     process.exit();
   });
