@@ -1,0 +1,134 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:import/typescript"
+  ],
+  "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+    }
+  },
+  "rules": {
+    "array-bracket-spacing": ["error", "never"],
+    "arrow-parens": 2,
+    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "block-spacing": ["error", "always"],
+    "comma-dangle": ["error", "always-multiline"],
+    "jsx-quotes": ["error", "prefer-double"],
+    "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
+    "keyword-spacing": ["error", {
+      "before": true,
+      "after": true,
+      "overrides": {
+        "return": { "after": true },
+        "throw": { "after": true },
+        "case": { "after": true }
+      }
+    }],
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1 }],
+    "no-console": [2, { "allow": ["info", "error"]}],
+    "no-trailing-spaces": ["error"],
+    "object-curly-spacing": ["error", "always"],
+    "prefer-const": ["error"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "space-before-blocks": "error",
+    "space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+    "space-in-parens": ["error", "never"],
+    "space-infix-ops": "error",
+    "eol-last": ["error", "always"],
+    "import/no-unresolved": 0,
+    "import/named": 0,
+    "import/order": ["error", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "index",
+        "parent",
+        "sibling"
+      ]
+    }],
+    "max-line-length": [1, 120],
+    "interface-name": 0,
+    "align": 0,
+    "import-name": 0,
+    "no-angle-bracket-type-assertion": 1,
+    "trailing-comma": [
+      1,
+      {
+        "multiline": {
+          "objects": "always",
+          "arrays": "always",
+          "functions": "never",
+          "typeLiterals": "ignore"
+        },
+        "singleline": "never",
+        "esSpecCompliant": 1
+      }
+    ],
+    "member-ordering": [
+      1,
+      {
+        "order": [
+          "public-static-field",
+          "public-static-method",
+          "protected-static-field",
+          "protected-static-method",
+          "private-static-field",
+          "private-static-method",
+          "public-instance-field",
+          "protected-instance-field",
+          "private-instance-field",
+          "public-constructor",
+          "protected-constructor",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method"
+        ]
+      }
+    ],
+    "quotemark": [1, "single", "avoid-escape"],
+    "no-shadowed-variable": 0,
+    "semicolon": [1, "always", "ignore-interfaces"],
+    "array-type": [1, "array"],
+    "whitespace": [1,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-typecast",
+      "check-type-operator",
+      "check-preblock"
+    ],
+    "no-magic-numbers": ["error", {
+      "ignore": [0, 1, 401],
+      "ignoreArrayIndexes": false
+    }],
+    "@typescript-eslint/indent": ["error", 2],
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/prefer-interface": 0,
+    "@typescript-eslint/explicit-member-accessibility": [1, {
+      "accessibility": "explicit"
+    }],
+    "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/no-object-literal-type-assertion": 0,
+    "@typescript-eslint/no-parameter-properties": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/camelcase": 0
+  }
+}
