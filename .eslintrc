@@ -19,7 +19,6 @@
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "block-spacing": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
-    "jsx-quotes": ["error", "prefer-double"],
     "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
     "keyword-spacing": ["error", {
       "before": true,
@@ -58,62 +57,11 @@
         "sibling"
       ]
     }],
-    "max-line-length": [1, 120],
+    "max-len": [2, 120],
     "interface-name": 0,
     "align": 0,
     "import-name": 0,
-    "no-angle-bracket-type-assertion": 1,
-    "trailing-comma": [
-      1,
-      {
-        "multiline": {
-          "objects": "always",
-          "arrays": "always",
-          "functions": "never",
-          "typeLiterals": "ignore"
-        },
-        "singleline": "never",
-        "esSpecCompliant": 1
-      }
-    ],
-    "member-ordering": [
-      1,
-      {
-        "order": [
-          "public-static-field",
-          "public-static-method",
-          "protected-static-field",
-          "protected-static-method",
-          "private-static-field",
-          "private-static-method",
-          "public-instance-field",
-          "protected-instance-field",
-          "private-instance-field",
-          "public-constructor",
-          "protected-constructor",
-          "private-constructor",
-          "public-instance-method",
-          "protected-instance-method",
-          "private-instance-method"
-        ]
-      }
-    ],
-    "quotemark": [1, "single", "avoid-escape"],
     "no-shadowed-variable": 0,
-    "semicolon": [1, "always", "ignore-interfaces"],
-    "array-type": [1, "array"],
-    "whitespace": [1,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-module",
-      "check-separator",
-      "check-rest-spread",
-      "check-type",
-      "check-typecast",
-      "check-type-operator",
-      "check-preblock"
-    ],
     "no-magic-numbers": ["error", {
       "ignore": [0, 1, 401],
       "ignoreArrayIndexes": false
@@ -129,6 +77,7 @@
     "@typescript-eslint/no-object-literal-type-assertion": 0,
     "@typescript-eslint/no-parameter-properties": 0,
     "@typescript-eslint/no-non-null-assertion": 0,
-    "@typescript-eslint/camelcase": 0
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/array-type": [1, { "default": "array" }]
   }
 }
