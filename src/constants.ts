@@ -12,7 +12,7 @@ export const ARG = {
 
 // Command line colors
 export const TEXT = {
-  BOLD: '\\' + '033[1m',
-  YELLOW: '\\' + '033[93m',
-  DEFAULT: '\\' + '033[0m',
+  BOLD: '\x1b[1m',
+  YELLOW: '\x1b[33m',
+  DEFAULT: '\x1b[0m',
 };
