@@ -62,10 +62,6 @@
     "align": 0,
     "import-name": 0,
     "no-shadowed-variable": 0,
-    "no-magic-numbers": ["error", {
-      "ignore": [0, 1, 401],
-      "ignoreArrayIndexes": false
-    }],
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-empty-interface": 0,

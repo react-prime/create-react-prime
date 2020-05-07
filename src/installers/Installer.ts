@@ -1,7 +1,9 @@
+import fs from 'fs';
 import { exec } from 'child_process';
 import createLogger, { ProgressEstimator } from 'progress-estimator';
 import App from '../App';
 import { TEXT } from '../constants';
+import { NodePackage } from '../types';
 
 export default abstract class Installer {
   private installSteps: InstallStep[];
@@ -10,13 +12,12 @@ export default abstract class Installer {
   private logger: ProgressEstimator = createLogger();
 
   constructor() {
-    const projectName = App.getProjectName();
-    const { owner, boilerplate } = App.getInstallConfig();
+    const { owner, boilerplateData, projectName } = App.getInstallConfig();
 
     this.installSteps = [
       {
-        cmd: `git clone https://github.com/${owner}/${boilerplate.name}.git ${projectName}`,
-        message: `🚚  Cloning ${boilerplate.name} into '${projectName}'...`,
+        cmd: `git clone https://github.com/${owner}/${boilerplateData.name}.git ${projectName}`,
+        message: `🚚  Cloning ${boilerplateData.name} into '${projectName}'...`,
         time: 3000,
       },
       {
@@ -33,20 +34,25 @@ export default abstract class Installer {
     ];
   }
 
+  // Starts the installation process. This is async.
+  // Returns the installation promise.
   async start() {
     return this.install()
       .finally(() => {
         // eslint-disable-next-line no-console
         console.log(
-          `⚡️ ${TEXT.BOLD} Succesfully installed ${App.getInstallConfig().boilerplate.name}! ${TEXT.DEFAULT}`,
+          `⚡️ ${TEXT.BOLD} Succesfully installed ${App.getInstallConfig().boilerplateData.name}! ${TEXT.DEFAULT}`,
         );
       });
   }
 
+
+  // Returns the current installation step
   protected getStep() {
     return this.installSteps[this.stepNum];
   }
 
+  // Installers can add additional installation steps with this function
   protected addInstallStep(step: InstallStep, atIndex?: number) {
     if (typeof atIndex === 'number') {
       this.installSteps.splice(atIndex, 0, step);
@@ -55,7 +61,37 @@ export default abstract class Installer {
     }
   }
 
-  protected async install() {
+  // Resets certain node package variables
+  // Can provide a node package object as parameter
+  protected async updatePackage(npmPkg?: NodePackage) {
+    const { projectName } = App.getInstallConfig();
+    const { path: projectPkgPath } = App.getProjectNpmPackage();
+
+    let pkg: NodePackage;
+
+    if (npmPkg) {
+      pkg = npmPkg;
+    } else {
+      pkg = App.getProjectNpmPackage().json;
+    }
+
+    // Overwrite boilerplate defaults
+    pkg.name = projectName;
+    pkg.version = '0.0.1';
+    pkg.description = `Code for ${projectName}.`;
+    pkg.author = 'Label A [labela.nl]';
+    pkg.keywords = [];
+
+    if (typeof pkg.repository === 'object') {
+      pkg.repository.url = '';
+    }
+
+    fs.writeFileSync(projectPkgPath, JSON.stringify(pkg, null, 2));
+  }
+
+
+  // This runs through all the installation steps
+  private async install() {
     return new Promise((resolve) => {
       const run = async () => {
         const step = this.getStep();
@@ -73,13 +109,10 @@ export default abstract class Installer {
     });
   }
 
-  protected updatePackage() {
-    // TODO
-  }
-
+  // Single installation step
   private installation(step: InstallStep) {
     return new Promise((resolve, reject) => {
-      return exec(step.cmd, null, (err) => {
+      exec(step.cmd, null, async (err) => {
         const step = this.getStep();
 
         if (err) {
@@ -89,7 +122,7 @@ export default abstract class Installer {
 
         try {
           if (typeof step.fn === 'function') {
-            step.fn();
+            await step.fn();
           }
         } catch (err) {
           reject(err);
@@ -106,5 +139,5 @@ type InstallStep = {
   cmd: string;
   message: string;
   time: number;
-  fn?: Function;
+  fn?: () => Promise<void>;
 }
