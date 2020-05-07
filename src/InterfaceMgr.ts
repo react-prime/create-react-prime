@@ -12,8 +12,8 @@ export default class InterfaceMgr {
     return this.interface;
   }
 
-  getInstallType() {
-    return this.interface.type as BoilerplateConfigTypes;
+  getInstallType(): BoilerplateConfigTypes {
+    return this.interface.type;
   }
 
   getArgs() {

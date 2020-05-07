@@ -5,7 +5,7 @@ export const TYPE = {
   NATIVE: 'native',
 } as const;
 
-// Program argument names
+// Interface argument name indices
 export const ARG = {
   PROJECT_NAME: 0,
 } as const;

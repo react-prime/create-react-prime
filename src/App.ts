@@ -16,7 +16,7 @@ export default class App {
     this.init();
   }
 
-  static getProgram() {
+  static getInterfaceMgr() {
     return this.interfaceMgr;
   }
 
@@ -75,7 +75,7 @@ export default class App {
     App.installConfig = {
       owner: boilerplateConfig.owner,
       boilerplateData: App.getBoilerplateData(),
-      projectName: App.getProgram().getArgs()[ARG.PROJECT_NAME] || App.getBoilerplateData().name,
+      projectName: App.getInterfaceMgr().getArgs()[ARG.PROJECT_NAME] || App.getBoilerplateData().name,
     };
   }
 }
