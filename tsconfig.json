@@ -7,8 +7,11 @@
         "esModuleInterop": true,
         "skipLibCheck": true,
         "strict": true,
+        "resolveJsonModule": true,
         "baseUrl": ".",
-        "paths": {},
+        "paths": {
+          "src/*": ["src/*"]
+        },
         "lib": ["esnext"]
     },
     "include": ["./src"],
