@@ -4,18 +4,20 @@ import { BoilerplateConfig } from './types';
 import { ARG } from './constants';
 import boilerplateConfig from './boilerplateConfig.json';
 import installers from './installers';
-import Program from './Program';
+import InterfaceMgr from './InterfaceMgr';
 
 export default class App {
-  private static program = new Program();
+  private static interfaceMgr: InterfaceMgr;
   private static installConfig: BoilerplateConfig;
 
-  constructor() {
+  constructor(appInterface: InterfaceMgr) {
+    App.interfaceMgr = appInterface;
+
     this.init();
   }
 
   static getProgram() {
-    return this.program;
+    return this.interfaceMgr;
   }
 
   static getInstallConfig() {
@@ -42,7 +44,7 @@ export default class App {
   }
 
   static getBoilerplateData() {
-    return boilerplateConfig[this.program.getInstallType()];
+    return boilerplateConfig[this.interfaceMgr.getInstallType()];
   }
 
   // This allows Node to exit naturally without scheduling new tasks
@@ -62,7 +64,7 @@ export default class App {
 
 
     // run installation
-    const installer = new installers[App.program.getInstallType()];
+    const installer = new installers[App.interfaceMgr.getInstallType()];
 
     installer
       .start()
