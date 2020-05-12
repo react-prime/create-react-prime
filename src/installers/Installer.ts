@@ -30,11 +30,11 @@ export default abstract class Installer {
         time: 10,
         fn: this.updatePackage.bind(this),
       },
-      // {
-      //   message: '📦  Installing packages...',
-      //   time: 40000,
-      //   cmd: `npm --prefix ${projectName} install`,
-      // },
+      {
+        message: '📦  Installing packages...',
+        time: 40000,
+        cmd: `npm --prefix ${projectName} install`,
+      },
       {
         message: '🧹  Cleaning up...',
         time: 15,
