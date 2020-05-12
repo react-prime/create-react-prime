@@ -68,7 +68,9 @@ export default class App {
 
     installer
       .start()
-      .finally(process.exit);
+      .finally(() => {
+        process.exit();
+      });
   }
 
   private setVars() {
