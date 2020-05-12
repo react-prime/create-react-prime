@@ -33,42 +33,25 @@ export default class NativeInstaller extends Installer {
     super.updatePackage(pkg);
   }
 
-  protected cleanup(): Promise<void> {
+  protected async cleanup(): Promise<void> {
     // "super" will not point to base class inside Promise function
     const cleanup = super.cleanup;
+    const pkg = App.getProjectNpmPackage().json;
 
-    return new Promise(async (resolve, reject) => {
-      const pkg = App.getProjectNpmPackage().json;
+    delete pkg.scripts.renameNative;
+    delete pkg.scripts.replaceWithinFiles;
+    delete pkg.scripts.replaceSchemeFilenames;
 
-      try {
-        delete pkg.scripts.renameNative;
-        delete pkg.scripts.replaceWithinFiles;
-        delete pkg.scripts.replaceSchemeFilenames;
+    this.writeToPackage(pkg);
 
-        this.writeToPackage(pkg);
-
-        await cleanup();
-
-        resolve();
-      } catch (err) {
-        reject(err);
-      }
-    });
+    await cleanup();
   }
 
 
   // Run the additional scripts
-  private runScripts(): Promise<void> {
-    return new Promise(async (resolve, reject) => {
-      try {
-        await this.asyncSpawn('npm', ['run', 'renameNative']);
-        await this.asyncSpawn('npm', ['run', 'replaceWithinFiles']);
-        await this.asyncSpawn('npm', ['run', 'replaceSchemeFilenames']);
-
-        resolve();
-      } catch (err) {
-        reject();
-      }
-    });
+  private async runScripts(): Promise<void> {
+    await this.asyncSpawn('npm', ['run', 'renameNative']);
+    await this.asyncSpawn('npm', ['run', 'replaceWithinFiles']);
+    await this.asyncSpawn('npm', ['run', 'replaceSchemeFilenames']);
   }
 }

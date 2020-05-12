@@ -48,7 +48,7 @@ export default class App {
   }
 
   // This allows Node to exit naturally without scheduling new tasks
-  private static failSafely() {
+  static failSafely() {
     process.exitCode = 1;
   }
 

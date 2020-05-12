@@ -1,10 +1,14 @@
 import fs from 'fs';
+import util from 'util';
 import path from 'path';
-import { exec, spawn } from 'child_process';
+import cp from 'child_process';
 import createLogger, { ProgressEstimator } from 'progress-estimator';
 import App from '../App';
 import { TEXT } from '../constants';
 import { NodePackage } from '../types';
+
+const writeFile = util.promisify(fs.writeFile);
+const exec = util.promisify(cp.exec);
 
 export default abstract class Installer {
   private installSteps: InstallStep[];
@@ -26,11 +30,11 @@ export default abstract class Installer {
         time: 10,
         fn: this.updatePackage.bind(this),
       },
-      {
-        message: '📦  Installing packages...',
-        time: 40000,
-        cmd: `npm --prefix ${projectName} install`,
-      },
+      // {
+      //   message: '📦  Installing packages...',
+      //   time: 40000,
+      //   cmd: `npm --prefix ${projectName} install`,
+      // },
       {
         message: '🧹  Cleaning up...',
         time: 15,
@@ -43,13 +47,12 @@ export default abstract class Installer {
   // Starts the installation process. This is async.
   // Returns the installation promise.
   async start() {
-    return this.install()
-      .finally(() => {
-        // eslint-disable-next-line no-console
-        console.log(
-          `⚡️ ${TEXT.BOLD} Succesfully installed ${App.getInstallConfig().boilerplateData.name}! ${TEXT.DEFAULT}`,
-        );
-      });
+    await this.install();
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `⚡️ ${TEXT.BOLD} Succesfully installed ${App.getInstallConfig().boilerplateData.name}! ${TEXT.DEFAULT}`,
+    );
   }
 
 
@@ -67,13 +70,14 @@ export default abstract class Installer {
     }
   }
 
-  protected writeToPackage(npmPkg: NodePackage) {
-    const { path: projectPkgPath } = App.getProjectNpmPackage();
+  protected async writeToPackage(npmPkg: NodePackage) {
+    const { path } = App.getProjectNpmPackage();
 
-    fs.writeFileSync(projectPkgPath, JSON.stringify(npmPkg, null, 2));
+    await writeFile(path, JSON.stringify(npmPkg, null, 2));
   }
 
-  // Creates promise-wrapped spawns
+  // Promisify spawns
+  // util.promisfy doesn't work
   protected asyncSpawn(command: string, args: string[], options?: { path: string }) {
     const { projectName } = App.getInstallConfig();
 
@@ -83,7 +87,7 @@ export default abstract class Installer {
     };
 
     return new Promise((resolve, reject) => {
-      spawn(command, args, opts)
+      cp.spawn(command, args, opts)
         .on('close', resolve)
         .on('error', reject);
     });
@@ -106,72 +110,55 @@ export default abstract class Installer {
       pkg.repository.url = '';
     }
 
-    this.writeToPackage(pkg);
+    await this.writeToPackage(pkg);
   }
 
   // Override method
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected async cleanup(): Promise<void> {
-    return new Promise((resolve) => {
-      resolve();
-    });
-  }
+  protected async cleanup(): Promise<void> {}
 
 
   // This runs through all the installation steps
   private async install() {
-    return new Promise((resolve) => {
-      const iter = async () => {
-        const step = this.getStep();
+    const iter = async () => {
+      const step = this.getStep();
 
-        // Run the installation step
-        await this.logger(this.installation(step), step.message, step.time);
+      // Run the installation step
+      await this.logger(this.installation(step), step.message, step.time);
 
-        // Go to next step or end the installation
-        if (this.stepNum++ < this.installSteps.length - 1) {
-          iter();
-        } else {
-          resolve();
-        }
-      };
+      // Go to next step or end the installation
+      if (this.stepNum++ >= this.installSteps.length - 1) {
+        return;
+      }
 
-      // Start iterating through the installation steps
-      iter();
-    });
+      await iter();
+    };
+
+    // Start iterating through the installation steps
+    await iter();
   }
 
   // Single installation step
-  private installation(step: InstallStep) {
-    return new Promise(async (resolve, reject) => {
+  private async installation(step: InstallStep) {
+    try {
       if (step.cmd) {
-        exec(step.cmd, null, async (err) => {
-          const step = this.getStep();
+        const step = this.getStep();
 
-          if (err) {
-            reject(err);
-            throw new Error(err.message);
-          }
+        // Execute command line
+        await exec(step.cmd!);
 
-          try {
-            if (typeof step.fn === 'function') {
-              await step.fn();
-            }
-          } catch (err) {
-            reject(err);
-            throw new Error(err);
-          }
-
-          resolve();
-        });
+        // Execute function if exists
+        await step.fn?.();
       } else if (step.fn) {
-        step.fn()
-          .then(resolve)
-          .catch(reject);
+        await step.fn();
       } else {
-        reject('Every install step is required to have either "cmd" or "fn".');
+        console.error('Every install step is required to have either "cmd" or "fn".');
+        App.failSafely();
       }
-    });
-  }
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
 }
 
 type InstallStep = {
