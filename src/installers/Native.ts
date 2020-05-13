@@ -39,7 +39,7 @@ export default class NativeInstaller extends Installer {
     delete pkg.scripts.replaceWithinFiles;
     delete pkg.scripts.replaceSchemeFilenames;
 
-    this.writeToPackage(pkg);
+    await this.writeToPackage(pkg);
 
     await cleanup();
   }
