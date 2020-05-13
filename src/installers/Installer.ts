@@ -70,8 +70,23 @@ export default abstract class Installer {
     }
   }
 
+  protected getProjectNpmPackage() {
+    const projectPkgPath = path.resolve(`${InstallConfig.projectName}/package.json`);
+    const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
+
+    if (!pkgFile) {
+      console.error('No valid NPM package found in getProjectNpmPackage');
+      App.failSafely();
+    }
+
+    return {
+      path: projectPkgPath,
+      json: JSON.parse(pkgFile),
+    };
+  }
+
   protected async writeToPackage(npmPkg: NodePackage) {
-    const { path } = App.getProjectNpmPackage();
+    const { path } = this.getProjectNpmPackage();
 
     await writeFile(path, JSON.stringify(npmPkg, null, 2));
   }
@@ -95,7 +110,7 @@ export default abstract class Installer {
   // Can provide a node package object as parameter
   protected async updatePackage(npmPkg?: NodePackage) {
     const { projectName } = InstallConfig;
-    const pkg: NodePackage = npmPkg || App.getProjectNpmPackage().json;
+    const pkg: NodePackage = npmPkg || this.getProjectNpmPackage().json;
 
     // Overwrite boilerplate defaults
     pkg.name = projectName;

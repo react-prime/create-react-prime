@@ -20,7 +20,7 @@ export default class NativeInstaller extends Installer {
   // Add additional scripts to node package
   protected async updatePackage() {
     const { projectName } = InstallConfig;
-    const pkg = App.getProjectNpmPackage().json;
+    const pkg = this.getProjectNpmPackage().json;
 
     pkg.scripts = pkg.scripts || {};
     pkg.scripts.renameNative = `npx react-native-rename ${projectName}`;
@@ -33,7 +33,7 @@ export default class NativeInstaller extends Installer {
   protected async cleanup(): Promise<void> {
     // "super" will not point to base class inside Promise function
     const cleanup = super.cleanup;
-    const pkg = App.getProjectNpmPackage().json;
+    const pkg = this.getProjectNpmPackage().json;
 
     delete pkg.scripts.renameNative;
     delete pkg.scripts.replaceWithinFiles;

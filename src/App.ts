@@ -14,14 +14,14 @@ export default class App {
     App.interfaceMgr = appInterface;
 
     const intf = App.getInterfaceMgr();
+    const installType = intf!.getInstallType();
 
     // Set config variables
-    InstallConfig.installerName = REPOSITORIES[intf!.getInstallType()];
+    InstallConfig.installerName = REPOSITORIES[installType];
     InstallConfig.projectName = intf!.getArgs()[ARG.PROJECT_NAME] || InstallConfig.installerName;
 
     // Generate installer instance
-    const installType = App.getInterfaceMgr()!.getInstallType();
-    App.installer = new installers[installType]();
+    App.installer = new installers[installType];
 
     // Start installation
     this.init();
@@ -29,21 +29,6 @@ export default class App {
 
   static getInterfaceMgr() {
     return this.interfaceMgr;
-  }
-
-  static getProjectNpmPackage() {
-    const projectPkgPath = path.resolve(`${InstallConfig.projectName}/package.json`);
-    const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
-
-    if (!pkgFile) {
-      console.error('No valid NPM package found in getProjectNpmPackage');
-      App.failSafely();
-    }
-
-    return {
-      path: projectPkgPath,
-      json: JSON.parse(pkgFile),
-    };
   }
 
   // This allows Node to exit naturally without scheduling new tasks
