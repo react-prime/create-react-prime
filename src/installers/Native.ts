@@ -16,6 +16,7 @@ export default class NativeInstaller extends Installer {
     }, 2);
   }
 
+
   // Add additional scripts to node package
   protected async updatePackage() {
     const { projectName } = InstallConfig;
@@ -30,8 +31,6 @@ export default class NativeInstaller extends Installer {
   }
 
   protected async cleanup(): Promise<void> {
-    // "super" will not point to base class inside Promise function
-    const cleanup = super.cleanup;
     const pkg = this.getProjectNpmPackage().json;
 
     delete pkg.scripts.renameNative;
@@ -39,8 +38,7 @@ export default class NativeInstaller extends Installer {
     delete pkg.scripts.replaceSchemeFilenames;
 
     await this.writeToPackage(pkg);
-
-    await cleanup();
+    await super.cleanup();
   }
 
 
