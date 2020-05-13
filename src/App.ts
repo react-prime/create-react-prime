@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 import { ARG, REPOSITORIES } from './constants';
 import InterfaceMgr from './InterfaceMgr';
 import InstallConfig from './InstallConfig';
@@ -32,7 +31,7 @@ export default class App {
   }
 
   // This allows Node to exit naturally without scheduling new tasks
-  static failSafely() {
+  static exitSafely() {
     process.exitCode = 1;
   }
 
@@ -40,7 +39,7 @@ export default class App {
     // Check if directory already exists to prevent overwriting existing data
     if (fs.existsSync(InstallConfig.projectName)) {
       console.error(`Error: directory '${InstallConfig.projectName}' already exists.`);
-      App.failSafely();
+      App.exitSafely();
     }
 
     // run installation

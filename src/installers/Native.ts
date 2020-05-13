@@ -1,4 +1,3 @@
-import App from '../App';
 import InstallConfig from '../InstallConfig';
 import Installer from './Installer';
 

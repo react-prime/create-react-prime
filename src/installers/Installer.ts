@@ -76,7 +76,7 @@ export default abstract class Installer {
 
     if (!pkgFile) {
       console.error('No valid NPM package found in getProjectNpmPackage');
-      App.failSafely();
+      App.exitSafely();
     }
 
     return {
@@ -169,7 +169,7 @@ export default abstract class Installer {
         await step.fn();
       } else {
         console.error('Every install step is required to have either "cmd" or "fn".');
-        App.failSafely();
+        App.exitSafely();
       }
     } catch (err) {
       throw new Error(err);
