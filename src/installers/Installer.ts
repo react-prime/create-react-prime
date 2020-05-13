@@ -4,8 +4,9 @@ import path from 'path';
 import cp from 'child_process';
 import createLogger, { ProgressEstimator } from 'progress-estimator';
 import App from '../App';
-import { TEXT } from '../constants';
+import { TEXT, ORGANIZATION } from '../constants';
 import { NodePackage } from '../types';
+import InstallConfig from '../InstallConfig';
 
 const writeFile = util.promisify(fs.writeFile);
 const exec = util.promisify(cp.exec);
@@ -13,17 +14,15 @@ const exec = util.promisify(cp.exec);
 export default abstract class Installer {
   private installSteps: InstallStep[];
   private stepNum = 0;
-  // @ts-ignore type from createLogger is completely wrong
-  private logger: ProgressEstimator = createLogger();
 
   constructor() {
-    const { owner, boilerplateData, projectName } = App.getInstallConfig();
+    const { projectName, installerName } = InstallConfig;
 
     this.installSteps = [
       {
-        message: `🚚  Cloning ${boilerplateData.name} into '${projectName}'...`,
+        message: `🚚  Cloning ${installerName} into '${projectName}'...`,
         time: 3000,
-        cmd: `git clone https://github.com/${owner}/${boilerplateData.name}.git ${projectName}`,
+        cmd: `git clone https://github.com/${ORGANIZATION}/${installerName}.git ${projectName}`,
       },
       {
         message: '✏️   Updating package...',
@@ -44,6 +43,7 @@ export default abstract class Installer {
     ];
   }
 
+
   // Starts the installation process. This is async.
   // Returns the installation promise.
   async start() {
@@ -51,7 +51,7 @@ export default abstract class Installer {
 
     // eslint-disable-next-line no-console
     console.log(
-      `⚡️ ${TEXT.BOLD} Succesfully installed ${App.getInstallConfig().boilerplateData.name}! ${TEXT.DEFAULT}`,
+      `⚡️ ${TEXT.BOLD} Succesfully installed ${InstallConfig.installerName}! ${TEXT.DEFAULT}`,
     );
   }
 
@@ -79,11 +79,9 @@ export default abstract class Installer {
   // Promisify spawns
   // util.promisfy doesn't work
   protected asyncSpawn(command: string, args: string[], options?: { path: string }) {
-    const { projectName } = App.getInstallConfig();
-
     const opts = {
       // Execute in given folder path with cwd
-      cwd: options?.path || path.resolve(projectName),
+      cwd: options?.path || path.resolve(InstallConfig.projectName),
     };
 
     return new Promise((resolve, reject) => {
@@ -96,7 +94,7 @@ export default abstract class Installer {
   // Resets certain node package variables
   // Can provide a node package object as parameter
   protected async updatePackage(npmPkg?: NodePackage) {
-    const { projectName } = App.getInstallConfig();
+    const { projectName } = InstallConfig;
     const pkg: NodePackage = npmPkg || App.getProjectNpmPackage().json;
 
     // Overwrite boilerplate defaults
@@ -120,11 +118,14 @@ export default abstract class Installer {
 
   // This runs through all the installation steps
   private async install() {
+    // @ts-ignore type from createLogger is completely wrong
+    const logger: ProgressEstimator = createLogger();
+
     const iter = async () => {
       const step = this.getStep();
 
       // Run the installation step
-      await this.logger(this.installation(step), step.message, step.time);
+      await logger(this.installation(step), step.message, step.time);
 
       // Go to next step or end the installation
       if (this.stepNum++ >= this.installSteps.length - 1) {

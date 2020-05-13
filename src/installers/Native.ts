@@ -1,20 +1,17 @@
 import App from '../App';
+import InstallConfig from '../InstallConfig';
 import Installer from './Installer';
 
 export default class NativeInstaller extends Installer {
   constructor() {
-    super();
-
-    const { projectName } = App.getInstallConfig();
-
     // Native project names can only contain alphanumerical characters
-    App.setProjectName(
-      projectName.replace(/\W/g, ''),
-    );
+    InstallConfig.projectName = InstallConfig.projectName.replace(/\W/g, '');
+
+    super();
 
     // Run additional scripts after NPM install
     this.addInstallStep({
-      message: `🔤  Renaming project files to '${projectName}'...`,
+      message: `🔤  Renaming project files to '${InstallConfig.projectName}'...`,
       time: 10000,
       fn: this.runScripts.bind(this),
     }, 2);
@@ -22,7 +19,7 @@ export default class NativeInstaller extends Installer {
 
   // Add additional scripts to node package
   protected async updatePackage() {
-    const { projectName } = App.getInstallConfig();
+    const { projectName } = InstallConfig;
     const pkg = App.getProjectNpmPackage().json;
 
     pkg.scripts = pkg.scripts || {};

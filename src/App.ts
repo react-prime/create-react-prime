@@ -1,18 +1,29 @@
 import fs from 'fs';
 import path from 'path';
-import { BoilerplateConfig } from './types';
-import { ARG } from './constants';
-import boilerplateConfig from './boilerplateConfig.json';
-import installers from './installers';
+import { ARG, REPOSITORIES } from './constants';
 import InterfaceMgr from './InterfaceMgr';
+import InstallConfig from './InstallConfig';
+import installers from './installers';
+import Installer from './installers/Installer';
 
 export default class App {
-  private static interfaceMgr: InterfaceMgr;
-  private static installConfig: BoilerplateConfig;
+  private static interfaceMgr?: InterfaceMgr;
+  private static installer?: Installer;
 
   constructor(appInterface: InterfaceMgr) {
     App.interfaceMgr = appInterface;
 
+    const intf = App.getInterfaceMgr();
+
+    // Set config variables
+    InstallConfig.installerName = REPOSITORIES[intf!.getInstallType()];
+    InstallConfig.projectName = intf!.getArgs()[ARG.PROJECT_NAME] || InstallConfig.installerName;
+
+    // Generate installer instance
+    const installType = App.getInterfaceMgr()!.getInstallType();
+    App.installer = new installers[installType]();
+
+    // Start installation
     this.init();
   }
 
@@ -20,16 +31,8 @@ export default class App {
     return this.interfaceMgr;
   }
 
-  static getInstallConfig() {
-    return App.installConfig;
-  }
-
-  static setProjectName(name: string) {
-    App.installConfig.projectName = name;
-  }
-
   static getProjectNpmPackage() {
-    const projectPkgPath = path.resolve(`${App.installConfig.projectName}/package.json`);
+    const projectPkgPath = path.resolve(`${InstallConfig.projectName}/package.json`);
     const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
 
     if (!pkgFile) {
@@ -43,41 +46,22 @@ export default class App {
     };
   }
 
-  static getBoilerplateData() {
-    return boilerplateConfig[this.interfaceMgr.getInstallType()];
-  }
-
   // This allows Node to exit naturally without scheduling new tasks
   static failSafely() {
     process.exitCode = 1;
   }
 
-  private init() {
-    this.setVars();
-
-
+  private async init() {
     // Check if directory already exists to prevent overwriting existing data
-    if (fs.existsSync(App.installConfig.projectName)) {
-      console.error(`Error: directory '${App.installConfig.projectName}' already exists.`);
+    if (fs.existsSync(InstallConfig.projectName)) {
+      console.error(`Error: directory '${InstallConfig.projectName}' already exists.`);
       App.failSafely();
     }
 
-
     // run installation
-    const installer = new installers[App.interfaceMgr.getInstallType()];
+    await App.installer?.start();
 
-    installer
-      .start()
-      .finally(() => {
-        process.exit();
-      });
-  }
-
-  private setVars() {
-    App.installConfig = {
-      owner: boilerplateConfig.owner,
-      boilerplateData: App.getBoilerplateData(),
-      projectName: App.getInterfaceMgr().getArgs()[ARG.PROJECT_NAME] || App.getBoilerplateData().name,
-    };
+    // Stop Node process succesfully
+    process.exit();
   }
 }

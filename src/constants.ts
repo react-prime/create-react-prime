@@ -5,6 +5,14 @@ export const TYPE = {
   NATIVE: 'native',
 } as const;
 
+export const REPOSITORIES = {
+  client: 'react-prime',
+  ssr: 'react-prime-ssr',
+  native: 'react-prime-native',
+} as const;
+
+export const ORGANIZATION = 'react-prime';
+
 // Interface argument name indices
 export const ARG = {
   PROJECT_NAME: 0,

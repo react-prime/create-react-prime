@@ -1,5 +1,5 @@
 import Commander from 'commander';
-import { BoilerplateConfigTypes } from './types';
+import { InstallerTypes } from './types';
 
 export default class InterfaceMgr {
   private interface: Commander.Command;
@@ -12,7 +12,7 @@ export default class InterfaceMgr {
     return this.interface;
   }
 
-  getInstallType(): BoilerplateConfigTypes {
+  getInstallType(): InstallerTypes {
     return this.interface.type;
   }
 
