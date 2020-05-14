@@ -7,40 +7,49 @@ import App from '../App';
 import { TEXT, ORGANIZATION } from '../constants';
 import { NodePackage } from '../types';
 import InstallConfig from '../InstallConfig';
+import InstallStep, { InstallStepArgs } from '../InstallStep';
+import INSTALL_STEP from '../InstallStep/steps';
 
 const writeFile = util.promisify(fs.writeFile);
 const exec = util.promisify(cp.exec);
 
 export default abstract class Installer {
-  private installSteps: InstallStep[];
+  private installSteps: InstallStep[] = [];
   private stepNum = 0;
 
   constructor() {
     const { projectName, installerName } = InstallConfig;
 
-    this.installSteps = [
-      {
-        message: `🚚  Cloning ${installerName} into '${projectName}'...`,
+    this
+      .addInstallStep({
+        id: INSTALL_STEP.CLONE,
+        emoji: '🚚',
+        message: `Cloning ${installerName} into '${projectName}'...`,
         time: 3000,
         cmd: `git clone https://github.com/${ORGANIZATION}/${installerName}.git ${projectName}`,
-      },
-      {
-        message: '✏️   Updating package...',
+      })
+      .addInstallStep({
+        id: INSTALL_STEP.UPDATE_PACKAGE,
+        emoji: '✏️ ',
+        message: 'Updating package...',
         time: 10,
         fn: this.updatePackage.bind(this),
-      },
-      {
-        message: '📦  Installing packages...',
+      })
+      .addInstallStep({
+        id: INSTALL_STEP.NPM_INSTALL,
+        emoji: '📦',
+        message: 'Installing packages...',
         time: 40000,
         cmd: `npm --prefix ${projectName} install`,
-      },
-      {
-        message: '🧹  Cleaning up...',
+      })
+      .addInstallStep({
+        id: INSTALL_STEP.CLEANUP,
+        emoji: '🧹',
+        message: 'Cleaning up...',
         time: 15,
         cmd: `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
         fn: this.cleanup.bind(this),
-      },
-    ];
+      });
   }
 
 
@@ -62,12 +71,16 @@ export default abstract class Installer {
   }
 
   // Installers can add additional installation steps with this function
-  protected addInstallStep(step: InstallStep, atIndex?: number) {
+  protected addInstallStep(args: InstallStepArgs, atIndex?: number) {
+    const installStep = new InstallStep(args);
+
     if (typeof atIndex === 'number') {
-      this.installSteps.splice(atIndex, 0, step);
+      this.installSteps.splice(atIndex, 0, installStep);
     } else {
-      this.installSteps.push(step);
+      this.installSteps.push(installStep);
     }
+
+    return this;
   }
 
   protected getProjectNpmPackage() {
@@ -140,7 +153,7 @@ export default abstract class Installer {
       const step = this.getStep();
 
       // Run the installation step
-      await logger(this.installation(step), step.message, step.time);
+      await logger(this.installation(step), step.formattedMessage, step.time);
 
       // Go to next step or end the installation
       if (this.stepNum++ >= this.installSteps.length - 1) {
@@ -175,11 +188,4 @@ export default abstract class Installer {
       throw new Error(err);
     }
   };
-}
-
-type InstallStep = {
-  message: string;
-  time: number;
-  cmd?: string;
-  fn?: () => Promise<void>;
 }

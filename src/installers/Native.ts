@@ -1,3 +1,4 @@
+import INSTALL_STEP from '../InstallStep/steps';
 import InstallConfig from '../InstallConfig';
 import Installer from './Installer';
 
@@ -22,7 +23,9 @@ export default class NativeInstaller extends Installer {
 
     // Run additional scripts after NPM install
     this.addInstallStep({
-      message: `🔤  Renaming project files to '${InstallConfig.projectName}'...`,
+      id: INSTALL_STEP.RUN_NATIVE_SCRIPTS,
+      emoji: '🔤',
+      message: `Renaming project files to '${InstallConfig.projectName}'...`,
       time: 10000,
       fn: this.runScripts.bind(this),
     }, 2);
