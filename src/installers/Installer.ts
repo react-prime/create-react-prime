@@ -88,8 +88,7 @@ export default abstract class Installer {
     const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
 
     if (!pkgFile) {
-      console.error('No valid NPM package found in getProjectNpmPackage');
-      App.exitSafely();
+      App.exitSafely('No valid NPM package found in getProjectNpmPackage');
     }
 
     return {
@@ -181,8 +180,7 @@ export default abstract class Installer {
       } else if (step.fn) {
         await step.fn();
       } else {
-        console.error('Every install step is required to have either "cmd" or "fn".');
-        App.exitSafely();
+        App.exitSafely('Every install step is required to have either "cmd" or "fn".');
       }
     } catch (err) {
       throw new Error(err);

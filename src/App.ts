@@ -31,15 +31,16 @@ export default class App {
   }
 
   // This allows Node to exit naturally without scheduling new tasks
-  static exitSafely() {
+  static exitSafely(errorMsg: string) {
+    console.error(errorMsg);
+
     process.exitCode = 1;
   }
 
   private async init() {
     // Check if directory already exists to prevent overwriting existing data
     if (fs.existsSync(InstallConfig.projectName)) {
-      console.error(`Error: directory '${InstallConfig.projectName}' already exists.`);
-      App.exitSafely();
+      App.exitSafely(`Error: directory '${InstallConfig.projectName}' already exists.`);
     }
 
     // run installation
