@@ -21,13 +21,13 @@ export default class NativeInstaller extends Installer {
       replaceSchemes: 'replaceSchemeFilenames',
     };
 
-    // Run additional scripts after NPM install
-    this.addInstallStep({
+    // Rename project files to given project name
+    this.installSteps.addAfterStep('UPDATE_PACKAGE', {
       id: INSTALL_STEP.RUN_NATIVE_SCRIPTS,
       emoji: '🔤',
       message: `Renaming project files to '${InstallConfig.projectName}'...`,
       fn: this.runScripts.bind(this),
-    }, 2);
+    });
   }
 
 

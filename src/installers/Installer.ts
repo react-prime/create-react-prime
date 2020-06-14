@@ -7,39 +7,40 @@ import App from '../App';
 import { TEXT, ORGANIZATION } from '../constants';
 import { PackageJson } from '../types';
 import InstallConfig from '../InstallConfig';
-import InstallStep, { InstallStepArgs } from '../InstallStep';
+import InstallStep from '../InstallStep';
 import INSTALL_STEP from '../InstallStep/steps';
+import InstallSteps from '../InstallSteps';
 
+// Wrap utils in promise
 const writeFile = util.promisify(fs.writeFile);
 const exec = util.promisify(cp.exec);
 
 export default abstract class Installer {
-  private installSteps: InstallStep[] = [];
-  private stepNum = 0;
+  protected installSteps = new InstallSteps();
 
   constructor() {
     const { projectName, installerName } = InstallConfig;
 
-    this
-      .addInstallStep({
+    this.installSteps
+      .add({
         id: INSTALL_STEP.CLONE,
         emoji: '🚚',
         message: `Cloning ${installerName} into '${projectName}'...`,
         cmd: `git clone https://github.com/${ORGANIZATION}/${installerName}.git ${projectName}`,
       })
-      .addInstallStep({
+      .add({
         id: INSTALL_STEP.UPDATE_PACKAGE,
         emoji: '✏️ ',
         message: 'Updating package...',
         fn: this.updatePackage.bind(this),
       })
-      .addInstallStep({
+      .add({
         id: INSTALL_STEP.NPM_INSTALL,
         emoji: '📦',
         message: 'Installing packages...',
         cmd: `npm --prefix ${projectName} install`,
       })
-      .addInstallStep({
+      .add({
         id: INSTALL_STEP.CLEANUP,
         emoji: '🧹',
         message: 'Cleaning up...',
@@ -49,8 +50,10 @@ export default abstract class Installer {
   }
 
 
-  // Starts the installation process. This is async.
-  // Returns the installation promise.
+  /**
+   * Starts the installation process. This is async.
+   * Returns the installation promise.
+   */
   async start(): Promise<void> {
     await this.install();
 
@@ -60,31 +63,15 @@ export default abstract class Installer {
     );
   }
 
-
-  // Returns the current installation step
-  protected getStep(): InstallStep {
-    return this.installSteps[this.stepNum];
-  }
-
-  // Installers can add additional installation steps with this function
-  protected addInstallStep(args: InstallStepArgs, atIndex?: number): this {
-    const installStep = new InstallStep(args);
-
-    if (typeof atIndex === 'number') {
-      this.installSteps.splice(atIndex, 0, installStep);
-    } else {
-      this.installSteps.push(installStep);
-    }
-
-    return this;
-  }
-
+  /**
+   * Returns the package.json as JS object and its directory path
+   */
   protected getProjectNpmPackage(): { path: string; json: PackageJson } {
     const projectPkgPath = path.resolve(`${InstallConfig.projectName}/package.json`);
     const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
 
     if (!pkgFile) {
-      App.exitSafely('No valid NPM package found in getProjectNpmPackage');
+      throw new Error(`No valid NPM package found in ${path.resolve(InstallConfig.projectName)}`);
     }
 
     return {
@@ -99,8 +86,10 @@ export default abstract class Installer {
     await writeFile(path, JSON.stringify(npmPkg, null, 2));
   }
 
-  // Promisify spawns
-  // util.promisfy doesn't work
+  /**
+   * Promisify spawns
+   * util.promisfy doesn't work
+   */
   protected asyncSpawn(command: string, args: string[], options?: { path: string }): Promise<void> {
     const opts = {
       // Execute in given folder path with cwd
@@ -114,8 +103,10 @@ export default abstract class Installer {
     });
   }
 
-  // Resets certain node package variables
-  // Can provide a node package object as parameter
+  /**
+   * Updates node package variables
+   * Can provide a node package object as parameter
+   */
   protected async updatePackage(npmPkg?: PackageJson): Promise<void> {
     const { projectName } = InstallConfig;
     const pkg = npmPkg || this.getProjectNpmPackage().json;
@@ -134,15 +125,24 @@ export default abstract class Installer {
     await this.writeToPackage(pkg);
   }
 
-  // Override method
+  /**
+   * Can be used/overwritten by an extended installer. Runs after all the installation steps succeed.
+   */
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   protected async cleanup(): Promise<void> {}
 
 
-  // This runs through all the installation steps
+  /**
+   * Loop through all the installation steps
+   */
   private async install() {
+    let step = this.installSteps.first();
+
     const iter = async () => {
-      const step = this.getStep();
+      if (!step) {
+        return;
+      }
+
       const spinner = ora(step.message).start();
 
       try {
@@ -155,7 +155,9 @@ export default abstract class Installer {
       }
 
       // Go to next step or end the installation
-      if (this.stepNum++ >= this.installSteps.length - 1) {
+      step = step.next();
+
+      if (!step) {
         return;
       }
 
@@ -166,21 +168,19 @@ export default abstract class Installer {
     await iter();
   }
 
-  // Single installation step
+  /**
+   * Run the installation step
+   */
   private async installation(step: InstallStep) {
     try {
+      // Execute command line
       if (step.cmd) {
-        const step = this.getStep();
+        await exec(step.cmd);
+      }
 
-        // Execute command line
-        await exec(step.cmd!);
-
-        // Execute function if exists
-        await step.fn?.();
-      } else if (step.fn) {
+      // Execute function
+      if (step.fn) {
         await step.fn();
-      } else {
-        App.exitSafely('Every install step is required to have either "cmd" or "fn".');
       }
     } catch (err) {
       throw new Error(err);

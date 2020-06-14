@@ -1,10 +1,29 @@
 export default class InstallStep {
   private _message = '';
+  private _next?: InstallStep;
 
   constructor(
-    private args: InstallStepArgs,
+    private _args: InstallStepArgs,
+    private _previous?: InstallStep,
   ) {
-    this._message = `${args.emoji}  ${args.message}`;
+    if (!_args.cmd && !_args.fn) {
+      throw new Error('Every install step is required to have either "cmd" or "fn".');
+    }
+
+    this._message = `${_args.emoji}  ${_args.message}`;
+
+    if (_previous) {
+      _previous._next = this;
+    }
+  }
+
+
+  get args(): InstallStepArgs {
+    return this._args;
+  }
+
+  get id(): symbol {
+    return this._args.id;
   }
 
   get message(): string {
@@ -12,11 +31,19 @@ export default class InstallStep {
   }
 
   get cmd(): string | undefined {
-    return this.args.cmd;
+    return this._args.cmd;
   }
 
   get fn(): (() => Promise<void>) | undefined {
-    return this.args.fn;
+    return this._args.fn;
+  }
+
+  previous(): InstallStep | undefined {
+    return this._previous;
+  }
+
+  next(): InstallStep | undefined {
+    return this._next;
   }
 }
 
