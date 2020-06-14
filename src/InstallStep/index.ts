@@ -1,18 +1,14 @@
 export default class InstallStep {
-  private message = '';
+  private _message = '';
 
   constructor(
     private args: InstallStepArgs,
   ) {
-    this.message = `${args.emoji}  ${args.message}`;
+    this._message = `${args.emoji}  ${args.message}`;
   }
 
-  get formattedMessage(): string {
-    return this.message;
-  }
-
-  get time(): number {
-    return this.args.time;
+  get message(): string {
+    return this._message;
   }
 
   get cmd(): string | undefined {
@@ -29,8 +25,6 @@ export type InstallStepArgs = {
   id: symbol;
   emoji: string;
   message: string;
-  /** Estimated guess of how much time this step will take. In milliseconds. */
-  time: number;
   /** Used for command line scripts. */
   cmd?: string;
   /**

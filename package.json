@@ -2,6 +2,8 @@
   "name": "create-react-prime",
   "version": "1.3.2",
   "description": "Installs the latest version of React-Prime boilerplate.",
+  "author": "Sander Vispoel <contact@sandervispoel.com>",
+  "license": "MIT",
   "main": "src/index.js",
   "bin": {
     "create-react-prime": "./src/index.js"
@@ -14,6 +16,7 @@
     "dev": "ts-node-dev --respawn --transpileOnly -r tsconfig-paths/register src/index.ts",
     "build": "npm run clean && tsc",
     "test": "mocha",
+    "test:full": "npm run lint; npm run typecheck; mocha",
     "prepublishOnly": "npm run lint && npm run test",
     "pub:patch": "npm version patch && npm publish",
     "pub:minor": "npm version minor && npm publish",
@@ -21,16 +24,9 @@
   },
   "dependencies": {
     "commander": "5.1.0",
-    "progress-estimator": "0.2.2",
+    "ora": "4.0.4",
     "tsconfig-paths": "3.9.0"
   },
-  "keywords": [
-    "boilerplate",
-    "install",
-    "react"
-  ],
-  "author": "Sander Vispoel <contact@sandervispoel.com>",
-  "license": "MIT",
   "devDependencies": {
     "@types/node": "14.0.13",
     "@typescript-eslint/eslint-plugin": "3.2.0",
@@ -41,5 +37,10 @@
     "ts-node-dev": "1.0.0-pre.47",
     "typescript": "3.9.5",
     "typescript-eslint-parser": "22.0.0"
-  }
+  },
+  "keywords": [
+    "boilerplate",
+    "install",
+    "react"
+  ]
 }

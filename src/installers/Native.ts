@@ -26,7 +26,6 @@ export default class NativeInstaller extends Installer {
       id: INSTALL_STEP.RUN_NATIVE_SCRIPTS,
       emoji: '🔤',
       message: `Renaming project files to '${InstallConfig.projectName}'...`,
-      time: 10000,
       fn: this.runScripts.bind(this),
     }, 2);
   }

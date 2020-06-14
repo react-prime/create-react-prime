@@ -2,7 +2,7 @@ import fs from 'fs';
 import util from 'util';
 import path from 'path';
 import cp from 'child_process';
-import createLogger, { ProgressEstimator } from 'progress-estimator';
+import ora from 'ora';
 import App from '../App';
 import { TEXT, ORGANIZATION } from '../constants';
 import { PackageJson } from '../types';
@@ -25,28 +25,24 @@ export default abstract class Installer {
         id: INSTALL_STEP.CLONE,
         emoji: '🚚',
         message: `Cloning ${installerName} into '${projectName}'...`,
-        time: 3000,
         cmd: `git clone https://github.com/${ORGANIZATION}/${installerName}.git ${projectName}`,
       })
       .addInstallStep({
         id: INSTALL_STEP.UPDATE_PACKAGE,
         emoji: '✏️ ',
         message: 'Updating package...',
-        time: 10,
         fn: this.updatePackage.bind(this),
       })
       .addInstallStep({
         id: INSTALL_STEP.NPM_INSTALL,
         emoji: '📦',
         message: 'Installing packages...',
-        time: 40000,
         cmd: `npm --prefix ${projectName} install`,
       })
       .addInstallStep({
         id: INSTALL_STEP.CLEANUP,
         emoji: '🧹',
         message: 'Cleaning up...',
-        time: 15,
         cmd: `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
         fn: this.cleanup.bind(this),
       });
@@ -145,14 +141,18 @@ export default abstract class Installer {
 
   // This runs through all the installation steps
   private async install() {
-    // @ts-ignore type from createLogger is completely wrong
-    const logger: ProgressEstimator = createLogger();
-
     const iter = async () => {
       const step = this.getStep();
+      const spinner = ora(step.message).start();
 
-      // Run the installation step
-      await logger(this.installation(step), step.formattedMessage, step.time);
+      try {
+        // Run the installation step
+        await this.installation(step);
+
+        spinner.succeed();
+      } catch (err) {
+        spinner.fail();
+      }
 
       // Go to next step or end the installation
       if (this.stepNum++ >= this.installSteps.length - 1) {
