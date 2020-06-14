@@ -26,12 +26,12 @@ export default class App {
     this.init();
   }
 
-  static getInterfaceMgr() {
+  static getInterfaceMgr(): InterfaceMgr | undefined {
     return this.interfaceMgr;
   }
 
   // This allows Node to exit naturally without scheduling new tasks
-  static exitSafely(errorMsg: string) {
+  static exitSafely(errorMsg: string): void {
     console.error(errorMsg);
 
     process.exitCode = 1;

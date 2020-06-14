@@ -5,7 +5,7 @@ import cp from 'child_process';
 import createLogger, { ProgressEstimator } from 'progress-estimator';
 import App from '../App';
 import { TEXT, ORGANIZATION } from '../constants';
-import { NodePackage } from '../types';
+import { PackageJson } from '../types';
 import InstallConfig from '../InstallConfig';
 import InstallStep, { InstallStepArgs } from '../InstallStep';
 import INSTALL_STEP from '../InstallStep/steps';
@@ -55,7 +55,7 @@ export default abstract class Installer {
 
   // Starts the installation process. This is async.
   // Returns the installation promise.
-  async start() {
+  async start(): Promise<void> {
     await this.install();
 
     // eslint-disable-next-line no-console
@@ -66,12 +66,12 @@ export default abstract class Installer {
 
 
   // Returns the current installation step
-  protected getStep() {
+  protected getStep(): InstallStep {
     return this.installSteps[this.stepNum];
   }
 
   // Installers can add additional installation steps with this function
-  protected addInstallStep(args: InstallStepArgs, atIndex?: number) {
+  protected addInstallStep(args: InstallStepArgs, atIndex?: number): this {
     const installStep = new InstallStep(args);
 
     if (typeof atIndex === 'number') {
@@ -83,7 +83,7 @@ export default abstract class Installer {
     return this;
   }
 
-  protected getProjectNpmPackage() {
+  protected getProjectNpmPackage(): { path: string; json: PackageJson } {
     const projectPkgPath = path.resolve(`${InstallConfig.projectName}/package.json`);
     const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
 
@@ -97,7 +97,7 @@ export default abstract class Installer {
     };
   }
 
-  protected async writeToPackage(npmPkg: NodePackage) {
+  protected async writeToPackage(npmPkg: PackageJson): Promise<void> {
     const { path } = this.getProjectNpmPackage();
 
     await writeFile(path, JSON.stringify(npmPkg, null, 2));
@@ -105,7 +105,7 @@ export default abstract class Installer {
 
   // Promisify spawns
   // util.promisfy doesn't work
-  protected asyncSpawn(command: string, args: string[], options?: { path: string }) {
+  protected asyncSpawn(command: string, args: string[], options?: { path: string }): Promise<void> {
     const opts = {
       // Execute in given folder path with cwd
       cwd: options?.path || path.resolve(InstallConfig.projectName),
@@ -116,13 +116,13 @@ export default abstract class Installer {
         .on('close', resolve)
         .on('error', reject);
     });
-  };
+  }
 
   // Resets certain node package variables
   // Can provide a node package object as parameter
-  protected async updatePackage(npmPkg?: NodePackage) {
+  protected async updatePackage(npmPkg?: PackageJson): Promise<void> {
     const { projectName } = InstallConfig;
-    const pkg: NodePackage = npmPkg || this.getProjectNpmPackage().json;
+    const pkg = npmPkg || this.getProjectNpmPackage().json;
 
     // Overwrite boilerplate defaults
     pkg.name = projectName;
@@ -131,7 +131,7 @@ export default abstract class Installer {
     pkg.author = 'Label A [labela.nl]';
     pkg.keywords = [];
 
-    if (typeof pkg.repository === 'object') {
+    if (pkg.repository != null && typeof pkg.repository === 'object') {
       pkg.repository.url = '';
     }
 
@@ -185,5 +185,5 @@ export default abstract class Installer {
     } catch (err) {
       throw new Error(err);
     }
-  };
+  }
 }

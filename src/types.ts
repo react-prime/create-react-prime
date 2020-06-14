@@ -2,5 +2,13 @@ import { REPOSITORIES } from './constants';
 
 export type InstallerTypes = keyof typeof REPOSITORIES;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type NodePackage = Record<string, any>;
+export type Json = string | number | boolean | { [key: string]: Json } | Json[] | null;
+
+export type PackageJson = {
+  scripts?: Record<string, string>;
+  repository?: {
+    url: string;
+    [key: string]: string;
+  };
+  [key: string]: Json | undefined;
+}

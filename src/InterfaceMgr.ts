@@ -8,7 +8,7 @@ export default class InterfaceMgr {
     this.interface = command;
   }
 
-  getInterface() {
+  getInterface(): Commander.Command {
     return this.interface;
   }
 
@@ -16,7 +16,7 @@ export default class InterfaceMgr {
     return this.interface.type;
   }
 
-  getArgs() {
+  getArgs(): string[] {
     return this.interface.args;
   }
 }

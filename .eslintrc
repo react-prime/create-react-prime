@@ -76,6 +76,7 @@
     "@typescript-eslint/camelcase": 0,
     "@typescript-eslint/array-type": [1, { "default": "array" }],
     "@typescript-eslint/ban-ts-ignore": 0,
-    "@typescript-eslint/no-namespace": 0
+    "@typescript-eslint/no-namespace": 0,
+    "@typescript-eslint/ban-ts-comment": 0
   }
 }

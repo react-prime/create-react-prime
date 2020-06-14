@@ -33,7 +33,7 @@ export default class NativeInstaller extends Installer {
 
 
   // Add additional scripts to node package
-  protected async updatePackage() {
+  protected async updatePackage(): Promise<void> {
     const { projectName } = InstallConfig;
     const pkg = this.getProjectNpmPackage().json;
 
@@ -50,11 +50,14 @@ export default class NativeInstaller extends Installer {
   protected async cleanup(): Promise<void> {
     const pkg = this.getProjectNpmPackage().json;
 
-    delete pkg.scripts[this.scriptKeys.rename];
-    delete pkg.scripts[this.scriptKeys.replaceText];
-    delete pkg.scripts[this.scriptKeys.replaceSchemes];
+    if (pkg.scripts) {
+      delete pkg.scripts[this.scriptKeys.replaceText];
+      delete pkg.scripts[this.scriptKeys.replaceSchemes];
+      delete pkg.scripts[this.scriptKeys.rename];
 
-    await this.writeToPackage(pkg);
+      await this.writeToPackage(pkg);
+    }
+
     await super.cleanup();
   }
 
