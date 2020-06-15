@@ -6,18 +6,27 @@ import installers from './installers';
 import Installer from './installers/Installer';
 
 export default class App {
-  private static interfaceMgr?: InterfaceMgr;
+  private static _interfaceMgr?: InterfaceMgr;
   private static installer?: Installer;
 
-  constructor(appInterface: InterfaceMgr) {
-    App.interfaceMgr = appInterface;
+  constructor(appInterfaceMgr: InterfaceMgr) {
+    App._interfaceMgr = appInterfaceMgr;
 
-    const intf = App.getInterfaceMgr();
-    const installType = intf!.getInstallType();
+    const { interfaceMgr } = App;
+
+    // This should not happen, ever. But if it does, the installation can not continue
+    if (!interfaceMgr) {
+      throw new Error(
+        `Installation aborted. There was an error registering the \'Commander\' package.
+        Please notify the maintainers of this package.`,
+      );
+    }
+
+    const installType = interfaceMgr.installType;
 
     // Set config variables
     InstallConfig.installerName = REPOSITORIES[installType];
-    InstallConfig.projectName = intf!.getArgs()[ARG.PROJECT_NAME] || InstallConfig.installerName;
+    InstallConfig.projectName = interfaceMgr.args[ARG.PROJECT_NAME] || InstallConfig.installerName;
 
     // Generate installer instance
     App.installer = new installers[installType];
@@ -26,9 +35,11 @@ export default class App {
     this.init();
   }
 
-  static getInterfaceMgr(): InterfaceMgr | undefined {
-    return this.interfaceMgr;
+
+  static get interfaceMgr(): InterfaceMgr | undefined {
+    return this._interfaceMgr;
   }
+
 
   private async init() {
     // Check if directory already exists to prevent overwriting existing data

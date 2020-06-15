@@ -2,21 +2,22 @@ import Commander from 'commander';
 import { InstallerTypes } from './types';
 
 export default class InterfaceMgr {
-  private interface: Commander.Command;
+  private _interface: Commander.Command;
 
   constructor(command: Commander.Command) {
-    this.interface = command;
+    this._interface = command;
   }
 
-  getInterface(): Commander.Command {
-    return this.interface;
+
+  get interface(): Commander.Command {
+    return this._interface;
   }
 
-  getInstallType(): InstallerTypes {
+  get installType(): InstallerTypes {
     return this.interface.type;
   }
 
-  getArgs(): string[] {
+  get args(): string[] {
     return this.interface.args;
   }
 }

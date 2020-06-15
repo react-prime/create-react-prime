@@ -1,59 +1,54 @@
-import InstallStep, { InstallStepArgs } from './InstallStep';
+import InstallStep, { InstallStepOptions } from './InstallStep';
 import INSTALL_STEP from './InstallStep/steps';
 
 export default class InstallSteps extends Array<InstallStep> {
-  constructor() {
-    super();
-  }
-
-  first(): InstallStep | undefined {
+  get first(): InstallStep | undefined {
     return this[0];
   }
 
-  last(): InstallStep | undefined {
+  get last(): InstallStep | undefined {
     return this[this.length - 1];
   }
 
-  add(stepArgs: InstallStepArgs): this {
-    this.push(this.createStep(stepArgs));
+  add(stepOptions: InstallStepOptions): this {
+    this.push(this.createStep(stepOptions));
 
     return this;
   }
 
-  addAfterStep(stepId: keyof typeof INSTALL_STEP, stepArgs: InstallStepArgs): this {
-    let step = this.first();
+  addAfterStep(stepId: keyof typeof INSTALL_STEP, stepOptions: InstallStepOptions): this {
+    let step = this.first;
     let i = 0;
 
     // No step, just push into array
     if (!step) {
-      this.add(stepArgs);
+      this.add(stepOptions);
       return this;
     }
 
     // Loop through the array until we find the step we want to add a new step afterwards
     while (step.id !== INSTALL_STEP[stepId]) {
-      const next = step.next();
-
       // No next step, just push into array
-      if (!next) {
-        this.add(stepArgs);
+      if (!step.next) {
+        this.add(stepOptions);
         return this;
       }
 
-      step = next;
+      step = step.next;
       i++;
     }
 
     // Add new step in array after the found step
-    this.splice(++i, 0, this.createStep(stepArgs));
+    this.splice(++i, 0, this.createStep(stepOptions));
 
     // Update the previous, current and next steps
     for (let j = i - 1; j < i + 2; j++) {
       step = this[j];
+      // Because of reordering, we can not use step.previous
       const prev = this[j - 1];
 
       if (step) {
-        this[j] = this.createStep(step.args, prev);
+        this[j] = this.createStep(step.options, prev);
       }
     }
 
@@ -61,9 +56,9 @@ export default class InstallSteps extends Array<InstallStep> {
   }
 
 
-  private createStep(stepArgs: InstallStepArgs, previous?: InstallStep): InstallStep {
-    const prev = previous || this.last();
-    const step = new InstallStep(stepArgs, prev);
+  private createStep(stepOptions: InstallStepOptions, previous?: InstallStep): InstallStep {
+    const prev = previous || this.last;
+    const step = new InstallStep(stepOptions, prev);
 
     return step;
   }

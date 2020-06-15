@@ -3,14 +3,14 @@ export default class InstallStep {
   private _next?: InstallStep;
 
   constructor(
-    private _args: InstallStepArgs,
+    private _options: InstallStepOptions,
     private _previous?: InstallStep,
   ) {
-    if (!_args.cmd && !_args.fn) {
+    if (!_options.cmd && !_options.fn) {
       throw new Error('Every install step is required to have either "cmd" or "fn".');
     }
 
-    this._message = `${_args.emoji}  ${_args.message}`;
+    this._message = `${_options.emoji}  ${_options.message}`;
 
     if (_previous) {
       _previous._next = this;
@@ -18,12 +18,12 @@ export default class InstallStep {
   }
 
 
-  get args(): InstallStepArgs {
-    return this._args;
+  get options(): InstallStepOptions {
+    return this._options;
   }
 
   get id(): symbol {
-    return this._args.id;
+    return this._options.id;
   }
 
   get message(): string {
@@ -31,23 +31,23 @@ export default class InstallStep {
   }
 
   get cmd(): string | undefined {
-    return this._args.cmd;
+    return this._options.cmd;
   }
 
   get fn(): (() => Promise<void>) | undefined {
-    return this._args.fn;
+    return this._options.fn;
   }
 
-  previous(): InstallStep | undefined {
+  get previous(): InstallStep | undefined {
     return this._previous;
   }
 
-  next(): InstallStep | undefined {
+  get next(): InstallStep | undefined {
     return this._next;
   }
 }
 
-export type InstallStepArgs = {
+export type InstallStepOptions = {
   /** Unique identifier for this step. */
   id: symbol;
   /** Message displayed when this step is being executed. */

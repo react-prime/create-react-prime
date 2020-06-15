@@ -3,7 +3,6 @@ import util from 'util';
 import path from 'path';
 import cp from 'child_process';
 import ora from 'ora';
-import App from '../App';
 import { TEXT, ORGANIZATION } from '../constants';
 import { PackageJson } from '../types';
 import InstallConfig from '../InstallConfig';
@@ -61,6 +60,7 @@ export default abstract class Installer {
       `⚡️ ${TEXT.BOLD} Succesfully installed ${InstallConfig.installerName}! ${TEXT.DEFAULT}`,
     );
   }
+
 
   /**
    * Returns the package.json as JS object and its directory path
@@ -135,7 +135,7 @@ export default abstract class Installer {
    * Loop through all the installation steps
    */
   private async install() {
-    let step = this.installSteps.first();
+    let step = this.installSteps.first;
 
     const iter = async () => {
       // Ends the installation
@@ -155,7 +155,7 @@ export default abstract class Installer {
       }
 
       // Go to next step
-      step = step.next();
+      step = step.next;
 
       await iter();
     };
