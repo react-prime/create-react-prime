@@ -37,7 +37,7 @@ export default class InstallSteps extends Array<InstallStep> {
       // No next step, just push into array
       if (!next) {
         this.add(stepArgs);
-        continue;
+        return this;
       }
 
       step = next;
