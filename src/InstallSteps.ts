@@ -41,14 +41,14 @@ export default class InstallSteps extends Array<InstallStep> {
     // Add new step in array after the found step
     this.splice(++i, 0, this.createStep(stepOptions));
 
-    // Update the previous, current and next steps
-    for (let j = i - 1; j < i + 2; j++) {
-      step = this[j];
+    // Update the current and next steps
+    for (i; i <= this.length - 1; i++) {
+      step = this[i];
       // Because of reordering, we can not use step.previous
-      const prev = this[j - 1];
+      const prev = this[i - 1];
 
       if (step) {
-        this[j] = this.createStep(step.options, prev);
+        this[i] = this.createStep(step.options, prev);
       }
     }
 
