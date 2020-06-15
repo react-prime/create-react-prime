@@ -50,8 +50,10 @@ export default class InstallStep {
 export type InstallStepArgs = {
   /** Unique identifier for this step. */
   id: symbol;
-  emoji: string;
+  /** Message displayed when this step is being executed. */
   message: string;
+  /** Emoji displayed between spinner and message. */
+  emoji: string;
   /** Used for command line scripts. */
   cmd?: string;
   /**

@@ -52,7 +52,6 @@ export default abstract class Installer {
 
   /**
    * Starts the installation process. This is async.
-   * Returns the installation promise.
    */
   async start(): Promise<void> {
     await this.install();
@@ -139,6 +138,7 @@ export default abstract class Installer {
     let step = this.installSteps.first();
 
     const iter = async () => {
+      // Ends the installation
       if (!step) {
         return;
       }
@@ -147,19 +147,15 @@ export default abstract class Installer {
 
       try {
         // Run the installation step
-        await this.installation(step);
+        await this.executeStep(step);
 
         spinner.succeed();
       } catch (err) {
         spinner.fail();
       }
 
-      // Go to next step or end the installation
+      // Go to next step
       step = step.next();
-
-      if (!step) {
-        return;
-      }
 
       await iter();
     };
@@ -171,7 +167,7 @@ export default abstract class Installer {
   /**
    * Run the installation step
    */
-  private async installation(step: InstallStep) {
+  private async executeStep(step: InstallStep) {
     try {
       // Execute command line
       if (step.cmd) {

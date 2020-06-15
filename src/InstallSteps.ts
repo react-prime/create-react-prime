@@ -49,11 +49,11 @@ export default class InstallSteps extends Array<InstallStep> {
 
     // Update the previous, current and next steps
     for (let j = i - 1; j < i + 2; j++) {
-      // Should also be able to return undefined, but TS feels sure that it will return something
-      const adjecent: InstallStep | undefined = this[j];
+      step = this[j];
+      const prev = this[j - 1];
 
-      if (adjecent) {
-        this[j] = this.createStep(adjecent.args, this[j - 1]);
+      if (step) {
+        this[j] = this.createStep(step.args, prev);
       }
     }
 
