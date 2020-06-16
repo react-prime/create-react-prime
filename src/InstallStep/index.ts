@@ -1,10 +1,10 @@
 export default class InstallStep {
   private _message = '';
-  private _next?: InstallStep;
 
   constructor(
     private _options: InstallStepOptions,
     private _previous?: InstallStep,
+    private _next?: InstallStep,
   ) {
     if (!_options.cmd && !_options.fn) {
       throw new Error('Every install step is required to have either "cmd" or "fn".');

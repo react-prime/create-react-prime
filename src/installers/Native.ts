@@ -21,17 +21,22 @@ export default class NativeInstaller extends Installer {
       replaceSchemes: 'replaceSchemeFilenames',
     };
 
-    // Rename project files to given project name
-    this.installSteps.addAfterStep('UPDATE_PACKAGE', {
-      id: INSTALL_STEP.RUN_NATIVE_SCRIPTS,
-      emoji: '🔤',
-      message: `Renaming project files to '${InstallConfig.projectName}'...`,
-      fn: this.runScripts.bind(this),
-    });
+    // Add project files rename scripts to package.json
+    this.installSteps
+      .addAfterStep('UPDATE_PACKAGE', {
+        id: INSTALL_STEP.RUN_NATIVE_SCRIPTS,
+        emoji: '🔤',
+        message: `Renaming project files to '${InstallConfig.projectName}'...`,
+        fn: this.runScripts.bind(this),
+      })
+      // Remove the rename scripts from the package.json
+      .modifyStep('CLEANUP', {
+        fn: this.cleanup.bind(this),
+      });
   }
 
 
-  // Add additional scripts to node package
+  /** Add additional scripts to node package */
   protected async updatePackage(): Promise<void> {
     const { projectName } = InstallConfig;
     const pkg = this.getProjectNpmPackage().json;
@@ -46,6 +51,7 @@ export default class NativeInstaller extends Installer {
     super.updatePackage(pkg);
   }
 
+  /** Remove scripts from package.json */
   protected async cleanup(): Promise<void> {
     const pkg = this.getProjectNpmPackage().json;
 
@@ -56,12 +62,10 @@ export default class NativeInstaller extends Installer {
 
       await this.writeToPackage(pkg);
     }
-
-    await super.cleanup();
   }
 
 
-  // Run the additional scripts
+  /** Run the rename scripts */
   private async runScripts(): Promise<void> {
     await this.asyncSpawn('npm', ['run', this.scriptKeys.rename]);
     await this.asyncSpawn('npm', ['run', this.scriptKeys.replaceText]);

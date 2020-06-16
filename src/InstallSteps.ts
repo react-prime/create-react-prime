@@ -1,6 +1,8 @@
 import InstallStep, { InstallStepOptions } from './InstallStep';
 import INSTALL_STEP from './InstallStep/steps';
 
+type InstallStepId = keyof typeof INSTALL_STEP;
+
 export default class InstallSteps extends Array<InstallStep> {
   get first(): InstallStep | undefined {
     return this[0];
@@ -10,15 +12,18 @@ export default class InstallSteps extends Array<InstallStep> {
     return this[this.length - 1];
   }
 
+  /** Add a step at the end of the list */
   add(stepOptions: InstallStepOptions): this {
     this.push(this.createStep(stepOptions));
 
     return this;
   }
 
-  addAfterStep(stepId: keyof typeof INSTALL_STEP, stepOptions: InstallStepOptions): this {
-    let step = this.first;
-    let i = 0;
+  /**
+   * Add a step after the given step ID
+   */
+  addAfterStep(stepId: InstallStepId, stepOptions: InstallStepOptions): this {
+    const step = this.findStepById(stepId);
 
     // No step, just push into array
     if (!step) {
@@ -26,24 +31,14 @@ export default class InstallSteps extends Array<InstallStep> {
       return this;
     }
 
-    // Loop through the array until we find the step we want to add a new step afterwards
-    while (step.id !== INSTALL_STEP[stepId]) {
-      // No next step, just push into array
-      if (!step.next) {
-        this.add(stepOptions);
-        return this;
-      }
-
-      step = step.next;
-      i++;
-    }
+    let i = step.index;
 
     // Add new step in array after the found step
     this.splice(++i, 0, this.createStep(stepOptions));
 
     // Update the current and next steps
     for (i; i <= this.length - 1; i++) {
-      step = this[i];
+      const step = this[i];
       // Because of reordering, we can not use step.previous
       const prev = this[i - 1];
 
@@ -55,11 +50,57 @@ export default class InstallSteps extends Array<InstallStep> {
     return this;
   }
 
+  /** Modify options of a step */
+  modifyStep(stepId: InstallStepId, stepOptions: Partial<InstallStepOptions>): this {
+    const step = this.findStepById(stepId);
 
-  private createStep(stepOptions: InstallStepOptions, previous?: InstallStep): InstallStep {
-    const prev = previous || this.last;
-    const step = new InstallStep(stepOptions, prev);
+    if (!step) {
+      return this;
+    }
+
+    const options = {
+      ...step.instance.options,
+      ...stepOptions,
+    };
+
+    this[step.index] = this.createStep(options, step.instance.previous, step.instance.next);
+
+    return this;
+  }
+
+
+  /** Step factory */
+  private createStep(stepOptions: InstallStepOptions, ...steps: (InstallStep | undefined)[]): InstallStep {
+    const prev = steps[0] || this.last;
+    const step = new InstallStep(stepOptions, prev, steps[1]);
 
     return step;
+  }
+
+  /** Find a step from this list by ID. Returns its instance and the index. */
+  private findStepById(stepId: InstallStepId): { instance: InstallStep, index: number } | undefined {
+    let step = this.first;
+    let i = 0;
+
+    // Empty list
+    if (!step) {
+      return;
+    }
+
+    // Loop through the array until we find the step
+    while (step.id !== INSTALL_STEP[stepId]) {
+      // End of the list
+      if (!step.next) {
+        return;
+      }
+
+      step = step.next;
+      i++;
+    }
+
+    return {
+      instance: step,
+      index: i,
+    };
   }
 }

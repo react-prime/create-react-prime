@@ -44,7 +44,6 @@ export default abstract class Installer {
         emoji: '🧹',
         message: 'Cleaning up...',
         cmd: `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
-        fn: this.cleanup.bind(this),
       });
   }
 
@@ -123,12 +122,6 @@ export default abstract class Installer {
 
     await this.writeToPackage(pkg);
   }
-
-  /**
-   * Can be used/overwritten by an extended installer. Runs after all the installation steps succeed.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  protected async cleanup(): Promise<void> {}
 
 
   /**
