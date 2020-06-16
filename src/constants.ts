@@ -22,5 +22,6 @@ export const ARG = {
 export const TEXT = {
   BOLD: '\x1b[1m',
   YELLOW: '\x1b[33m',
+  RED: '\x1b[31m',
   DEFAULT: '\x1b[0m',
 };

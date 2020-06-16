@@ -1,7 +1,6 @@
 import InstallStep, { InstallStepOptions } from './InstallStep';
 import INSTALL_STEP from './InstallStep/steps';
-
-type InstallStepId = keyof typeof INSTALL_STEP;
+import { InstallStepId } from './types';
 
 export default class InstallSteps extends Array<InstallStep> {
   get first(): InstallStep | undefined {

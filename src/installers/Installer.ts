@@ -3,6 +3,7 @@ import util from 'util';
 import path from 'path';
 import cp from 'child_process';
 import ora from 'ora';
+import App from '../App';
 import { TEXT, ORGANIZATION } from '../constants';
 import { PackageJson } from '../types';
 import InstallConfig from '../InstallConfig';
@@ -24,7 +25,7 @@ export default abstract class Installer {
       .add({
         id: INSTALL_STEP.CLONE,
         emoji: '🚚',
-        message: `Cloning ${installerName} into '${projectName}'...`,
+        message: `Cloning '${installerName}' into '${projectName}'...`,
         cmd: `git clone https://github.com/${ORGANIZATION}/${installerName}.git ${projectName}`,
       })
       .add({
@@ -127,7 +128,16 @@ export default abstract class Installer {
   /**
    * Loop through all the installation steps
    */
-  private async install() {
+  private async install(): Promise<void> {
+    if (App.interfaceMgr?.isDebugging) {
+      this.installSteps.map((step) => {
+        App.log({
+          msg: step.message,
+          next: step.next?.message,
+        });
+      });
+    }
+
     let step = this.installSteps.first;
 
     const iter = async () => {
@@ -136,15 +146,23 @@ export default abstract class Installer {
         return;
       }
 
-      const spinner = ora(step.message).start();
+      // If we don't bind, "this" in step will be Installer
+      const skipStep = App.interfaceMgr?.skipSteps?.some(step.hasId.bind(step));
 
-      try {
-        // Run the installation step
-        await this.executeStep(step);
+      if (!skipStep) {
+        const spinner = ora(step.message).start();
 
-        spinner.succeed();
-      } catch (err) {
-        spinner.fail();
+        try {
+          // Run the installation step
+          await this.executeStep(step);
+
+          spinner.succeed();
+        } catch (err) {
+          spinner.fail();
+        }
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(`Skipped ${step.message}`);
       }
 
       // Go to next step
@@ -160,7 +178,7 @@ export default abstract class Installer {
   /**
    * Run the installation step
    */
-  private async executeStep(step: InstallStep) {
+  private async executeStep(step: InstallStep): Promise<void> {
     try {
       // Execute command line
       if (step.cmd) {

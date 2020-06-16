@@ -1,4 +1,5 @@
-import { REPOSITORIES } from './constants';
+import INSTALL_STEP from 'src/InstallStep/steps';
+import { REPOSITORIES } from '../constants';
 
 export type InstallerTypes = keyof typeof REPOSITORIES;
 
@@ -12,3 +13,5 @@ export type PackageJson = {
   };
   [key: string]: Json | undefined;
 }
+
+export type InstallStepId = keyof typeof INSTALL_STEP;

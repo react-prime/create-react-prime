@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { ARG, REPOSITORIES } from './constants';
+import { ARG, REPOSITORIES, TEXT } from './constants';
 import InterfaceMgr from './InterfaceMgr';
 import InstallConfig from './InstallConfig';
 import installers from './installers';
@@ -22,14 +22,12 @@ export default class App {
       );
     }
 
-    const installType = interfaceMgr.installType;
-
     // Set config variables
-    InstallConfig.installerName = REPOSITORIES[installType];
+    InstallConfig.installerName = REPOSITORIES[interfaceMgr.installType];
     InstallConfig.projectName = interfaceMgr.args[ARG.PROJECT_NAME] || InstallConfig.installerName;
 
     // Generate installer instance
-    App.installer = new installers[installType];
+    App.installer = new installers[interfaceMgr.installType];
 
     // Start installation
     this.init();
@@ -38,6 +36,12 @@ export default class App {
 
   static get interfaceMgr(): InterfaceMgr | undefined {
     return this._interfaceMgr;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  static log(...str: any[]): void {
+    // eslint-disable-next-line no-console
+    console.log(`${TEXT.RED}DEBUG:${TEXT.DEFAULT}`, ...str);
   }
 
 

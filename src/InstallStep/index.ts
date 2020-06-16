@@ -1,3 +1,6 @@
+import { InstallStepId } from 'src/types';
+import INSTALL_STEP from './steps';
+
 export default class InstallStep {
   private _message = '';
 
@@ -44,6 +47,10 @@ export default class InstallStep {
 
   get next(): InstallStep | undefined {
     return this._next;
+  }
+
+  hasId(id: InstallStepId): boolean {
+    return this.id === INSTALL_STEP[id];
   }
 }
 
