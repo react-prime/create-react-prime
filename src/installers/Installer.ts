@@ -70,7 +70,7 @@ export default abstract class Installer {
     const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
 
     if (!pkgFile) {
-      throw new Error(`No valid NPM package found in ${path.resolve(InstallConfig.projectName)}`);
+      App.exitSafely(`No valid NPM package found in ${path.resolve(InstallConfig.projectName)}`);
     }
 
     return {
@@ -129,14 +129,13 @@ export default abstract class Installer {
    * Loop through all the installation steps
    */
   private async install(): Promise<void> {
-    if (App.cliMgr?.isDebugging) {
-      this.installSteps.map((step) => {
-        App.log({
-          msg: step.message,
-          next: step.next?.message,
-        });
+    // Debug
+    this.installSteps.map((step) => {
+      App.debugLog({
+        msg: step.message,
+        next: step.next?.message,
       });
-    }
+    });
 
     let step = this.installSteps.first;
 
@@ -190,7 +189,7 @@ export default abstract class Installer {
         await step.fn();
       }
     } catch (err) {
-      throw new Error(err);
+      App.exitSafely(err);
     }
   }
 }

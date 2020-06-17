@@ -14,18 +14,18 @@ export default class App {
 
     // This should not happen, ever. But if it does, the installation can not continue
     if (!App.cliMgr) {
-      throw new Error(
-        `Installation aborted. There was an error registering the \'Commander\' package.
-        Please notify the maintainers of this package.`,
+      App.exitSafely(
+        'Installation aborted. There was an error registering the \'Commander\' package.',
+        'Please notify the maintainers of this package.',
       );
     }
 
     // Set config variables
-    InstallConfig.installerName = REPOSITORIES[App.cliMgr.installType];
-    InstallConfig.projectName = App.cliMgr.projectName || InstallConfig.installerName;
+    InstallConfig.installerName = REPOSITORIES[App.cliMgr!.installType];
+    InstallConfig.projectName = App.cliMgr!.projectName || InstallConfig.installerName;
 
     // Generate installer instance
-    App.installer = new installers[App.cliMgr.installType];
+    App.installer = new installers[App.cliMgr!.installType];
 
     // Start installation
     this.init();
@@ -37,19 +37,31 @@ export default class App {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  static log(...str: any[]): void {
-    // eslint-disable-next-line no-console
-    console.log(`${TEXT.RED}DEBUG:${TEXT.DEFAULT}`, ...str);
+  static debugLog(...str: any[]): void {
+    if (App.cliMgr?.isDebugging) {
+      App.log('DEBUG:', ...str);
+    }
   }
 
+  static exitSafely(...reason: string[]): void {
+    App.log('ERR!', 'Installation aborted.', ...reason);
+    process.exit(1);
+  }
+
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private static log(prefix: string, ...str: any[]): void {
+    // eslint-disable-next-line no-console
+    console.log(`${TEXT.RED}${prefix}${TEXT.DEFAULT}`, ...str);
+  }
 
   private async init() {
     // Check if directory already exists to prevent overwriting existing data
     if (fs.existsSync(InstallConfig.projectName)) {
-      throw new Error(`directory '${InstallConfig.projectName}' already exists.`);
+      App.exitSafely(`directory '${InstallConfig.projectName}' already exists.`);
     }
 
-    // run installation
+    // Run installation
     await App.installer?.start();
 
     // Stop Node process succesfully

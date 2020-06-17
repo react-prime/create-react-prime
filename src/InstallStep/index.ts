@@ -1,4 +1,5 @@
 import { InstallStepId } from 'src/types';
+import App from '../App';
 import INSTALL_STEP from './steps';
 
 export default class InstallStep {
@@ -10,7 +11,7 @@ export default class InstallStep {
     private _next?: InstallStep,
   ) {
     if (!_options.cmd && !_options.fn) {
-      throw new Error('Every install step is required to have either "cmd" or "fn".');
+      App.exitSafely('Every install step is required to have either "cmd" or "fn".');
     }
 
     this._message = `${_options.emoji}  ${_options.message}`;

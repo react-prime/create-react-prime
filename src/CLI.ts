@@ -2,6 +2,7 @@ import { program } from 'commander';
 import pkg from '../package.json';
 import { TYPE } from './constants';
 import INSTALL_STEP from './InstallStep/steps';
+import App from './App';
 
 // Indicate required argument input
 program
@@ -33,7 +34,7 @@ program
         .split(',')
         .map((id) => {
           if (!stepsStr.includes(id)) {
-            throw new Error(`'${id}' is not a valid step ID. See --help for available options.`);
+            App.exitSafely(`'${id}' is not a valid step ID. See --help for available options.`);
           }
 
           return id;
