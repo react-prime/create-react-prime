@@ -13,7 +13,7 @@ export const REPOSITORIES = {
 
 export const ORGANIZATION = 'react-prime';
 
-// Interface argument name indices
+// CLI argument name indices
 export const ARG = {
   PROJECT_NAME: 0,
 } as const;

@@ -129,7 +129,7 @@ export default abstract class Installer {
    * Loop through all the installation steps
    */
   private async install(): Promise<void> {
-    if (App.interfaceMgr?.isDebugging) {
+    if (App.cliMgr?.isDebugging) {
       this.installSteps.map((step) => {
         App.log({
           msg: step.message,
@@ -147,7 +147,7 @@ export default abstract class Installer {
       }
 
       // If we don't bind, "this" in step will be Installer
-      const skipStep = App.interfaceMgr?.skipSteps?.some(step.hasId.bind(step));
+      const skipStep = App.cliMgr?.skipSteps?.some(step.hasId.bind(step));
 
       if (!skipStep) {
         const spinner = ora(step.message).start();
