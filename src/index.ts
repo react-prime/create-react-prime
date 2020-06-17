@@ -5,8 +5,16 @@ import InterfaceMgr from './InterfaceMgr';
 import { TYPE } from './constants';
 import INSTALL_STEP from './InstallStep/steps';
 
-// Commander has to be initialized at the very start of the application
-// It is then passed along to InterfaceMgr
+/**
+ * Commander has to be initialized at the very start of the application
+ * It is then passed along to InterfaceMgr
+ */
+
+// Indicate required argument input
+program
+  .arguments('<projectName>')
+  // Required for an error to show
+  .action((name) => name);
 
 // Set options
 program
@@ -44,7 +52,6 @@ program
 program
   .version(pkg.version)
   .parse(process.argv);
-
 
 // Initialize our interface handler
 const interfaceMgr = new InterfaceMgr(program);
