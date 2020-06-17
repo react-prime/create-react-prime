@@ -67,11 +67,10 @@ export default class InstallSteps extends Array<InstallStep> {
     return this;
   }
 
-
   /** Step factory */
-  private createStep(stepOptions: InstallStepOptions, ...steps: (InstallStep | undefined)[]): InstallStep {
-    const prev = steps[0] || this.last;
-    const step = new InstallStep(stepOptions, prev, steps[1]);
+  private createStep(stepOptions: InstallStepOptions, ...[prev, next]: [InstallStep?, InstallStep?]): InstallStep {
+    prev = prev || this.last;
+    const step = new InstallStep(stepOptions, prev, next);
 
     return step;
   }
