@@ -12,9 +12,9 @@
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
     "clean": "rm -rf dist/",
-    "start": "node -r ./tsconfig-paths-bootstrap.js dist/index.js",
-    "dev": "ts-node-dev --respawn --transpileOnly -r tsconfig-paths/register src/index.ts",
+    "start": "node dist/index.js",
     "build": "npm run clean && tsc",
+    "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/src/index.js testing-name",
     "test": "mocha",
     "test:full": "npm run lint; npm run typecheck; mocha",
     "prepublishOnly": "npm run lint && npm run test",
@@ -24,8 +24,7 @@
   },
   "dependencies": {
     "commander": "5.1.0",
-    "ora": "4.0.4",
-    "tsconfig-paths": "3.9.0"
+    "ora": "4.0.4"
   },
   "devDependencies": {
     "@types/node": "14.0.13",
@@ -34,7 +33,6 @@
     "eslint": "7.2.0",
     "eslint-plugin-import": "2.21.2",
     "mocha": "8.0.1",
-    "ts-node-dev": "1.0.0-pre.47",
     "typescript": "3.9.5",
     "typescript-eslint-parser": "22.0.0"
   },

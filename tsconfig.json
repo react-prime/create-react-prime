@@ -9,9 +9,6 @@
         "strict": true,
         "resolveJsonModule": true,
         "baseUrl": ".",
-        "paths": {
-          "src/*": ["src/*"]
-        },
         "lib": ["esnext"]
     },
     "include": ["./src"],
