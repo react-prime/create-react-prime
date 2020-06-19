@@ -20,6 +20,14 @@ export default class InstallStep implements InstallStepType {
     return this._message;
   }
 
+  get cmd(): string | undefined {
+    return this._options.cmd;
+  }
+
+  get fn(): (() => Promise<void>) | undefined {
+    return this._options.fn;
+  }
+
   get previous(): InstallStep | undefined {
     return this._previous;
   }

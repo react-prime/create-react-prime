@@ -3,7 +3,6 @@ import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
 
 export type AppType = {
-  exitSafely(...reason: string[]): void;
   start(): Promise<void>;
 }
 
@@ -27,6 +26,8 @@ export type InstallerType = {
 
 export type InstallStepType = {
   message: string;
+  cmd: string | undefined;
+  fn: (() => Promise<void>) | undefined;
   previous: InstallStep | undefined;
   next: InstallStep | undefined;
 }

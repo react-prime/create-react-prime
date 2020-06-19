@@ -7,6 +7,7 @@ export default class Logger implements LoggerType {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(...reason: any[]): void {
     this.log('ERR!', 'Installation aborted.', ...reason);
+    process.exit(1);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

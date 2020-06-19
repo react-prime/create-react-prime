@@ -1,31 +1,32 @@
 import fs from 'fs';
 import util from 'util';
 import path from 'path';
+import cp from 'child_process';
 import { injectable, inject } from 'inversify';
-import getDecorators from 'inversify-inject-decorators';
+import ora from 'ora';
+import { PackageJson } from '../types';
 import SERVICES from '../ioc/services';
-import container, { InstallerType, CLIMgrType, LoggerType, AppType } from '../ioc';
+import { InstallerType, CLIMgrType, LoggerType } from '../ioc';
 import InstallStepList from '../InstallStepList';
 import { INSTALL_STEP, ORGANIZATION } from '../constants';
-import { PackageJson } from '../types';
+import InstallStep from '../InstallStep';
 
-// We need to inject lazily to prevent circular dependency (App > Installer > App)
-const { lazyInject } = getDecorators(container);
 
 // Wrap utils in promise
 const writeFile = util.promisify(fs.writeFile);
+const exec = util.promisify(cp.exec);
+
 
 @injectable()
 export default class Installer implements InstallerType {
   @inject(SERVICES.CLIMgr) protected readonly cliMgr!: CLIMgrType;
   @inject(SERVICES.Logger) protected readonly logger!: LoggerType;
-  @lazyInject(SERVICES.App) private readonly app!: AppType;
   protected installStepList = new InstallStepList();
+  private spinner = ora();
 
   init(): void {
     this.initSteps();
   }
-
 
   /**
    * Start installation process by iterating through all the installation steps
@@ -38,6 +39,43 @@ export default class Installer implements InstallerType {
         next: step.next?.message,
       });
     });
+
+    let step = this.installStepList.first;
+
+    const iter = async () => {
+      // Ends the installation
+      if (!step) {
+        return;
+      }
+
+      // If we don't bind, "this" in step will be Installer
+      // const skipStep = this.cliMgr.skipSteps?.some(step.hasId.bind(step));
+
+      // if (!skipStep) {
+      this.spinner = ora(step.message).start();
+
+      try {
+        // Run the installation step
+        await this.executeStep(step);
+
+        this.spinner.succeed();
+      } catch (err) {
+        this.spinner.fail();
+        this.error(err);
+      }
+      // } else {
+      //   // eslint-disable-next-line no-console
+      //   console.log(`Skipped ${step.message}`);
+      // }
+
+      // Go to next step
+      step = step.next;
+
+      await iter();
+    };
+
+    // Start iterating through the installation steps
+    await iter();
   }
 
 
@@ -74,7 +112,6 @@ export default class Installer implements InstallerType {
       });
   }
 
-
   /**
    * Returns the package.json as JS object and its directory path
    */
@@ -83,7 +120,7 @@ export default class Installer implements InstallerType {
     const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
 
     if (!pkgFile) {
-      this.app.exitSafely(`No valid NPM package found in ${path.resolve(this.cliMgr.projectName)}`);
+      this.error(`No valid NPM package found in ${path.resolve(this.cliMgr.projectName)}`);
     }
 
     return {
@@ -92,6 +129,10 @@ export default class Installer implements InstallerType {
     };
   }
 
+  /**
+   * Async overwrite project's package.json
+   * @param npmPkg package.json as JS object
+   */
   protected async writeToPackage(npmPkg: PackageJson): Promise<void> {
     const { path } = this.getProjectNpmPackage();
 
@@ -100,7 +141,7 @@ export default class Installer implements InstallerType {
 
   /**
    * Updates node package variables
-   * Can provide a node package object as parameter
+   * @param npmPkg package.json as JS object
    */
   protected async updatePackage(npmPkg?: PackageJson): Promise<void> {
     const { projectName } = this.cliMgr;
@@ -118,5 +159,31 @@ export default class Installer implements InstallerType {
     }
 
     await this.writeToPackage(pkg);
+  }
+
+
+  /**
+   * Run the installation step
+   */
+  private async executeStep(step: InstallStep): Promise<void> {
+    try {
+      // Execute command line
+      if (step.cmd) {
+        await exec(step.cmd);
+      }
+
+      // Execute function
+      if (step.fn) {
+        await step.fn();
+      }
+    } catch (err) {
+      this.error(err);
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private error(...reason: any[]): void {
+    this.spinner.fail();
+    this.logger.error(...reason);
   }
 }

@@ -1,8 +1,12 @@
-import { InstallStepType, InstallStepListType } from './ioc';
+import { InstallStepListType } from './ioc';
 import { InstallStepOptions } from './types';
 import InstallStep from './InstallStep';
 
 export default class InstallStepList extends Array<InstallStep> implements InstallStepListType {
+  get first(): InstallStep | undefined {
+    return this[0];
+  }
+
   get last(): InstallStep | undefined {
     return this[this.length - 1];
   }
