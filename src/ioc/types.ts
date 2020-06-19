@@ -3,7 +3,7 @@ import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
 
 export type AppType = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  exitSafely(...reason: string[]): void;
   start(): Promise<void>;
 }
 
@@ -14,16 +14,22 @@ export type CLIMgrType = {
 };
 
 export type LoggerType = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   error(...str: any[]): void;
+  debug(...reason: any[]): void;
+  /* eslint-enable */
 }
 
 export type InstallerType = {
-  start(): Promise<void>;
+  init(): void;
+  install(): Promise<void>;
 }
 
-// eslint-disable-next-line
-export type InstallStepType = {}
+export type InstallStepType = {
+  message: string;
+  previous: InstallStep | undefined;
+  next: InstallStep | undefined;
+}
 
 export type InstallStepListType = {
   last: InstallStep | undefined;

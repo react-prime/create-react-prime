@@ -23,6 +23,10 @@ export default class CLIMgr implements CLIMgrType {
     return this.args[ARG.PROJECT_NAME];
   }
 
+  set projectName(name: string) {
+    this.args[ARG.PROJECT_NAME] = name;
+  }
+
   private get args(): string[] {
     return this.cli.args;
   }

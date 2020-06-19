@@ -15,4 +15,16 @@ export default class InstallStep implements InstallStepType {
       _previous._next = this;
     }
   }
+
+  get message(): string {
+    return this._message;
+  }
+
+  get previous(): InstallStep | undefined {
+    return this._previous;
+  }
+
+  get next(): InstallStep | undefined {
+    return this._next;
+  }
 }
