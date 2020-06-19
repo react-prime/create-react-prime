@@ -1,43 +1,29 @@
-import Commander from 'commander';
-import { InstallerTypes, InstallStepId } from './types';
-import { ARG } from './constants';
+import { injectable, inject } from 'inversify';
+import commander from 'commander';
+import { CLIMgrType } from './ioc';
+import SERVICES from './ioc/services';
+import { ARG, REPOSITORIES } from './constants';
+import { InstallerTypes } from './types';
 
-/**
- * The Command Line Manager is used to keep the CLI program accessible
- * and abstract requesting data from the CLI program
- */
-export default class CLIMgr {
-  private _program: Commander.Command;
+@injectable()
+export default class CLIMgr implements CLIMgrType {
+  @inject(SERVICES.CLI) readonly cli!: commander.Command;
 
-  constructor(command: Commander.Command) {
-    this._program = command;
-  }
-
-
-  get program(): Commander.Command {
-    return this._program;
-  }
-
-  get projectName(): string {
-    return this.args[ARG.PROJECT_NAME];
+  get installRepository(): string {
+    return REPOSITORIES[this.installType];
   }
 
   /** These values come from option flags, i.e. --type */
   get installType(): InstallerTypes {
-    return this.program.type;
+    return this.cli.type;
   }
-
-  get isDebugging(): boolean | undefined {
-    return this.program.debug;
-  }
-
-  get skipSteps(): InstallStepId[] | undefined {
-    return this.program.skipSteps;
-  }
-
 
   /** Args are passed without an option flag, i.e. the project name */
+  get projectName(): string {
+    return this.args[ARG.PROJECT_NAME];
+  }
+
   private get args(): string[] {
-    return this.program.args;
+    return this.cli.args;
   }
 }

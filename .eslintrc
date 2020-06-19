@@ -13,6 +13,7 @@
         "jsx": true
     }
   },
+  "ignorePatterns": ["**/dist/**/*.js"],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": 2,

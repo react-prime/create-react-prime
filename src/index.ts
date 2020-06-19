@@ -1,13 +1,8 @@
-import App from './App';
-import CLIMgr from './CLIMgr';
-/**
- * Commander has to be initialized at the very start of the application
- * It is then passed along to CLIMgr
- */
-import CLI from './CLI';
+import 'reflect-metadata';
+import container, { AppType } from './ioc';
+import SERVICES from './ioc/services';
 
-// Initialize our CLI manager
-const cliMgr = new CLIMgr(CLI);
-
-// Start app
-new App(cliMgr);
+// Get app from IOC container and start installation
+container
+  .get<AppType>(SERVICES.App)
+  .start();

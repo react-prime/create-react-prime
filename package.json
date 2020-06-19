@@ -24,7 +24,10 @@
   },
   "dependencies": {
     "commander": "5.1.0",
-    "ora": "4.0.4"
+    "inversify": "5.0.1",
+    "inversify-inject-decorators": "3.1.0",
+    "ora": "4.0.4",
+    "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
     "@types/node": "14.0.13",
