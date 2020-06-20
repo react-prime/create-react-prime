@@ -1,7 +1,7 @@
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import SERVICES from 'ioc/services';
-import { TEXT } from './constants';
+import { TEXT, LOG_PREFIX } from './constants';
 
 @injectable()
 export default class Logger implements i.LoggerType {
@@ -30,7 +30,7 @@ export default class Logger implements i.LoggerType {
     const color = options.color ? TEXT[options.color] : TEXT.RED;
 
     // eslint-disable-next-line no-console
-    console.log(`create-react-prime ${color}${options.prefix}${TEXT.DEFAULT}`, ...str);
+    console.log(`${LOG_PREFIX} ${color}${options.prefix}${TEXT.DEFAULT}`, ...str);
   }
 }
 

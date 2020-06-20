@@ -3,7 +3,7 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import container from 'ioc';
 import SERVICES from 'ioc/services';
-import { TEXT } from './constants';
+import { TEXT, LOG_PREFIX } from './constants';
 
 @injectable()
 export default class App implements i.AppType {
@@ -30,7 +30,7 @@ export default class App implements i.AppType {
 
     // eslint-disable-next-line no-console
     console.log(
-      `⚡️ ${TEXT.BOLD}Succesfully installed ${this.cliMgr.installRepository}!${TEXT.DEFAULT}`,
+      `${LOG_PREFIX} ⚡️ ${TEXT.BOLD}Succesfully installed ${this.cliMgr.installRepository}!${TEXT.DEFAULT}`,
     );
 
     process.exit();

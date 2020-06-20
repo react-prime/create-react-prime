@@ -17,11 +17,17 @@ export type PackageJson = {
   [key: string]: Json | undefined;
 }
 
+export type InstallMessage = {
+  pending: string;
+  success: string;
+  fail?: string;
+};
+
 export type InstallStepOptions = {
   /** Unique identifier for this step. */
   id: symbol;
-  /** Message displayed when this step is being executed. */
-  message: string;
+  /** Message displayed when this step is being executed and is done executing. */
+  message: InstallMessage;
   /** Emoji displayed between spinner and message. */
   emoji: string;
   /** Used for command line scripts. */

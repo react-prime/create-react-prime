@@ -1,14 +1,18 @@
 import * as i from 'types';
 
 export default class InstallStep implements i.InstallStepType {
-  private _message = '';
+  private _message = {} as i.InstallMessage;
 
   constructor(
     private _options: i.InstallStepOptions,
     private _previous?: InstallStep,
     private _next?: InstallStep,
   ) {
-    this._message = `${_options.emoji}  ${_options.message}`;
+    // Combine emoji with every status message
+    let status: keyof i.InstallMessage;
+    for (status in _options.message) {
+      this._message[status] = `${_options.emoji}  ${_options.message[status]}`;
+    }
 
     if (_previous) {
       _previous._next = this;
@@ -24,7 +28,7 @@ export default class InstallStep implements i.InstallStepType {
     return this._options.id;
   }
 
-  get message(): string {
+  get message(): i.InstallMessage {
     return this._message;
   }
 

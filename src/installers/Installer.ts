@@ -6,7 +6,7 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import ora from 'ora';
 import SERVICES from 'ioc/services';
-import { INSTALL_STEP, ORGANIZATION } from '../constants';
+import { INSTALL_STEP, ORGANIZATION, LOG_PREFIX } from '../constants';
 import InstallStep from '../InstallStep';
 
 
@@ -51,15 +51,17 @@ export default class Installer implements i.InstallerType {
       // const skipStep = this.cliMgr.skipSteps?.some(step.hasId.bind(step));
 
       // if (!skipStep) {
-      this.spinner = ora(step.message).start();
+      this.spinner = ora(step.message.pending);
+      this.spinner.prefixText = LOG_PREFIX;
+      this.spinner.start();
 
       try {
         // Run the installation step
         await this.executeStep(step);
 
-        this.spinner.succeed();
+        this.spinner.succeed(step.message.success);
       } catch (err) {
-        this.spinner.fail();
+        this.spinner.fail(step.message.fail);
         this.error(err);
       }
       // } else {
@@ -88,25 +90,37 @@ export default class Installer implements i.InstallerType {
       .add({
         id: INSTALL_STEP.CLONE,
         emoji: '🚚',
-        message: `Cloning '${installRepository}' into '${projectName}'...`,
+        message: {
+          pending: `Cloning '${installRepository}' into '${projectName}'...`,
+          success: `Cloned '${installRepository}' into '${projectName}'!`,
+        },
         cmd: `git clone https://github.com/${ORGANIZATION}/${installRepository}.git ${projectName}`,
       })
       .add({
         id: INSTALL_STEP.UPDATE_PACKAGE,
         emoji: '✏️ ',
-        message: 'Updating package...',
+        message: {
+          pending: 'Updating package.json...',
+          success: 'Updated package.json!',
+        },
         fn: this.updatePackage.bind(this),
       })
       .add({
         id: INSTALL_STEP.NPM_INSTALL,
         emoji: '📦',
-        message: 'Installing packages...',
+        message: {
+          pending: 'Installing packages...',
+          success: 'Installed packages!',
+        },
         cmd: `npm --prefix ${projectName} install`,
       })
       .add({
         id: INSTALL_STEP.CLEANUP,
         emoji: '🧹',
-        message: 'Cleaning up...',
+        message: {
+          pending: 'Cleaning up...',
+          success: 'Cleaned up!',
+        },
         cmd: `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
       });
   }

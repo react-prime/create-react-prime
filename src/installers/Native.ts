@@ -25,7 +25,10 @@ export default class NativeInstaller extends Installer {
       .addAfterStep('UPDATE_PACKAGE', {
         id: INSTALL_STEP.RUN_NATIVE_SCRIPTS,
         emoji: '🔤',
-        message: `Renaming project files to '${this.cliMgr.projectName}'...`,
+        message: {
+          pending: `Renaming project files to '${this.cliMgr.projectName}'...`,
+          success: `Renamed project files to '${this.cliMgr.projectName}'!`,
+        },
         fn: this.runScripts.bind(this),
       })
     // Remove the rename scripts from the package.json

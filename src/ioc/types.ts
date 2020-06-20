@@ -28,7 +28,7 @@ export type InstallerType = {
 
 export type InstallStepType = {
   id: symbol;
-  message: string;
+  message: i.InstallMessage;
   cmd: string | undefined;
   fn: (() => Promise<void>) | undefined;
   previous: InstallStep | undefined;

@@ -1,3 +1,5 @@
+export const LOG_PREFIX = 'crp';
+
 /** Boilerplate types */
 export const TYPE = {
   CLIENT: 'client',
