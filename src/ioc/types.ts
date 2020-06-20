@@ -25,6 +25,7 @@ export type InstallerType = {
 }
 
 export type InstallStepType = {
+  id: symbol;
   message: string;
   cmd: string | undefined;
   fn: (() => Promise<void>) | undefined;

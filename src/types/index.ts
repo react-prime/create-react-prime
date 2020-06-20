@@ -1,6 +1,8 @@
-import { REPOSITORIES } from '../constants';
+import { REPOSITORIES, INSTALL_STEP } from '../constants';
 
 export type InstallerTypes = keyof typeof REPOSITORIES;
+
+export type InstallStepId = keyof typeof INSTALL_STEP;
 
 export type Json = string | number | boolean | { [key: string]: Json } | Json[] | null;
 

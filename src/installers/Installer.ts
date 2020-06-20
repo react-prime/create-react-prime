@@ -24,6 +24,7 @@ export default class Installer implements InstallerType {
   protected installStepList = new InstallStepList();
   private spinner = ora();
 
+
   init(): void {
     this.initSteps();
   }
@@ -159,6 +160,23 @@ export default class Installer implements InstallerType {
     }
 
     await this.writeToPackage(pkg);
+  }
+
+  /**
+   * Promisify spawns
+   * util.promisfy doesn't work
+   */
+  protected asyncSpawn(command: string, args: string[], options?: { path: string }): Promise<void> {
+    const opts = {
+      // Execute in given folder path with cwd
+      cwd: options?.path || path.resolve(this.cliMgr.projectName),
+    };
+
+    return new Promise((resolve, reject) => {
+      cp.spawn(command, args, opts)
+        .on('close', resolve)
+        .on('error', reject);
+    });
   }
 
 

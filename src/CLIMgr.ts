@@ -10,6 +10,7 @@ export default class CLIMgr implements CLIMgrType {
   @inject(SERVICES.CLI) readonly cli!: commander.Command;
   _projectName?: string;
 
+
   get installRepository(): string {
     return REPOSITORIES[this.installType];
   }

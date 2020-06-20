@@ -16,6 +16,15 @@ export default class InstallStep implements InstallStepType {
     }
   }
 
+
+  get options(): InstallStepOptions {
+    return this._options;
+  }
+
+  get id(): symbol {
+    return this._options.id;
+  }
+
   get message(): string {
     return this._message;
   }

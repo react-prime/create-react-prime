@@ -10,20 +10,22 @@ export default class App implements AppType {
   @inject(SERVICES.Logger) private readonly logger!: LoggerType;
   private installer!: InstallerType;
 
+
   async start(): Promise<void> {
+    // Get installer for the type that was specified by the user
+    const installerType = SERVICES.Installer[this.cliMgr.installType];
+    this.installer = container.get<InstallerType>(installerType);
+
+    // Prepare installer environment
+    this.installer.init();
+
     // Check if directory already exists to prevent overwriting existing data
     if (fs.existsSync(this.cliMgr.projectName)) {
       this.logger.error(`directory '${this.cliMgr.projectName}' already exists.`);
     }
 
-    // Get installer for the type that was specified by the user
-    const installerType = SERVICES.Installer[this.cliMgr.installType];
-    this.installer = container.get<InstallerType>(installerType);
-
-    this.installer.init();
+    // Start the installation process
     await this.installer.install();
-
-    // console.log(this);
 
     // eslint-disable-next-line no-console
     console.log(
