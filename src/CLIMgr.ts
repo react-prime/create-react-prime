@@ -33,6 +33,10 @@ export default class CLIMgr implements CLIMgrType {
     this._projectName = name;
   }
 
+  get isDebugging(): boolean | undefined {
+    return this.cli.debug;
+  }
+
   private get args(): string[] {
     return this.cli.args;
   }

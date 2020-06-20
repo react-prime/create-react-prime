@@ -10,6 +10,7 @@ export type CLIMgrType = {
   projectName: string;
   installType: InstallerTypes;
   installRepository: string;
+  isDebugging: boolean | undefined;
 };
 
 export type LoggerType = {
