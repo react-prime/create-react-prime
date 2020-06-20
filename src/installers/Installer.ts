@@ -6,8 +6,7 @@ import { injectable, inject } from 'inversify';
 import ora from 'ora';
 import { PackageJson } from '../types';
 import SERVICES from '../ioc/services';
-import { InstallerType, CLIMgrType, LoggerType } from '../ioc';
-import InstallStepList from '../InstallStepList';
+import { InstallerType, CLIMgrType, LoggerType, InstallStepListType } from '../ioc';
 import { INSTALL_STEP, ORGANIZATION } from '../constants';
 import InstallStep from '../InstallStep';
 
@@ -21,7 +20,7 @@ const exec = util.promisify(cp.exec);
 export default class Installer implements InstallerType {
   @inject(SERVICES.CLIMgr) protected readonly cliMgr!: CLIMgrType;
   @inject(SERVICES.Logger) protected readonly logger!: LoggerType;
-  protected installStepList = new InstallStepList();
+  @inject(SERVICES.InstallStepList) protected installStepList!: InstallStepListType;
   private spinner = ora();
 
 

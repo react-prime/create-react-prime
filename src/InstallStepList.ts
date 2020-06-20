@@ -1,9 +1,20 @@
-import { InstallStepListType } from './ioc';
+import { inject, injectable, decorate } from 'inversify';
+import { InstallStepListType, LoggerType } from './ioc';
 import { InstallStepOptions, InstallStepId } from './types';
 import InstallStep from './InstallStep';
 import { INSTALL_STEP } from './constants';
+import SERVICES from './ioc/services';
 
+
+// Make Array constructor injectable
+// https://github.com/inversify/InversifyJS/issues/297#issuecomment-234574834
+decorate(injectable(), Array);
+
+
+@injectable()
 export default class InstallStepList extends Array<InstallStep> implements InstallStepListType {
+  @inject(SERVICES.Logger) private readonly logger!: LoggerType;
+
   get first(): InstallStep | undefined {
     return this[0];
   }
@@ -55,6 +66,7 @@ export default class InstallStepList extends Array<InstallStep> implements Insta
     const step = this.findStepById(stepId);
 
     if (!step) {
+      this.logger.warning(`${this.modifyStep.name}: No step found for '${stepId}'.`);
       return this;
     }
 

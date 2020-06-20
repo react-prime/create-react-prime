@@ -8,6 +8,7 @@ const SERVICES = {
     ssr: Symbol('ssr'),
     native: Symbol('native'),
   },
+  InstallStepList: Symbol('installStepList'),
 };
 
 export default SERVICES;
