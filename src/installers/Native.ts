@@ -1,8 +1,6 @@
-import { injectable } from 'inversify';
 import { INSTALL_STEP } from '../constants';
 import Installer from './Installer';
 
-@injectable()
 export default class NativeInstaller extends Installer {
   private readonly SCRIPT_KEY = {
     rename: 'renameNative',
