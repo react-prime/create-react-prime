@@ -8,21 +8,33 @@ export default class Logger implements LoggerType {
   @inject(SERVICES.CLIMgr) private readonly cliMgr!: CLIMgrType;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  warning(...reason: any[]): void {
+    this.log({ prefix: 'WARNING', color: 'YELLOW' }, ...reason);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error(...reason: any[]): void {
-    this.log('ERR!', 'Installation aborted.', ...reason);
+    this.log({ prefix: 'ERR!' }, 'Installation aborted.', ...reason);
     process.exit(1);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   debug(...text: any[]): void {
     if (this.cliMgr.isDebugging) {
-      this.log('DEBUG', ...text);
+      this.log({ prefix: 'DEBUG' }, ...text);
     }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private log(prefix: string, ...str: any[]): void {
+  private log(options: LogOptions, ...str: any[]): void {
+    const color = options.color ? TEXT[options.color] : TEXT.RED;
+
     // eslint-disable-next-line no-console
-    console.log(`${TEXT.RED}${prefix}${TEXT.DEFAULT}`, ...str);
+    console.log(`create-react-prime ${color}${options.prefix}${TEXT.DEFAULT}`, ...str);
   }
+}
+
+type LogOptions = {
+  prefix: string;
+  color?: keyof typeof TEXT;
 }
