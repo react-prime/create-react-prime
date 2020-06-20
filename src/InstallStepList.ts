@@ -1,7 +1,6 @@
+import * as i from 'types';
 import { inject, injectable, decorate } from 'inversify';
-import { InstallStepOptions, InstallStepId } from './types';
-import { InstallStepListType, LoggerType } from './ioc/container';
-import SERVICES from './ioc/services';
+import SERVICES from 'ioc/services';
 import InstallStep from './InstallStep';
 import { INSTALL_STEP } from './constants';
 
@@ -12,8 +11,8 @@ decorate(injectable(), Array);
 
 
 @injectable()
-export default class InstallStepList extends Array<InstallStep> implements InstallStepListType {
-  @inject(SERVICES.Logger) private readonly logger!: LoggerType;
+export default class InstallStepList extends Array<InstallStep> implements i.InstallStepListType {
+  @inject(SERVICES.Logger) private readonly logger!: i.LoggerType;
 
   get first(): InstallStep | undefined {
     return this[0];
@@ -24,7 +23,7 @@ export default class InstallStepList extends Array<InstallStep> implements Insta
   }
 
   /** Add a step at the end of the list */
-  add(stepOptions: InstallStepOptions): this {
+  add(stepOptions: i.InstallStepOptions): this {
     this.push(this.createStep(stepOptions));
 
     return this;
@@ -33,7 +32,7 @@ export default class InstallStepList extends Array<InstallStep> implements Insta
   /**
    * Add a step after the given step ID
    */
-  addAfterStep(stepId: InstallStepId, stepOptions: InstallStepOptions): this {
+  addAfterStep(stepId: i.InstallStepId, stepOptions: i.InstallStepOptions): this {
     const step = this.findStepById(stepId);
 
     // No step, just push into array
@@ -62,7 +61,7 @@ export default class InstallStepList extends Array<InstallStep> implements Insta
   }
 
   /** Modify options of a step */
-  modifyStep(stepId: InstallStepId, stepOptions: Partial<InstallStepOptions>): this {
+  modifyStep(stepId: i.InstallStepId, stepOptions: Partial<i.InstallStepOptions>): this {
     const step = this.findStepById(stepId);
 
     if (!step) {
@@ -83,7 +82,7 @@ export default class InstallStepList extends Array<InstallStep> implements Insta
 
   /** Step factory */
   private createStep(
-    stepOptions: InstallStepOptions, ...[prev, next]: [InstallStep?, InstallStep?]
+    stepOptions: i.InstallStepOptions, ...[prev, next]: [InstallStep?, InstallStep?]
   ): InstallStep {
     prev = prev || this.last;
     const step = new InstallStep(stepOptions, prev, next);
@@ -92,7 +91,7 @@ export default class InstallStepList extends Array<InstallStep> implements Insta
   }
 
   /** Find a step from this list by ID. Returns its instance and the index. */
-  private findStepById(stepId: InstallStepId): { instance: InstallStep, index: number } | undefined {
+  private findStepById(stepId: i.InstallStepId): { instance: InstallStep, index: number } | undefined {
     let step = this.first;
     let i = 0;
 

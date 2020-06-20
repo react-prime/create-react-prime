@@ -1,12 +1,11 @@
+import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import commander from 'commander';
-import { CLIMgrType } from './ioc/container';
-import SERVICES from './ioc/services';
+import SERVICES from 'ioc/services';
 import { ARG, REPOSITORIES } from './constants';
-import { InstallerTypes } from './types';
 
 @injectable()
-export default class CLIMgr implements CLIMgrType {
+export default class CLIMgr implements i.CLIMgrType {
   @inject(SERVICES.CLI) readonly cli!: commander.Command;
   _projectName?: string;
 
@@ -16,7 +15,7 @@ export default class CLIMgr implements CLIMgrType {
   }
 
   /** These values come from option flags, i.e. --type */
-  get installType(): InstallerTypes {
+  get installType(): i.InstallerTypes {
     return this.cli.type;
   }
 

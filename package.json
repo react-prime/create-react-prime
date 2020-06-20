@@ -4,30 +4,30 @@
   "description": "Installs the latest version of React-Prime boilerplate.",
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "dist/src/main.js",
   "bin": {
-    "create-react-prime": "./src/index.js"
+    "create-react-prime": "dist/src/main.js"
   },
   "scripts": {
+    "build": "rm -rf dist/; tsc",
+    "start": "node -r ./tsconfig-paths-bootstrap.js dist/src/main.js",
+    "dev": "rm -rf testingname/ testing-name/; npm run build; node -r ./tsconfig-paths-bootstrap.js dist/src/main.js testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist/",
-    "start": "node dist/src/main.js",
-    "build": "npm run clean && tsc",
-    "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/src/main.js testing-name",
     "test": "mocha",
     "test:full": "npm run lint; npm run typecheck; mocha",
-    "prepublishOnly": "npm run lint && npm run test",
-    "pub:patch": "npm version patch && npm publish",
-    "pub:minor": "npm version minor && npm publish",
-    "pub:major": "npm version major && npm publish"
+    "prepublishOnly": "npm run test:full",
+    "pub:patch": "npm run build; npm version patch; npm publish",
+    "pub:minor": "npm run build; npm version minor; npm publish",
+    "pub:major": "npm run build; npm version major; npm publish"
   },
   "dependencies": {
     "commander": "5.1.0",
     "inversify": "5.0.1",
     "inversify-inject-decorators": "3.1.0",
     "ora": "4.0.4",
-    "reflect-metadata": "0.1.13"
+    "reflect-metadata": "0.1.13",
+    "tsconfig-paths": "3.9.0"
   },
   "devDependencies": {
     "@types/node": "14.0.13",

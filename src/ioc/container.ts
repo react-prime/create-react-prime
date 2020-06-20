@@ -1,16 +1,16 @@
 import 'reflect-metadata';
+import * as i from 'types';
 import { Container } from 'inversify';
 import getDecorators from 'inversify-inject-decorators';
 import commander from 'commander';
+import ClientInstaller from 'installers/Client';
+import SsrInstaller from 'installers/Ssr';
+import NativeInstaller from 'installers/Native';
+import InstallStepList from 'InstallStepList';
 import App from '../App';
 import prepareCLI from '../CLI';
 import CLIMgr from '../CLIMgr';
 import Logger from '../Logger';
-import ClientInstaller from '../installers/Client';
-import SsrInstaller from '../installers/Ssr';
-import NativeInstaller from '../installers/Native';
-import InstallStepList from '../InstallStepList';
-import * as i from './types';
 import SERVICES from './services';
 
 const container = new Container();
@@ -31,6 +31,5 @@ async function prepareContainer(): Promise<Container> {
   return container;
 }
 
-export * from './types';
 export { lazyInject, prepareContainer };
 export default container;

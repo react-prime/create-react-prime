@@ -1,11 +1,11 @@
+import * as i from 'types';
 import { injectable, inject } from 'inversify';
-import { LoggerType, CLIMgrType } from './ioc/container';
-import SERVICES from './ioc/services';
+import SERVICES from 'ioc/services';
 import { TEXT } from './constants';
 
 @injectable()
-export default class Logger implements LoggerType {
-  @inject(SERVICES.CLIMgr) private readonly cliMgr!: CLIMgrType;
+export default class Logger implements i.LoggerType {
+  @inject(SERVICES.CLIMgr) private readonly cliMgr!: i.CLIMgrType;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warning(...reason: any[]): void {

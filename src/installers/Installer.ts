@@ -2,11 +2,10 @@ import fs from 'fs';
 import util from 'util';
 import path from 'path';
 import cp from 'child_process';
+import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import ora from 'ora';
-import { PackageJson } from '../types';
-import SERVICES from '../ioc/services';
-import { InstallerType, CLIMgrType, LoggerType, InstallStepListType } from '../ioc/container';
+import SERVICES from 'ioc/services';
 import { INSTALL_STEP, ORGANIZATION } from '../constants';
 import InstallStep from '../InstallStep';
 
@@ -17,10 +16,10 @@ const exec = util.promisify(cp.exec);
 
 
 @injectable()
-export default class Installer implements InstallerType {
-  @inject(SERVICES.CLIMgr) protected readonly cliMgr!: CLIMgrType;
-  @inject(SERVICES.Logger) protected readonly logger!: LoggerType;
-  @inject(SERVICES.InstallStepList) protected installStepList!: InstallStepListType;
+export default class Installer implements i.InstallerType {
+  @inject(SERVICES.CLIMgr) protected readonly cliMgr!: i.CLIMgrType;
+  @inject(SERVICES.Logger) protected readonly logger!: i.LoggerType;
+  @inject(SERVICES.InstallStepList) protected installStepList!: i.InstallStepListType;
   private spinner = ora();
 
 
@@ -115,7 +114,7 @@ export default class Installer implements InstallerType {
   /**
    * Returns the package.json as JS object and its directory path
    */
-  protected getProjectNpmPackage(): { path: string; json: PackageJson } {
+  protected getProjectNpmPackage(): { path: string; json: i.PackageJson } {
     const projectPkgPath = path.resolve(`${this.cliMgr.projectName}/package.json`);
     const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
 
@@ -133,7 +132,7 @@ export default class Installer implements InstallerType {
    * Async overwrite project's package.json
    * @param npmPkg package.json as JS object
    */
-  protected async writeToPackage(npmPkg: PackageJson): Promise<void> {
+  protected async writeToPackage(npmPkg: i.PackageJson): Promise<void> {
     const { path } = this.getProjectNpmPackage();
 
     await writeFile(path, JSON.stringify(npmPkg, null, 2));
@@ -143,7 +142,7 @@ export default class Installer implements InstallerType {
    * Updates node package variables
    * @param npmPkg package.json as JS object
    */
-  protected async updatePackage(npmPkg?: PackageJson): Promise<void> {
+  protected async updatePackage(npmPkg?: i.PackageJson): Promise<void> {
     const { projectName } = this.cliMgr;
     const pkg = npmPkg || this.getProjectNpmPackage().json;
 

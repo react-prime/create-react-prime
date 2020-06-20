@@ -1,20 +1,21 @@
 import fs from 'fs';
+import * as i from 'types';
 import { injectable, inject } from 'inversify';
-import container, { AppType, CLIMgrType, LoggerType, InstallerType } from './ioc/container';
-import SERVICES from './ioc/services';
+import container from 'ioc';
+import SERVICES from 'ioc/services';
 import { TEXT } from './constants';
 
 @injectable()
-export default class App implements AppType {
-  @inject(SERVICES.CLIMgr) private readonly cliMgr!: CLIMgrType;
-  @inject(SERVICES.Logger) private readonly logger!: LoggerType;
-  private installer!: InstallerType;
+export default class App implements i.AppType {
+  @inject(SERVICES.CLIMgr) private readonly cliMgr!: i.CLIMgrType;
+  @inject(SERVICES.Logger) private readonly logger!: i.LoggerType;
+  private installer!: i.InstallerType;
 
 
   async start(): Promise<void> {
     // Get installer for the type that was specified by the user
     const installerType = SERVICES.Installer[this.cliMgr.installType];
-    this.installer = container.get<InstallerType>(installerType);
+    this.installer = container.get<i.InstallerType>(installerType);
 
     // Prepare installer environment
     this.installer.init();

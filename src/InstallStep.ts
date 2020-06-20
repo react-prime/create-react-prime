@@ -1,11 +1,10 @@
-import { InstallStepType } from './ioc/container';
-import { InstallStepOptions } from './types';
+import * as i from 'types';
 
-export default class InstallStep implements InstallStepType {
+export default class InstallStep implements i.InstallStepType {
   private _message = '';
 
   constructor(
-    private _options: InstallStepOptions,
+    private _options: i.InstallStepOptions,
     private _previous?: InstallStep,
     private _next?: InstallStep,
   ) {
@@ -17,7 +16,7 @@ export default class InstallStep implements InstallStepType {
   }
 
 
-  get options(): InstallStepOptions {
+  get options(): i.InstallStepOptions {
     return this._options;
   }
 

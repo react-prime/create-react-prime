@@ -1,5 +1,7 @@
 import { REPOSITORIES, INSTALL_STEP } from '../constants';
 
+export * from 'ioc/types';
+
 export type InstallerTypes = keyof typeof REPOSITORIES;
 
 export type InstallStepId = keyof typeof INSTALL_STEP;

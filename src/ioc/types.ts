@@ -1,4 +1,4 @@
-import { InstallerTypes, InstallStepOptions, InstallStepId } from '../types';
+import * as i from 'types';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
 
@@ -8,7 +8,7 @@ export type AppType = {
 
 export type CLIMgrType = {
   projectName: string;
-  installType: InstallerTypes;
+  installType: i.InstallerTypes;
   installRepository: string;
   isDebugging: boolean | undefined;
 };
@@ -38,7 +38,7 @@ export type InstallStepType = {
 export type InstallStepListType = InstallStepType[] & {
   first: InstallStep | undefined;
   last: InstallStep | undefined;
-  add(stepOptions: InstallStepOptions): InstallStepList;
-  addAfterStep(stepId: InstallStepId, stepOptions: InstallStepOptions): InstallStepList;
-  modifyStep(stepId: InstallStepId, stepOptions: Partial<InstallStepOptions>): InstallStepList;
+  add(stepOptions: i.InstallStepOptions): InstallStepList;
+  addAfterStep(stepId: i.InstallStepId, stepOptions: i.InstallStepOptions): InstallStepList;
+  modifyStep(stepId: i.InstallStepId, stepOptions: Partial<i.InstallStepOptions>): InstallStepList;
 }

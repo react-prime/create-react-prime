@@ -13,7 +13,10 @@
         "jsx": true
     }
   },
-  "ignorePatterns": ["**/dist/**/*.js"],
+  "ignorePatterns": [
+    "**/dist/**/*.js",
+    "tsconfig-paths-bootstrap.js"
+  ],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": 2,

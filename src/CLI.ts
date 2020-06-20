@@ -1,7 +1,7 @@
+import * as i from 'types';
 import commander, { program } from 'commander';
+import SERVICES from 'ioc/services';
 import pkg from '../package.json';
-import { LoggerType } from './ioc/container';
-import SERVICES from './ioc/services';
 import { TYPE, INSTALL_STEP } from './constants';
 
 async function prepareCLI(): Promise<commander.Command> {
@@ -41,7 +41,7 @@ async function prepareCLI(): Promise<commander.Command> {
             if (!stepsStr.includes(id)) {
               // Dynamic import to prevent circular dependency ./ioc > CLI > ./ioc
               const container = (await import('./ioc/container')).default;
-              const logger = container.get<LoggerType>(SERVICES.Logger);
+              const logger = container.get<i.LoggerType>(SERVICES.Logger);
 
               // eslint-disable-next-line max-len
               logger.error(`Error in --skipSteps. '${id}' is not a valid step. Available steps: ${Object.keys(INSTALL_STEP).join(', ')}`);

@@ -10,7 +10,14 @@
         "resolveJsonModule": true,
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "baseUrl": ".",
+        "baseUrl": "src",
+        "paths": {
+            "ioc": ["ioc/container"],
+            "ioc/*": ["ioc/*"],
+            "installers/*": ["installers/*"],
+            "types": ["types/index"],
+            "types/*": ["types/*"]
+        },
         "lib": ["esnext"]
     },
     "include": ["./src"],
