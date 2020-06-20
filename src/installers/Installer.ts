@@ -6,7 +6,7 @@ import { injectable, inject } from 'inversify';
 import ora from 'ora';
 import { PackageJson } from '../types';
 import SERVICES from '../ioc/services';
-import { InstallerType, CLIMgrType, LoggerType, InstallStepListType } from '../ioc';
+import { InstallerType, CLIMgrType, LoggerType, InstallStepListType } from '../ioc/container';
 import { INSTALL_STEP, ORGANIZATION } from '../constants';
 import InstallStep from '../InstallStep';
 

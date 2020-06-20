@@ -1,9 +1,9 @@
 import { inject, injectable, decorate } from 'inversify';
-import { InstallStepListType, LoggerType } from './ioc';
 import { InstallStepOptions, InstallStepId } from './types';
+import { InstallStepListType, LoggerType } from './ioc/container';
+import SERVICES from './ioc/services';
 import InstallStep from './InstallStep';
 import { INSTALL_STEP } from './constants';
-import SERVICES from './ioc/services';
 
 
 // Make Array constructor injectable

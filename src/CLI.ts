@@ -1,10 +1,10 @@
 import commander, { program } from 'commander';
 import pkg from '../package.json';
-import { TYPE, INSTALL_STEP } from './constants';
-import { LoggerType } from './ioc';
+import { LoggerType } from './ioc/container';
 import SERVICES from './ioc/services';
+import { TYPE, INSTALL_STEP } from './constants';
 
-async function initCLI(): Promise<commander.Command> {
+async function prepareCLI(): Promise<commander.Command> {
   // Indicate required argument input
   program
     .arguments('<projectName>')
@@ -40,7 +40,7 @@ async function initCLI(): Promise<commander.Command> {
           .map(async (id) => {
             if (!stepsStr.includes(id)) {
               // Dynamic import to prevent circular dependency ./ioc > CLI > ./ioc
-              const container = (await import('./ioc')).default;
+              const container = (await import('./ioc/container')).default;
               const logger = container.get<LoggerType>(SERVICES.Logger);
 
               // eslint-disable-next-line max-len
@@ -60,4 +60,4 @@ async function initCLI(): Promise<commander.Command> {
   return program;
 }
 
-export default initCLI;
+export default prepareCLI;

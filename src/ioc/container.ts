@@ -1,8 +1,9 @@
+import 'reflect-metadata';
 import { Container } from 'inversify';
 import getDecorators from 'inversify-inject-decorators';
 import commander from 'commander';
 import App from '../App';
-import initCLI from '../CLI';
+import prepareCLI from '../CLI';
 import CLIMgr from '../CLIMgr';
 import Logger from '../Logger';
 import ClientInstaller from '../installers/Client';
@@ -12,13 +13,11 @@ import InstallStepList from '../InstallStepList';
 import * as i from './types';
 import SERVICES from './services';
 
-export * from './types';
-
 const container = new Container();
 const { lazyInject } = getDecorators(container);
 
-async function initContainer(): Promise<Container> {
-  const CLI = await initCLI();
+async function prepareContainer(): Promise<Container> {
+  const CLI = await prepareCLI();
 
   container.bind<i.LoggerType>(SERVICES.Logger).to(Logger);
   container.bind<i.AppType>(SERVICES.App).to(App);
@@ -32,5 +31,6 @@ async function initContainer(): Promise<Container> {
   return container;
 }
 
-export { lazyInject, initContainer };
+export * from './types';
+export { lazyInject, prepareContainer };
 export default container;

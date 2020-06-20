@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { injectable, inject } from 'inversify';
-import container, { AppType, CLIMgrType, LoggerType, InstallerType } from './ioc';
+import container, { AppType, CLIMgrType, LoggerType, InstallerType } from './ioc/container';
 import SERVICES from './ioc/services';
 import { TEXT } from './constants';
 

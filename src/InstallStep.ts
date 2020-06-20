@@ -1,4 +1,4 @@
-import { InstallStepType } from './ioc';
+import { InstallStepType } from './ioc/container';
 import { InstallStepOptions } from './types';
 
 export default class InstallStep implements InstallStepType {

@@ -1,6 +1,6 @@
 import { injectable, inject } from 'inversify';
 import commander from 'commander';
-import { CLIMgrType } from './ioc';
+import { CLIMgrType } from './ioc/container';
 import SERVICES from './ioc/services';
 import { ARG, REPOSITORIES } from './constants';
 import { InstallerTypes } from './types';

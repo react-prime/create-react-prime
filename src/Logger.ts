@@ -1,7 +1,7 @@
 import { injectable, inject } from 'inversify';
-import { TEXT } from './constants';
-import { LoggerType, CLIMgrType } from './ioc';
+import { LoggerType, CLIMgrType } from './ioc/container';
 import SERVICES from './ioc/services';
+import { TEXT } from './constants';
 
 @injectable()
 export default class Logger implements LoggerType {
