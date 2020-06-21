@@ -53,8 +53,9 @@ export default class Installer implements i.InstallerType {
       const skipStep = skipSteps?.some(step.hasId.bind(step));
 
       if (!skipStep) {
+        this.spinner = ora(step.message.pending);
         this.spinner.prefixText = LOG_PREFIX;
-        this.spinner = ora(step.message.pending).start();
+        this.spinner.start();
 
         try {
         // Run the installation step
