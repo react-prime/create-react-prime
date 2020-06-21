@@ -4,6 +4,8 @@ import SERVICES from 'ioc/services';
 import pkg from '../package.json';
 import { TYPE, INSTALL_STEP } from './constants';
 
+const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
+
 async function prepareCLI(): Promise<commander.Command> {
   // Indicate required argument input
   program
@@ -29,7 +31,7 @@ async function prepareCLI(): Promise<commander.Command> {
     .option(
       '-s, --skipSteps <steps>',
       // eslint-disable-next-line max-len
-      `Skip an install step. You can pass a comma separated list for multiple steps. Options: ${Object.keys(INSTALL_STEP).join(', ')}`,
+      `Skip an install step. You can pass a comma separated list for multiple steps. Options: ${installStepIdList}`,
       // Map from comma separated string list to array
       (value) => {
         const stepsStr = Object.keys(INSTALL_STEP);
@@ -44,7 +46,7 @@ async function prepareCLI(): Promise<commander.Command> {
               const logger = container.get<i.LoggerType>(SERVICES.Logger);
 
               // eslint-disable-next-line max-len
-              logger.error(`Error in --skipSteps. '${id}' is not a valid step. Available steps: ${Object.keys(INSTALL_STEP).join(', ')}`);
+              logger.error(`Error in --skipSteps. '${id}' is not a valid step. Available steps: ${installStepIdList}`);
             }
 
             return id;

@@ -47,27 +47,26 @@ export default class Installer implements i.InstallerType {
         return;
       }
 
-      // If we don't bind, "this" in step will be Installer
-      // const skipStep = this.cliMgr.skipSteps?.some(step.hasId.bind(step));
+      const skipSteps = await this.cliMgr.skipSteps;
+      // "this" in the step instance will be a reference to the Installer instance
+      // We fix this by binding the current step to this function
+      const skipStep = skipSteps?.some(step.hasId.bind(step));
 
-      // if (!skipStep) {
-      this.spinner = ora(step.message.pending);
-      this.spinner.prefixText = LOG_PREFIX;
-      this.spinner.start();
+      if (!skipStep) {
+        this.spinner.prefixText = LOG_PREFIX;
+        this.spinner = ora(step.message.pending).start();
 
-      try {
+        try {
         // Run the installation step
-        await this.executeStep(step);
+          await this.executeStep(step);
 
-        this.spinner.succeed(step.message.success);
-      } catch (err) {
-        this.spinner.fail(step.message.fail);
-        this.error(err);
+          this.spinner.succeed(step.message.success);
+        } catch (err) {
+          this.error(err);
+        }
+      } else {
+        this.logger.warning(`Skipped '${step.message.pending}'`);
       }
-      // } else {
-      //   // eslint-disable-next-line no-console
-      //   console.log(`Skipped ${step.message}`);
-      // }
 
       // Go to next step
       step = step.next;

@@ -36,7 +36,7 @@ export default class NativeInstaller extends Installer {
   }
 
 
-  /** Add additional scripts to node package */
+  /** Add additional scripts to package.json */
   protected async updatePackage(): Promise<void> {
     const { projectName } = this.cliMgr;
     const pkg = this.getProjectNpmPackage().json;

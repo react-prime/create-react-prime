@@ -36,6 +36,18 @@ export default class CLIMgr implements i.CLIMgrType {
     return this.cli.debug;
   }
 
+  get skipSteps(): Promise<i.InstallStepId[] | undefined> {
+    const resolveSteps: Promise<i.InstallStepId>[] = [];
+    let step: Promise<i.InstallStepId>;
+
+    for (step of this.cli.skipSteps) {
+      const resolvedStep = Promise.resolve(step);
+      resolveSteps.push(resolvedStep);
+    }
+
+    return Promise.all(resolveSteps);
+  }
+
   private get args(): string[] {
     return this.cli.args;
   }

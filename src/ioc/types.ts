@@ -11,6 +11,7 @@ export type CLIMgrType = {
   installType: i.InstallerTypes;
   installRepository: string;
   isDebugging: boolean | undefined;
+  skipSteps: Promise<i.InstallStepId[] | undefined>;
 };
 
 export type LoggerType = {
@@ -33,6 +34,7 @@ export type InstallStepType = {
   fn: (() => Promise<void>) | undefined;
   previous: InstallStep | undefined;
   next: InstallStep | undefined;
+  hasId(id: i.InstallStepId): boolean;
 }
 
 export type InstallStepListType = InstallStepType[] & {
