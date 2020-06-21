@@ -36,17 +36,13 @@ export default class CLIMgr implements i.CLIMgrType {
     return this.cli.debug;
   }
 
+  /** Because of a dynamic import in this option, we have to deal with asynchronous code */
   get skipSteps(): Promise<i.InstallStepId[] | undefined> {
-    const skipStepsList = (this.cli.skipSteps || []) as Promise<i.InstallStepId>[];
-    const resolveStepsList: Promise<i.InstallStepId>[] = [];
-    let step: Promise<i.InstallStepId>;
+    // Create a promise to resolve the value
+    const skipStepsList = Promise.resolve<i.InstallStepId[]>(this.cli.skipSteps);
 
-    for (step of skipStepsList) {
-      const resolveStep = Promise.resolve(step);
-      resolveStepsList.push(resolveStep);
-    }
-
-    return Promise.all(resolveStepsList);
+    // Resolve the value
+    return Promise.resolve(skipStepsList);
   }
 
   private get args(): string[] {

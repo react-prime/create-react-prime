@@ -7,8 +7,8 @@ import { TYPE, INSTALL_STEP } from './constants';
 const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
 
 async function prepareCLI(): Promise<commander.Command> {
-  // Indicate required argument input
   program
+    // Indicate required argument input
     .arguments('<projectName>')
     // Required for an error to show
     .action((name) => name);
@@ -30,27 +30,37 @@ async function prepareCLI(): Promise<commander.Command> {
   program
     .option(
       '-s, --skipSteps <steps>',
-      // eslint-disable-next-line max-len
       `Skip an install step. You can pass a comma separated list for multiple steps. Options: ${installStepIdList}`,
       // Map from comma separated string list to array
-      (value) => {
-        const stepsStr = Object.keys(INSTALL_STEP);
+      async (value) => {
+        const allSteps = Object.keys(INSTALL_STEP);
+        const skipSteps = value.replace(' ', '').split(',');
+        const invalidSteps: string[] = [];
 
-        return value
-          .replace(' ', '')
-          .split(',')
-          .map(async (id) => {
-            if (!stepsStr.includes(id)) {
-              // Dynamic import to prevent circular dependency ./ioc > CLI > ./ioc
-              const container = (await import('./ioc/container')).default;
-              const logger = container.get<i.LoggerType>(SERVICES.Logger);
+        // Check if any of the given steps is invalid
+        for (const step of skipSteps) {
+          const invalidStep = !allSteps.includes(step);
 
-              // eslint-disable-next-line max-len
-              logger.error(`Error in --skipSteps. '${id}' is not a valid step. Available steps: ${installStepIdList}`);
-            }
+          if (invalidStep) {
+            invalidSteps.push(step);
+          }
+        }
 
-            return id;
-          });
+        if (invalidSteps.length > 0) {
+          // Dynamic import to prevent circular dependency container > CLI > container
+          const container = (await import('ioc')).default;
+          const logger = container.get<i.LoggerType>(SERVICES.Logger);
+
+          const stepsToStr = invalidSteps
+            .map((str) => `'${str}'`)
+            .join(', ');
+
+          return logger.error(
+            `Error in --skipSteps. ${stepsToStr} is/are invalid. Available steps: ${installStepIdList}`,
+          );
+        }
+
+        return skipSteps;
       },
     );
 

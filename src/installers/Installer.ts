@@ -32,12 +32,12 @@ export default class Installer implements i.InstallerType {
    */
   async install(): Promise<void> {
     // Debug
-    this.installStepList.map((step) => {
+    for (const step of this.installStepList) {
       this.logger.debug({
         msg: step.message,
         next: step.next?.message,
       });
-    });
+    }
 
     let step = this.installStepList.first;
 
