@@ -3,11 +3,7 @@ const SERVICES = {
   CLI: Symbol('cli'),
   CLIMgr: Symbol('cliMgr'),
   Logger: Symbol('logger'),
-  Installer: {
-    client: Symbol('client'),
-    ssr: Symbol('ssr'),
-    native: Symbol('native'),
-  },
+  Installer: Symbol('installer'),
   InstallStepList: Symbol('installStepList'),
 };
 

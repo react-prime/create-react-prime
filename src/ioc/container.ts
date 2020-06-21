@@ -22,9 +22,9 @@ async function prepareContainer(): Promise<Container> {
   container.bind<commander.Command>(SERVICES.CLI).toConstantValue(CLI);
   container.bind<i.CLIMgrType>(SERVICES.CLIMgr).to(CLIMgr).inSingletonScope();
   container.bind<i.InstallStepListType>(SERVICES.InstallStepList).to(InstallStepList);
-  container.bind<i.InstallerType>(SERVICES.Installer.client).to(ClientInstaller);
-  container.bind<i.InstallerType>(SERVICES.Installer.ssr).to(SsrInstaller);
-  container.bind<i.InstallerType>(SERVICES.Installer.native).to(NativeInstaller);
+  container.bind<i.InstallerType>(SERVICES.Installer).to(ClientInstaller).whenTargetNamed('client');
+  container.bind<i.InstallerType>(SERVICES.Installer).to(SsrInstaller).whenTargetNamed('ssr');
+  container.bind<i.InstallerType>(SERVICES.Installer).to(NativeInstaller).whenTargetNamed('native');
 
   return container;
 }

@@ -14,8 +14,7 @@ export default class App implements i.AppType {
 
   async start(): Promise<void> {
     // Get installer for the type that was specified by the user
-    const installerType = SERVICES.Installer[this.cliMgr.installType];
-    this.installer = container.get<i.InstallerType>(installerType);
+    this.installer = container.getNamed(SERVICES.Installer, this.cliMgr.installType);
 
     // Prepare installer environment
     this.installer.init();
