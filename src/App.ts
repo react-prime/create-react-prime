@@ -25,14 +25,18 @@ export default class App implements i.AppType {
       this.logger.error(`directory '${this.cliMgr.projectName}' already exists.`);
     }
 
-    // Start the installation process
-    await this.installer.install();
+    try {
+      // Start the installation process
+      await this.installer.install();
 
-    // eslint-disable-next-line no-console
-    console.log(
-      `${LOG_PREFIX} ⚡️ ${TEXT.BOLD}Succesfully installed ${this.cliMgr.installRepository}!${TEXT.DEFAULT}`,
-    );
+      // eslint-disable-next-line no-console
+      console.log(
+        `${LOG_PREFIX} ⚡️ ${TEXT.BOLD}Succesfully installed ${this.cliMgr.installRepository}!${TEXT.DEFAULT}`,
+      );
 
-    process.exit();
+      process.exit();
+    } catch (err) {
+      this.logger.error(err);
+    }
   }
 }
