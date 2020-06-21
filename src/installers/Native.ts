@@ -48,7 +48,7 @@ export default class NativeInstaller extends Installer {
     pkg.scripts[this.SCRIPT_KEY.replaceSchemes] =
       `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`;
 
-    super.updatePackage(pkg);
+    await super.updatePackage(pkg);
   }
 
   /** Remove scripts from package.json */
@@ -67,8 +67,23 @@ export default class NativeInstaller extends Installer {
 
   /** Run the rename scripts */
   private async runScripts(): Promise<void> {
-    await this.asyncSpawn('npm', ['run', this.SCRIPT_KEY.rename]);
-    await this.asyncSpawn('npm', ['run', this.SCRIPT_KEY.replaceText]);
-    await this.asyncSpawn('npm', ['run', this.SCRIPT_KEY.replaceSchemes]);
+    const pkg = this.getProjectNpmPackage().json;
+
+    const { SCRIPT_KEY } = this;
+    const scriptKeys = Object.values(SCRIPT_KEY);
+
+    for await (const script of scriptKeys) {
+      if (!pkg.scripts?.[script]) {
+        this.logger.warning(`Script '${script}' was not found. Manual file renaming is required after installation.'`);
+      }
+
+      await this.asyncSpawn('npm', ['run', script])
+        .catch((err) => {
+          this.logger.warning(
+            `Script '${script}' has failed. Manual file renaming is required after installation.`,
+            err,
+          );
+        });
+    }
   }
 }

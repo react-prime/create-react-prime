@@ -178,7 +178,7 @@ export default class Installer implements i.InstallerType {
    * util.promisfy doesn't work
    */
   protected asyncSpawn(command: string, args: string[], options?: { path: string }): Promise<void> {
-    const opts = {
+    const opts: cp.SpawnOptionsWithoutStdio = {
       // Execute in given folder path with cwd
       cwd: options?.path || path.resolve(this.cliMgr.projectName),
     };
