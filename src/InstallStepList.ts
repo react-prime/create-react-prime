@@ -47,7 +47,7 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
     this.splice(++iter, 0, this.createStep(stepOptions, step.instance));
 
     // Update the current and next steps
-    for (let j = iter; iter <= j + 1; iter++) {
+    for (const j = iter; iter <= j + 1; iter++) {
       const step = this[iter];
       // Because of reordering, we can not use step.previous
       const prev = this[iter - 1];
