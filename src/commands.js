@@ -34,15 +34,15 @@ const commands = [
     time: 3000,
   },
   {
-    cmd: `npm --prefix ${projectName} install`,
-    message: '📦  Installing packages...',
-    time: 40000,
-  },
-  {
     cmd: `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
     fn: () => updatePackage(projectName),
     message: '🔨  Preparing...',
     time: 50,
+  },
+  {
+    cmd: `npm --prefix ${projectName} install`,
+    message: '📦  Installing packages...',
+    time: 40000,
   },
 ];
 
@@ -50,36 +50,36 @@ const commands = [
   All commands that need a spawn execute
 */
 const spawnCommands = {
-  [TYPE.NATIVE]: [
-    {
-      message: `🔤  Renaming project files to '${projectName}'...`,
-      time: 10000,
-      fn: async (cb) => {
-        if (program.type === TYPE.NATIVE) {
-          // Run project files rename scripts
-          await asyncSpawn('npm', ['run', 'renameNative']);
-          await asyncSpawn('npm', ['run', 'replaceWithinFiles']);
-          await asyncSpawn('npm', ['run', 'replaceSchemeFilenames']);
+  [TYPE.NATIVE]: {
+    /** Zero-indexed step number for when to run this scripts */
+    stepNum: 2,
+    message: `🔤  Renaming project files to '${projectName}'...`,
+    time: 10000,
+    fn: async (cb) => {
+      if (program.type === TYPE.NATIVE) {
+        // Run project files rename scripts
+        await asyncSpawn('npm', ['run', 'renameNative']);
+        await asyncSpawn('npm', ['run', 'replaceWithinFiles']);
+        await asyncSpawn('npm', ['run', 'replaceSchemeFilenames']);
 
-          // Resolve project's package.json
-          const projectPkgPath = path.resolve(`${projectName}/package.json`);
-          const pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
-          const pkg = JSON.parse(pkgRead);
+        // Resolve project's package.json
+        const projectPkgPath = path.resolve(`${projectName}/package.json`);
+        const pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
+        const pkg = JSON.parse(pkgRead);
 
-          // Remove renaming scripts
-          delete pkg.scripts.renameNative;
-          delete pkg.scripts.replaceWithinFiles;
-          delete pkg.scripts.replaceSchemeFilenames;
+        // Remove renaming scripts
+        delete pkg.scripts.renameNative;
+        delete pkg.scripts.replaceWithinFiles;
+        delete pkg.scripts.replaceSchemeFilenames;
 
-          // Write updated package.json back to its file
-          fs.writeFileSync(projectPkgPath, JSON.stringify(pkg, null, 2));
+        // Write updated package.json back to its file
+        fs.writeFileSync(projectPkgPath, JSON.stringify(pkg, null, 2));
 
-          // Execute callback fn
-          cb();
-        }
-      },
+        // Execute callback fn
+        cb();
+      }
     },
-  ],
+  },
 };
 
 module.exports = {
