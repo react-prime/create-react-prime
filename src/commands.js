@@ -6,6 +6,23 @@ const { name, owner, projectName } = require('./installConfig');
 const { TYPE } = require('./constants');
 const program = require('./program');
 
+/**
+ * Promisify spawns
+ * util.promisify doesn't work :(
+ */
+async function asyncSpawn(command, args, options = {}) {
+  const opts = {
+    // Execute in given folder path with cwd
+    cwd: options.cwd || path.resolve(projectName),
+  };
+
+  return new Promise((resolve, reject) => {
+    spawn(command, args, opts)
+      .on('close', resolve)
+      .on('error', reject);
+  });
+}
+
 /*
   All commands needed to run to guarantee a successful and clean installation
 */
@@ -36,29 +53,13 @@ const spawnCommands = {
     {
       message: `🔤  Renaming project files to '${projectName}'...`,
       time: 10000,
-      fn: (cb) => {
+      fn: async (cb) => {
         if (program.type === TYPE.NATIVE) {
-          let done = 0;
+          await asyncSpawn('npm', ['run', 'renameNative']);
+          await asyncSpawn('npm', ['run', 'replaceWithinFiles']);
+          await asyncSpawn('npm', ['run', 'replaceSchemeFilenames']);
 
-          const isDone = () => {
-            if (++done === 3) {
-              cb();
-            }
-          };
-
-          const options = {
-            // Execute in project folder with cwd
-            cwd: path.resolve(projectName),
-          };
-
-          spawn('npm', ['run', 'renameNative'], options)
-            .on('close', isDone);
-
-          spawn('npm', ['run', 'replaceWithinFiles'], options)
-            .on('close', isDone);
-
-          spawn('npm', ['run', 'replaceSchemeFilenames'], options)
-            .on('close', isDone);
+          cb();
         }
       },
     },

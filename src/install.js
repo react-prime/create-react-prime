@@ -16,7 +16,7 @@ const install = () => new Promise((resolve, reject) => {
     const fn = new Promise((loggerResolve) => exec(
       installStep.cmd,
       installStep.execOptions,
-      (err) => {
+      async (err) => {
         if (err) {
           reject(err);
           throw new Error(err);
@@ -24,7 +24,7 @@ const install = () => new Promise((resolve, reject) => {
 
         try {
           if (typeof installStep.fn === 'function') {
-            installStep.fn();
+            await installStep.fn();
           }
         } catch(err) {
           reject(err);
