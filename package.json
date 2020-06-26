@@ -9,9 +9,9 @@
     "create-react-prime": "dist/src/main.js"
   },
   "scripts": {
-    "build": "rm -rf dist/; tsc",
-    "start": "node -r ./tsconfig-paths-bootstrap.js dist/src/main.js",
-    "dev": "rm -rf testingname/ testing-name/; npm run build; node -r ./tsconfig-paths-bootstrap.js dist/src/main.js testing-name",
+    "build": "rm -rf dist/; tsc; cp src/main dist/src",
+    "start": "node -r ./tsconfig-paths-bootstrap.js dist/src/main",
+    "dev": "rm -rf testingname/ testing-name/; npm run build; node -r ./tsconfig-paths-bootstrap.js dist/src/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
     "test": "mocha",
