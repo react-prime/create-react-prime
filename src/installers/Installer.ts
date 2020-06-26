@@ -6,8 +6,8 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import ora from 'ora';
 import SERVICES from 'ioc/services';
-import { INSTALL_STEP, ORGANIZATION, LOG_PREFIX } from '../constants';
-import InstallStep from '../InstallStep';
+import { LOG_PREFIX } from '../constants';
+import baseInstallSteps from './config';
 
 
 // Wrap utils in promise
@@ -19,7 +19,7 @@ const exec = util.promisify(cp.exec);
 export default class Installer implements i.InstallerType {
   @inject(SERVICES.CLIMgr) protected readonly cliMgr!: i.CLIMgrType;
   @inject(SERVICES.Logger) protected readonly logger!: i.LoggerType;
-  @inject(SERVICES.InstallStepList) protected installStepList!: i.InstallStepListType;
+  @inject(SERVICES.InstallStepList) protected readonly installStepList!: i.InstallStepListType;
   private spinner = ora();
 
 
@@ -84,45 +84,23 @@ export default class Installer implements i.InstallerType {
    * Add the basic installation steps. Can be overloaded to add or modify steps.
    */
   protected initSteps(): void {
-    const { projectName,installRepository } = this.cliMgr;
+    const baseSteps = baseInstallSteps();
 
-    this.installStepList
-      .add({
-        id: INSTALL_STEP.CLONE,
-        emoji: '🚚',
-        message: {
-          pending: `Cloning '${installRepository}' into '${projectName}'...`,
-          success: `Cloned '${installRepository}' into '${projectName}'!`,
-        },
-        cmd: `git clone https://github.com/${ORGANIZATION}/${installRepository}.git ${projectName}`,
-      })
-      .add({
-        id: INSTALL_STEP.UPDATE_PACKAGE,
-        emoji: '✏️ ',
-        message: {
-          pending: 'Updating package.json...',
-          success: 'Updated package.json!',
-        },
-        fn: this.updatePackage.bind(this),
-      })
-      .add({
-        id: INSTALL_STEP.NPM_INSTALL,
-        emoji: '📦',
-        message: {
-          pending: 'Installing packages...',
-          success: 'Installed packages!',
-        },
-        cmd: `npm --prefix ${projectName} install`,
-      })
-      .add({
-        id: INSTALL_STEP.CLEANUP,
-        emoji: '🧹',
-        message: {
-          pending: 'Cleaning up...',
-          success: 'Cleaned up!',
-        },
-        cmd: `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
-      });
+    for (const baseStep of baseSteps) {
+      // Convert the name of a function into the reference of the function
+      if (typeof baseStep.fn === 'string') {
+        // Errors, because using 'string' to index 'this' returns 'any', but we don't care
+        // @ts-ignore
+        const fn = this[baseStep.fn];
+
+        // Bind 'this' to the installer instance
+        if (typeof fn === 'function') {
+          baseStep.fn = fn.bind(this);
+        }
+      }
+
+      this.installStepList.add(baseStep);
+    }
   }
 
   /**
@@ -195,7 +173,7 @@ export default class Installer implements i.InstallerType {
   /**
    * Run the installation step
    */
-  private async executeStep(step: InstallStep): Promise<void> {
+  private async executeStep(step: i.InstallStepType): Promise<void> {
     try {
       // Execute command line
       if (step.cmd) {

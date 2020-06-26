@@ -38,7 +38,9 @@ export default class InstallStep implements i.InstallStepType {
   }
 
   get fn(): (() => Promise<void>) | undefined {
-    return this._options.fn;
+    /** @TODO Fix types */
+    // @ts-ignore
+    return this.options.fn;
   }
 
   get previous(): InstallStep | undefined {

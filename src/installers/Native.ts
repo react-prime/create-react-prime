@@ -15,7 +15,7 @@ export default class NativeInstaller extends Installer {
     super.init();
   }
 
-  initSteps(): void {
+  protected initSteps(): void {
     super.initSteps();
 
     // Add project files rename scripts to package.json
@@ -29,7 +29,8 @@ export default class NativeInstaller extends Installer {
         },
         fn: this.runScripts.bind(this),
       })
-    // Remove the rename scripts from the package.json
+      // Remove the rename scripts from the package.json
+      /** @TODO broken: does not remove scripts */
       .modifyStep('CLEANUP', {
         fn: this.cleanup.bind(this),
       });

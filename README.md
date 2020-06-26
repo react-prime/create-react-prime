@@ -62,7 +62,7 @@ npm start
       -s, --skipStep
     </td>
     <td>
-      string | string[]
+      string, string[]
     </td>
     <td>
       -

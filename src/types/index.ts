@@ -35,7 +35,7 @@ type InstallStepOptionsBase = {
 type InstallStepOptionsCmd = {
   /** Used for command line scripts. */
   cmd: string;
-  fn?: () => Promise<void>;
+  fn?: string | (() => Promise<void>);
 }
 
 type InstallStepOptionsFn = {
@@ -46,7 +46,7 @@ type InstallStepOptionsFn = {
    * Can be used together with a command line script from `cmd`. This function will always run
    * after the command line script is finished executing.
    */
-  fn: () => Promise<void>;
+  fn: string | (() => Promise<void>);
 }
 
 // This type makes sure least one of 'cmd' or 'fn' is present
