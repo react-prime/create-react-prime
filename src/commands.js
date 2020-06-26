@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const path = require('path');
+const fs = require('fs');
 const { spawn } = require('child_process');
 const updatePackage = require('./updatePackage');
 const { name, owner, projectName } = require('./installConfig');
@@ -55,10 +56,25 @@ const spawnCommands = {
       time: 10000,
       fn: async (cb) => {
         if (program.type === TYPE.NATIVE) {
+          // Run project files rename scripts
           await asyncSpawn('npm', ['run', 'renameNative']);
           await asyncSpawn('npm', ['run', 'replaceWithinFiles']);
           await asyncSpawn('npm', ['run', 'replaceSchemeFilenames']);
 
+          // Resolve project's package.json
+          const projectPkgPath = path.resolve(`${projectName}/package.json`);
+          const pkgRead = fs.readFileSync(projectPkgPath, 'utf8');
+          const pkg = JSON.parse(pkgRead);
+
+          // Remove renaming scripts
+          delete pkg.scripts.renameNative;
+          delete pkg.scripts.replaceWithinFiles;
+          delete pkg.scripts.replaceSchemeFilenames;
+
+          // Write updated package.json back to its file
+          fs.writeFileSync(projectPkgPath, JSON.stringify(pkg, null, 2));
+
+          // Execute callback fn
           cb();
         }
       },
