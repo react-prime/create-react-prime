@@ -7,12 +7,6 @@ import { TYPE, INSTALL_STEP } from './constants';
 const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
 
 async function prepareCLI(): Promise<commander.Command> {
-  program
-    // Indicate required argument input
-    .arguments('<projectName>')
-    // Required for an error to show
-    .action((name) => name);
-
   // Set options
   program
     .option(

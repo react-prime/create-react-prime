@@ -5,7 +5,7 @@ import commander from 'commander';
 import ClientInstaller from 'installers/Client';
 import SsrInstaller from 'installers/Ssr';
 import NativeInstaller from 'installers/Native';
-import InstallStepList from 'InstallStepList';
+import InstallStepList from '../InstallStepList';
 import App from '../App';
 import prepareCLI from '../CLI';
 import CLIMgr from '../CLIMgr';
