@@ -7,6 +7,13 @@ import { TYPE, INSTALL_STEP } from './constants';
 const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
 
 async function prepareCLI(): Promise<commander.Command> {
+  // Cache program for test
+  for (const opt in program.opts()) {
+    if (opt === 'type') {
+      return program.parse(process.argv);
+    }
+  }
+
   // Set options
   program
     .option(
@@ -28,7 +35,7 @@ async function prepareCLI(): Promise<commander.Command> {
       // Map from comma separated string list to array
       async (value) => {
         const allSteps = Object.keys(INSTALL_STEP);
-        const skipSteps = value.replace(' ', '').split(',');
+        const skipSteps = value ? value.replace(' ', '').split(',') : [];
         const invalidSteps: string[] = [];
 
         // Check if any of the given steps is invalid
