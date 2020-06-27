@@ -1,14 +1,14 @@
 import 'reflect-metadata';
+import * as i from 'types';
 import { Container } from 'inversify';
-import * as ioci from '../src/ioc/types';
-import SERVICES from '../src/ioc/services';
-import { prepareContainer } from '../src/ioc/container';
-import { LOG_PREFIX, TEXT } from '../src/constants';
+import SERVICES from 'ioc/services';
+import { prepareContainer } from 'ioc/container';
+import { LOG_PREFIX, TEXT } from 'src/constants';
 
 describe('Logger', () => {
   let logSpy: jest.SpyInstance<void, [string?, ...string[]]>;
   let container: Container;
-  let logger: ioci.LoggerType;
+  let logger: i.LoggerType;
 
   beforeAll(async () => {
     container = await prepareContainer();

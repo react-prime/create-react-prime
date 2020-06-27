@@ -9,12 +9,13 @@
     "create-react-prime": "dist/src/main"
   },
   "scripts": {
-    "build": "rm -rf dist/; tsc; cp src/main dist/src",
+    "build": "rm -rf dist/; tsc -p tsconfig.app.json; cp src/main dist/src",
     "start": "node -r ./tsconfig-paths-bootstrap.js dist/src/main",
     "dev": "rm -rf testingname/ testing-name/; npm run build; node -r ./tsconfig-paths-bootstrap.js dist/src/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
-    "test": "jest test/index.ts",
+    "test": "jest **/*.spec.ts",
+    "test:watch": "npm t -- --watch",
     "test:full": "npm run lint; npm run typecheck; npm t",
     "prepublishOnly": "npm run test:full; npm run build",
     "pub:patch": "npm version patch; npm publish",
