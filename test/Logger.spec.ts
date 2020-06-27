@@ -12,11 +12,10 @@ describe('Logger', () => {
 
   beforeAll(async () => {
     container = await prepareContainer();
+    logger = container.get(SERVICES.Logger);
   });
 
   beforeEach(() => {
-    logger = container.get(SERVICES.Logger);
-
     logSpy = jest.spyOn(console, 'log');
     logSpy.mockClear();
   });
