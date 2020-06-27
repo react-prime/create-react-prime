@@ -1,4 +1,5 @@
 import * as i from 'types';
+import commander from 'commander';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
 
@@ -7,6 +8,7 @@ export type AppType = {
 }
 
 export type CLIMgrType = {
+  cli: commander.Command;
   projectName: string;
   installType: i.InstallerTypes;
   installRepository: string;

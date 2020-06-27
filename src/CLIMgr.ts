@@ -6,8 +6,11 @@ import { ARG, REPOSITORIES } from './constants';
 
 @injectable()
 export default class CLIMgr implements i.CLIMgrType {
-  @inject(SERVICES.CLI) readonly cli!: commander.Command;
   private _projectName?: string;
+
+  constructor(
+    @inject(SERVICES.CLI) readonly cli: commander.Command,
+  ) {}
 
 
   get installRepository(): string {

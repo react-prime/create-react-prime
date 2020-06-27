@@ -1,18 +1,22 @@
 import 'reflect-metadata';
 import * as i from 'types';
-import { Container } from 'inversify';
-import SERVICES from 'ioc/services';
-import { prepareContainer } from 'ioc/container';
 import { LOG_PREFIX, TEXT } from 'src/constants';
+import Logger from 'src/Logger';
+import CLIMgr from 'src/CLIMgr';
+import prepareCLI from 'src/CLI';
 
 describe('Logger', () => {
   let logSpy: jest.SpyInstance<void, [string?, ...string[]]>;
-  let container: Container;
   let logger: i.LoggerType;
 
+  async function prepareLogger() {
+    const cli = await prepareCLI();
+    const cliMgr = new CLIMgr(cli);
+    logger = new Logger(cliMgr);
+  }
+
   beforeAll(async () => {
-    container = await prepareContainer();
-    logger = container.get(SERVICES.Logger);
+    await prepareLogger();
   });
 
   beforeEach(() => {
@@ -69,8 +73,8 @@ describe('Logger', () => {
       // Simulate using the debug option
       process.argv.push('-d');
 
-      // Rebuild container with new flags
-      container = await prepareContainer();
+      // Rebuild cli with new options
+      await prepareLogger();
 
       logger.debug('test');
       logger.debug('test', 'test2');
