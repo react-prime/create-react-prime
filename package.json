@@ -14,7 +14,7 @@
     "dev": "rm -rf testingname/ testing-name/; npm run build; node -r ./tsconfig-paths-bootstrap.js dist/src/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
-    "test": "mocha",
+    "test": "jest **/*.spec.ts",
     "test:full": "npm run lint; npm run typecheck; mocha",
     "prepublishOnly": "npm run test:full",
     "pub:patch": "npm run build; npm version patch; npm publish",
@@ -29,12 +29,14 @@
     "tsconfig-paths": "3.9.0"
   },
   "devDependencies": {
+    "@types/jest": "26.0.3",
     "@types/node": "14.0.13",
     "@typescript-eslint/eslint-plugin": "3.2.0",
     "@typescript-eslint/parser": "3.2.0",
     "eslint": "7.2.0",
     "eslint-plugin-import": "2.21.2",
-    "mocha": "8.0.1",
+    "jest": "26.1.0",
+    "ts-jest": "26.1.1",
     "typescript": "3.9.5",
     "typescript-eslint-parser": "22.0.0"
   },
