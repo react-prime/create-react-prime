@@ -4,9 +4,9 @@
   "description": "Installs the latest version of React-Prime boilerplate.",
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT",
-  "main": "dist/src/main.js",
+  "main": "dist/src/main",
   "bin": {
-    "create-react-prime": "dist/src/main.js"
+    "create-react-prime": "dist/src/main"
   },
   "scripts": {
     "build": "rm -rf dist/; tsc; cp src/main dist/src",
@@ -14,12 +14,12 @@
     "dev": "rm -rf testingname/ testing-name/; npm run build; node -r ./tsconfig-paths-bootstrap.js dist/src/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
-    "test": "mocha",
-    "test:full": "npm run lint; npm run typecheck; mocha",
-    "prepublishOnly": "npm run test:full",
-    "pub:patch": "npm run build; npm version patch; npm publish",
-    "pub:minor": "npm run build; npm version minor; npm publish",
-    "pub:major": "npm run build; npm version major; npm publish"
+    "test": "jest test/index.ts",
+    "test:full": "npm run lint; npm run typecheck; npm t",
+    "prepublishOnly": "npm run test:full; npm run build",
+    "pub:patch": "npm version patch; npm publish",
+    "pub:minor": "npm version minor; npm publish",
+    "pub:major": "npm version major; npm publish"
   },
   "dependencies": {
     "commander": "5.1.0",
