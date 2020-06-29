@@ -112,6 +112,7 @@ describe('CLIMgr', () => {
     it('Exits when an incorrect value is given', () => {
       expect.assertions(4);
 
+      // Supress console.error output from tests
       const orgErrorLog = console.error;
       console.error = jest.fn();
 

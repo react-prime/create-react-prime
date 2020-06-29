@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import 'reflect-metadata';
 import * as i from 'types';
 import { LOG_PREFIX, TEXT } from 'src/constants';
@@ -8,20 +9,28 @@ import prepareCLI from 'src/CLI';
 describe('Logger', () => {
   let logSpy: jest.SpyInstance<void, [string?, ...string[]]>;
   let logger: i.LoggerType;
+  const orgLog = console.log;
 
-  async function prepareLogger() {
-    const cli = await prepareCLI();
+  function prepareLogger() {
+    const cli = prepareCLI();
     const cliMgr = new CLIMgr(cli);
     logger = new Logger(cliMgr);
   }
 
-  beforeAll(async () => {
-    await prepareLogger();
+  beforeAll(() => {
+    // Supress console.log output from tests
+    console.log = jest.fn();
+
+    prepareLogger();
   });
 
   beforeEach(() => {
     logSpy = jest.spyOn(console, 'log');
     logSpy.mockClear();
+  });
+
+  afterAll(() => {
+    console.log = orgLog;
   });
 
   describe('warning', () => {
@@ -58,7 +67,7 @@ describe('Logger', () => {
   describe('debug', () => {
     const debugPrefix = `${LOG_PREFIX} ${TEXT.RED}DEBUG${TEXT.DEFAULT}`;
 
-    it('Does not output text when debug flag is false', async () => {
+    it('Does not output text when debug flag is false', () => {
       expect.assertions(1);
 
       logger.debug('test');
@@ -67,14 +76,14 @@ describe('Logger', () => {
       expect(logSpy.mock.calls).toEqual([]);
     });
 
-    it('Outputs text when debug flag is true', async () => {
+    it('Outputs text when debug flag is true', () => {
       expect.assertions(1);
 
       // Simulate using the debug option
       process.argv.push('-d');
 
       // Rebuild cli with new options
-      await prepareLogger();
+      prepareLogger();
 
       logger.debug('test');
       logger.debug('test', 'test2');
