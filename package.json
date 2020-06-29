@@ -14,7 +14,7 @@
     "dev": "rm -rf testingname/ testing-name/; npm run build; node -r ./tsconfig-paths-bootstrap.js dist/src/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
-    "test": "jest **/*.spec.ts",
+    "test": "jest **/*.spec.ts --verbose",
     "test:watch": "npm t -- --watch",
     "test:full": "npm run lint; npm run typecheck; npm t",
     "prepublishOnly": "npm run test:full; npm run build",

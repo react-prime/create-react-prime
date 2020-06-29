@@ -13,7 +13,7 @@ export type CLIMgrType = {
   installType: i.InstallerTypes;
   installRepository: string;
   isDebugging: boolean | undefined;
-  skipSteps: Promise<i.InstallStepId[] | undefined>;
+  skipSteps: i.InstallStepId[] | undefined;
 };
 
 export type LoggerType = {
