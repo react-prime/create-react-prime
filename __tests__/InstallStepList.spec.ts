@@ -1,21 +1,22 @@
 import 'reflect-metadata';
 import * as i from 'types';
-import { mocked } from 'ts-jest/utils';
+import program from 'commander';
 import InstallStepList from 'src/InstallStepList';
 import { INSTALL_STEP } from 'src/constants';
-import Logger from '../src/Logger';
+import Logger from 'src/Logger';
+import CLIMgr from 'src/CLIMgr';
 
-jest.mock('../src/Logger', () => {
-  return jest.fn();
+Logger.prototype.warning = jest.fn().mockImplementation(async () => {
+  // eslint-disable-next-line no-console
+  console.log('warning');
 });
 
 describe('InstallStepList', () => {
   class Ctx {
-    readonly logger = mocked(Logger, true);
+    private cliMgr = new CLIMgr(program);
 
-    createStepList() {
-      return new InstallStepList(this.logger.prototype);
-    }
+    get logger() { return new Logger(this.cliMgr); }
+    createStepList() { return new InstallStepList(this.logger); }
 
     stepOptions(id?: symbol): i.InstallStepOptions {
       return {
@@ -106,6 +107,10 @@ describe('InstallStepList', () => {
     };
 
     expect(stepList.first?.options).toMatchObject(modifiedStepOpts);
+  });
+
+  it('Shows a warning when trying to modify a step that is not included', () => {
+    const stepList = ctx.createStepList().add(ctx.stepOptions(INSTALL_STEP.CLONE));
 
     /* eslint-disable no-console */
     // Supress console.log output from tests
@@ -114,9 +119,9 @@ describe('InstallStepList', () => {
 
     // Shows a warning when step is not found
     /** @TODO Fix. Logger mock freezes Jest */
-    stepList.modifyStep('CLEANUP', { cmd: 'modified' });
+    stepList.modifyStep('NPM_INSTALL', { cmd: 'modified' });
 
-    expect(ctx.logger).toHaveBeenCalledTimes(1);
+    expect(ctx.logger.warning).toHaveBeenCalledTimes(1);
 
     console.log = orgLog;
     /* eslint-enable */
