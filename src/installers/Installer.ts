@@ -17,10 +17,13 @@ const exec = util.promisify(cp.exec);
 
 @injectable()
 export default class Installer implements i.InstallerType {
-  @inject(SERVICES.CLIMgr) protected readonly cliMgr!: i.CLIMgrType;
-  @inject(SERVICES.Logger) protected readonly logger!: i.LoggerType;
-  @inject(SERVICES.InstallStepList) protected readonly installStepList!: i.InstallStepListType;
   private spinner = ora();
+
+  constructor(
+    @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
+    @inject(SERVICES.Logger) protected readonly logger: i.LoggerType,
+    @inject(SERVICES.InstallStepList) protected readonly installStepList: i.InstallStepListType,
+  ) {}
 
 
   init(): void {
@@ -47,7 +50,7 @@ export default class Installer implements i.InstallerType {
         return;
       }
 
-      const skipSteps = await this.cliMgr.skipSteps;
+      const skipSteps = this.cliMgr.skipSteps;
       // "this" in the step instance will be a reference to the Installer instance
       // We fix this by binding the current step to this function
       const skipStep = skipSteps?.some(step.hasId.bind(step));
