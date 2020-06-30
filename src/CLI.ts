@@ -1,17 +1,22 @@
-import * as i from 'types';
 import commander, { program } from 'commander';
-import SERVICES from 'ioc/services';
 import pkg from '../package.json';
 import { TYPE, INSTALL_STEP } from './constants';
 
-const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
+type Cache = {
+  program?: commander.Command;
+}
 
-async function prepareCLI(): Promise<commander.Command> {
-  program
-    // Indicate required argument input
-    .arguments('<projectName>')
-    // Required for an error to show
-    .action((name) => name);
+const cache: Cache = {
+  program: undefined,
+};
+
+function prepareCLI(): commander.Command {
+  // Return cached program for test
+  if (cache.program) {
+    return cache.program.parse(process.argv);
+  }
+
+  const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
 
   // Set options
   program
@@ -32,9 +37,9 @@ async function prepareCLI(): Promise<commander.Command> {
       '-s, --skipSteps <steps>',
       `Skip an install step. You can pass a comma separated list for multiple steps. Options: ${installStepIdList}`,
       // Map from comma separated string list to array
-      async (value) => {
+      (value) => {
         const allSteps = Object.keys(INSTALL_STEP);
-        const skipSteps = value.replace(' ', '').split(',');
+        const skipSteps = value ? value.replace(' ', '').split(',') : [];
         const invalidSteps: string[] = [];
 
         // Check if any of the given steps is invalid
@@ -47,17 +52,15 @@ async function prepareCLI(): Promise<commander.Command> {
         }
 
         if (invalidSteps.length > 0) {
-          // Dynamic import to prevent circular dependency container > CLI > container
-          const container = (await import('ioc')).default;
-          const logger = container.get<i.LoggerType>(SERVICES.Logger);
-
           const stepsToStr = invalidSteps
             .map((str) => `'${str}'`)
             .join(', ');
 
-          return logger.error(
+          console.error(
             `Error in --skipSteps. ${stepsToStr} is/are invalid. Available steps: ${installStepIdList}`,
           );
+
+          process.exit(1);
         }
 
         return skipSteps;
@@ -68,6 +71,9 @@ async function prepareCLI(): Promise<commander.Command> {
   program
     .version(pkg.version)
     .parse(process.argv);
+
+  // Cache the program for test
+  cache.program = program;
 
   return program;
 }

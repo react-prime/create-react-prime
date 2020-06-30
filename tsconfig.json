@@ -1,25 +1,26 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist",
-        "module": "commonjs",
-        "target": "es6",
-        "removeComments": true,
-        "esModuleInterop": true,
-        "skipLibCheck": true,
-        "strict": true,
-        "resolveJsonModule": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "baseUrl": "src",
-        "paths": {
-            "ioc": ["ioc/container"],
-            "ioc/*": ["ioc/*"],
-            "installers/*": ["installers/*"],
-            "types": ["types/index"],
-            "types/*": ["types/*"]
-        },
-        "lib": ["esnext"]
-    },
-    "include": ["./src"],
-    "exclude": ["node_modules"]
+  "compilerOptions": {
+      "noEmit": true,
+      "target": "es6",
+      "module": "commonjs",
+      "lib": ["esnext"],
+      "removeComments": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "resolveJsonModule": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "baseUrl": "src",
+      "paths": {
+          "ioc": ["ioc/container"],
+          "ioc/*": ["ioc/*"],
+          "installers/*": ["installers/*"],
+          "types": ["types/index"],
+          "types/*": ["types/*"],
+          "src/*": ["./*"]
+      }
+  },
+  "include": ["./src", "./test"],
+  "exclude": ["node_modules"]
 }

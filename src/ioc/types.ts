@@ -1,4 +1,5 @@
 import * as i from 'types';
+import commander from 'commander';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
 
@@ -7,11 +8,12 @@ export type AppType = {
 }
 
 export type CLIMgrType = {
+  cli: commander.Command;
   projectName: string;
   installType: i.InstallerTypes;
   installRepository: string;
   isDebugging: boolean | undefined;
-  skipSteps: Promise<i.InstallStepId[] | undefined>;
+  skipSteps: i.InstallStepId[] | undefined;
 };
 
 export type LoggerType = {
@@ -28,6 +30,7 @@ export type InstallerType = {
 }
 
 export type InstallStepType = {
+  options: i.InstallStepOptions;
   id: symbol;
   message: i.InstallMessage;
   cmd: string | undefined;

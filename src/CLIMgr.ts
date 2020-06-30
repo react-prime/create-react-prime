@@ -6,8 +6,11 @@ import { ARG, REPOSITORIES } from './constants';
 
 @injectable()
 export default class CLIMgr implements i.CLIMgrType {
-  @inject(SERVICES.CLI) readonly cli!: commander.Command;
   private _projectName?: string;
+
+  constructor(
+    @inject(SERVICES.CLI) readonly cli: commander.Command,
+  ) {}
 
 
   get installRepository(): string {
@@ -21,11 +24,7 @@ export default class CLIMgr implements i.CLIMgrType {
 
   /** Args are passed without an option flag, i.e. the project name */
   get projectName(): string {
-    if (this._projectName) {
-      return this._projectName;
-    }
-
-    return this.args[ARG.PROJECT_NAME];
+    return this._projectName || this.args[ARG.PROJECT_NAME] || this.installRepository;
   }
 
   set projectName(name: string) {
@@ -36,13 +35,8 @@ export default class CLIMgr implements i.CLIMgrType {
     return this.cli.debug;
   }
 
-  /** Because of a dynamic import in this option, we have to deal with asynchronous code */
-  get skipSteps(): Promise<i.InstallStepId[] | undefined> {
-    // Create a promise to resolve the value
-    const skipStepsList = Promise.resolve<i.InstallStepId[]>(this.cli.skipSteps);
-
-    // Resolve the value
-    return Promise.resolve(skipStepsList);
+  get skipSteps(): i.InstallStepId[] | undefined {
+    return this.cli.skipSteps;
   }
 
   private get args(): string[] {

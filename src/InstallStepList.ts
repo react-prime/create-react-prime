@@ -12,7 +12,11 @@ decorate(injectable(), Array);
 
 @injectable()
 export default class InstallStepList extends Array<InstallStep> implements i.InstallStepListType {
-  @inject(SERVICES.Logger) private readonly logger!: i.LoggerType;
+  constructor(
+    @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
+  ) {
+    super();
+  }
 
   get first(): InstallStep | undefined {
     return this[0];

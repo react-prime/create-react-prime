@@ -5,7 +5,9 @@ import { TEXT, LOG_PREFIX } from './constants';
 
 @injectable()
 export default class Logger implements i.LoggerType {
-  @inject(SERVICES.CLIMgr) private readonly cliMgr!: i.CLIMgrType;
+  constructor(
+    @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
+  ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warning(...reason: any[]): void {

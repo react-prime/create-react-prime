@@ -32,9 +32,9 @@ export const TEXT = {
 
 /** Installation step identifiers */
 export const INSTALL_STEP = {
-  CLONE: Symbol.for('clone'),
-  UPDATE_PACKAGE: Symbol.for('update'),
-  NPM_INSTALL: Symbol.for('install'),
-  CLEANUP: Symbol.for('cleanup'),
-  RUN_NATIVE_SCRIPTS: Symbol.for('native_scripts'),
+  CLONE: Symbol('clone'),
+  UPDATE_PACKAGE: Symbol('update'),
+  NPM_INSTALL: Symbol('install'),
+  CLEANUP: Symbol('cleanup'),
+  RUN_NATIVE_SCRIPTS: Symbol('native_scripts'),
 };
