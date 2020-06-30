@@ -7,9 +7,12 @@ import { TEXT, LOG_PREFIX } from './constants';
 
 @injectable()
 export default class App implements i.AppType {
-  @inject(SERVICES.CLIMgr) private readonly cliMgr!: i.CLIMgrType;
-  @inject(SERVICES.Logger) private readonly logger!: i.LoggerType;
   private installer!: i.InstallerType;
+
+  constructor(
+    @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
+    @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
+  ) {}
 
 
   async start(): Promise<void> {
@@ -21,7 +24,7 @@ export default class App implements i.AppType {
 
     // Check if directory already exists to prevent overwriting existing data
     if (fs.existsSync(this.cliMgr.projectName)) {
-      this.logger.error(`directory '${this.cliMgr.projectName}' already exists.`);
+      return this.logger.error(`directory '${this.cliMgr.projectName}' already exists.`);
     }
 
     try {
