@@ -1,13 +1,17 @@
 import 'reflect-metadata';
 import * as i from 'types';
 import { mocked } from 'ts-jest/utils';
-import Logger from 'src/Logger';
 import InstallStepList from 'src/InstallStepList';
 import { INSTALL_STEP } from 'src/constants';
+import Logger from '../src/Logger';
+
+jest.mock('../src/Logger', () => {
+  return jest.fn();
+});
 
 describe('InstallStepList', () => {
   class Ctx {
-    readonly logger = mocked(Logger);
+    readonly logger = mocked(Logger, true);
 
     createStepList() {
       return new InstallStepList(this.logger.prototype);
@@ -110,9 +114,9 @@ describe('InstallStepList', () => {
 
     // Shows a warning when step is not found
     /** @TODO Fix. Logger mock freezes Jest */
-    // stepList.modifyStep('CLEANUP', { cmd: 'modified' });
+    stepList.modifyStep('CLEANUP', { cmd: 'modified' });
 
-    // expect(ctx.logger.mock.calls).toHaveLength(1);
+    expect(ctx.logger).toHaveBeenCalledTimes(1);
 
     console.log = orgLog;
     /* eslint-enable */
