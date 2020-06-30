@@ -6,11 +6,6 @@ import { INSTALL_STEP } from 'src/constants';
 import Logger from 'src/Logger';
 import CLIMgr from 'src/CLIMgr';
 
-Logger.prototype.warning = jest.fn().mockImplementation(async () => {
-  // eslint-disable-next-line no-console
-  console.log('warning');
-});
-
 describe('InstallStepList', () => {
   class Ctx {
     private cliMgr = new CLIMgr(program);
@@ -116,6 +111,11 @@ describe('InstallStepList', () => {
     // Supress console.log output from tests
     const orgLog = console.log;
     console.log = jest.fn();
+
+    Logger.prototype.warning = jest.fn().mockImplementation(async () => {
+      // eslint-disable-next-line no-console
+      console.log('warning');
+    });
 
     // Shows a warning when step is not found
     /** @TODO Fix. Logger mock freezes Jest */
