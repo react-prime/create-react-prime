@@ -30,6 +30,7 @@ export type InstallerType = {
 }
 
 export type InstallStepType = {
+  options: i.InstallStepOptions;
   id: symbol;
   message: i.InstallMessage;
   cmd: string | undefined;
