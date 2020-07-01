@@ -4,9 +4,10 @@ import { LOG_PREFIX, TEXT } from 'src/constants';
 import Logger from 'src/Logger';
 import CLIMgr from 'src/CLIMgr';
 import cli from 'src/CLI';
+import mockConsole from './utils/mockConsole';
 
 describe('Logger', () => {
-  const orgLog = console.log;
+  const restoreConsole = mockConsole();
 
   const ctx = new class Ctx {
     logSpy = jest.spyOn(console, 'log');
@@ -15,18 +16,13 @@ describe('Logger', () => {
     private get cliMgr() { return new CLIMgr(cli); }
   };
 
-  beforeAll(() => {
-    // Supress console.log output from tests
-    console.log = jest.fn();
-  });
-
   beforeEach(() => {
     ctx.logSpy = jest.spyOn(console, 'log');
     ctx.logSpy.mockClear();
   });
 
   afterAll(() => {
-    console.log = orgLog;
+    restoreConsole();
   });
 
   describe('warning', () => {

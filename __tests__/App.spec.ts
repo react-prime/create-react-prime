@@ -6,6 +6,7 @@ import App from 'src/App';
 import Installer from 'installers/Installer';
 import CLIMgr from 'src/CLIMgr';
 import Logger from 'src/Logger';
+import mockConsole from './utils/mockConsole';
 
 // Mock so it doesn't run a full installation
 Installer.prototype.install = jest.fn().mockResolvedValue({});
@@ -16,6 +17,7 @@ Object.defineProperty(CLIMgr, 'installType', {
 });
 
 describe('App', () => {
+  const restoreConsole = mockConsole();
   const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
   const ctx = new class Ctx {
@@ -24,22 +26,13 @@ describe('App', () => {
     get app() { return new App(this.cliMgr, this.logger); }
   };
 
-  /* eslint-disable no-console */
-  const orgLog = console.log;
-
-  beforeAll(() => {
-    // Supress console.log output from tests
-    console.log = jest.fn();
-  });
-
   beforeEach(() => {
     mockProcessExit.mockClear();
   });
 
   afterAll(() => {
-    console.log = orgLog;
+    restoreConsole();
   });
-  /* eslint-enable */
 
   it('Starts and exits the installation process succesfully', async () => {
 

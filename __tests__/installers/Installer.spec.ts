@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any, no-console */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import 'reflect-metadata';
 import * as i from 'types';
 import { mocked } from 'ts-jest/utils';
@@ -7,6 +7,7 @@ import container from 'ioc';
 import SERVICES from 'ioc/services';
 import Installer from 'installers/Installer';
 import Logger from 'src/Logger';
+import mockConsole from '../utils/mockConsole';
 
 // Mock the factory function
 jest.mock('ora', () => {
@@ -22,20 +23,16 @@ jest.mock('ora', () => {
 (Installer.prototype as any).executeStep = jest.fn().mockResolvedValue({});
 
 describe('Installer', () => {
-  const orgLog = console.log;
+  const restoreConsole = mockConsole();
+
   /** @TODO Find a way to load installer outside of IoC container */
   const installer = container.getNamed<i.InstallerType>(SERVICES.Installer, 'client');
 
   // Full-Access installer reference for accessing protected/private properties
   const FAInstaller = installer as any;
 
-  beforeAll(() => {
-    // Supress console.log output from tests
-    console.log = jest.fn();
-  });
-
   afterAll(() => {
-    console.log = orgLog;
+    restoreConsole();
   });
 
   it('Configures the base install steps on init', () => {
