@@ -1,38 +1,39 @@
-import commander, { program } from 'commander';
+import commander, { Command } from 'commander';
 import pkg from '../package.json';
 import { TYPE, INSTALL_STEP } from './constants';
 
 type Cache = {
-  program?: commander.Command;
+  cli?: commander.Command;
 }
 
-const cache: Cache = {
-  program: undefined,
-};
+const cache: Cache = {};
 
-function prepareCLI(): commander.Command {
-  // Return cached program for test
-  if (cache.program) {
-    return cache.program.parse(process.argv);
+function initCLI(): commander.Command {
+  // Return cached if exists
+  if (cache.cli) {
+    return cache.cli;
   }
 
-  const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
+  // Initiate cli program
+  cache.cli = new Command();
 
   // Set options
-  program
+  const installStepIdList = Object.keys(INSTALL_STEP).join(', ');
+
+  cache.cli
     .option(
       '-t, --type <type>',
       `Install a type of react-prime. Options: ${Object.values(TYPE).join(', ')}`,
       TYPE.CLIENT,
     );
 
-  program
+  cache.cli
     .option(
       '-d, --debug',
       'Show additional information when running the installer.',
     );
 
-  program
+  cache.cli
     .option(
       '-s, --skipSteps <steps>',
       `Skip an install step. You can pass a comma separated list for multiple steps. Options: ${installStepIdList}`,
@@ -68,14 +69,11 @@ function prepareCLI(): commander.Command {
     );
 
   // Set other variables
-  program
+  cache.cli
     .version(pkg.version)
     .parse(process.argv);
 
-  // Cache the program for test
-  cache.program = program;
-
-  return program;
+  return cache.cli;
 }
 
-export default prepareCLI;
+export default initCLI();

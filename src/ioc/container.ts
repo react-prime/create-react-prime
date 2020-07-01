@@ -8,11 +8,10 @@ import SsrInstaller from 'installers/Ssr';
 import NativeInstaller from 'installers/Native';
 import InstallStepList from 'src/InstallStepList';
 import App from 'src/App';
-import prepareCLI from 'src/CLI';
+import cli from 'src/CLI';
 import CLIMgr from 'src/CLIMgr';
 import Logger from 'src/Logger';
 
-const cli = prepareCLI();
 const container = new Container();
 
 container.bind<i.LoggerType>(SERVICES.Logger).to(Logger);

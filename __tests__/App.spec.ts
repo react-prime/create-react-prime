@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import fs from 'fs';
-import program from 'commander';
+import cli from 'src/CLI';
 import { mocked } from 'ts-jest/utils';
 import App from 'src/App';
 import Installer from 'installers/Installer';
@@ -8,20 +8,18 @@ import CLIMgr from 'src/CLIMgr';
 import Logger from 'src/Logger';
 
 // Mock so it doesn't run a full installation
-Installer.prototype.install = jest.fn().mockImplementation(async () => {
-  return Promise.resolve();
-});
+Installer.prototype.install = jest.fn().mockResolvedValue({});
 
 // Mock user given install type
 Object.defineProperty(CLIMgr, 'installType', {
-  get: jest.fn(() => 'client'),
+  get: jest.fn().mockReturnValue('client'),
 });
 
 describe('App', () => {
   const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
   class Ctx {
-    get cliMgr() { return new CLIMgr(program); }
+    get cliMgr() { return new CLIMgr(cli); }
     get logger() { return mocked(Logger).prototype; }
     get app() { return new App(this.cliMgr, this.logger); }
   }

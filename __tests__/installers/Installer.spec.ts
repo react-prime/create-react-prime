@@ -19,9 +19,7 @@ jest.mock('ora', () => {
 });
 
 // Mock the install step executions
-(Installer.prototype as any).executeStep = jest.fn().mockImplementation(async () => {
-  return Promise.resolve();
-});
+(Installer.prototype as any).executeStep = jest.fn().mockResolvedValue({});
 
 describe('Installer', () => {
   const orgLog = console.log;

@@ -4,7 +4,7 @@ import * as i from 'types';
 import { LOG_PREFIX, TEXT } from 'src/constants';
 import Logger from 'src/Logger';
 import CLIMgr from 'src/CLIMgr';
-import prepareCLI from 'src/CLI';
+import cli from 'src/CLI';
 
 describe('Logger', () => {
   let logSpy: jest.SpyInstance<void, [string?, ...string[]]>;
@@ -12,7 +12,6 @@ describe('Logger', () => {
   const orgLog = console.log;
 
   function prepareLogger() {
-    const cli = prepareCLI();
     const cliMgr = new CLIMgr(cli);
     logger = new Logger(cliMgr);
   }
@@ -68,8 +67,6 @@ describe('Logger', () => {
     const debugPrefix = `${LOG_PREFIX} ${TEXT.RED}DEBUG${TEXT.DEFAULT}`;
 
     it('Does not output text when debug flag is false', () => {
-      expect.assertions(1);
-
       logger.debug('test');
       logger.debug('test', 'test2');
 
@@ -77,10 +74,8 @@ describe('Logger', () => {
     });
 
     it('Outputs text when debug flag is true', () => {
-      expect.assertions(1);
-
       // Simulate using the debug option
-      process.argv.push('-d');
+      cli.debug = true;
 
       // Rebuild cli with new options
       prepareLogger();
