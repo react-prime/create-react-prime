@@ -69,7 +69,7 @@ describe('CLIMgr', () => {
 
   describe('isDebugging', () => {
     it('Returns the correct debug option value', () => {
-      expect(ctx.cliMgr.isDebugging).toEqual(undefined);
+      expect(ctx.cliMgr.isDebugging).toBeUndefined();
 
       cli.debug = true;
       expect(ctx.cliMgr.isDebugging).toEqual(true);
@@ -78,7 +78,7 @@ describe('CLIMgr', () => {
 
   describe('skipSteps', () => {
     it('Returns the given steps', () => {
-      expect(ctx.cliMgr.skipSteps).toEqual(undefined);
+      expect(ctx.cliMgr.skipSteps).toBeUndefined();
 
       cli.skipSteps = ['CLONE'];
       expect(ctx.cliMgr.skipSteps).toEqual(['CLONE']);
