@@ -1,12 +1,11 @@
 import 'reflect-metadata';
 import fs from 'fs';
-import cli from 'src/CLI';
-import { mocked } from 'ts-jest/utils';
 import App from 'src/App';
 import Installer from 'installers/Installer';
 import CLIMgr from 'src/CLIMgr';
 import Logger from 'src/Logger';
 import mockConsole from './utils/mockConsole';
+import createCliCtx from './utils/createCliCtx';
 
 // Mock so it doesn't run a full installation
 Installer.prototype.install = jest.fn().mockResolvedValue({});
@@ -21,9 +20,16 @@ describe('App', () => {
   const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
   const ctx = new class Ctx {
-    get cliMgr() { return new CLIMgr(cli); }
-    get logger() { return mocked(Logger).prototype; }
-    get app() { return new App(this.cliMgr, this.logger); }
+    createAppCtx() {
+      const { cliMgr } = createCliCtx();
+      const logger = new Logger(cliMgr);
+
+      return {
+        cliMgr,
+        logger,
+        app: new App(cliMgr, logger),
+      };
+    }
   };
 
   beforeEach(() => {
@@ -35,11 +41,12 @@ describe('App', () => {
   });
 
   it('Starts and exits the installation process succesfully', async () => {
+    const { app, cliMgr } = ctx.createAppCtx();
 
     // Mock return value of installType, normally given by user
-    jest.spyOn(ctx.cliMgr, 'installType', 'get').mockReturnValue('client');
+    jest.spyOn(cliMgr, 'installType', 'get').mockReturnValue('client');
 
-    await ctx.app.start();
+    await app.start();
 
     // Exit without code
     expect(mockProcessExit).toHaveBeenCalledWith();
@@ -47,13 +54,15 @@ describe('App', () => {
   });
 
   it('Stops the installation when a directory with the same name exists', async () => {
-    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
-    jest.spyOn(ctx.logger, 'error');
+    const { app, logger } = ctx.createAppCtx();
 
-    await ctx.app.start();
+    jest.spyOn(fs, 'existsSync').mockReturnValue(true);
+    jest.spyOn(logger, 'error');
+
+    await app.start();
 
     expect(fs.existsSync).toHaveReturnedWith(true);
-    expect(ctx.logger.error).toHaveBeenCalledTimes(1);
+    expect(logger.error).toHaveBeenCalledTimes(1);
     expect(mockProcessExit).toHaveBeenCalledWith(1);
     expect(mockProcessExit).toHaveBeenCalledTimes(1);
   });

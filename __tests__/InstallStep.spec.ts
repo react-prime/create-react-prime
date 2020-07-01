@@ -60,7 +60,7 @@ describe('InstallStep', () => {
   });
 
   it('Confirms or denies it has a given ID', () => {
-    expect(ctx.step1.hasId('CLONE')).toBeTruthy();
-    expect(ctx.step1.hasId('CLEANUP')).toBeFalsy();
+    expect(ctx.step1.hasId('CLONE')).toEqual(true);
+    expect(ctx.step1.hasId('CLEANUP')).toEqual(false);
   });
 });

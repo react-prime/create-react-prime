@@ -2,18 +2,7 @@ import commander, { Command } from 'commander';
 import pkg from '../package.json';
 import { TYPE, INSTALL_STEP } from './constants';
 
-type Cache = {
-  cli?: commander.Command;
-}
-
-const cache: Cache = {};
-
 function initCLI(): commander.Command {
-  // Return cached CLI if exists
-  if (cache.cli) {
-    return cache.cli;
-  }
-
   // Initiate cli program
   const cli = new Command();
 
@@ -69,9 +58,7 @@ function initCLI(): commander.Command {
   cli.version(pkg.version);
   cli.parse(process.argv);
 
-  cache.cli = cli;
-
-  return cache.cli;
+  return cli;
 }
 
-export default initCLI();
+export default initCLI;

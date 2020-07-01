@@ -1,17 +1,21 @@
 import 'reflect-metadata';
 import * as i from 'types';
-import program from 'commander';
 import InstallStepList from 'src/InstallStepList';
 import { INSTALL_STEP } from 'src/constants';
 import Logger from 'src/Logger';
-import CLIMgr from 'src/CLIMgr';
+import createCliCtx from './utils/createCliCtx';
 
 describe('InstallStepList', () => {
   const ctx = new class Ctx {
-    private cliMgr = new CLIMgr(program);
+    get logger() {
+      const { cliMgr } = createCliCtx();
 
-    get logger() { return new Logger(this.cliMgr); }
-    createStepList() { return new InstallStepList(this.logger); }
+      return new Logger(cliMgr);
+    }
+
+    createStepList() {
+      return new InstallStepList(this.logger);
+    }
 
     stepOptions(id?: symbol): i.InstallStepOptions {
       return {
@@ -28,7 +32,7 @@ describe('InstallStepList', () => {
   };
 
   it('Is an array', () => {
-    expect(Array.isArray(ctx.createStepList())).toBeTruthy();
+    expect(Array.isArray(ctx.createStepList())).toEqual(true);
   });
 
   it('Starts empty', () => {
@@ -40,7 +44,7 @@ describe('InstallStepList', () => {
       .add(ctx.stepOptions(INSTALL_STEP.CLONE))
       .add(ctx.stepOptions(INSTALL_STEP.NPM_INSTALL));
 
-    expect(stepList.first?.hasId('CLONE')).toBeTruthy();
+    expect(stepList.first?.hasId('CLONE')).toEqual(true);
   });
 
   it('Returns the last in the list', () => {
@@ -48,7 +52,7 @@ describe('InstallStepList', () => {
       .add(ctx.stepOptions(INSTALL_STEP.CLONE))
       .add(ctx.stepOptions(INSTALL_STEP.NPM_INSTALL));
 
-    expect(stepList.last?.hasId('NPM_INSTALL')).toBeTruthy();
+    expect(stepList.last?.hasId('NPM_INSTALL')).toEqual(true);
   });
 
   it('Can add a step to the end of the list', () => {
@@ -63,11 +67,11 @@ describe('InstallStepList', () => {
     stepList.add(ctx.stepOptions(INSTALL_STEP.NPM_INSTALL));
 
     expect(stepList).toHaveLength(2);
-    expect(stepList.last?.hasId('NPM_INSTALL')).toBeTruthy();
+    expect(stepList.last?.hasId('NPM_INSTALL')).toEqual(true);
 
     // 'previous' and 'next' references are updated
-    expect(stepList.last?.previous?.hasId('CLONE')).toBeTruthy();
-    expect(stepList.first?.next?.hasId('NPM_INSTALL')).toBeTruthy();
+    expect(stepList.last?.previous?.hasId('CLONE')).toEqual(true);
+    expect(stepList.first?.next?.hasId('NPM_INSTALL')).toEqual(true);
   });
 
   it('Can add a step at any position in the list', () => {
@@ -78,13 +82,13 @@ describe('InstallStepList', () => {
 
     stepList.addAfterStep('CLONE', ctx.stepOptions(INSTALL_STEP.UPDATE_PACKAGE));
 
-    expect(stepList[1].hasId('UPDATE_PACKAGE')).toBeTruthy();
+    expect(stepList[1].hasId('UPDATE_PACKAGE')).toEqual(true);
 
     // Updates 'previous' and 'next' references of previous and next steps
     expect(stepList[0].previous).toBeUndefined();
-    expect(stepList[0].next?.hasId('UPDATE_PACKAGE')).toBeTruthy();
-    expect(stepList[1].previous?.hasId('CLONE')).toBeTruthy();
-    expect(stepList[1].next?.hasId('NPM_INSTALL')).toBeTruthy();
+    expect(stepList[0].next?.hasId('UPDATE_PACKAGE')).toEqual(true);
+    expect(stepList[1].previous?.hasId('CLONE')).toEqual(true);
+    expect(stepList[1].next?.hasId('NPM_INSTALL')).toEqual(true);
   });
 
   it('Modifies a step\'s options and leaves everything intact', () => {
@@ -105,23 +109,11 @@ describe('InstallStepList', () => {
   it('Shows a warning when trying to modify a step that is not included', () => {
     const stepList = ctx.createStepList().add(ctx.stepOptions(INSTALL_STEP.CLONE));
 
-    /* eslint-disable no-console */
-    // Supress console.log output from tests
-    const orgLog = console.log;
-    console.log = jest.fn();
-
-    Logger.prototype.warning = jest.fn().mockImplementation(async () => {
-      // eslint-disable-next-line no-console
-      console.log('warning');
-    });
+    Logger.prototype.warning = jest.fn().mockImplementation();
 
     // Shows a warning when step is not found
-    /** @TODO Fix. Logger mock freezes Jest */
     stepList.modifyStep('NPM_INSTALL', { cmd: 'modified' });
 
     expect(ctx.logger.warning).toHaveBeenCalledTimes(1);
-
-    console.log = orgLog;
-    /* eslint-enable */
   });
 });
