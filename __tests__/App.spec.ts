@@ -18,13 +18,11 @@ Object.defineProperty(CLIMgr, 'installType', {
 describe('App', () => {
   const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
-  class Ctx {
+  const ctx = new class Ctx {
     get cliMgr() { return new CLIMgr(cli); }
     get logger() { return mocked(Logger).prototype; }
     get app() { return new App(this.cliMgr, this.logger); }
-  }
-
-  const ctx = new Ctx();
+  };
 
   /* eslint-disable no-console */
   const orgLog = console.log;

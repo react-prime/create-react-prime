@@ -7,7 +7,7 @@ import Logger from 'src/Logger';
 import CLIMgr from 'src/CLIMgr';
 
 describe('InstallStepList', () => {
-  class Ctx {
+  const ctx = new class Ctx {
     private cliMgr = new CLIMgr(program);
 
     get logger() { return new Logger(this.cliMgr); }
@@ -25,9 +25,7 @@ describe('InstallStepList', () => {
         fn: async () => void {},
       };
     }
-  }
-
-  const ctx = new Ctx();
+  };
 
   it('Is an array', () => {
     expect(Array.isArray(ctx.createStepList())).toBeTruthy();

@@ -3,11 +3,9 @@ import CLIMgr from 'src/CLIMgr';
 import cli from 'src/CLI';
 
 describe('CLIMgr', () => {
-  class Ctx {
+  const ctx = new class Ctx {
     get cliMgr() { return new CLIMgr(cli); }
-  }
-
-  const ctx = new Ctx();
+  };
 
   describe('installType', () => {
     it('Returns to correct install type', () => {

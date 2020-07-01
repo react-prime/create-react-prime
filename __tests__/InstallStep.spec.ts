@@ -3,7 +3,7 @@ import InstallStep from 'src/InstallStep';
 import { INSTALL_STEP } from 'src/constants';
 
 describe('InstallStep', () => {
-  class Ctx {
+  const ctx = new class Ctx {
     readonly opts = {
       message: {
         pending: 'pending test',
@@ -17,9 +17,7 @@ describe('InstallStep', () => {
 
     readonly step1 = new InstallStep(this.opts);
     readonly step2 = new InstallStep(this.opts, this.step1);
-  }
-
-  const ctx = new Ctx();
+  };
 
   it('Returns correct values from getters', () => {
     expect(ctx.step1.cmd).toEqual('cmd line script');
