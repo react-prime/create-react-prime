@@ -15,7 +15,8 @@
   },
   "ignorePatterns": [
     "**/dist/**/*.js",
-    "tsconfig-paths-bootstrap.js"
+    "tsconfig-paths-bootstrap.js",
+    "src/main"
   ],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
