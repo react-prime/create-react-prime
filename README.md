@@ -40,21 +40,36 @@ npm start
       client
     </td>
     <td>
-      Installs one of the supported boilerplate types
+      Installs one of the supported boilerplate types.
     </td>
   </tr>
   <tr>
     <td>
-      --typescript
+      -d, --debug
     </td>
     <td>
-      -
+      boolean
     </td>
     <td>
       false
     </td>
     <td>
-      Installs the TypeScript variant of the specified boilerplate type
+      Show additional information during installation.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      -s, --skipStep
+    </td>
+    <td>
+      string, string[]
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      A comma separated list of installation step(s) to skip. See --help to see what values you can use.
+      <br /><b>WARNING:</b> can break installation!
     </td>
   </tr>
 </table>

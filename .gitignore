@@ -4,9 +4,10 @@
 .progress-estimations
 
 node_modules
-react-prime
-react-prime-ssr
-react-prime-native
+reactprime
+reactprimessr
+reactprimenative
 dist
 
-crp-test-*
+testing*
+crptest*

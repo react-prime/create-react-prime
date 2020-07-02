@@ -13,13 +13,17 @@
         "jsx": true
     }
   },
+  "ignorePatterns": [
+    "**/dist/**/*.js",
+    "tsconfig-paths-bootstrap.js",
+    "src/main"
+  ],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": 2,
     "arrow-spacing": ["error", { "before": true, "after": true }],
     "block-spacing": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
-    "jsx-quotes": ["error", "prefer-double"],
     "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
     "keyword-spacing": ["error", {
       "before": true,
@@ -46,8 +50,8 @@
     "space-in-parens": ["error", "never"],
     "space-infix-ops": "error",
     "eol-last": ["error", "always"],
-    "import/no-unresolved": false,
-    "import/named": false,
+    "import/no-unresolved": 0,
+    "import/named": 0,
     "import/order": ["error", {
       "groups": [
         "builtin",
@@ -58,75 +62,31 @@
         "sibling"
       ]
     }],
-    "max-line-length": [true, 120],
-    "interface-name": false,
-    "align": false,
-    "import-name": false,
-    "no-angle-bracket-type-assertion": true,
-    "trailing-comma": [
-      true,
-      {
-        "multiline": {
-          "objects": "always",
-          "arrays": "always",
-          "functions": "never",
-          "typeLiterals": "ignore"
-        },
-        "singleline": "never",
-        "esSpecCompliant": true
-      }
-    ],
-    "member-ordering": [
-      true,
-      {
-        "order": [
-          "public-static-field",
-          "public-static-method",
-          "protected-static-field",
-          "protected-static-method",
-          "private-static-field",
-          "private-static-method",
-          "public-instance-field",
-          "protected-instance-field",
-          "private-instance-field",
-          "public-constructor",
-          "protected-constructor",
-          "private-constructor",
-          "public-instance-method",
-          "protected-instance-method",
-          "private-instance-method"
-        ]
-      }
-    ],
-    "quotemark": [true, "single", "avoid-escape"],
-    "no-shadowed-variable": false,
-    "semicolon": [true, "always", "ignore-interfaces"],
-    "array-type": [true, "array"],
-    "whitespace": [true,
-      "check-branch",
-      "check-decl",
-      "check-operator",
-      "check-module",
-      "check-separator",
-      "check-rest-spread",
-      "check-type",
-      "check-typecast",
-      "check-type-operator",
-      "check-preblock"
-    ],
-    "no-magic-numbers": ["error", {
-      "ignore": [0, 1, 401],
-      "ignoreArrayIndexes": true
+    "max-len": [2, 120],
+    "interface-name": 0,
+    "align": 0,
+    "import-name": 0,
+    "no-shadowed-variable": 0,
+    "comma-spacing": ["error", {
+      "before": false,
+      "after": true
     }],
+
     "@typescript-eslint/indent": ["error", 2],
-    "@typescript-eslint/explicit-function-return-type": false,
-    "@typescript-eslint/no-empty-interface": false,
-    "@typescript-eslint/prefer-interface": false,
-    "@typescript-eslint/explicit-member-accessibility": [true, "no-public"],
-    "@typescript-eslint/no-use-before-define": false,
-    "@typescript-eslint/no-object-literal-type-assertion": false,
-    "@typescript-eslint/no-parameter-properties": false,
-    "@typescript-eslint/no-non-null-assertion": false,
-    "@typescript-eslint/camelcase": false
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/prefer-interface": 0,
+    "@typescript-eslint/explicit-member-accessibility": [1, {
+      "accessibility": "no-public"
+    }],
+    "@typescript-eslint/no-use-before-define": 0,
+    "@typescript-eslint/no-object-literal-type-assertion": 0,
+    "@typescript-eslint/no-parameter-properties": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/camelcase": 0,
+    "@typescript-eslint/array-type": [1, { "default": "array" }],
+    "@typescript-eslint/ban-ts-ignore": 0,
+    "@typescript-eslint/no-namespace": 0,
+    "@typescript-eslint/ban-ts-comment": 0
   }
 }

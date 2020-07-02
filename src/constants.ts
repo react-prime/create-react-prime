@@ -1,18 +1,40 @@
-// Boilerplate types
+export const LOG_PREFIX = 'crp';
+
+/** Boilerplate types */
 export const TYPE = {
   CLIENT: 'client',
   SSR: 'ssr',
   NATIVE: 'native',
-};
+} as const;
 
-// Program argument names
+/** Boilerplate repository names */
+export const REPOSITORIES = {
+  client: 'react-prime',
+  ssr: 'react-prime-ssr',
+  native: 'react-prime-native',
+} as const;
+
+/** Github organization tag */
+export const ORGANIZATION = 'react-prime';
+
+/** CLI argument name indices */
 export const ARG = {
   PROJECT_NAME: 0,
+} as const;
+
+/** Command line colors */
+export const TEXT = {
+  BOLD: '\x1b[1m',
+  YELLOW: '\x1b[33m',
+  RED: '\x1b[31m',
+  DEFAULT: '\x1b[0m',
 };
 
-// Command line colors
-export const TEXT = {
-  BOLD: '\033[1m',
-  YELLOW: '\033[93m',
-  DEFAULT:'\033[0m',
+/** Installation step identifiers */
+export const INSTALL_STEP = {
+  CLONE: Symbol('clone'),
+  UPDATE_PACKAGE: Symbol('update'),
+  NPM_INSTALL: Symbol('install'),
+  CLEANUP: Symbol('cleanup'),
+  RUN_NATIVE_SCRIPTS: Symbol('native_scripts'),
 };
