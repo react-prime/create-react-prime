@@ -9,7 +9,7 @@
     "create-react-prime": "dist/src/main"
   },
   "files": [
-    "dist"
+    "dist/*"
   ],
   "scripts": {
     "build": "rm -rf dist/; tsc -p tsconfig.app.json; cp src/main dist/src;cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist/",
