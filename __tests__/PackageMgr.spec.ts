@@ -36,7 +36,7 @@ describe('PackageMgr', () => {
     it('Returns the project package as an JS object and the path to the package file', () => {
       const { packageMgr, cliMgr } = ctx.createMgrCtx();
       const mockPkg = ctx.mockPkg;
-      const mockPath = path.resolve(mockPkg.name, 'package.json');
+      const mockPath = path.resolve(mockPkg.name as string, 'package.json');
 
       jest.spyOn(cliMgr.prototype, 'projectName', 'get').mockReturnValue('create-react-prime');
       jest.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(mockPkg));
