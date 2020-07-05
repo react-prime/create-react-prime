@@ -1,5 +1,4 @@
 import util from 'util';
-import path from 'path';
 import cp from 'child_process';
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
@@ -110,23 +109,6 @@ export default class Installer implements i.InstallerType {
 
       this.installStepList.add(baseStep);
     }
-  }
-
-  /**
-   * Promisify spawns
-   * util.promisfy doesn't work
-   */
-  protected asyncSpawn(command: string, args: string[], options?: { path: string }): Promise<void> {
-    const opts: cp.SpawnOptionsWithoutStdio = {
-      // Execute in given folder path with cwd
-      cwd: options?.path || path.resolve(this.cliMgr.projectName),
-    };
-
-    return new Promise((resolve, reject) => {
-      cp.spawn(command, args, opts)
-        .on('close', resolve)
-        .on('error', reject);
-    });
   }
 
 
