@@ -4,17 +4,18 @@
   "description": "Installs the latest version of React-Prime boilerplate.",
   "author": "Sander Vispoel <contact@sandervispoel.com>",
   "license": "MIT",
-  "main": "dist/src/main",
+  "main": "dist/main",
   "bin": {
-    "create-react-prime": "dist/src/main"
+    "create-react-prime": "dist/main"
   },
   "files": [
-    "dist/**/*"
+    "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist/; tsc -p tsconfig.app.json; cp src/main dist/src;cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist/",
-    "start": "node -r ./tsconfig-paths-bootstrap.js dist/src/main",
-    "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/src/main testing-name",
+    "build": "rm -rf dist/; tsc -p tsconfig.app.json; cp src/main dist;cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist/",
+    "postbuild": "sed -i'.bak' -e 's/$version/'\"${npm_package_version}\"'/g' dist/CLI.js;rm dist/CLI.js.bak",
+    "start": "node -r ./tsconfig-paths-bootstrap.js dist/main",
+    "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
     "test": "jest",

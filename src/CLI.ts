@@ -1,5 +1,4 @@
 import commander, { Command } from 'commander';
-import pkg from '../package.json';
 import { TYPE, INSTALL_STEP } from './constants';
 
 function initCLI(): commander.Command {
@@ -55,7 +54,7 @@ function initCLI(): commander.Command {
   );
 
   // Set other variables
-  cli.version(pkg.version);
+  cli.version('$version');
   cli.parse(process.argv);
 
   return cli;
