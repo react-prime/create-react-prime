@@ -18,6 +18,7 @@
           "installers/*": ["installers/*"],
           "types": ["types/index"],
           "types/*": ["types/*"],
+          "utils/*": ["utils/*"],
           "src/*": ["./*"]
       }
   },

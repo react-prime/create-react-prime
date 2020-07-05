@@ -8,6 +8,7 @@ export default class NativeInstaller extends Installer {
     replaceSchemes: 'replaceSchemeFilenames',
   };
 
+
   init(): void {
     // Native project names can only contain alphanumerical characters
     this.cliMgr.projectName = this.cliMgr.projectName.replace(/\W/g, '');
@@ -40,7 +41,7 @@ export default class NativeInstaller extends Installer {
   /** Add additional scripts to package.json */
   protected async updatePackage(): Promise<void> {
     const { projectName } = this.cliMgr;
-    const pkg = this.getProjectNpmPackage().json;
+    const pkg = this.packageMgr.package.json;
 
     pkg.scripts = pkg.scripts || {};
     pkg.scripts[this.SCRIPT_KEY.rename] = `npx react-native-rename ${projectName}`;
@@ -49,26 +50,26 @@ export default class NativeInstaller extends Installer {
     pkg.scripts[this.SCRIPT_KEY.replaceSchemes] =
       `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`;
 
-    await super.updatePackage(pkg);
+    await this.packageMgr.update(pkg);
   }
 
   /** Remove scripts from package.json */
   protected async cleanup(): Promise<void> {
-    const pkg = this.getProjectNpmPackage().json;
+    const pkg = this.packageMgr.package.json;
 
     if (pkg.scripts) {
       delete pkg.scripts[this.SCRIPT_KEY.replaceText];
       delete pkg.scripts[this.SCRIPT_KEY.replaceSchemes];
       delete pkg.scripts[this.SCRIPT_KEY.rename];
 
-      await this.writeToPackage(pkg);
+      await this.packageMgr.write(pkg);
     }
   }
 
 
   /** Run the rename scripts */
   private async runScripts(): Promise<void> {
-    const pkg = this.getProjectNpmPackage().json;
+    const pkg = this.packageMgr.package.json;
 
     const { SCRIPT_KEY } = this;
     const scriptKeys = Object.values(SCRIPT_KEY);

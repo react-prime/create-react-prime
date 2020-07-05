@@ -1,7 +1,7 @@
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import SERVICES from 'ioc/services';
-import { TEXT, LOG_PREFIX } from './constants';
+import { TEXT, LOG_PREFIX } from '../constants';
 
 @injectable()
 export default class Logger implements i.LoggerType {

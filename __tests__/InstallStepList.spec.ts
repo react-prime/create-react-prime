@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import * as i from 'types';
 import InstallStepList from 'src/InstallStepList';
 import { INSTALL_STEP } from 'src/constants';
-import Logger from 'src/Logger';
+import Logger from 'src/utils/Logger';
 import createCliCtx from './utils/createCliCtx';
 
 describe('InstallStepList', () => {

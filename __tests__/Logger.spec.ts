@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import 'reflect-metadata';
 import { LOG_PREFIX, TEXT } from 'src/constants';
-import Logger from 'src/Logger';
+import Logger from 'src/utils/Logger';
 import mockConsole from './utils/mockConsole';
 import createCliCtx from './utils/createCliCtx';
 

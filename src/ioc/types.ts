@@ -47,3 +47,14 @@ export type InstallStepListType = InstallStepType[] & {
   addAfterStep(stepId: i.InstallStepId, stepOptions: i.InstallStepOptions): InstallStepList;
   modifyStep(stepId: i.InstallStepId, stepOptions: Partial<i.InstallStepOptions>): InstallStepList;
 }
+
+export type GetProjectPackage = {
+  path: string;
+  json: i.PackageJson;
+}
+
+export type PackageMgrType = {
+  package: i.GetProjectPackage;
+  write(npmPkg: i.PackageJson): Promise<void>;
+  update(npmPkg?: i.PackageJson): Promise<void>;
+}

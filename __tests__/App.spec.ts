@@ -3,7 +3,7 @@ import fs from 'fs';
 import App from 'src/App';
 import Installer from 'installers/Installer';
 import CLIMgr from 'src/CLIMgr';
-import Logger from 'src/Logger';
+import Logger from 'src/utils/Logger';
 import mockConsole from './utils/mockConsole';
 import createCliCtx from './utils/createCliCtx';
 
@@ -64,6 +64,5 @@ describe('App', () => {
     expect(fs.existsSync).toHaveReturnedWith(true);
     expect(logger.error).toHaveBeenCalledTimes(1);
     expect(mockProcessExit).toHaveBeenCalledWith(1);
-    expect(mockProcessExit).toHaveBeenCalledTimes(1);
   });
 });

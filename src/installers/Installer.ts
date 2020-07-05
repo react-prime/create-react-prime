@@ -1,4 +1,3 @@
-import fs from 'fs';
 import util from 'util';
 import path from 'path';
 import cp from 'child_process';
@@ -11,7 +10,6 @@ import baseInstallSteps from './config';
 
 
 // Wrap utils in promise
-const writeFile = util.promisify(fs.writeFile);
 const exec = util.promisify(cp.exec);
 
 
@@ -23,6 +21,7 @@ export default class Installer implements i.InstallerType {
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
     @inject(SERVICES.Logger) protected readonly logger: i.LoggerType,
     @inject(SERVICES.InstallStepList) protected readonly installStepList: i.InstallStepListType,
+    @inject(SERVICES.PackageMgr) protected readonly packageMgr: i.PackageMgrType,
   ) {}
 
 
@@ -84,6 +83,13 @@ export default class Installer implements i.InstallerType {
 
 
   /**
+   * Updates node package variables
+   */
+  protected updatePackage(): void {
+    this.packageMgr.update();
+  }
+
+  /**
    * Add the basic installation steps. Can be overloaded to add or modify steps.
    */
   protected initSteps(): void {
@@ -104,55 +110,6 @@ export default class Installer implements i.InstallerType {
 
       this.installStepList.add(baseStep);
     }
-  }
-
-  /**
-   * Returns the package.json as JS object and its directory path
-   */
-  protected getProjectNpmPackage(): { path: string; json: i.PackageJson } {
-    const projectPkgPath = path.resolve(`${this.cliMgr.projectName}/package.json`);
-    const pkgFile = fs.readFileSync(projectPkgPath, 'utf8');
-
-    if (!pkgFile) {
-      this.error(`No valid NPM package found in ${path.resolve(this.cliMgr.projectName)}`);
-    }
-
-    return {
-      path: projectPkgPath,
-      json: JSON.parse(pkgFile),
-    };
-  }
-
-  /**
-   * Async overwrite project's package.json
-   * @param npmPkg package.json as JS object
-   */
-  protected async writeToPackage(npmPkg: i.PackageJson): Promise<void> {
-    const { path } = this.getProjectNpmPackage();
-
-    await writeFile(path, JSON.stringify(npmPkg, null, 2));
-  }
-
-  /**
-   * Updates node package variables
-   * @param npmPkg package.json as JS object
-   */
-  protected async updatePackage(npmPkg?: i.PackageJson): Promise<void> {
-    const { projectName } = this.cliMgr;
-    const pkg = npmPkg || this.getProjectNpmPackage().json;
-
-    // Overwrite boilerplate defaults
-    pkg.name = projectName;
-    pkg.version = '0.0.1';
-    pkg.description = `Code for ${projectName}.`;
-    pkg.author = 'Label A [labela.nl]';
-    pkg.keywords = [];
-
-    if (pkg.repository != null && typeof pkg.repository === 'object') {
-      pkg.repository.url = '';
-    }
-
-    await this.writeToPackage(pkg);
   }
 
   /**

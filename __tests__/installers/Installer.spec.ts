@@ -6,7 +6,7 @@ import ora from 'ora';
 import container from 'ioc';
 import SERVICES from 'ioc/services';
 import Installer from 'installers/Installer';
-import Logger from 'src/Logger';
+import Logger from 'src/utils/Logger';
 import mockConsole from '../utils/mockConsole';
 
 // Mock the factory function
