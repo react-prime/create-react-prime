@@ -1,7 +1,16 @@
 import * as i from 'types';
 import commander from 'commander';
+import Installer from 'installers/Installer';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
+
+export type InstallerCfg = {
+  /** Boilerplate name */
+  name: string;
+  /** Boilerplate repository name */
+  repository: string;
+  installer: typeof Installer;
+}
 
 export type AppType = {
   start(): Promise<void>;
@@ -10,10 +19,10 @@ export type AppType = {
 export type CLIMgrType = {
   cli: commander.Command;
   projectName: string;
-  installType: i.InstallerTypes;
+  installType: string;
   installRepository: string;
   isDebugging: boolean | undefined;
-  skipSteps: i.InstallStepId[] | undefined;
+  skipSteps: i.InstallStepIds[] | undefined;
 };
 
 export type LoggerType = {
@@ -31,21 +40,20 @@ export type InstallerType = {
 
 export type InstallStepType = {
   options: i.InstallStepOptions;
-  id: symbol;
+  id: i.InstallStepIds;
   message: i.InstallMessage;
   cmd: string | undefined;
   fn: (() => Promise<void>) | undefined;
   previous: InstallStep | undefined;
   next: InstallStep | undefined;
-  hasId(id: i.InstallStepId): boolean;
 }
 
 export type InstallStepListType = InstallStepType[] & {
   first: InstallStep | undefined;
   last: InstallStep | undefined;
   add(stepOptions: i.InstallStepOptions): InstallStepList;
-  addAfterStep(stepId: i.InstallStepId, stepOptions: i.InstallStepOptions): InstallStepList;
-  modifyStep(stepId: i.InstallStepId, stepOptions: Partial<i.InstallStepOptions>): InstallStepList;
+  addAfterStep(stepId: i.InstallStepIds, stepOptions: i.InstallStepOptions): InstallStepList;
+  modifyStep(stepId: i.InstallStepIds, stepOptions: Partial<i.InstallStepOptions>): InstallStepList;
 }
 
 export type GetProjectPackage = {

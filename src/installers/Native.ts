@@ -1,7 +1,7 @@
 import util from 'util';
 import path from 'path';
 import cp from 'child_process';
-import { INSTALL_STEP } from '../constants';
+import * as i from 'types';
 import Installer from './Installer';
 
 
@@ -23,8 +23,8 @@ export default class NativeInstaller extends Installer {
     const { projectName } = this.cliMgr;
 
     // Execute file rename scripts before NPM install
-    const renameStep = {
-      id: INSTALL_STEP.RUN_NATIVE_SCRIPTS,
+    const renameStep: i.InstallStepOptions = {
+      id: 'runNativeScripts',
       emoji: '🔤',
       message: {
         pending: `Renaming project files to '${projectName}'...`,
@@ -33,7 +33,7 @@ export default class NativeInstaller extends Installer {
       fn: this.runScripts.bind(this),
     };
 
-    this.installStepList.addAfterStep('UPDATE_PACKAGE', renameStep);
+    this.installStepList.addAfterStep('updatePackage', renameStep);
   }
 
   /** Run the rename scripts */

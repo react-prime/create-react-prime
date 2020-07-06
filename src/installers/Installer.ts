@@ -5,7 +5,7 @@ import { injectable, inject } from 'inversify';
 import ora from 'ora';
 import SERVICES from 'ioc/services';
 import { LOG_PREFIX } from '../constants';
-import baseInstallSteps from './config';
+import baseInstallSteps from './steps';
 
 
 // Wrap utils in promise
@@ -50,8 +50,8 @@ export default class Installer implements i.InstallerType {
 
       const skipSteps = this.cliMgr.skipSteps;
       // "this" in the step instance will be a reference to the Installer instance
-      // We fix this by binding the current step to this function
-      const skipStep = skipSteps?.some(step.hasId.bind(step));
+      // We fix this by binding the current step to the hasId function
+      const skipStep = skipSteps?.some((id) => id === step?.id);
 
       if (!skipStep) {
         this.spinner = ora(step.message.pending);

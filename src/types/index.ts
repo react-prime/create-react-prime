@@ -1,10 +1,10 @@
-import { REPOSITORIES, INSTALL_STEP } from '../constants';
+import { INSTALL_STEP } from 'installers/steps';
 
 export * from 'ioc/types';
 
-export type InstallerTypes = keyof typeof REPOSITORIES;
+export type ValueOf<T> = T[keyof T];
 
-export type InstallStepId = keyof typeof INSTALL_STEP;
+export type InstallStepIds = typeof INSTALL_STEP[number];
 
 export type Json = string | number | boolean | { [key: string]: Json } | Json[] | null;
 
@@ -25,7 +25,7 @@ export type InstallMessage = {
 
 type InstallStepOptionsBase = {
   /** Unique identifier for this step. */
-  id: symbol;
+  id: InstallStepIds;
   /** Message displayed when this step is being executed and is done executing. */
   message: InstallMessage;
   /** Emoji displayed between spinner and message. */

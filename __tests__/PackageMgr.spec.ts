@@ -2,11 +2,10 @@ import 'reflect-metadata';
 import fs from 'fs';
 import path from 'path';
 import * as i from 'types';
-import { mocked } from 'ts-jest/utils';
 import PackageMgr from 'src/utils/PackageMgr';
 import Logger from 'src/utils/Logger';
-import CLIMgr from 'src/CLIMgr';
 import mockConsole from './utils/mockConsole';
+import createCliCtx from './utils/createCliCtx';
 
 describe('PackageMgr', () => {
   const ctx = new class {
@@ -15,13 +14,13 @@ describe('PackageMgr', () => {
     };
 
     createMgrCtx() {
-      const cliMgrMock = mocked(CLIMgr);
-      const loggerMock = new Logger(cliMgrMock.prototype);
+      const { cliMgr } = createCliCtx();
+      const loggerMock = new Logger(cliMgr);
 
       return {
-        cliMgr: cliMgrMock,
+        cliMgr,
         logger: loggerMock,
-        packageMgr: new PackageMgr(cliMgrMock.prototype, loggerMock),
+        packageMgr: new PackageMgr(cliMgr, loggerMock),
       };
     }
   };
@@ -38,7 +37,7 @@ describe('PackageMgr', () => {
       const mockPkg = ctx.mockPkg;
       const mockPath = path.resolve(mockPkg.name as string, 'package.json');
 
-      jest.spyOn(cliMgr.prototype, 'projectName', 'get').mockReturnValue('create-react-prime');
+      jest.spyOn(cliMgr, 'projectName', 'get').mockReturnValue('create-react-prime');
       jest.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(mockPkg));
 
       const pkg = packageMgr.package;
@@ -68,7 +67,7 @@ describe('PackageMgr', () => {
     const mockPkg = ctx.mockPkg;
     const projectName = 'create-react-prime';
 
-    jest.spyOn(cliMgr.prototype, 'projectName', 'get').mockReturnValue(projectName);
+    jest.spyOn(cliMgr, 'projectName', 'get').mockReturnValue(projectName);
     jest.spyOn(packageMgr, 'write').mockImplementation();
 
     packageMgr.update(mockPkg);

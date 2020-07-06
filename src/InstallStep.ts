@@ -1,5 +1,4 @@
 import * as i from 'types';
-import { INSTALL_STEP } from './constants';
 
 export default class InstallStep implements i.InstallStepType {
   private _message = {} as i.InstallMessage;
@@ -25,7 +24,7 @@ export default class InstallStep implements i.InstallStepType {
     return this._options;
   }
 
-  get id(): symbol {
+  get id(): i.InstallStepIds {
     return this._options.id;
   }
 
@@ -49,10 +48,5 @@ export default class InstallStep implements i.InstallStepType {
 
   get next(): InstallStep | undefined {
     return this._next;
-  }
-
-
-  hasId(id: i.InstallStepId): boolean {
-    return this.id === INSTALL_STEP[id];
   }
 }

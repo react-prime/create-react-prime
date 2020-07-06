@@ -11,7 +11,7 @@ export default class Logger implements i.LoggerType {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warning(...reason: any[]): void {
-    this.log({ prefix: 'WARNING', color: 'YELLOW' }, ...reason);
+    this.log({ prefix: 'WARNING', color: 'Yellow' }, ...reason);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,10 +29,10 @@ export default class Logger implements i.LoggerType {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private log(options: LogOptions, ...str: any[]): void {
-    const color = options.color ? TEXT[options.color] : TEXT.RED;
+    const color = options.color ? TEXT[options.color] : TEXT.Red;
 
     // eslint-disable-next-line no-console
-    console.log(`${LOG_PREFIX} ${color}${options.prefix}${TEXT.DEFAULT}`, ...str);
+    console.log(`${LOG_PREFIX} ${color}${options.prefix}${TEXT.Default}`, ...str);
   }
 }
 

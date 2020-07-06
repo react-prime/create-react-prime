@@ -1,16 +1,16 @@
 import 'reflect-metadata';
+import * as i from 'types';
 import InstallStep from 'src/InstallStep';
-import { INSTALL_STEP } from 'src/constants';
 
 describe('InstallStep', () => {
-  const ctx = new class Ctx {
-    readonly opts = {
+  const ctx = new class {
+    readonly opts: i.InstallStepOptions = {
       message: {
         pending: 'pending test',
         success: 'success test',
       },
       emoji: '🧪',
-      id: INSTALL_STEP.CLONE,
+      id: 'clone',
       cmd: 'cmd line script',
       fn: async () => void {},
     };
@@ -21,7 +21,6 @@ describe('InstallStep', () => {
 
   it('Returns correct values from getters', () => {
     expect(ctx.step1.cmd).toEqual('cmd line script');
-    expect(ctx.step1.id).toEqual(INSTALL_STEP.CLONE);
     expect(ctx.step1.message).toEqual({
       pending: '🧪  pending test',
       success: '🧪  success test',
@@ -57,10 +56,5 @@ describe('InstallStep', () => {
     const step3 = new InstallStep(ctx.opts, ctx.step2, ctx.step1);
 
     expect(step3.previous).toEqual(ctx.step2);
-  });
-
-  it('Confirms or denies it has a given ID', () => {
-    expect(ctx.step1.hasId('CLONE')).toEqual(true);
-    expect(ctx.step1.hasId('CLEANUP')).toEqual(false);
   });
 });

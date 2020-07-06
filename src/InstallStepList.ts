@@ -2,7 +2,6 @@ import * as i from 'types';
 import { inject, injectable, decorate } from 'inversify';
 import SERVICES from 'ioc/services';
 import InstallStep from './InstallStep';
-import { INSTALL_STEP } from './constants';
 
 
 // Make Array constructor injectable
@@ -36,7 +35,7 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
   /**
    * Add a step after the given step ID
    */
-  addAfterStep(stepId: i.InstallStepId, stepOptions: i.InstallStepOptions): this {
+  addAfterStep(stepId: i.InstallStepIds, stepOptions: i.InstallStepOptions): this {
     const step = this.findStepById(stepId);
 
     // No step, just push into array
@@ -65,7 +64,7 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
   }
 
   /** Modify options of a step */
-  modifyStep(stepId: i.InstallStepId, stepOptions: Partial<i.InstallStepOptions>): this {
+  modifyStep(stepId: i.InstallStepIds, stepOptions: Partial<i.InstallStepOptions>): this {
     const step = this.findStepById(stepId);
 
     if (!step) {
@@ -95,7 +94,7 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
   }
 
   /** Find a step from this list by ID. Returns its instance and the index. */
-  private findStepById(stepId: i.InstallStepId): { instance: InstallStep, index: number } | undefined {
+  private findStepById(stepId: i.InstallStepIds): { instance: InstallStep, index: number } | undefined {
     let step = this.first;
     let i = 0;
 
@@ -105,7 +104,7 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
     }
 
     // Loop through the array until we find the step
-    while (step.id !== INSTALL_STEP[stepId]) {
+    while (step.id !== stepId) {
       // End of the list
       if (!step.next) {
         return;

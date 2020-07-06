@@ -33,7 +33,7 @@ export default class App implements i.AppType {
 
       // eslint-disable-next-line no-console
       console.log(
-        `${LOG_PREFIX} ⚡️ ${TEXT.BOLD}Succesfully installed ${this.cliMgr.installRepository}!${TEXT.DEFAULT}`,
+        `${LOG_PREFIX} ⚡️ ${TEXT.Bold}Succesfully installed ${this.cliMgr.installRepository}!${TEXT.Default}`,
       );
 
       process.exit();

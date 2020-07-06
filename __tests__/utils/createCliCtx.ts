@@ -1,12 +1,14 @@
 import * as i from 'types';
-import commander from 'commander';
-import initCLI from 'src/CLI';
+import commander, { Command } from 'commander';
 import CLIMgr from 'src/CLIMgr';
+import initCLI from 'src/CLI';
+
 
 type CliCtx = {
   cli: commander.Command;
   cliMgr: i.CLIMgrType;
 }
+
 
 function createCliCtx(): CliCtx {
   const cli = initCLI();

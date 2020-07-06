@@ -8,7 +8,7 @@ import createCliCtx from './utils/createCliCtx';
 describe('Logger', () => {
   const restoreConsole = mockConsole();
 
-  const ctx = new class Ctx {
+  const ctx = new class {
     logSpy = jest.spyOn(console, 'log');
 
     createLoggerCtx() {
@@ -22,7 +22,6 @@ describe('Logger', () => {
   };
 
   beforeEach(() => {
-    ctx.logSpy = jest.spyOn(console, 'log');
     ctx.logSpy.mockClear();
   });
 
@@ -31,7 +30,7 @@ describe('Logger', () => {
   });
 
   describe('warning', () => {
-    const warningPrefix = `${LOG_PREFIX} ${TEXT.YELLOW}WARNING${TEXT.DEFAULT}`;
+    const warningPrefix = `${LOG_PREFIX} ${TEXT.Yellow}WARNING${TEXT.Default}`;
 
     it('Logs text with a warning prefix', () => {
       const { logger } = ctx.createLoggerCtx();
@@ -47,7 +46,7 @@ describe('Logger', () => {
   });
 
   describe('error', () => {
-    const errorPrefix = [`${LOG_PREFIX} ${TEXT.RED}ERR!${TEXT.DEFAULT}`, 'Installation aborted.'];
+    const errorPrefix = [`${LOG_PREFIX} ${TEXT.Red}ERR!${TEXT.Default}`, 'Installation aborted.'];
     const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
     it('Logs error text with an error prefix and exits with code 1', () => {
@@ -66,7 +65,7 @@ describe('Logger', () => {
   });
 
   describe('debug', () => {
-    const debugPrefix = `${LOG_PREFIX} ${TEXT.RED}DEBUG${TEXT.DEFAULT}`;
+    const debugPrefix = `${LOG_PREFIX} ${TEXT.Red}DEBUG${TEXT.Default}`;
 
     it('Does not output text when debug flag is false', () => {
       const { logger } = ctx.createLoggerCtx();

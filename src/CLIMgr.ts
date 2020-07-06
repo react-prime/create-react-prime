@@ -2,7 +2,8 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import commander from 'commander';
 import SERVICES from 'ioc/services';
-import { ARG, REPOSITORIES } from './constants';
+import { installerCfg } from 'installers/config';
+import { ARG } from './constants';
 
 @injectable()
 export default class CLIMgr implements i.CLIMgrType {
@@ -14,17 +15,19 @@ export default class CLIMgr implements i.CLIMgrType {
 
 
   get installRepository(): string {
-    return REPOSITORIES[this.installType];
+    return installerCfg
+      .find((cfg) => this.installType === cfg.name)!
+      .repository;
   }
 
   /** These values come from option flags, i.e. --type */
-  get installType(): i.InstallerTypes {
+  get installType(): string {
     return this.cli.type;
   }
 
   /** Args are passed without an option flag, i.e. the project name */
   get projectName(): string {
-    return this._projectName || this.args[ARG.PROJECT_NAME] || this.installRepository;
+    return this._projectName || this.args[ARG.ProjectName] || this.installRepository;
   }
 
   set projectName(name: string) {
@@ -35,7 +38,7 @@ export default class CLIMgr implements i.CLIMgrType {
     return this.cli.debug;
   }
 
-  get skipSteps(): i.InstallStepId[] | undefined {
+  get skipSteps(): i.InstallStepIds[] | undefined {
     return this.cli.skipSteps;
   }
 
