@@ -73,3 +73,46 @@ npm start
     </td>
   </tr>
 </table>
+
+## Development
+
+This project uses the *Object Oriented Programming* (OOP), *Dependency Injection* (DI) and *Inversion of Control* (IoC) principles.
+
+When adding, modifying or extending installers, only OOP knowledge is relevant. DI and IoC is used outside of the installers.
+
+When modifying the core code, however, it is important to have basic knowledge of these principles before starting.
+
+Below is a **very** brief explanation of the principles.
+
+
+#### Object Oriented Programming
+
+Object Oriented Programming (OOP) is used for structuring this project. It uses class instances for modules to store and share data between other modules.
+
+#### Dependency Injection
+
+Dependency Injection (DI) is a principle where modules are injected independently into the constructor of other modules. This way you do not need to keep the module's dependencies in mind when instantiating. This project uses *InversifyJS* to achieve DI.
+
+#### Inversion of Control
+
+Inversion of Control (IoC) is used to decouple the implementation and the shape of a module. This is useful for testing, because this means we only care about the shape of the module and not about the implementation of the module, which in turn makes mocking easier. Coupling happens in `src/ioc/container.ts` This project uses *InversifyJS* to achieve IoC.
+
+### Adding installers
+
+To add a new installer, do the following:
+
+1. Navigate to `src/installers/config.ts`
+2. Add the installer to the `installerCfg` list, together with its name (used for the --type option), and the repository. The installer should be the default `Installer`, unless you need extra logic in the installation process.
+3. Add the new installer to the readme!
+
+#### Custom installer
+
+When the default installer does not satisfy the need of the installation process, you can create a custom installer. This will always need to be based off of the default installer.
+
+To create a custom installer, do the following:
+
+1. Follow the steps of *Adding installers*.
+2. Extend the class with `Installer`
+   - Note: when overriding any of the methods from `Installer`, make sure to always run the super method at some point in the override.
+   - You can add and modify steps in `this.installStepList`. See `InstallStepListType`.
+3. In the `installerCfg` (from step 2 of *Adding installers*), use your custom installer instead of the default installer.
