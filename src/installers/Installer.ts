@@ -49,8 +49,6 @@ export default class Installer implements i.InstallerType {
       }
 
       const skipSteps = this.cliMgr.skipSteps;
-      // "this" in the step instance will be a reference to the Installer instance
-      // We fix this by binding the current step to the hasId function
       const skipStep = skipSteps?.some((id) => id === step?.id);
 
       if (!skipStep) {
