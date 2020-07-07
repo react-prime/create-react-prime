@@ -17,7 +17,7 @@ export default class Logger implements i.LoggerType {
   }
 
   warning(...reason: i.AnyArr): void {
-    this.log(this.text.yellow('WARNING'), ...reason);
+    this.log(this.text.yellow('WRN'), ...reason);
   }
 
   error(...reason: i.AnyArr): void {
@@ -27,7 +27,7 @@ export default class Logger implements i.LoggerType {
 
   debug(...str: i.AnyArr): void {
     if (this.cliMgr.isDebugging) {
-      this.log(this.text.red('DEBUG'), ...str);
+      this.log(this.text.red('DBG'), ...str);
     }
   }
 

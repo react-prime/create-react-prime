@@ -32,7 +32,7 @@ describe('Logger', () => {
   });
 
   describe('warning', () => {
-    const warningPrefix = `${LOG_PREFIX} ${text.yellow('WARNING')}`;
+    const warningPrefix = [LOG_PREFIX, text.yellow('WRN')];
 
     it('Logs text with a warning prefix', () => {
       const { logger } = ctx.createLoggerCtx();
@@ -41,14 +41,14 @@ describe('Logger', () => {
       logger.warning('test', 'test2');
 
       expect(ctx.logSpy.mock.calls).toEqual([
-        [warningPrefix, 'test'],
-        [warningPrefix, 'test', 'test2'],
+        [...warningPrefix, 'test'],
+        [...warningPrefix, 'test', 'test2'],
       ]);
     });
   });
 
   describe('error', () => {
-    const errorPrefix = [`${LOG_PREFIX} ${text.red('ERR!')}`, 'Installation aborted.'];
+    const errorPrefix = [LOG_PREFIX, text.red('ERR!'), 'Installation aborted.'];
     const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
     it('Logs error text with an error prefix and exits with code 1', () => {
@@ -67,7 +67,7 @@ describe('Logger', () => {
   });
 
   describe('debug', () => {
-    const debugPrefix = `${LOG_PREFIX} ${text.red('DEBUG')}`;
+    const debugPrefix = [LOG_PREFIX, text.red('DBG')];
 
     it('Does not output text when debug flag is false', () => {
       const { logger } = ctx.createLoggerCtx();
@@ -88,8 +88,8 @@ describe('Logger', () => {
       logger.debug('test', 'test2');
 
       expect(ctx.logSpy.mock.calls).toEqual([
-        [debugPrefix, 'test'],
-        [debugPrefix, 'test', 'test2'],
+        [...debugPrefix, 'test'],
+        [...debugPrefix, 'test', 'test2'],
       ]);
     });
   });
