@@ -3,11 +3,13 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import container from 'ioc';
 import SERVICES from 'ioc/services';
-import { TEXT, LOG_PREFIX } from './constants';
+import Text from 'utils/Text';
+import { LOG_PREFIX } from './constants';
 
 @injectable()
 export default class App implements i.AppType {
   private installer!: i.InstallerType;
+  private text = new Text();
 
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
@@ -33,7 +35,7 @@ export default class App implements i.AppType {
 
       // eslint-disable-next-line no-console
       console.log(
-        `${LOG_PREFIX} ⚡️ ${TEXT.Bold}Succesfully installed ${this.cliMgr.installRepository}!${TEXT.Default}`,
+        `${LOG_PREFIX} ⚡️ ${this.text.bold(`Succesfully installed ${this.cliMgr.installRepository}!`)}`,
       );
 
       process.exit();

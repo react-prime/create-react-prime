@@ -1,17 +1,20 @@
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import SERVICES from 'ioc/services';
-import { TEXT, LOG_PREFIX } from '../constants';
+import { LOG_PREFIX } from '../constants';
+import Text from './Text';
 
 @injectable()
 export default class Logger implements i.LoggerType {
+  private text = new Text();
+
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   warning(...reason: any[]): void {
-    this.log({ prefix: 'WARNING', color: 'Yellow' }, ...reason);
+    this.log({ prefix: 'WARNING', color: 'yellow' }, ...reason);
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -29,14 +32,14 @@ export default class Logger implements i.LoggerType {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private log(options: LogOptions, ...str: any[]): void {
-    const color = options.color ? TEXT[options.color] : TEXT.Red;
+    const color = options.color ? this.text[options.color] : this.text.red;
 
     // eslint-disable-next-line no-console
-    console.log(`${LOG_PREFIX} ${color}${options.prefix}${TEXT.Default}`, ...str);
+    console.log(`${LOG_PREFIX} ${color(`${options.prefix}`)}`, ...str);
   }
 }
 
 type LogOptions = {
   prefix: string;
-  color?: keyof typeof TEXT;
+  color?: Exclude<keyof Text, 'style' | 'bold'>;
 }

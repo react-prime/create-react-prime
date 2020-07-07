@@ -7,9 +7,9 @@ import InstallStepList from 'src/InstallStepList';
 import App from 'src/App';
 import initCli from 'src/CLI';
 import CLIMgr from 'src/CLIMgr';
-import Logger from 'utils/Logger';
-import PackageMgr from 'src/utils/PackageMgr';
 import { installerCfg } from 'installers/config';
+import Logger from 'utils/Logger';
+import PackageMgr from 'utils/PackageMgr';
 
 const container = new Container();
 
