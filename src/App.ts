@@ -29,6 +29,8 @@ export default class App implements i.AppType {
     }
 
     try {
+      this.logger.msg('create-react-prime v$version');
+
       // Start the installation process
       await this.installer.install();
 
