@@ -4,7 +4,6 @@ import { injectable, inject } from 'inversify';
 import container from 'ioc';
 import SERVICES from 'ioc/services';
 import Text from 'utils/Text';
-import { LOG_PREFIX } from './constants';
 
 @injectable()
 export default class App implements i.AppType {
@@ -33,10 +32,7 @@ export default class App implements i.AppType {
       // Start the installation process
       await this.installer.install();
 
-      // eslint-disable-next-line no-console
-      console.log(
-        `${LOG_PREFIX} ⚡️ ${this.text.bold(`Succesfully installed ${this.cliMgr.installRepository}!`)}`,
-      );
+      this.logger.msg(this.text.bold(`Succesfully installed ${this.cliMgr.installRepository}!`));
 
       process.exit();
     } catch (err) {

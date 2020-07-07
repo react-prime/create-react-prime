@@ -25,12 +25,11 @@ export type CLIMgrType = {
   skipSteps: i.InstallStepIds[] | undefined;
 };
 
-export type LoggerType = {
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  warning(...reason: any[]): void;
-  error(...str: any[]): void;
-  debug(...reason: any[]): void;
-  /* eslint-enable */
+export interface LoggerType {
+  msg(...str: i.AnyArr): void;
+  warning(...reason: i.AnyArr): void;
+  error(...str: i.AnyArr): void;
+  debug(...reason: i.AnyArr): void;
 }
 
 export type InstallerType = {

@@ -12,34 +12,27 @@ export default class Logger implements i.LoggerType {
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
   ) {}
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  warning(...reason: any[]): void {
-    this.log({ prefix: 'WARNING', color: 'yellow' }, ...reason);
+  msg(...str: i.AnyArr): void {
+    this.log('⚡️', ...str);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error(...reason: any[]): void {
-    this.log({ prefix: 'ERR!' }, 'Installation aborted.', ...reason);
+  warning(...reason: i.AnyArr): void {
+    this.log(this.text.yellow('WARNING'), ...reason);
+  }
+
+  error(...reason: i.AnyArr): void {
+    this.log(this.text.red('ERR!'), 'Installation aborted.', ...reason);
     process.exit(1);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  debug(...text: any[]): void {
+  debug(...str: i.AnyArr): void {
     if (this.cliMgr.isDebugging) {
-      this.log({ prefix: 'DEBUG' }, ...text);
+      this.log(this.text.red('DEBUG'), ...str);
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private log(options: LogOptions, ...str: any[]): void {
-    const color = options.color ? this.text[options.color] : this.text.red;
-
+  private log(prefix: string, ...str: i.AnyArr): void {
     // eslint-disable-next-line no-console
-    console.log(`${LOG_PREFIX} ${color(`${options.prefix}`)}`, ...str);
+    console.log(LOG_PREFIX, prefix, ...str);
   }
-}
-
-type LogOptions = {
-  prefix: string;
-  color?: Exclude<keyof Text, 'style' | 'bold'>;
 }
