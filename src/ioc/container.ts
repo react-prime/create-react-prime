@@ -10,6 +10,8 @@ import CLIMgr from 'src/CLIMgr';
 import { installerCfg } from 'installers/config';
 import Logger from 'utils/Logger';
 import PackageMgr from 'utils/PackageMgr';
+import Questions from 'prompt/Questions';
+
 
 const container = new Container();
 
@@ -19,6 +21,7 @@ container.bind<commander.Command>(SERVICES.CLI).toConstantValue(initCli());
 container.bind<i.CLIMgrType>(SERVICES.CLIMgr).to(CLIMgr).inSingletonScope();
 container.bind<i.PackageMgrType>(SERVICES.PackageMgr).to(PackageMgr);
 container.bind<i.InstallStepListType>(SERVICES.InstallStepList).to(InstallStepList);
+container.bind<i.QuestionsType>(SERVICES.Questions).to(Questions);
 
 for (const { name, installer } of installerCfg) {
   container.bind<i.InstallerType>(SERVICES.Installer).to(installer).whenTargetNamed(name);

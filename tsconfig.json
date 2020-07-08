@@ -16,6 +16,7 @@
           "ioc": ["ioc/container"],
           "ioc/*": ["ioc/*"],
           "installers/*": ["installers/*"],
+          "prompt/*": ["prompt/*"],
           "types": ["types/index"],
           "types/*": ["types/*"],
           "utils/*": ["utils/*"],

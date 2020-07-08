@@ -5,6 +5,7 @@ import container from 'ioc';
 import SERVICES from 'ioc/services';
 import Text from 'utils/Text';
 
+
 @injectable()
 export default class App implements i.AppType {
   private installer!: i.InstallerType;
@@ -16,7 +17,13 @@ export default class App implements i.AppType {
   ) {}
 
 
-  async start(): Promise<void> {
+  async install(): Promise<void> {
+    // eslint-disable-next-line no-console
+    console.clear();
+    this.logger.msg('create-react-prime v$version\n');
+
+    const { projectName, installRepository } = this.cliMgr;
+
     // Get installer for the type that was specified by the user
     this.installer = container.getNamed(SERVICES.Installer, this.cliMgr.installType);
 
@@ -24,21 +31,27 @@ export default class App implements i.AppType {
     this.installer.init();
 
     // Check if directory already exists to prevent overwriting existing data
-    if (fs.existsSync(this.cliMgr.projectName)) {
-      return this.logger.error(`directory '${this.cliMgr.projectName}' already exists.`);
+    if (fs.existsSync(projectName)) {
+      this.logger.error(`directory '${projectName}' already exists.`);
     }
 
+    // Start the installation process
     try {
-      this.logger.msg('create-react-prime v$version');
-
-      // Start the installation process
       await this.installer.install();
-
-      this.logger.msg(this.text.bold(`Succesfully installed ${this.cliMgr.installRepository}!`));
-
-      process.exit();
     } catch (err) {
       this.logger.error(err);
     }
+
+    this.logger.msg(this.text.bold(`Succesfully installed ${installRepository}!\n`));
+  }
+
+  async form(): Promise<void> {
+    const questions = container.get<i.QuestionsType>(SERVICES.Questions);
+
+    // Prompt questions for user
+    const answers = await questions.ask();
+
+    // Act upon the given answers
+    await questions.answer(answers);
   }
 }

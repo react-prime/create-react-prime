@@ -1,6 +1,7 @@
 import { INSTALL_STEP } from 'installers/steps';
 
 export * from 'ioc/types';
+export * from 'prompt/types';
 
 export type ValueOf<T> = T[keyof T];
 

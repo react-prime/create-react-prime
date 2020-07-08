@@ -1,5 +1,6 @@
 import * as i from 'types';
 import commander from 'commander';
+import { Answers } from 'inquirer';
 import Installer from 'installers/Installer';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
@@ -13,7 +14,8 @@ export type InstallerCfg = {
 }
 
 export type AppType = {
-  start(): Promise<void>;
+  install(): Promise<void>;
+  form(): Promise<void>;
 }
 
 export type CLIMgrType = {
@@ -64,4 +66,9 @@ export type PackageMgrType = {
   package: i.GetProjectPackage;
   write(npmPkg: i.PackageJson): Promise<void>;
   update(npmPkg?: i.PackageJson): Promise<void>;
+}
+
+export type QuestionsType = {
+  ask(): Promise<Answers>;
+  answer(answers: Answers): Promise<void>;
 }

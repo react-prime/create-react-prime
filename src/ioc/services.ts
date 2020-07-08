@@ -5,7 +5,8 @@ const SERVICES = {
   Logger: Symbol('logger'),
   Installer: Symbol('installer'),
   InstallStepList: Symbol('installStepList'),
-  PackageMgr: Symbol('PackageMgr'),
+  PackageMgr: Symbol('packageMgr'),
+  Questions: Symbol('questions'),
 };
 
 export default SERVICES;

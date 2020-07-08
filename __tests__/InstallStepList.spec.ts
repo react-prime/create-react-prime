@@ -5,7 +5,7 @@ import Logger from 'src/utils/Logger';
 import createCliCtx from './utils/createCliCtx';
 
 describe('InstallStepList', () => {
-  const ctx = new class Ctx {
+  const ctx = new class {
     get logger() {
       const { cliMgr } = createCliCtx();
 
