@@ -6,45 +6,40 @@ import SelectEditor from './SelectEditor';
 
 
 @injectable()
-export default class Questions implements i.QuestionsType {
+export default class Questions extends Array<i.CRPQuestion> implements i.QuestionsType {
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
-  ) {}
+  ) {
+    super();
 
-
-  /**
-   * List of questions to prompt
-   */
-  private readonly _questions: i.CRPQuestion[] = [
-    new SelectEditor(this.cliMgr),
-  ];
+    /**
+     * List of questions to prompt
+     */
+    this.add(new SelectEditor(this.cliMgr));
+  }
 
 
   /** Prompt the user with questions */
   async ask(): Promise<Answers> {
-    const answers = await prompt(this.questions);
+    const answers = await prompt(this);
 
     return answers;
   }
 
   /** Act upon answers given by the user */
   async answer(answers: Answers): Promise<void> {
-    for await (const question of this.questions) {
+    for await (const question of this) {
       question.answer?.(answers);
     }
   }
 
 
-  /** Filter questions */
-  private get questions(): i.CRPQuestion[] {
-    const validQuestions: i.CRPQuestion[] = [];
-
-    for (const question of this._questions) {
-      if (question.isValidForOS) {
-        validQuestions.push(question);
-      }
+  /** Add question to array */
+  private add(question: i.CRPQuestion): this {
+    if (question.isValidForOS) {
+      this.push(question);
     }
 
-    return validQuestions;
+    return this;
   }
 }
