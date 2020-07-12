@@ -17,6 +17,7 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
     super();
   }
 
+
   get first(): InstallStep | undefined {
     return this[0];
   }
@@ -44,9 +45,8 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
       return this;
     }
 
-    let iter = step.index;
-
     // Add new step in array after the found step
+    let iter = step.index;
     this.splice(++iter, 0, this.createStep(stepOptions, step.instance));
 
     // Update the current and next steps
@@ -68,7 +68,7 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
     const step = this.findStepById(stepId);
 
     if (!step) {
-      this.logger.warning(`${this.modifyStep.name}: No step found for '${stepId}'.`);
+      this.logger.debug(`modifyStep: No step found for '${stepId}'.`);
       return this;
     }
 

@@ -3,7 +3,7 @@ import cp from 'child_process';
 import path from 'path';
 import { readdirSync } from 'fs';
 import * as i from 'types';
-import { ListQuestion, Answers, ListChoiceOptions } from 'inquirer';
+import { ListQuestion, ListChoiceOptions } from 'inquirer';
 import Question from './Question';
 
 

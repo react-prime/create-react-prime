@@ -8,7 +8,6 @@ export default class Question implements i.CRPQuestion<InquirerQuestion> {
   protected macOnly = false;
   readonly prefix = LOG_PREFIX;
 
-
   get isValidForOS(): boolean {
     if (this.macOnly && os.type() === 'Darwin') {
       return true;

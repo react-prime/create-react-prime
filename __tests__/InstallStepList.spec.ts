@@ -105,14 +105,12 @@ describe('InstallStepList', () => {
     expect(stepList.first?.options).toMatchObject(modifiedStepOpts);
   });
 
-  it('Shows a warning when trying to modify a step that is not included', () => {
+  it('Shows a debug msg when trying to modify a step that is not included', () => {
     const stepList = ctx.createStepList().add(ctx.stepOptions('clone'));
+    const debugMock = jest.spyOn(Logger.prototype, 'debug');
 
-    Logger.prototype.warning = jest.fn().mockImplementation();
-
-    // Shows a warning when step is not found
     stepList.modifyStep('npmInstall', { cmd: 'modified' });
 
-    expect(ctx.logger.warning).toHaveBeenCalledTimes(1);
+    expect(debugMock).toHaveBeenCalledTimes(1);
   });
 });

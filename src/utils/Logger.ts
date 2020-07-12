@@ -12,6 +12,7 @@ export default class Logger implements i.LoggerType {
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
   ) {}
 
+
   msg(...str: i.AnyArr): void {
     this.log('⚡️', ...str);
   }
