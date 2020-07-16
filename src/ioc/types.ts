@@ -2,12 +2,16 @@ import * as i from 'types';
 import commander from 'commander';
 import { Answers } from 'inquirer';
 import Installer from 'installers/Installer';
+import { installerCfg } from 'installers/config';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
 
+
+export type InstallType = typeof installerCfg[number]['name'];
+
 export type InstallerCfg = {
   /** Boilerplate name */
-  name: string;
+  name: i.InstallType;
   /** Boilerplate repository name */
   repository: string;
   installer: typeof Installer;
@@ -15,16 +19,16 @@ export type InstallerCfg = {
 
 export type AppType = {
   install(): Promise<void>;
-  form(): Promise<void>;
+  form(type: 'pre' | 'post'): Promise<void>;
 }
 
 export type CLIMgrType = {
   cli: commander.Command;
-  projectName: string;
-  installType: string;
-  installRepository: string;
-  isDebugging: boolean | undefined;
-  skipSteps: i.InstallStepIds[] | undefined;
+  projectName?: string;
+  installType?: i.InstallType;
+  installRepository?: string;
+  isDebugging?: boolean;
+  skipSteps?: i.InstallStepIds[];
 };
 
 export interface LoggerType {
@@ -69,6 +73,7 @@ export type PackageMgrType = {
 }
 
 export type QuestionsType = {
+  init(): i.CRPQuestion[];
   ask(): Promise<Answers>;
   answer(answers: Answers): Promise<void>;
 }

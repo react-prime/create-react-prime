@@ -61,7 +61,7 @@ export default class SelectEditor extends Question implements i.CRPQuestion<List
       return;
     }
 
-    const dir = path.resolve(this.cliMgr.projectName);
+    const dir = path.resolve(this.cliMgr.projectName!);
 
     await exec(`open ${dir} -a ${answers.editor.path}`);
   }

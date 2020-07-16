@@ -12,12 +12,12 @@ function initCLI(): commander.Command {
   cli.option(
     '-t, --type <type>',
     `Install a type of react-prime. Options: ${installerCfg.map((cfg) => cfg.name).join(', ')}`,
-    'client',
   );
 
   cli.option(
     '-d, --debug',
     'Show additional information when running the installer.',
+    false,
   );
 
   cli.option(
@@ -53,6 +53,7 @@ function initCLI(): commander.Command {
 
       return skipSteps;
     },
+    [],
   );
 
   // Set other variables

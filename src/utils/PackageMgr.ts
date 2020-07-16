@@ -26,7 +26,7 @@ export default class PackageMgr implements i.PackageMgrType {
     const pkgStr = fs.readFileSync(projectPkgPath, 'utf-8');
 
     if (!pkgStr) {
-      this.logger.error(`No package.json found in ${path.resolve(this.cliMgr.projectName)}`);
+      this.logger.error(`No package.json found in ${path.resolve(this.cliMgr.projectName!)}`);
     }
 
     return {

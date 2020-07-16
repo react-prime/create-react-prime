@@ -3,6 +3,7 @@ const terminalStyle = {
   bold: '\x1b[1m',
   yellow: '\x1b[33m',
   red: '\x1b[31m',
+  gray: '\x1b[2m',
 } as const;
 
 type TerminalStyles = keyof typeof terminalStyle;

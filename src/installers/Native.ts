@@ -13,7 +13,7 @@ export default class NativeInstaller extends Installer {
   init(): void {
     // Native project names can only contain alphanumerical characters
     const orgProjectName = this.cliMgr.projectName;
-    this.cliMgr.projectName = this.cliMgr.projectName.replace(/\W/g, '');
+    this.cliMgr.projectName = this.cliMgr.projectName!.replace(/\W/g, '');
 
     if (orgProjectName !== this.cliMgr.projectName) {
       // eslint-disable-next-line max-len
@@ -53,7 +53,7 @@ export default class NativeInstaller extends Installer {
     ];
 
     const options: cp.ExecOptions = {
-      cwd: path.resolve(this.cliMgr.projectName),
+      cwd: path.resolve(this.cliMgr.projectName!),
     };
 
     for await (const [name, script] of scripts) {

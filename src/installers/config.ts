@@ -8,16 +8,19 @@ export const installerCfg = [
   {
     name: 'client',
     repository: 'react-prime',
+    description: 'Client-side rendering',
     installer: Installer,
   },
   {
     name: 'ssr',
     repository: 'react-prime-ssr',
+    description: 'Server-side rendering',
     installer: Installer,
   },
   {
     name: 'native',
     repository: 'react-prime-native',
+    description: 'React-native w/o Expo',
     installer: NativeInstaller,
   },
-];
+] as const;

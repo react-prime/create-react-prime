@@ -14,24 +14,22 @@ export default class App implements i.AppType {
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
     @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
-  ) {}
+  ) {
+    this.logger.msg('create-react-prime v$version\n');
+  }
 
 
   async install(): Promise<void> {
-    // eslint-disable-next-line no-console
-    console.clear();
-    this.logger.msg('create-react-prime v$version\n');
-
-    const { projectName, installRepository } = this.cliMgr;
+    const { projectName, installRepository, installType } = this.cliMgr;
 
     // Get installer for the type that was specified by the user
-    this.installer = container.getNamed(SERVICES.Installer, this.cliMgr.installType);
+    this.installer = container.getNamed(SERVICES.Installer, installType!);
 
     // Prepare installer environment
     this.installer.init();
 
     // Check if directory already exists to prevent overwriting existing data
-    if (fs.existsSync(projectName)) {
+    if (fs.existsSync(projectName!)) {
       this.logger.error(`directory '${projectName}' already exists.`);
     }
 
@@ -45,13 +43,17 @@ export default class App implements i.AppType {
     this.logger.msg(this.text.bold(`Succesfully installed ${installRepository}!\n`));
   }
 
-  async form(): Promise<void> {
-    const questions = container.get<i.QuestionsType>(SERVICES.Questions);
+  async form(type: 'pre' | 'post'): Promise<void> {
+    const questions = container.getNamed<i.QuestionsType>(SERVICES.Questions, type);
 
     // Prompt questions for user
     const answers = await questions.ask();
 
     // Act upon the given answers
     await questions.answer(answers);
+
+    // Add white space
+    // eslint-disable-next-line no-console
+    console.log();
   }
 }

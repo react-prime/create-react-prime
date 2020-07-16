@@ -2,22 +2,19 @@ import * as i from 'types';
 import { prompt, Answers } from 'inquirer';
 import { injectable, inject } from 'inversify';
 import SERVICES from 'ioc/services';
-import SelectEditor from './SelectEditor';
 
 
 @injectable()
 export default class Questions extends Array<i.CRPQuestion> implements i.QuestionsType {
   constructor(
-    @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
+    @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
   ) {
     super();
-
-    /**
-     * List of questions to prompt
-     */
-    this.add(new SelectEditor(this.cliMgr));
+    this.push(...this.init());
   }
 
+
+  init(): i.CRPQuestion[] { return []; }
 
   /** Prompt the user with questions */
   async ask(): Promise<Answers> {
@@ -35,7 +32,7 @@ export default class Questions extends Array<i.CRPQuestion> implements i.Questio
 
 
   /** Add question to array */
-  private add(question: i.CRPQuestion): this {
+  protected add(question: i.CRPQuestion): this {
     if (question.isValidForOS) {
       this.push(question);
     }

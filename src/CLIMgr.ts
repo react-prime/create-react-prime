@@ -15,23 +15,27 @@ export default class CLIMgr implements i.CLIMgrType {
   ) {}
 
 
-  get installRepository(): string {
+  get installRepository(): string | undefined {
     return installerCfg
-      .find((cfg) => this.installType === cfg.name)!
-      .repository;
+      .find((cfg) => this.installType === cfg.name)
+      ?.repository;
   }
 
   /** These values come from option flags, i.e. --type */
-  get installType(): string {
+  get installType(): i.InstallType | undefined {
     return this.cli.type;
   }
 
+  set installType(type: i.InstallType | undefined) {
+    this.cli.type = type;
+  }
+
   /** Args are passed without an option flag, i.e. the project name */
-  get projectName(): string {
+  get projectName(): string | undefined {
     return this._projectName || this.args[ARG.ProjectName] || this.installRepository;
   }
 
-  set projectName(name: string) {
+  set projectName(name: string | undefined) {
     this._projectName = name;
   }
 
