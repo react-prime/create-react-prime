@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import SERVICES from 'ioc/services';
@@ -32,8 +33,11 @@ export default class Logger implements i.LoggerType {
     }
   }
 
+  whitespace(): void {
+    console.log();
+  }
+
   private log(prefix: string, ...str: i.AnyArr): void {
-    // eslint-disable-next-line no-console
     console.log(LOG_PREFIX, prefix, ...str);
   }
 }

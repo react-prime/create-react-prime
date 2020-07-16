@@ -1,15 +1,14 @@
 import fs from 'fs';
+import path from 'path';
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import container from 'ioc';
 import SERVICES from 'ioc/services';
-import Text from 'utils/Text';
 
 
 @injectable()
 export default class App implements i.AppType {
   private installer!: i.InstallerType;
-  private text = new Text();
 
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
@@ -20,7 +19,7 @@ export default class App implements i.AppType {
 
 
   async install(): Promise<void> {
-    const { projectName, installRepository, installType } = this.cliMgr;
+    const { projectName, installType } = this.cliMgr;
 
     // Get installer for the type that was specified by the user
     this.installer = container.getNamed(SERVICES.Installer, installType!);
@@ -40,7 +39,7 @@ export default class App implements i.AppType {
       this.logger.error(err);
     }
 
-    this.logger.msg(this.text.bold(`Succesfully installed ${installRepository}!\n`));
+    this.logger.whitespace();
   }
 
   async form(type: 'pre' | 'post'): Promise<void> {
@@ -52,8 +51,15 @@ export default class App implements i.AppType {
     // Act upon the given answers
     await questions.answer(answers);
 
-    // Add white space
-    // eslint-disable-next-line no-console
-    console.log();
+    if (Object.keys(answers).length > 0) {
+      this.logger.whitespace();
+    }
+  }
+
+  end(): void {
+    const { projectName, installRepository } = this.cliMgr;
+    const projectPath = path.resolve(this.cliMgr.projectName!);
+
+    this.logger.msg(`'${projectName}' (${installRepository}) was succesfully installed at ${projectPath}.`);
   }
 }

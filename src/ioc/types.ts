@@ -20,6 +20,7 @@ export type InstallerCfg = {
 export type AppType = {
   install(): Promise<void>;
   form(type: 'pre' | 'post'): Promise<void>;
+  end(): void;
 }
 
 export type CLIMgrType = {
@@ -36,6 +37,7 @@ export interface LoggerType {
   warning(...reason: i.AnyArr): void;
   error(...str: i.AnyArr): void;
   debug(...reason: i.AnyArr): void;
+  whitespace(): void;
 }
 
 export type InstallerType = {
