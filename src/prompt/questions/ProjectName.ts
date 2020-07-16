@@ -13,9 +13,14 @@ export default class ProjectName extends Question implements i.CRPQuestion<Input
   readonly type = 'input';
   readonly name = 'name';
   readonly message = 'Project name';
+  readonly default: string | undefined = '';
 
   when = (): boolean => {
     return !this.cliMgr.projectName;
+  }
+
+  validate(input: string): boolean {
+    return input.length > 0;
   }
 
 
@@ -31,5 +36,7 @@ export default class ProjectName extends Question implements i.CRPQuestion<Input
     protected cliMgr: i.CLIMgrType,
   ) {
     super();
+
+    this.default = cliMgr.installRepository;
   }
 }
