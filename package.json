@@ -1,8 +1,8 @@
 {
   "name": "create-react-prime",
   "version": "2.0.0-beta.8",
-  "description": "Installs the latest version of React-Prime boilerplate.",
-  "author": "Sander Vispoel <contact@sandervispoel.com>",
+  "description": "Simplifies setting up your next React-prime project by automating the entire process.",
+  "author": "Label A [labela.nl]",
   "license": "MIT",
   "main": "dist/main",
   "bin": {
@@ -50,7 +50,10 @@
   "keywords": [
     "boilerplate",
     "install",
+    "cli",
     "react",
-    "cli"
+    "react-native",
+    "nextjs",
+    "react-prime"
   ]
 }
