@@ -47,7 +47,9 @@ describe('PackageMgr', () => {
     });
 
     it('Errors and exits when no package is found', () => {
-      const { packageMgr, logger } = ctx.createMgrCtx();
+      const { packageMgr, logger, cliMgr } = ctx.createMgrCtx();
+
+      cliMgr.projectName = 'test';
 
       jest.spyOn(logger, 'error');
       jest.spyOn(process, 'exit').mockImplementation();

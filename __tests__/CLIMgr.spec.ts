@@ -6,9 +6,6 @@ describe('CLIMgr', () => {
     it('Returns to correct install type', () => {
       const { cli, cliMgr } = createCliCtx();
 
-      // Default type
-      expect(cliMgr.installType).toEqual('client');
-
       cli.type = 'client';
       expect(cliMgr.installType).toEqual('client');
 
@@ -24,9 +21,6 @@ describe('CLIMgr', () => {
     it('Returns the correct repository name', () => {
       const { cli, cliMgr } = createCliCtx();
 
-      // Default
-      expect(cliMgr.installRepository).toEqual('react-prime');
-
       cli.type = 'client';
       expect(cliMgr.installRepository).toEqual('react-prime');
 
@@ -39,22 +33,6 @@ describe('CLIMgr', () => {
   });
 
   describe('projectName', () => {
-    it('Returns the repository name if no name is given', () => {
-      const { cli, cliMgr } = createCliCtx();
-
-      // Default
-      expect(cliMgr.projectName).toEqual('react-prime');
-
-      cli.type = 'client';
-      expect(cliMgr.projectName).toEqual('react-prime');
-
-      cli.type = 'ssr';
-      expect(cliMgr.projectName).toEqual('react-prime-ssr');
-
-      cli.type = 'native';
-      expect(cliMgr.projectName).toEqual('react-prime-native');
-    });
-
     it('Returns the new project name after setting it', () => {
       const { cliMgr } = createCliCtx();
 
@@ -68,7 +46,7 @@ describe('CLIMgr', () => {
     it('Returns the correct debug option value', () => {
       const { cli, cliMgr } = createCliCtx();
 
-      expect(cliMgr.isDebugging).toBeUndefined();
+      expect(cliMgr.isDebugging).toEqual(false);
 
       cli.debug = true;
       expect(cliMgr.isDebugging).toEqual(true);
@@ -79,7 +57,7 @@ describe('CLIMgr', () => {
     it('Returns the given steps', () => {
       const { cli, cliMgr } = createCliCtx();
 
-      expect(cliMgr.skipSteps).toBeUndefined();
+      expect(cliMgr.skipSteps).toHaveLength(0);
 
       cli.skipSteps = ['CLONE'];
       expect(cliMgr.skipSteps).toEqual(['CLONE']);
