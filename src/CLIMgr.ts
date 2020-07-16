@@ -32,7 +32,7 @@ export default class CLIMgr implements i.CLIMgrType {
 
   /** Args are passed without an option flag, i.e. the project name */
   get projectName(): string | undefined {
-    return this._projectName || this.args[ARG.ProjectName] || this.installRepository;
+    return this._projectName || this.args[ARG.ProjectName];
   }
 
   set projectName(name: string | undefined) {

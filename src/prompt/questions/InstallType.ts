@@ -29,17 +29,17 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
   });
 
 
-  constructor(
-    protected cliMgr: i.CLIMgrType,
-  ) {
-    super();
-  }
-
-
   /** Open an editor programatically */
   async answer(answers: { type: i.InstallType }): Promise<void> {
     if (answers.type) {
       this.cliMgr.installType = answers.type;
     }
+  }
+
+
+  constructor(
+    protected cliMgr: i.CLIMgrType,
+  ) {
+    super();
   }
 }
