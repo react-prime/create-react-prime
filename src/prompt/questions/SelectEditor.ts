@@ -23,8 +23,12 @@ export default class SelectEditor extends Question implements i.CRPQuestion<List
   readonly name = 'editor';
   readonly message = 'Open project in editor?';
 
+  when = (): boolean => {
+    return this.choices.length > 1;
+  }
+
   choices: ListChoiceOptions[] = [{
-    name: 'No',
+    name: 'No, complete installation',
     value: false,
   }];
 
