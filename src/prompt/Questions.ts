@@ -10,7 +10,12 @@ export default class Questions extends Array<i.CRPQuestion> implements i.Questio
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
   ) {
     super();
-    this.push(...this.init());
+
+    const questions = this.init();
+
+    for (const question of questions) {
+      this.add(question);
+    }
   }
 
 
@@ -33,9 +38,15 @@ export default class Questions extends Array<i.CRPQuestion> implements i.Questio
 
   /** Add question to array */
   protected add(question: i.CRPQuestion): this {
-    if (question.isValidForOS) {
-      this.push(question);
+    if (!question.isValidForOS) {
+      return this;
     }
+
+    if (question.isOptional && this.cliMgr.skipOptionalQuestions) {
+      return this;
+    }
+
+    this.push(question);
 
     return this;
   }

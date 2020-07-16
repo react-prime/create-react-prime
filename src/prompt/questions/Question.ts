@@ -8,6 +8,7 @@ import Text from 'utils/Text';
 export default class Question implements i.CRPQuestion<InquirerQuestion> {
   protected text = new Text();
   protected macOnly = false;
+  protected optional = false;
   readonly prefix = LOG_PREFIX;
 
 
@@ -17,5 +18,9 @@ export default class Question implements i.CRPQuestion<InquirerQuestion> {
     }
 
     return true;
+  }
+
+  get isOptional(): boolean {
+    return this.optional;
   }
 }

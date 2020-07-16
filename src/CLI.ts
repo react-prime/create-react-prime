@@ -16,7 +16,7 @@ function initCLI(): commander.Command {
 
   cli.option(
     '-d, --debug',
-    'Show additional information when running the installer.',
+    'Show additional information when running the installer',
     false,
   );
 
@@ -54,6 +54,12 @@ function initCLI(): commander.Command {
       return skipSteps;
     },
     [],
+  );
+
+  cli.option(
+    '-y, --yes',
+    'Skip all optional questions',
+    false,
   );
 
   // Set other variables

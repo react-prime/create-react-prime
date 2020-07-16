@@ -39,12 +39,16 @@ export default class CLIMgr implements i.CLIMgrType {
     this._projectName = name;
   }
 
-  get isDebugging(): boolean | undefined {
+  get isDebugging(): boolean {
     return this.cli.debug;
   }
 
-  get skipSteps(): i.InstallStepIds[] | undefined {
+  get skipSteps(): i.InstallStepIds[] {
     return this.cli.skipSteps;
+  }
+
+  get skipOptionalQuestions(): boolean {
+    return this.cli.yes;
   }
 
   private get args(): string[] {

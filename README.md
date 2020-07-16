@@ -72,6 +72,20 @@ npm start
       <br /><b>WARNING:</b> can break installation!
     </td>
   </tr>
+  <tr>
+    <td>
+      -y, --yes
+    </td>
+    <td>
+      boolean
+    </td>
+    <td>
+      false
+    </td>
+    <td>
+      Skip optional questions.
+    </td>
+  </tr>
 </table>
 
 ## Development

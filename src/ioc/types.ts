@@ -28,8 +28,9 @@ export type CLIMgrType = {
   projectName?: string;
   installType?: i.InstallType;
   installRepository?: string;
-  isDebugging?: boolean;
-  skipSteps?: i.InstallStepIds[];
+  isDebugging: boolean;
+  skipSteps: i.InstallStepIds[];
+  skipOptionalQuestions: boolean;
 };
 
 export interface LoggerType {

@@ -15,6 +15,7 @@ const exec = util.promisify(cp.exec);
  * */
 export default class SelectEditor extends Question implements i.CRPQuestion<ListQuestion> {
   macOnly = true;
+  optional = true;
 
   /**
    * Question options
