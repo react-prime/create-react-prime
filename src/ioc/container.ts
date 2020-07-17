@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import * as i from 'types';
 import { Container } from 'inversify';
 import commander from 'commander';

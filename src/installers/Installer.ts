@@ -33,11 +33,13 @@ export default class Installer implements i.InstallerType {
    */
   async install(): Promise<void> {
     // Debug
-    for (const step of this.installStepList) {
-      this.logger.debug({
-        msg: step.message,
-        next: step.next?.message,
-      });
+    if (this.cliMgr.isDebugging) {
+      for (const step of this.installStepList) {
+        this.logger.debug({
+          msg: step.message,
+          next: step.next?.message,
+        });
+      }
     }
 
     let step = this.installStepList.first;

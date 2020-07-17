@@ -13,9 +13,7 @@ export default class App implements i.AppType {
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
     @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
-  ) {
-    this.logger.msg('create-react-prime v$version\n');
-  }
+  ) {}
 
 
   async install(): Promise<void> {

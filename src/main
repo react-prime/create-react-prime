@@ -9,5 +9,6 @@
  * Read more: https://stackoverflow.com/a/33510581/2367649
  */
 
+require('reflect-metadata');
 require('./tsconfig-paths-bootstrap.js');
 require('./main.js');

@@ -13,6 +13,7 @@ decorate(injectable(), Array);
 export default class InstallStepList extends Array<InstallStep> implements i.InstallStepListType {
   constructor(
     @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
+    @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
   ) {
     super();
   }
@@ -68,7 +69,10 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
     const step = this.findStepById(stepId);
 
     if (!step) {
-      this.logger.debug(`modifyStep: No step found for '${stepId}'.`);
+      if (this.cliMgr.isDebugging) {
+        this.logger.debug(`modifyStep: No step found for '${stepId}'.`);
+      }
+
       return this;
     }
 

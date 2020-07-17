@@ -1,5 +1,6 @@
 import commander, { Command } from 'commander';
 import Validate from 'utils/Validate';
+import Logger from 'utils/Logger';
 import { installerCfg } from './installers/config';
 import { INSTALL_STEP } from './installers/steps';
 import { ARG, ERROR_TEXT } from './constants';
@@ -70,10 +71,11 @@ function initCLI(): commander.Command {
 
   // Validate project name
   if (cli.args[ARG.ProjectName] != null) {
+    const logger = new Logger();
     const validate = new Validate();
 
     if (!validate.filename(cli.args[ARG.ProjectName])) {
-      console.error(ERROR_TEXT.Filename);
+      logger.error(ERROR_TEXT.Filename);
       process.exit(1);
     }
   }
