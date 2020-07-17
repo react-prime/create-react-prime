@@ -1,6 +1,8 @@
 import commander, { Command } from 'commander';
+import Validate from 'utils/Validate';
 import { installerCfg } from './installers/config';
 import { INSTALL_STEP } from './installers/steps';
+import { ARG, ERROR_TEXT } from './constants';
 
 function initCLI(): commander.Command {
   // Initiate cli program
@@ -65,6 +67,16 @@ function initCLI(): commander.Command {
   // Set other variables
   cli.version('$version');
   cli.parse(process.argv);
+
+  // Validate project name
+  if (cli.args[ARG.ProjectName] != null) {
+    const validate = new Validate();
+
+    if (!validate.filename(cli.args[ARG.ProjectName])) {
+      console.error(ERROR_TEXT.Filename);
+      process.exit(1);
+    }
+  }
 
   return cli;
 }

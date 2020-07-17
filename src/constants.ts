@@ -4,3 +4,7 @@ export const LOG_PREFIX = 'crp';
 export const ARG = {
   ProjectName: 0,
 } as const;
+
+export const ERROR_TEXT = {
+  Filename: 'Invalid name. Name should not contain ^ \\ / ? % * : | " < > .',
+};

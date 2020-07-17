@@ -1,5 +1,7 @@
 import * as i from 'types';
 import { InputQuestion } from 'inquirer';
+import Validate from 'utils/Validate';
+import { ERROR_TEXT } from 'src/constants';
 import Question from './Question';
 
 
@@ -19,8 +21,14 @@ export default class ProjectName extends Question implements i.CRPQuestion<Input
     return !this.cliMgr.projectName;
   }
 
-  validate(input: string): boolean {
-    return input.length > 0;
+  validate(input: string): boolean | string {
+    const validate = new Validate();
+
+    if (validate.filename(input)) {
+      return true;
+    }
+
+    return ERROR_TEXT.Filename;
   }
 
 
