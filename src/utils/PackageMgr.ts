@@ -56,7 +56,7 @@ export default class PackageMgr implements i.PackageMgrType {
 
     // Overwrite boilerplate defaults
     pkg.name = projectName;
-    pkg.version = '0.0.1';
+    pkg.version = '0.1.0';
     pkg.description = `Repository of ${projectName}.`;
     pkg.author = 'Label A [labela.nl]';
     pkg.keywords = [];

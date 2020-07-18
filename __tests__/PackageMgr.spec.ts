@@ -32,7 +32,7 @@ describe('PackageMgr', () => {
       restoreConsole();
     });
 
-    it('Returns the project package as an JS object and the path to the package file', () => {
+    it('Returns the project package as a JS object and the path to the package file', () => {
       const { packageMgr, cliMgr } = ctx.createMgrCtx();
       const mockPkg = ctx.mockPkg;
       const mockPath = path.resolve(mockPkg.name as string, 'package.json');
@@ -74,7 +74,7 @@ describe('PackageMgr', () => {
 
     packageMgr.update(mockPkg);
 
-    expect(mockPkg.version).toEqual('0.0.1');
+    expect(mockPkg.version).toEqual('0.1.0');
     expect(mockPkg.name).toEqual(projectName);
     expect(mockPkg.description).toEqual(`Repository of ${projectName}.`);
     expect(mockPkg.author).toEqual('Label A [labela.nl]');
