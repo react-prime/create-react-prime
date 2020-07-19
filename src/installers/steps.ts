@@ -1,6 +1,4 @@
 import * as i from 'types';
-import { Container } from 'inversify';
-import SERVICES from 'ioc/services';
 import { ORGANIZATION } from './config';
 
 
