@@ -1,4 +1,5 @@
 import * as i from 'types';
+import { Container } from 'inversify';
 import SERVICES from 'ioc/services';
 import { ORGANIZATION } from './config';
 
@@ -13,10 +14,7 @@ export const INSTALL_STEP = [
 ] as const;
 
 
-function baseInstallSteps(): i.InstallStepOptions[] {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const container = require('ioc').default;
-  const cliMgr: i.CLIMgrType = container.get(SERVICES.CLIMgr);
+function baseInstallSteps(cliMgr: i.CLIMgrType): i.InstallStepOptions[] {
   const { installRepository, projectName } = cliMgr;
 
   /**

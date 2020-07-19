@@ -50,7 +50,7 @@ export default class Installer implements i.InstallerType {
         return;
       }
 
-      const skipSteps = this.cliMgr.skipSteps;
+      const { skipSteps } = this.cliMgr;
       const skipStep = skipSteps?.some((id) => id === step?.id);
 
       if (!skipStep) {
@@ -59,7 +59,7 @@ export default class Installer implements i.InstallerType {
         this.spinner.start();
 
         try {
-        // Run the installation step
+          // Run the installation step
           await this.executeStep(step);
 
           this.spinner.succeed(step.message.success);
@@ -92,7 +92,7 @@ export default class Installer implements i.InstallerType {
    * Add the basic installation steps. Can be overloaded to add or modify steps.
    */
   protected initSteps(): void {
-    const baseSteps = baseInstallSteps();
+    const baseSteps = baseInstallSteps(this.cliMgr);
 
     for (const baseStep of baseSteps) {
       // Convert the name of a function into the reference of the function
@@ -131,8 +131,7 @@ export default class Installer implements i.InstallerType {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private error(...reason: any[]): void {
+  private error(...reason: i.AnyArr): void {
     this.spinner.fail();
     this.logger.error(...reason);
   }

@@ -14,11 +14,11 @@ describe('Logger', () => {
     logSpy = jest.spyOn(console, 'log');
 
     createLoggerCtx() {
-      const { cli, cliMgr } = createCliCtx();
+      const { cli } = createCliCtx();
 
       return {
         cli,
-        logger: new Logger(cliMgr),
+        logger: new Logger(),
       };
     }
   };
@@ -68,15 +68,6 @@ describe('Logger', () => {
 
   describe('debug', () => {
     const debugPrefix = [LOG_PREFIX, text.red('DBG')];
-
-    it('Does not output text when debug flag is false', () => {
-      const { logger } = ctx.createLoggerCtx();
-
-      logger.debug('test');
-      logger.debug('test', 'test2');
-
-      expect(ctx.logSpy.mock.calls).toEqual([]);
-    });
 
     it('Outputs text when debug flag is true', () => {
       const { logger, cli } = ctx.createLoggerCtx();

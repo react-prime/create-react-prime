@@ -15,7 +15,7 @@ describe('PackageMgr', () => {
 
     createMgrCtx() {
       const { cliMgr } = createCliCtx();
-      const loggerMock = new Logger(cliMgr);
+      const loggerMock = new Logger();
 
       return {
         cliMgr,

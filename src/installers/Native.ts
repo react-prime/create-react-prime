@@ -23,6 +23,7 @@ export default class NativeInstaller extends Installer {
     super.init();
   }
 
+
   protected initSteps(): void {
     super.initSteps();
 
@@ -42,12 +43,13 @@ export default class NativeInstaller extends Installer {
     this.installStepList.addAfterStep('updatePackage', renameStep);
   }
 
+
   /** Run the rename scripts */
   private async runScripts(): Promise<void> {
     const { projectName, isDebugging } = this.cliMgr;
 
     const scripts = [
-      ['rename', `npx react-native-rename ${projectName}`],
+      ['rename files', `npx react-native-rename ${projectName}`],
       ['replace text', `npx replace 'reactprimenative' '${projectName}' . -r --exclude="package*.json"`],
       ['replace schemes', `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`],
     ];

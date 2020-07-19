@@ -3,17 +3,20 @@ import * as i from 'types';
 import InstallStepList from 'src/InstallStepList';
 import Logger from 'src/utils/Logger';
 import createCliCtx from './utils/createCliCtx';
+import mockConsole from './utils/mockConsole';
 
 describe('InstallStepList', () => {
+  const restoreConsole = mockConsole();
+
   const ctx = new class {
     get logger() {
-      const { cliMgr } = createCliCtx();
-
-      return new Logger(cliMgr);
+      return new Logger();
     }
 
     createStepList() {
-      return new InstallStepList(this.logger);
+      const { cliMgr } = createCliCtx();
+
+      return new InstallStepList(this.logger, cliMgr);
     }
 
     stepOptions(id?: i.InstallStepIds): i.InstallStepOptions {
@@ -29,6 +32,10 @@ describe('InstallStepList', () => {
       };
     }
   };
+
+  afterAll(() => {
+    restoreConsole();
+  });
 
   it('Is an array', () => {
     expect(Array.isArray(ctx.createStepList())).toEqual(true);
@@ -56,7 +63,8 @@ describe('InstallStepList', () => {
 
   it('Can add a step to the end of the list', () => {
     // List only has a single entry
-    const stepList = ctx.createStepList().add(ctx.stepOptions('clone'));
+    const stepList = ctx.createStepList()
+      .add(ctx.stepOptions('clone'));
 
     expect(stepList).toHaveLength(1);
     expect(stepList.first?.previous).toBeUndefined();
@@ -106,7 +114,12 @@ describe('InstallStepList', () => {
   });
 
   it('Shows a debug msg when trying to modify a step that is not included', () => {
-    const stepList = ctx.createStepList().add(ctx.stepOptions('clone'));
+    const { cliMgr, cli } = createCliCtx();
+
+    cli.debug = true;
+
+    const stepList = new InstallStepList(ctx.logger, cliMgr)
+      .add(ctx.stepOptions('clone'));
     const debugMock = jest.spyOn(Logger.prototype, 'debug');
 
     stepList.modifyStep('npmInstall', { cmd: 'modified' });
