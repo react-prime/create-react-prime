@@ -1,11 +1,13 @@
 import Logger from 'utils/Logger';
 import * as i from 'types';
 import SERVICES from 'ioc/services';
+import Text from 'utils/Text';
 
 
 // Startup message
 const logger = new Logger();
-logger.msg('create-react-prime v$version\n');
+const text = new Text();
+logger.msg(`create-react-prime v$version ${text.gray('(ctrl + c to exit)')}\n`);
 
 
 async function main(): Promise<void> {
