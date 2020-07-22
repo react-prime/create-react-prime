@@ -19,8 +19,7 @@ export default function initCLI(): commander.Command {
   const repos: string[] = [];
   const langs: string[] = [];
 
-  let lang: i.InstallLang;
-  for (lang in installationConfig) {
+  for (const lang in installationConfig) {
     langs.push(lang);
 
     for (const repo in installationConfig[lang]) {

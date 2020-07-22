@@ -16,11 +16,11 @@ export default class CLIMgr implements i.CLIMgrType {
 
 
   /** These values come from option flags, i.e. --type */
-  get lang(): i.InstallLang {
+  get lang(): i.InstallLangs {
     return this.cli.lang;
   }
 
-  get installationConfigsForLang(): Record<i.InstallType, i.InstallationConfig> {
+  get installationConfigsForLang(): Record<string, i.InstallationConfig> {
     return installationConfig[this.lang].type;
   }
 
@@ -32,11 +32,11 @@ export default class CLIMgr implements i.CLIMgrType {
     return installationConfig[this.lang].type[this.installType];
   }
 
-  get installType(): i.InstallType | undefined {
+  get installType(): i.InstallTypes | undefined {
     return this.cli.type;
   }
 
-  set installType(type: i.InstallType | undefined) {
+  set installType(type: i.InstallTypes | undefined) {
     this.cli.type = type;
   }
 

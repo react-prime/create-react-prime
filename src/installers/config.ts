@@ -10,7 +10,7 @@ export const vc: Record<string, i.Vc> = {
   },
 };
 
-export const installationConfig = {
+export const installationConfig: i.InstallersConfig = {
   js: {
     steps: JsSteps,
     type: {
@@ -37,4 +37,4 @@ export const installationConfig = {
       },
     },
   },
-} as const;
+};

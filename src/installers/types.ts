@@ -1,6 +1,10 @@
 import * as i from 'types';
 import STEPS from 'installers/steps/identifiers';
 import Installer from './Installer';
+import Steps from './steps/Steps';
+
+export type InstallLangs = 'js';
+export type InstallTypes = 'client' | 'ssr' | 'native';
 
 export type InstallStepIds = i.ValueOf<typeof STEPS>;
 
@@ -48,6 +52,15 @@ export type InstallStepOptions = InstallStepOptionsBase & (
 export type Vc = {
   host: string;
   owner: string;
+}
+
+export type InstallersConfig = {
+  [lang: string]: {
+    steps: typeof Steps;
+    type: {
+      [type: string]: i.InstallationConfig;
+    };
+  };
 }
 
 export type InstallationConfig = {

@@ -1,12 +1,8 @@
 import * as i from 'types';
 import commander from 'commander';
 import { Answers } from 'inquirer';
-import { installationConfig } from 'installers/config';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
-
-export type InstallLang = keyof typeof installationConfig;
-export type InstallType = keyof typeof installationConfig[InstallLang]['type'];
 
 export type AppType = {
   install(): Promise<void>;
@@ -16,10 +12,10 @@ export type AppType = {
 
 export type CLIMgrType = {
   cli: commander.Command;
-  lang: i.InstallLang;
-  installationConfigsForLang: Record<i.InstallType, i.InstallationConfig>;
+  lang: i.InstallLangs;
+  installationConfigsForLang: Record<i.InstallTypes, i.InstallationConfig>;
   installationConfig?: i.InstallationConfig;
-  installType?: i.InstallType;
+  installType?: i.InstallTypes;
   projectName?: string;
   isDebugging: boolean;
   skipSteps: i.InstallStepIds[];

@@ -25,7 +25,7 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
   ) {
     super();
 
-    let repo: i.InstallType;
+    let repo: i.InstallTypes;
     for (repo in cliMgr.installationConfigsForLang) {
       const cfg = cliMgr.installationConfigsForLang[repo];
       const desc = this.text.gray(`(${cfg.description})`);
@@ -39,7 +39,7 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
 
 
   /** Open an editor programatically */
-  async answer(answers: { type: i.InstallType }): Promise<void> {
+  async answer(answers: { type: i.InstallTypes }): Promise<void> {
     if (answers.type) {
       this.cliMgr.installType = answers.type;
     }

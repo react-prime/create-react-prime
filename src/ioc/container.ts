@@ -24,12 +24,10 @@ container.bind<i.InstallStepListType>(SERVICES.InstallStepList).to(InstallStepLi
 container.bind<i.QuestionsType>(SERVICES.Questions).to(PreQuestions).whenTargetNamed('pre');
 container.bind<i.QuestionsType>(SERVICES.Questions).to(PostQuestions).whenTargetNamed('post');
 
-let lang: i.InstallLang;
-for (lang in installationConfig) {
+for (const lang in installationConfig) {
   container.bind<i.StepsType>(SERVICES.Steps).to(installationConfig[lang].steps).whenTargetNamed(lang);
 
-  let type: i.InstallType;
-  for (type in installationConfig[lang].type) {
+  for (const type in installationConfig[lang].type) {
     const { name, installer } = installationConfig[lang].type[type];
 
     container.bind<i.InstallerType>(SERVICES.Installer).to(installer).whenTargetNamed(name);
