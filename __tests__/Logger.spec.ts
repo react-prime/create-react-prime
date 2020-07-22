@@ -40,15 +40,17 @@ describe('Logger', () => {
       logger.warning('test');
       logger.warning('test', 'test2');
 
+      const result1 = [...warningPrefix, 'test'].join(' ');
+
       expect(ctx.logSpy.mock.calls).toEqual([
-        [...warningPrefix, 'test'],
-        [...warningPrefix, 'test', 'test2'],
+        [result1],
+        [result1, 'test2'],
       ]);
     });
   });
 
   describe('error', () => {
-    const errorPrefix = [LOG_PREFIX, text.red('ERR!'), 'Installation aborted.'];
+    const errorPrefix = [LOG_PREFIX, text.red('ERR!'), 'Installation aborted.'].join(' ');
     const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
     it('Logs error text with an error prefix and exits with code 1', () => {
@@ -58,8 +60,8 @@ describe('Logger', () => {
       logger.error('test', 'test2');
 
       expect(ctx.logSpy.mock.calls).toEqual([
-        [...errorPrefix, 'test'],
-        [...errorPrefix, 'test', 'test2'],
+        [errorPrefix, 'test'],
+        [errorPrefix, 'test', 'test2'],
       ]);
 
       expect(mockProcessExit).toHaveBeenCalledWith(1);
@@ -78,9 +80,11 @@ describe('Logger', () => {
       logger.debug('test');
       logger.debug('test', 'test2');
 
+      const result1 = [...debugPrefix, 'test'].join(' ');
+
       expect(ctx.logSpy.mock.calls).toEqual([
-        [...debugPrefix, 'test'],
-        [...debugPrefix, 'test', 'test2'],
+        [result1],
+        [result1, 'test2'],
       ]);
     });
   });

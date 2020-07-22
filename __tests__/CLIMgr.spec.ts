@@ -22,13 +22,13 @@ describe('CLIMgr', () => {
       const { cli, cliMgr } = createCliCtx();
 
       cli.type = 'client';
-      expect(cliMgr.installRepository).toEqual('react-prime');
+      expect(cliMgr.installationConfig?.repository).toEqual('react-prime');
 
       cli.type = 'ssr';
-      expect(cliMgr.installRepository).toEqual('react-prime-ssr');
+      expect(cliMgr.installationConfig?.repository).toEqual('react-prime-ssr');
 
       cli.type = 'native';
-      expect(cliMgr.installRepository).toEqual('react-prime-native');
+      expect(cliMgr.installationConfig?.repository).toEqual('react-prime-native');
     });
   });
 
