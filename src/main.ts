@@ -7,7 +7,7 @@ import Text from 'utils/Text';
 // Startup message
 const logger = new Logger();
 const text = new Text();
-logger.msg(`create-react-prime v$version ${text.gray('(ctrl + c to exit)')}\n`);
+logger.msg(`${process.env.npm_package_name} v${process.env.npm_package_version} ${text.gray('(ctrl + c to exit)')}\n`);
 
 
 async function main(): Promise<void> {
