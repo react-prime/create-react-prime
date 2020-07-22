@@ -20,7 +20,7 @@
     "test": "jest",
     "test:watch": "npm t -- --watch",
     "test:full": "npm run lint; npm run typecheck; npm t",
-    "prepublishOnly": "npm run test:full; npm run build",
+    "prepublishOnly": "npm run test:full && npm run build",
     "pub:patch": "npm version patch; npm publish",
     "pub:minor": "npm version minor; npm publish",
     "pub:major": "npm version major; npm publish"
