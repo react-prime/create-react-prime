@@ -1,6 +1,8 @@
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import SERVICES from 'ioc/services';
+import STEPS from './identifiers';
+
 
 @injectable()
 export default class Steps extends Array<i.InstallStepOptions> implements i.StepsType {
@@ -11,20 +13,17 @@ export default class Steps extends Array<i.InstallStepOptions> implements i.Step
 
     const steps = this.init();
 
-    const { installationConfig: repositoryConfig, projectName } = cliMgr;
-    const repoName = repositoryConfig?.repository;
-    const vc = repositoryConfig?.vc;
+    const { installationConfig, projectName } = cliMgr;
+    const repoName = installationConfig?.repository;
+    const vc = installationConfig?.vc;
 
     /**
      * Installation steps
      * These steps are required to run a proper installation
-     *
-     * @property {string,function} fn Can either be a direct reference to a function,
-     * or a name reference to any method from an Installer instance as string
      */
     this.push(
       {
-        id: 'clone',
+        id: STEPS.Clone,
         emoji: '🚚',
         message: {
           pending: `Cloning '${repoName}' into '${projectName}'...`,
@@ -34,7 +33,7 @@ export default class Steps extends Array<i.InstallStepOptions> implements i.Step
       },
       ...steps,
       {
-        id: 'cleanup',
+        id: STEPS.Cleanup,
         emoji: '🧹',
         message: {
           pending: 'Cleaning up...',

@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import * as i from 'types';
 import InstallStepList from 'src/InstallStepList';
 import Logger from 'src/utils/Logger';
+import STEPS from 'installers/steps/identifiers';
 import createCliCtx from './utils/createCliCtx';
 import mockConsole from './utils/mockConsole';
 
@@ -26,7 +27,7 @@ describe('InstallStepList', () => {
           success: 'success test',
         },
         emoji: '🧪',
-        id: id || 'clone',
+        id: id || STEPS.Clone,
         cmd: 'cmd line script',
         fn: async () => void {},
       };
@@ -47,63 +48,63 @@ describe('InstallStepList', () => {
 
   it('Returns the first in the list', () => {
     const stepList = ctx.createStepList()
-      .add(ctx.stepOptions('clone'))
-      .add(ctx.stepOptions('npmInstall'));
+      .add(ctx.stepOptions(STEPS.Clone))
+      .add(ctx.stepOptions(STEPS.NpmInstall));
 
-    expect(stepList.first?.id).toEqual('clone');
+    expect(stepList.first?.id).toEqual(STEPS.Clone);
   });
 
   it('Returns the last in the list', () => {
     const stepList = ctx.createStepList()
-      .add(ctx.stepOptions('clone'))
-      .add(ctx.stepOptions('npmInstall'));
+      .add(ctx.stepOptions(STEPS.Clone))
+      .add(ctx.stepOptions(STEPS.NpmInstall));
 
-    expect(stepList.last?.id).toEqual('npmInstall');
+    expect(stepList.last?.id).toEqual(STEPS.NpmInstall);
   });
 
   it('Can add a step to the end of the list', () => {
     // List only has a single entry
     const stepList = ctx.createStepList()
-      .add(ctx.stepOptions('clone'));
+      .add(ctx.stepOptions(STEPS.Clone));
 
     expect(stepList).toHaveLength(1);
     expect(stepList.first?.previous).toBeUndefined();
     expect(stepList.last?.next).toBeUndefined();
 
     // Additional steps are added at the end of the list
-    stepList.add(ctx.stepOptions('npmInstall'));
+    stepList.add(ctx.stepOptions(STEPS.NpmInstall));
 
     expect(stepList).toHaveLength(2);
-    expect(stepList.last?.id).toEqual('npmInstall');
+    expect(stepList.last?.id).toEqual(STEPS.NpmInstall);
 
     // 'previous' and 'next' references are updated
-    expect(stepList.last?.previous?.id).toEqual('clone');
-    expect(stepList.first?.next?.id).toEqual('npmInstall');
+    expect(stepList.last?.previous?.id).toEqual(STEPS.Clone);
+    expect(stepList.first?.next?.id).toEqual(STEPS.NpmInstall);
   });
 
   it('Can add a step at any position in the list', () => {
     const stepList = ctx.createStepList()
-      .add(ctx.stepOptions('clone'))
-      .add(ctx.stepOptions('npmInstall'))
-      .add(ctx.stepOptions('cleanup'));
+      .add(ctx.stepOptions(STEPS.Clone))
+      .add(ctx.stepOptions(STEPS.NpmInstall))
+      .add(ctx.stepOptions(STEPS.Cleanup));
 
-    stepList.addAfterStep('clone', ctx.stepOptions('updatePackage'));
+    stepList.addAfterStep(STEPS.Clone, ctx.stepOptions(STEPS.UpdatePackage));
 
-    expect(stepList[1].id).toEqual('updatePackage');
+    expect(stepList[1].id).toEqual(STEPS.UpdatePackage);
 
     // Updates 'previous' and 'next' references of previous and next steps
     expect(stepList[0].previous).toBeUndefined();
-    expect(stepList[0].next?.id).toEqual('updatePackage');
-    expect(stepList[1].previous?.id).toEqual('clone');
-    expect(stepList[1].next?.id).toEqual('npmInstall');
+    expect(stepList[0].next?.id).toEqual(STEPS.UpdatePackage);
+    expect(stepList[1].previous?.id).toEqual(STEPS.Clone);
+    expect(stepList[1].next?.id).toEqual(STEPS.NpmInstall);
   });
 
   it('Modifies a step\'s options and leaves everything intact', () => {
     const stepList = ctx.createStepList()
-      .add(ctx.stepOptions('clone'))
-      .add(ctx.stepOptions('npmInstall'));
+      .add(ctx.stepOptions(STEPS.Clone))
+      .add(ctx.stepOptions(STEPS.NpmInstall));
 
-    stepList.modifyStep('clone', { cmd: 'modified' });
+    stepList.modifyStep(STEPS.Clone, { cmd: 'modified' });
 
     const modifiedStepOpts = {
       ...stepList.first?.options,
@@ -119,10 +120,10 @@ describe('InstallStepList', () => {
     cli.debug = true;
 
     const stepList = new InstallStepList(ctx.logger, cliMgr)
-      .add(ctx.stepOptions('clone'));
+      .add(ctx.stepOptions(STEPS.Clone));
     const debugMock = jest.spyOn(Logger.prototype, 'debug');
 
-    stepList.modifyStep('npmInstall', { cmd: 'modified' });
+    stepList.modifyStep(STEPS.NpmInstall, { cmd: 'modified' });
 
     expect(debugMock).toHaveBeenCalledTimes(1);
   });

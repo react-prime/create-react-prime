@@ -1,8 +1,8 @@
 import * as i from 'types';
-import { INSTALL_STEP } from 'installers/steps/identifiers';
+import STEPS from 'installers/steps/identifiers';
 import Installer from './Installer';
 
-export type InstallStepIds = typeof INSTALL_STEP[number];
+export type InstallStepIds = i.ValueOf<typeof STEPS>;
 
 export type InstallMessage = {
   pending: string;
@@ -32,6 +32,9 @@ type InstallStepOptionsFn = {
    * or is easier to translate into JavaScript rather than a command line script.
    * Can be used together with a command line script from `cmd`. This function will always run
    * after the command line script is finished executing.
+   *
+   * Can either be a direct reference to a function,
+   * or a name reference to any method from an Installer instance as string.
    */
   fn: string | (() => Promise<void>);
 }

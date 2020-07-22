@@ -51,7 +51,7 @@ npm start
       client, ssr, native
     </td>
     <td>
-      client
+      -
     </td>
     <td>
       Installs one of the supported boilerplate types.

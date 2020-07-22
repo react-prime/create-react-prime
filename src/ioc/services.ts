@@ -1,13 +1,13 @@
 const SERVICES = {
-  App: Symbol('app'),
-  CLI: Symbol('cli'),
-  CLIMgr: Symbol('cliMgr'),
-  Logger: Symbol('logger'),
-  Installer: Symbol('installer'),
-  InstallStepList: Symbol('installStepList'),
-  PackageMgr: Symbol('packageMgr'),
-  Questions: Symbol('questions'),
-  Steps: Symbol('steps'),
+  App: 'app',
+  CLI: 'cli',
+  CLIMgr: 'cliMgr',
+  Logger: 'logger',
+  Installer: 'installer',
+  InstallStepList: 'installStepList',
+  PackageMgr: 'packageMgr',
+  Questions: 'questions',
+  Steps: 'steps',
 };
 
 export default SERVICES;

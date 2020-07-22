@@ -3,7 +3,7 @@ import commander, { Command } from 'commander';
 import Validate from 'utils/Validate';
 import Logger from 'utils/Logger';
 import { installationConfig } from './installers/config';
-import { INSTALL_STEP } from './installers/steps/identifiers';
+import STEPS from './installers/steps/identifiers';
 import { ARG, ERROR_TEXT } from './constants';
 
 
@@ -14,7 +14,7 @@ export default function initCLI(): commander.Command {
   const cli = new Command();
 
   // Set options
-  const installStepIdList = INSTALL_STEP.join(', ');
+  const installStepIdList = Object.values(STEPS).join(', ');
 
   const repos: string[] = [];
   const langs: string[] = [];
@@ -50,14 +50,13 @@ export default function initCLI(): commander.Command {
     `Skip an install step. You can pass a comma separated list for multiple steps. Options: ${installStepIdList}`,
     // Map from comma separated string list to array
     (value) => {
-      const skipSteps = value.replace(' ', '').split(',');
+      const skipSteps = value.replace(' ', '').split(',') as i.InstallStepIds[];
       const invalidSteps: string[] = [];
 
       // Check if any of the given steps is invalid
       for (const step of skipSteps) {
-        // Given step can !== stepId, that's the point of this check!
-        // @ts-ignore
-        const invalidStep = !INSTALL_STEP.includes(step);
+        // Given step can be invalid
+        const invalidStep = !Object.values(STEPS).includes(step);
 
         if (invalidStep) {
           invalidSteps.push(step);

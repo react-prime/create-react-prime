@@ -1,5 +1,7 @@
 import * as i from 'types';
 import Steps from './Steps';
+import STEPS from './identifiers';
+
 
 export default class JsSteps extends Steps implements i.StepsType {
   init(): i.InstallStepOptions[] {
@@ -7,7 +9,7 @@ export default class JsSteps extends Steps implements i.StepsType {
 
     return [
       {
-        id: 'updatePackage',
+        id: STEPS.UpdatePackage,
         emoji: '✏️ ',
         message: {
           pending: 'Updating package.json...',
@@ -16,7 +18,7 @@ export default class JsSteps extends Steps implements i.StepsType {
         fn: 'updatePackage',
       },
       {
-        id: 'npmInstall',
+        id: STEPS.NpmInstall,
         emoji: '📦',
         message: {
           pending: 'Installing packages...',
