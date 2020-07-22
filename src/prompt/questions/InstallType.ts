@@ -1,6 +1,5 @@
 import * as i from 'types';
 import { ListQuestion, ListChoiceOptions } from 'inquirer';
-import { installerCfg } from 'installers/config';
 import Question from './Question';
 
 
@@ -14,26 +13,10 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
   readonly type = 'list';
   readonly name = 'type';
   readonly message = 'What boilerplate would you like to install?';
+  readonly choices: ListChoiceOptions[] = [];
 
   when = (): boolean => {
     return !this.cliMgr.installType;
-  }
-
-  choices: ListChoiceOptions[] = installerCfg.map((installer) => {
-    const desc = this.text.gray(`(${installer.description})`);
-
-    return {
-      name: `${installer.name} ${desc}`,
-      value: installer.name,
-    };
-  });
-
-
-  /** Open an editor programatically */
-  async answer(answers: { type: i.InstallType }): Promise<void> {
-    if (answers.type) {
-      this.cliMgr.installType = answers.type;
-    }
   }
 
 
@@ -41,5 +24,24 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
     protected cliMgr: i.CLIMgrType,
   ) {
     super();
+
+    let repo: i.InstallType;
+    for (repo in cliMgr.installationConfigsForLang) {
+      const cfg = cliMgr.installationConfigsForLang[repo];
+      const desc = this.text.gray(`(${cfg.description})`);
+
+      this.choices.push({
+        name: `${cfg.name} ${desc}`,
+        value: cfg.name,
+      });
+    }
+  }
+
+
+  /** Open an editor programatically */
+  async answer(answers: { type: i.InstallType }): Promise<void> {
+    if (answers.type) {
+      this.cliMgr.installType = answers.type;
+    }
   }
 }

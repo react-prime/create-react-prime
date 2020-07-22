@@ -31,6 +31,9 @@ export default class Logger implements i.LoggerType {
   }
 
   private log(prefix: string, ...str: i.AnyArr): void {
-    console.log(LOG_PREFIX, prefix, ...str);
+    const pre = `${LOG_PREFIX} ${prefix}`;
+    const [first, ...rest] = str;
+
+    console.log(`${pre} ${first}`, ...rest);
   }
 }

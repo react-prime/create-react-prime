@@ -21,6 +21,15 @@ export default class ProjectName extends Question implements i.CRPQuestion<Input
     return !this.cliMgr.projectName;
   }
 
+  constructor(
+    protected cliMgr: i.CLIMgrType,
+  ) {
+    super();
+
+    this.default = cliMgr.installationConfig?.repository;
+  }
+
+
   validate(input: string): boolean | string {
     const validate = new Validate();
 
@@ -31,20 +40,10 @@ export default class ProjectName extends Question implements i.CRPQuestion<Input
     return ERROR_TEXT.Filename;
   }
 
-
   /** Open an editor programatically */
   async answer(answers: { name: string }): Promise<void> {
     if (answers.name) {
       this.cliMgr.projectName = answers.name;
     }
-  }
-
-
-  constructor(
-    protected cliMgr: i.CLIMgrType,
-  ) {
-    super();
-
-    this.default = cliMgr.installRepository;
   }
 }

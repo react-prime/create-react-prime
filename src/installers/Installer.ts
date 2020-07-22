@@ -3,9 +3,9 @@ import cp from 'child_process';
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import ora from 'ora';
+import container from 'ioc';
 import SERVICES from 'ioc/services';
 import { LOG_PREFIX } from '../constants';
-import baseInstallSteps from './steps';
 
 
 // Wrap utils in promise
@@ -92,7 +92,7 @@ export default class Installer implements i.InstallerType {
    * Add the basic installation steps. Can be overloaded to add or modify steps.
    */
   protected initSteps(): void {
-    const baseSteps = baseInstallSteps(this.cliMgr);
+    const baseSteps = container.getNamed<i.StepsType>(SERVICES.Steps, this.cliMgr.lang);
 
     for (const baseStep of baseSteps) {
       // Convert the name of a function into the reference of the function

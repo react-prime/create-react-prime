@@ -1,20 +1,42 @@
+import * as i from 'types';
 import commander, { Command } from 'commander';
 import Validate from 'utils/Validate';
 import Logger from 'utils/Logger';
-import { installerCfg } from './installers/config';
-import { INSTALL_STEP } from './installers/steps';
+import { installationConfig } from './installers/config';
+import { INSTALL_STEP } from './installers/steps/identifiers';
 import { ARG, ERROR_TEXT } from './constants';
 
-function initCLI(): commander.Command {
+
+export default function initCLI(): commander.Command {
+  const logger = new Logger();
+
   // Initiate cli program
   const cli = new Command();
 
   // Set options
   const installStepIdList = INSTALL_STEP.join(', ');
 
+  const repos: string[] = [];
+  const langs: string[] = [];
+
+  let lang: i.InstallLang;
+  for (lang in installationConfig) {
+    langs.push(lang);
+
+    for (const repo in installationConfig[lang]) {
+      repos.push(repo);
+    }
+  }
+
+  cli.option(
+    '-l, --lang <lang>',
+    `What programming language you will use. Options: ${langs.join(', ')}`,
+    'js',
+  );
+
   cli.option(
     '-t, --type <type>',
-    `Install a type of react-prime. Options: ${installerCfg.map((cfg) => cfg.name).join(', ')}`,
+    `Install given boilerplate. Options: ${repos.join(', ')}`,
   );
 
   cli.option(
@@ -47,7 +69,7 @@ function initCLI(): commander.Command {
           .map((str) => `'${str}'`)
           .join(', ');
 
-        console.error(
+        logger.error(
           `Error in --skipSteps. ${stepsToStr} is/are invalid. Available steps: ${installStepIdList}`,
         );
 
@@ -71,7 +93,6 @@ function initCLI(): commander.Command {
 
   // Validate project name
   if (cli.args[ARG.ProjectName] != null) {
-    const logger = new Logger();
     const validate = new Validate();
 
     if (!validate.filename(cli.args[ARG.ProjectName])) {
@@ -82,5 +103,3 @@ function initCLI(): commander.Command {
 
   return cli;
 }
-
-export default initCLI;

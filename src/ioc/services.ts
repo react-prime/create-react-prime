@@ -7,6 +7,7 @@ const SERVICES = {
   InstallStepList: Symbol('installStepList'),
   PackageMgr: Symbol('packageMgr'),
   Questions: Symbol('questions'),
+  Steps: Symbol('steps'),
 };
 
 export default SERVICES;

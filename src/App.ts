@@ -55,9 +55,11 @@ export default class App implements i.AppType {
   }
 
   end(): void {
-    const { projectName, installRepository } = this.cliMgr;
+    const { projectName, installationConfig } = this.cliMgr;
     const projectPath = path.resolve(this.cliMgr.projectName!);
 
-    this.logger.msg(`'${projectName}' (${installRepository}) was succesfully installed at ${projectPath}.`);
+    this.logger.msg(
+      `'${projectName}' (${installationConfig?.repository}) was succesfully installed at ${projectPath}.`,
+    );
   }
 }

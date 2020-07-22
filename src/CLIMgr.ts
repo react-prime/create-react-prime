@@ -2,7 +2,7 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import commander from 'commander';
 import SERVICES from 'ioc/services';
-import { installerCfg } from 'installers/config';
+import { installationConfig } from 'installers/config';
 import { ARG } from './constants';
 
 
@@ -15,13 +15,23 @@ export default class CLIMgr implements i.CLIMgrType {
   ) {}
 
 
-  get installRepository(): string | undefined {
-    return installerCfg
-      .find((cfg) => this.installType === cfg.name)
-      ?.repository;
+  /** These values come from option flags, i.e. --type */
+  get lang(): i.InstallLang {
+    return this.cli.lang;
   }
 
-  /** These values come from option flags, i.e. --type */
+  get installationConfigsForLang(): Record<i.InstallType, i.InstallationConfig> {
+    return installationConfig[this.lang].type;
+  }
+
+  get installationConfig(): i.InstallationConfig | undefined {
+    if (!this.installType) {
+      return;
+    }
+
+    return installationConfig[this.lang].type[this.installType];
+  }
+
   get installType(): i.InstallType | undefined {
     return this.cli.type;
   }

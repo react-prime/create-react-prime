@@ -31,6 +31,20 @@ npm start
   </tr>
   <tr>
     <td>
+      -l, --lang
+    </td>
+    <td>
+      js
+    </td>
+    <td>
+      js
+    </td>
+    <td>
+      What programming language you will use.
+    </td>
+  </tr>
+  <tr>
+    <td>
       -t, --type
     </td>
     <td>
@@ -83,7 +97,7 @@ npm start
       false
     </td>
     <td>
-      Skip optional questions.
+      Skip all optional questions.
     </td>
   </tr>
 </table>

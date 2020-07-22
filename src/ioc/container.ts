@@ -2,11 +2,11 @@ import * as i from 'types';
 import { Container } from 'inversify';
 import commander from 'commander';
 import SERVICES from 'ioc/services';
+import { installationConfig } from 'installers/config';
 import InstallStepList from 'src/InstallStepList';
 import App from 'src/App';
 import initCli from 'src/CLI';
 import CLIMgr from 'src/CLIMgr';
-import { installerCfg } from 'installers/config';
 import Logger from 'utils/Logger';
 import PackageMgr from 'utils/PackageMgr';
 import PostQuestions from 'prompt/PostQuestions';
@@ -24,8 +24,16 @@ container.bind<i.InstallStepListType>(SERVICES.InstallStepList).to(InstallStepLi
 container.bind<i.QuestionsType>(SERVICES.Questions).to(PreQuestions).whenTargetNamed('pre');
 container.bind<i.QuestionsType>(SERVICES.Questions).to(PostQuestions).whenTargetNamed('post');
 
-for (const { name, installer } of installerCfg) {
-  container.bind<i.InstallerType>(SERVICES.Installer).to(installer).whenTargetNamed(name);
+let lang: i.InstallLang;
+for (lang in installationConfig) {
+  container.bind<i.StepsType>(SERVICES.Steps).to(installationConfig[lang].steps).whenTargetNamed(lang);
+
+  let type: i.InstallType;
+  for (type in installationConfig[lang].type) {
+    const { name, installer } = installationConfig[lang].type[type];
+
+    container.bind<i.InstallerType>(SERVICES.Installer).to(installer).whenTargetNamed(name);
+  }
 }
 
 export default container;

@@ -1,21 +1,12 @@
 import * as i from 'types';
 import commander from 'commander';
 import { Answers } from 'inquirer';
-import Installer from 'installers/Installer';
-import { installerCfg } from 'installers/config';
+import { installationConfig } from 'installers/config';
 import InstallStep from '../InstallStep';
 import InstallStepList from '../InstallStepList';
 
-
-export type InstallType = typeof installerCfg[number]['name'];
-
-export type InstallerCfg = {
-  /** Boilerplate name */
-  name: i.InstallType;
-  /** Boilerplate repository name */
-  repository: string;
-  installer: typeof Installer;
-}
+export type InstallLang = keyof typeof installationConfig;
+export type InstallType = keyof typeof installationConfig[InstallLang]['type'];
 
 export type AppType = {
   install(): Promise<void>;
@@ -25,9 +16,11 @@ export type AppType = {
 
 export type CLIMgrType = {
   cli: commander.Command;
-  projectName?: string;
+  lang: i.InstallLang;
+  installationConfigsForLang: Record<i.InstallType, i.InstallationConfig>;
+  installationConfig?: i.InstallationConfig;
   installType?: i.InstallType;
-  installRepository?: string;
+  projectName?: string;
   isDebugging: boolean;
   skipSteps: i.InstallStepIds[];
   skipOptionalQuestions: boolean;
@@ -79,4 +72,8 @@ export type QuestionsType = {
   init(): i.CRPQuestion[];
   ask(): Promise<Answers>;
   answer(answers: Answers): Promise<void>;
+}
+
+export type StepsType = i.InstallStepOptions[] & {
+  init(): void;
 }

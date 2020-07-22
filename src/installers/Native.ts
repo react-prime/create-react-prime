@@ -9,7 +9,7 @@ import Installer from './Installer';
 const exec = util.promisify(cp.exec);
 
 
-export default class NativeInstaller extends Installer {
+export default class NativeInstaller extends Installer implements i.InstallerType {
   init(): void {
     // Native project names can only contain alphanumerical characters
     const orgProjectName = this.cliMgr.projectName;

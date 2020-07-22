@@ -1,4 +1,6 @@
-import { INSTALL_STEP } from 'installers/steps';
+import * as i from 'types';
+import { INSTALL_STEP } from 'installers/steps/identifiers';
+import Installer from './Installer';
 
 export type InstallStepIds = typeof INSTALL_STEP[number];
 
@@ -38,4 +40,17 @@ type InstallStepOptionsFn = {
 export type InstallStepOptions = InstallStepOptionsBase & (
   | InstallStepOptionsCmd
   | InstallStepOptionsFn
-)
+);
+
+export type Vc = {
+  host: string;
+  owner: string;
+}
+
+export type InstallationConfig = {
+  name: string;
+  repository: string;
+  vc: i.Vc;
+  description: string;
+  installer: typeof Installer;
+}
