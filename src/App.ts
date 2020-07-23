@@ -4,6 +4,7 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import container from 'ioc';
 import SERVICES from 'ioc/services';
+import Text from 'utils/Text';
 
 
 @injectable()
@@ -55,11 +56,12 @@ export default class App implements i.AppType {
   }
 
   end(): void {
-    const { projectName, installationConfig } = this.cliMgr;
+    const text = new Text();
+    const { installationConfig } = this.cliMgr;
     const projectPath = path.resolve(this.cliMgr.projectName!);
+    const projectName = text.yellow(text.bold(this.cliMgr.projectName!));
+    const repoName = text.gray(`(${installationConfig?.repository})`);
 
-    this.logger.msg(
-      `'${projectName}' (${installationConfig?.repository}) was succesfully installed at ${projectPath}.`,
-    );
+    this.logger.msg(`${projectName} ${repoName} was succesfully installed at ${text.cyan(projectPath)}.`);
   }
 }

@@ -7,7 +7,10 @@ import Text from 'utils/Text';
 // Startup message
 const logger = new Logger();
 const text = new Text();
-logger.msg(`${process.env.npm_package_name} v${process.env.npm_package_version} ${text.gray('(ctrl + c to exit)')}\n`);
+const { npm_package_name, npm_package_version } = process.env;
+const packageName = text.yellow(text.bold(npm_package_name!));
+
+logger.msg(`${packageName} v${npm_package_version} ${text.gray('(ctrl + c to exit)')}\n`);
 
 
 async function main(): Promise<void> {
