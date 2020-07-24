@@ -20,8 +20,8 @@ export default class CLIMgr implements i.CLIMgrType {
     return this.cli.lang;
   }
 
-  get installationConfigsForLang(): Record<string, i.InstallationConfig> {
-    return installationConfig[this.lang].type;
+  get installationLangConfig(): i.LangConfig {
+    return installationConfig[this.lang];
   }
 
   get installationConfig(): i.InstallationConfig | undefined {

@@ -57,11 +57,28 @@ export default class App implements i.AppType {
 
   end(): void {
     const text = new Text();
-    const { installationConfig } = this.cliMgr;
+    const { installationConfig, installationLangConfig } = this.cliMgr;
     const projectPath = path.resolve(this.cliMgr.projectName!);
-    const projectName = text.yellow(text.bold(this.cliMgr.projectName!));
-    const repoName = text.gray(`(${installationConfig?.repository})`);
+    const styledProjectName = text.yellow(text.bold(this.cliMgr.projectName!));
+    const styledRepoName = text.gray(`(${installationConfig?.repository})`);
 
-    this.logger.msg(`${projectName} ${repoName} was succesfully installed at ${text.cyan(projectPath)}.`);
+    this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${text.cyan(projectPath)}.`);
+
+    function formatText(cmd: string, desc: string): string {
+      return `  ${cmd.padEnd(15)} ${text.gray(desc)}`;
+    }
+
+    /* eslint-disable no-console */
+    console.log(`\n${text.title('Quickstart')}\n`);
+    console.log(`  cd ${this.cliMgr.projectName}`);
+    for (const str of installationLangConfig.instructions.quickstart) {
+      console.log(`  ${str}`);
+    }
+
+    console.log(`\n${text.title('All commands')}\n`);
+    for (const str of installationLangConfig.instructions.allCommands) {
+      console.log(formatText(str.cmd, str.desc));
+    }
+    /* eslint-enable */
   }
 }

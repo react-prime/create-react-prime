@@ -13,7 +13,7 @@ export type AppType = {
 export type CLIMgrType = {
   cli: commander.Command;
   lang: i.InstallLangs;
-  installationConfigsForLang: Record<i.InstallTypes, i.InstallationConfig>;
+  installationLangConfig: i.LangConfig;
   installationConfig?: i.InstallationConfig;
   installType?: i.InstallTypes;
   projectName?: string;

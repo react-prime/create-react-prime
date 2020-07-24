@@ -54,19 +54,28 @@ export type Vc = {
   owner: string;
 }
 
-export type InstallersConfig = {
-  [lang: string]: {
-    steps: typeof Steps;
-    type: {
-      [type: string]: i.InstallationConfig;
-    };
-  };
-}
-
 export type InstallationConfig = {
   name: string;
   repository: string;
   vc: i.Vc;
   description: string;
   installer: typeof Installer;
+}
+
+export type LangConfig = {
+  steps: typeof Steps;
+  instructions: {
+    quickstart: string[];
+    allCommands: {
+      cmd: string;
+      desc: string;
+    }[];
+  };
+  type: {
+    [type: string]: i.InstallationConfig;
+  };
+};
+
+export type InstallersConfig = {
+  [lang: string]: i.LangConfig;
 }

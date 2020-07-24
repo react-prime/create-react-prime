@@ -25,9 +25,8 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
   ) {
     super();
 
-    let repo: i.InstallTypes;
-    for (repo in cliMgr.installationConfigsForLang) {
-      const cfg = cliMgr.installationConfigsForLang[repo];
+    for (const repo in cliMgr.installationLangConfig.type) {
+      const cfg = cliMgr.installationLangConfig.type[repo];
       const desc = this.text.gray(`(${cfg.description})`);
 
       this.choices.push({
