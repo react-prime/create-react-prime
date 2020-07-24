@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import * as i from 'types';
 import { mocked } from 'ts-jest/utils';
 import ora from 'ora';
-import container from 'ioc';
+import container from 'ioc/container';
 import SERVICES from 'ioc/services';
 import Installer from 'installers/Installer';
 import Logger from 'src/utils/Logger';

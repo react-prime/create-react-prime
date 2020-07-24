@@ -1,7 +1,7 @@
 import * as i from 'types';
 import Installer from 'installers/Installer';
 import NativeInstaller from 'installers/Native';
-import JsSteps from './steps/js';
+import JsSteps from './steps/Js';
 
 export const vc: Record<string, i.Vc> = {
   'react-prime': {

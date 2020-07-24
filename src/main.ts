@@ -6,15 +6,14 @@ import SERVICES from 'ioc/services';
 
 // Startup message
 const logger = new Logger();
-const { npm_package_name, npm_package_version } = process.env;
-const packageName = color.yellow().bold(npm_package_name!);
-
-logger.msg(`${packageName} v${npm_package_version} ${color.dim('(ctrl + c to exit)')}\n`);
+const packageName = color.yellow().bold(process.env.npm_package_name!);
+const version = process.env.npm_package_version;
+logger.msg(`${packageName} v${version} ${color.dim('(ctrl + c to exit)')}\n`);
 
 
 async function main(): Promise<void> {
   // Get app instance from IOC container and start installation
-  const container = (await import('ioc')).default;
+  const container = (await import('ioc/container')).default;
   const app = container.get<i.AppType>(SERVICES.App);
 
   // Run application

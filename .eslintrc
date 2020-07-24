@@ -17,6 +17,7 @@
   "ignorePatterns": [
     "**/dist/**/*.js",
     "tsconfig-paths-bootstrap.js",
+    "envify.js",
     "src/main"
   ],
   "rules": {

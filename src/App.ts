@@ -3,7 +3,7 @@ import path from 'path';
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import color from 'kleur';
-import container from 'ioc';
+import container from 'ioc/container';
 import SERVICES from 'ioc/services';
 
 

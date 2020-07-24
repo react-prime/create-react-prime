@@ -12,7 +12,9 @@
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist/; tsc -p tsconfig.app.json; cp src/main dist;cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist/",
+    "build": "rm -rf dist/ && tsc -p tsconfig.app.json && npm run build:env && npm run build:cp",
+    "build:cp": "cp src/main dist;cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist/",
+    "build:env": "node envify.js",
     "start": "node dist/main",
     "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
@@ -43,6 +45,7 @@
     "eslint": "7.2.0",
     "eslint-plugin-import": "2.21.2",
     "jest": "26.1.0",
+    "loose-envify": "1.4.0",
     "ts-jest": "26.1.1",
     "typescript": "3.9.5",
     "typescript-eslint-parser": "22.0.0"

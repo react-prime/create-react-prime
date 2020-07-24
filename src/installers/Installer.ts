@@ -3,7 +3,7 @@ import cp from 'child_process';
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import ora from 'ora';
-import container from 'ioc';
+import container from 'ioc/container';
 import SERVICES from 'ioc/services';
 import { LOG_PREFIX } from '../constants';
 
