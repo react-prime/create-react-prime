@@ -61,20 +61,25 @@ export default class App implements i.AppType {
     const styledProjectName = color.yellow().bold(this.cliMgr.projectName!);
     const styledRepoName = color.dim(`(${installationConfig?.repository})`);
 
-    this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}`);
+    this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}\n`);
 
     function formatText(cmd: string, desc: string): string {
       return `  ${cmd.padEnd(15)} ${color.dim(desc)}`;
     }
 
     /* eslint-disable no-console */
-    console.log(`\n${color.bold().underline('Quickstart')}\n`);
+    this.logger.msg(`${color.bold().underline('Quickstart')}\n`);
+
     console.log(`  cd ${this.cliMgr.projectName}`);
+
     for (const str of installationLangConfig.instructions.quickstart) {
       console.log(`  ${str}`);
     }
 
-    console.log(`\n${color.bold().underline('All commands')}\n`);
+    this.logger.whitespace();
+
+    this.logger.msg(`${color.bold().underline('All commands')}\n`);
+
     for (const str of installationLangConfig.instructions.allCommands) {
       console.log(formatText(str.cmd, str.desc));
     }
