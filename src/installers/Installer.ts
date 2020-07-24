@@ -42,14 +42,7 @@ export default class Installer implements i.InstallerType {
       }
     }
 
-    let step = this.installStepList.first;
-
-    const iter = async () => {
-      // Ends the installation
-      if (!step) {
-        return;
-      }
-
+    for await (const step of this.installStepList) {
       const { skipSteps } = this.cliMgr;
       const skipStep = skipSteps?.some((id) => id === step?.id);
 
@@ -69,15 +62,7 @@ export default class Installer implements i.InstallerType {
       } else {
         this.logger.warning(`Skipped '${step.message.pending}'`);
       }
-
-      // Go to next step
-      step = step.next;
-
-      await iter();
-    };
-
-    // Start iterating through the installation steps
-    await iter();
+    }
   }
 
 
