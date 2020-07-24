@@ -1,5 +1,5 @@
 import * as i from 'types';
-import commander, { Command } from 'commander';
+import commander from 'commander';
 import CLIMgr from 'src/CLIMgr';
 import initCLI from 'src/CLI';
 

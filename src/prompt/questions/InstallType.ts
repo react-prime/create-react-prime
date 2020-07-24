@@ -1,5 +1,6 @@
 import * as i from 'types';
 import { ListQuestion, ListChoiceOptions } from 'inquirer';
+import color from 'kleur';
 import Question from './Question';
 
 
@@ -27,7 +28,7 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
 
     for (const repo in cliMgr.installationLangConfig.type) {
       const cfg = cliMgr.installationLangConfig.type[repo];
-      const desc = this.text.gray(`(${cfg.description})`);
+      const desc = color.dim(`(${cfg.description})`);
 
       this.choices.push({
         name: `${cfg.name} ${desc}`,

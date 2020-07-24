@@ -1,29 +1,26 @@
 /* eslint-disable no-console */
 import * as i from 'types';
 import { injectable } from 'inversify';
+import color from 'kleur';
 import { LOG_PREFIX } from '../constants';
-import Text from './Text';
-
 
 @injectable()
 export default class Logger implements i.LoggerType {
-  private text = new Text();
-
   msg(...str: i.AnyArr): void {
     this.log('⚡️', ...str);
   }
 
   warning(...reason: i.AnyArr): void {
-    this.log(this.text.yellow('WRN'), ...reason);
+    this.log(color.yellow('WRN'), ...reason);
   }
 
   error(...reason: i.AnyArr): void {
-    this.log(this.text.red('ERR!'), 'Installation aborted.', ...reason);
+    this.log(color.red('ERR!'), 'Installation aborted.', ...reason);
     process.exit(1);
   }
 
   debug(...str: i.AnyArr): void {
-    this.log(this.text.red('DBG'), ...str);
+    this.log(color.red('DBG'), ...str);
   }
 
   whitespace(): void {

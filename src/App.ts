@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
+import color from 'kleur';
 import container from 'ioc';
 import SERVICES from 'ioc/services';
-import Text from 'utils/Text';
 
 
 @injectable()
@@ -56,26 +56,25 @@ export default class App implements i.AppType {
   }
 
   end(): void {
-    const text = new Text();
     const { installationConfig, installationLangConfig } = this.cliMgr;
     const projectPath = path.resolve(this.cliMgr.projectName!);
-    const styledProjectName = text.yellow(text.bold(this.cliMgr.projectName!));
-    const styledRepoName = text.gray(`(${installationConfig?.repository})`);
+    const styledProjectName = color.yellow().bold(this.cliMgr.projectName!);
+    const styledRepoName = color.dim(`(${installationConfig?.repository})`);
 
-    this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${text.cyan(projectPath)}.`);
+    this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}.`);
 
     function formatText(cmd: string, desc: string): string {
-      return `  ${cmd.padEnd(15)} ${text.gray(desc)}`;
+      return `  ${cmd.padEnd(15)} ${color.dim(desc)}`;
     }
 
     /* eslint-disable no-console */
-    console.log(`\n${text.title('Quickstart')}\n`);
+    console.log(`\n${color.bold().underline('Quickstart')}\n`);
     console.log(`  cd ${this.cliMgr.projectName}`);
     for (const str of installationLangConfig.instructions.quickstart) {
       console.log(`  ${str}`);
     }
 
-    console.log(`\n${text.title('All commands')}\n`);
+    console.log(`\n${color.bold().underline('All commands')}\n`);
     for (const str of installationLangConfig.instructions.allCommands) {
       console.log(formatText(str.cmd, str.desc));
     }

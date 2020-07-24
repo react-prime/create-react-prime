@@ -1,14 +1,13 @@
 /* eslint-disable no-console */
 import 'reflect-metadata';
+import color from 'kleur';
 import { LOG_PREFIX } from 'src/constants';
 import Logger from 'src/utils/Logger';
-import Text from 'utils/Text';
 import mockConsole from './utils/mockConsole';
 import createCliCtx from './utils/createCliCtx';
 
 describe('Logger', () => {
   const restoreConsole = mockConsole();
-  const text = new Text();
 
   const ctx = new class {
     logSpy = jest.spyOn(console, 'log');
@@ -32,7 +31,7 @@ describe('Logger', () => {
   });
 
   describe('warning', () => {
-    const warningPrefix = [LOG_PREFIX, text.yellow('WRN')];
+    const warningPrefix = [LOG_PREFIX, color.yellow('WRN')];
 
     it('Logs text with a warning prefix', () => {
       const { logger } = ctx.createLoggerCtx();
@@ -50,7 +49,7 @@ describe('Logger', () => {
   });
 
   describe('error', () => {
-    const errorPrefix = [LOG_PREFIX, text.red('ERR!'), 'Installation aborted.'].join(' ');
+    const errorPrefix = [LOG_PREFIX, color.red('ERR!'), 'Installation aborted.'].join(' ');
     const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
     it('Logs error text with an error prefix and exits with code 1', () => {
@@ -69,7 +68,7 @@ describe('Logger', () => {
   });
 
   describe('debug', () => {
-    const debugPrefix = [LOG_PREFIX, text.red('DBG')];
+    const debugPrefix = [LOG_PREFIX, color.red('DBG')];
 
     it('Outputs text when debug flag is true', () => {
       const { logger, cli } = ctx.createLoggerCtx();
