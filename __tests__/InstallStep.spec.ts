@@ -57,4 +57,28 @@ describe('InstallStep', () => {
 
     expect(step3.previous).toEqual(ctx.step2);
   });
+
+  it('Modifies a step\'s options and leaves everything intact', () => {
+    // With plain object
+    const stepOpt = ctx.step1.options;
+
+    let modStep = ctx.step1.modify({ emoji: '😂👌' });
+
+    expect(stepOpt).not.toMatchObject(modStep.options);
+
+    delete modStep.options.emoji;
+    expect(stepOpt).toMatchObject(modStep.options);
+
+    // With callback
+    const step2Opt = ctx.step2.options;
+
+    modStep = ctx.step2.modify((step) => ({
+      emoji: step.options.emoji + '😂👌',
+    }));
+
+    expect(step2Opt).not.toMatchObject(modStep.options);
+
+    delete modStep.options.emoji;
+    expect(step2Opt).toMatchObject(modStep.options);
+  });
 });

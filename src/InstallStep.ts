@@ -47,4 +47,24 @@ export default class InstallStep implements i.InstallStepType {
   get next(): InstallStep | undefined {
     return this._next;
   }
+
+  modify(stepOptions: Partial<i.InstallStepOptions> | ((step: InstallStep) => Partial<i.InstallStepOptions>)): this {
+    if (typeof stepOptions === 'object') {
+      this._options = {
+        ...this.options,
+        ...stepOptions,
+      };
+
+      return this;
+    }
+
+    const options = stepOptions(this);
+
+    this._options = {
+      ...this.options,
+      ...options,
+    };
+
+    return this;
+  }
 }

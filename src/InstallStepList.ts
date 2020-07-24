@@ -64,41 +64,8 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
     return this;
   }
 
-  /** Modify options of a step */
-  modifyStep(stepId: i.InstallStepIds, stepOptions: Partial<i.InstallStepOptions>): this {
-    const step = this.findStepById(stepId);
-
-    if (!step) {
-      if (this.cliMgr.isDebugging) {
-        this.logger.debug(`modifyStep: No step found for '${stepId}'.`);
-      }
-
-      return this;
-    }
-
-    const options = {
-      ...step.instance.options,
-      ...stepOptions,
-    };
-
-    this[step.index] = this.createStep(options, step.instance.previous, step.instance.next);
-
-    return this;
-  }
-
-
-  /** Step factory */
-  private createStep(
-    stepOptions: i.InstallStepOptions, ...[prev, next]: [InstallStep?, InstallStep?]
-  ): InstallStep {
-    prev = prev || this.last;
-    const step = new InstallStep(stepOptions, prev, next);
-
-    return step;
-  }
-
   /** Find a step from this list by ID. Returns its instance and the index. */
-  private findStepById(stepId: i.InstallStepIds): { instance: InstallStep, index: number } | undefined {
+  findStepById(stepId: i.InstallStepIds): { instance: InstallStep, index: number } | undefined {
     let step = this.first;
     let i = 0;
 
@@ -122,5 +89,16 @@ export default class InstallStepList extends Array<InstallStep> implements i.Ins
       instance: step,
       index: i,
     };
+  }
+
+
+  /** Step factory */
+  private createStep(
+    stepOptions: i.InstallStepOptions, ...[prev, next]: [InstallStep?, InstallStep?]
+  ): InstallStep {
+    prev = prev || this.last;
+    const step = new InstallStep(stepOptions, prev, next);
+
+    return step;
   }
 }

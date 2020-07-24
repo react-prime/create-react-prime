@@ -43,6 +43,9 @@ export type InstallStepType = {
   fn: (() => Promise<void>) | undefined;
   previous: InstallStep | undefined;
   next: InstallStep | undefined;
+  modify(
+    stepOptions: Partial<i.InstallStepOptions> | ((step: InstallStep) => Partial<i.InstallStepOptions>)
+  ): InstallStep;
 }
 
 export type InstallStepListType = InstallStepType[] & {
@@ -50,7 +53,6 @@ export type InstallStepListType = InstallStepType[] & {
   last: InstallStep | undefined;
   add(stepOptions: i.InstallStepOptions): InstallStepList;
   addAfterStep(stepId: i.InstallStepIds, stepOptions: i.InstallStepOptions): InstallStepList;
-  modifyStep(stepId: i.InstallStepIds, stepOptions: Partial<i.InstallStepOptions>): InstallStepList;
 }
 
 export type GetProjectPackage = {

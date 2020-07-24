@@ -5,8 +5,6 @@ import STEPS from './identifiers';
 
 export default class JsSteps extends Steps implements i.StepsType {
   init(): i.InstallStepOptions[] {
-    const { projectName } = this.cliMgr;
-
     return [
       {
         id: STEPS.UpdatePackage,
@@ -24,7 +22,7 @@ export default class JsSteps extends Steps implements i.StepsType {
           pending: 'Installing packages...',
           success: 'Installed packages!',
         },
-        cmd: `npm --prefix ${projectName} install`,
+        cmd: `npm --prefix ${this.cliMgr.projectName} install`,
       },
     ];
   }

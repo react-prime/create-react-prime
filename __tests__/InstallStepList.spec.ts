@@ -98,33 +98,4 @@ describe('InstallStepList', () => {
     expect(stepList[1].previous?.id).toEqual(STEPS.Clone);
     expect(stepList[1].next?.id).toEqual(STEPS.NpmInstall);
   });
-
-  it('Modifies a step\'s options and leaves everything intact', () => {
-    const stepList = ctx.createStepList()
-      .add(ctx.stepOptions(STEPS.Clone))
-      .add(ctx.stepOptions(STEPS.NpmInstall));
-
-    stepList.modifyStep(STEPS.Clone, { cmd: 'modified' });
-
-    const modifiedStepOpts = {
-      ...stepList.first?.options,
-      cmd: 'modified',
-    };
-
-    expect(stepList.first?.options).toMatchObject(modifiedStepOpts);
-  });
-
-  it('Shows a debug msg when trying to modify a step that is not included', () => {
-    const { cliMgr, cli } = createCliCtx();
-
-    cli.debug = true;
-
-    const stepList = new InstallStepList(ctx.logger, cliMgr)
-      .add(ctx.stepOptions(STEPS.Clone));
-    const debugMock = jest.spyOn(Logger.prototype, 'debug');
-
-    stepList.modifyStep(STEPS.NpmInstall, { cmd: 'modified' });
-
-    expect(debugMock).toHaveBeenCalledTimes(1);
-  });
 });

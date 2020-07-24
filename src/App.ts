@@ -61,7 +61,7 @@ export default class App implements i.AppType {
     const styledProjectName = color.yellow().bold(this.cliMgr.projectName!);
     const styledRepoName = color.dim(`(${installationConfig?.repository})`);
 
-    this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}.`);
+    this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}`);
 
     function formatText(cmd: string, desc: string): string {
       return `  ${cmd.padEnd(15)} ${color.dim(desc)}`;
