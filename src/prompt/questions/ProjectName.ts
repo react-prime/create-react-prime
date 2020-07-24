@@ -6,7 +6,7 @@ import Question from './Question';
 
 
 /**
- * Ask user to select a type to install if not given
+ * Ask user to give the project a name if not given
  * */
 export default class ProjectName extends Question implements i.CRPQuestion<InputQuestion> {
   /**
@@ -40,7 +40,6 @@ export default class ProjectName extends Question implements i.CRPQuestion<Input
     return ERROR_TEXT.Filename;
   }
 
-  /** Open an editor programatically */
   async answer(answers: { name: string }): Promise<void> {
     if (answers.name) {
       this.cliMgr.projectName = answers.name;

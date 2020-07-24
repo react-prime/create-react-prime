@@ -20,7 +20,6 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
     return !this.cliMgr.installType;
   }
 
-
   constructor(
     protected cliMgr: i.CLIMgrType,
   ) {
@@ -38,7 +37,6 @@ export default class InstallType extends Question implements i.CRPQuestion<ListQ
   }
 
 
-  /** Open an editor programatically */
   async answer(answers: { type: i.InstallTypes }): Promise<void> {
     if (answers.type) {
       this.cliMgr.installType = answers.type;

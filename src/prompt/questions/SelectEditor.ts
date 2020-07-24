@@ -51,7 +51,6 @@ export default class SelectEditor extends Question implements i.CRPQuestion<List
     },
   ];
 
-
   constructor(
     protected cliMgr: i.CLIMgrType,
   ) {
