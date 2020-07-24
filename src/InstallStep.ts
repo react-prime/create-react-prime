@@ -36,10 +36,8 @@ export default class InstallStep implements i.InstallStepType {
     return this._options.cmd;
   }
 
-  get fn(): (() => Promise<void>) | undefined {
-    /** @TODO Fix types */
-    // @ts-ignore
-    return this.options.fn;
+  get fn(): i.PromiseFn | undefined {
+    return this.options.fn as i.PromiseFn | undefined;
   }
 
   get previous(): InstallStep | undefined {

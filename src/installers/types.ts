@@ -26,7 +26,7 @@ type InstallStepOptionsBase = {
 type InstallStepOptionsCmd = {
   /** Used for command line scripts. */
   cmd: string;
-  fn?: string | (() => Promise<void>);
+  fn?: string | i.PromiseFn;
 }
 
 type InstallStepOptionsFn = {
@@ -40,7 +40,7 @@ type InstallStepOptionsFn = {
    * Can either be a direct reference to a function,
    * or a name reference to any method from an Installer instance as string.
    */
-  fn: string | (() => Promise<void>);
+  fn: string | i.PromiseFn;
 }
 
 // This type makes sure least one of 'cmd' or 'fn' is present
