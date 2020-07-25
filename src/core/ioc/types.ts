@@ -7,7 +7,7 @@ import InstallStep from 'core/InstallStep';
 
 export type AppType = {
   install(): Promise<void>;
-  form(type: 'pre' | 'post'): Promise<void>;
+  prompt(type: 'pre' | 'post'): Promise<void>;
   end(): void;
 }
 
@@ -60,10 +60,9 @@ export type PackageMgrType = {
   update(npmPkg?: i.PackageJson): Promise<void>;
 }
 
-export type QuestionsType = {
-  init(): i.CRPQuestion[];
-  ask(): Promise<Answers>;
-  answer(answers: Answers): Promise<void>;
+export type PromptType = {
+  ask(when: i.PromptWhen): Promise<Answers>;
+  answer(when: i.PromptWhen, answers: Answers): Promise<void>;
 }
 
 export type StepsType = i.InstallStepOptions[] & {

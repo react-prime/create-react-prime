@@ -10,8 +10,7 @@ import Logger from 'core/utils/Logger';
 import PackageMgr from 'core/utils/PackageMgr';
 
 import installersConfig from 'modules/config';
-import PostQuestions from 'modules/prompt/PostQuestions';
-import PreQuestions from 'modules/prompt/PreQuestions';
+import DefaultPrompt from 'modules/prompt/default/Prompt';
 
 
 const container = new Container();
@@ -21,16 +20,25 @@ container.bind<i.AppType>(SERVICES.App).to(App);
 container.bind<commander.Command>(SERVICES.CLI).toConstantValue(initCli());
 container.bind<i.CLIMgrType>(SERVICES.CLIMgr).to(CLIMgr).inSingletonScope();
 container.bind<i.PackageMgrType>(SERVICES.PackageMgr).to(PackageMgr);
-container.bind<i.QuestionsType>(SERVICES.Questions).to(PreQuestions).whenTargetNamed('pre');
-container.bind<i.QuestionsType>(SERVICES.Questions).to(PostQuestions).whenTargetNamed('post');
+container.bind<i.PromptType>(SERVICES.Prompt).to(DefaultPrompt).whenTargetNamed('prompt_default');
 
 for (const lang in installersConfig) {
-  container.bind<i.StepsType>(SERVICES.Steps).to(installersConfig[lang].steps).whenTargetNamed(lang);
+  const langCfg = installersConfig[lang];
 
-  for (const type in installersConfig[lang].type) {
-    const { name, installer } = installersConfig[lang].type[type];
+  container.bind<i.StepsType>(SERVICES.Steps).to(langCfg.steps).whenTargetNamed(lang);
 
-    container.bind<i.InstallerType>(SERVICES.Installer).to(installer).whenTargetNamed(name);
+  if (langCfg.prompt) {
+    container.bind<i.PromptType>(SERVICES.Prompt).to(langCfg.prompt).whenTargetNamed(`prompt_${lang}`);
+  }
+
+  for (const type in langCfg.type) {
+    const langTypeCfg = langCfg.type[type];
+
+    container.bind<i.InstallerType>(SERVICES.Installer).to(langTypeCfg.installer).whenTargetNamed(langTypeCfg.name);
+
+    if (langTypeCfg.prompt) {
+      container.bind<i.PromptType>(SERVICES.Prompt).to(langTypeCfg.prompt).whenTargetNamed(`prompt_${lang}_${type}`);
+    }
   }
 }
 

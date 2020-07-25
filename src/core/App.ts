@@ -6,6 +6,7 @@ import color from 'kleur';
 
 import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
+import { Answers } from 'inquirer';
 
 
 @injectable()
@@ -44,14 +45,28 @@ export default class App implements i.AppType {
     this.logger.whitespace();
   }
 
-  async form(type: 'pre' | 'post'): Promise<void> {
-    const questions = container.getNamed<i.QuestionsType>(SERVICES.Questions, type);
+  async prompt(when: i.PromptWhen): Promise<void> {
+    const { installationLangConfig, installationConfig, lang, installType } = this.cliMgr;
+    let answers: Answers;
 
-    // Prompt questions for user
-    const answers = await questions.ask();
+    // Default questions
+    let promptName = 'prompt_default';
 
-    // Act upon the given answers
-    await questions.answer(answers);
+    answers = await this.doPrompt(when, promptName);
+
+    // Language specific questions
+    if (installationLangConfig.prompt) {
+      promptName = `prompt_${lang}`;
+
+      answers = await this.doPrompt(when, promptName);
+    }
+
+    // Install specific questions
+    if (installationConfig?.prompt) {
+      promptName = `prompt_${lang}_${installType}`;
+
+      answers = await this.doPrompt(when, promptName);
+    }
 
     if (Object.keys(answers).length > 0) {
       this.logger.whitespace();
@@ -87,5 +102,18 @@ export default class App implements i.AppType {
       console.log(formatText(str.cmd, str.desc));
     }
     /* eslint-enable */
+  }
+
+
+  private async doPrompt(when: i.PromptWhen, iocTargetName: string): Promise<Answers> {
+    const prompt = container.getNamed<i.PromptType>(SERVICES.Prompt, iocTargetName);
+
+    // Prompt questions for user
+    const answers = await prompt.ask(when);
+
+    // Act upon the given answers
+    await prompt.answer(when, answers);
+
+    return answers;
   }
 }

@@ -18,9 +18,9 @@ async function main(): Promise<void> {
   const app = container.get<i.AppType>(SERVICES.App);
 
   // Run application
-  await app.form('pre');
+  await app.prompt('pre');
   await app.install();
-  await app.form('post');
+  await app.prompt('post');
 
   app.end();
 

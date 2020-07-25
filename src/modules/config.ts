@@ -2,7 +2,7 @@ import * as i from 'types';
 
 import JsInstaller from 'modules/installers/js/Installer';
 import NativeInstaller from 'modules/installers/js/Native';
-import JsSteps from 'modules/steps/js/steps';
+import JsSteps from 'modules/steps/js/Steps';
 
 
 export const vc: Record<string, i.Vc> = {

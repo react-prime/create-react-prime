@@ -5,7 +5,7 @@ const SERVICES = {
   Logger: 'logger',
   Installer: 'installer',
   PackageMgr: 'packageMgr',
-  Questions: 'questions',
+  Prompt: 'prompt',
   Steps: 'steps',
 };
 

@@ -2,6 +2,7 @@ import * as i from 'types';
 
 import Installer from 'core/Installer';
 import Steps from 'core/Steps';
+import Prompt from 'core/Prompt';
 
 import STEPS from 'modules/steps/identifiers';
 
@@ -63,10 +64,12 @@ export type InstallationConfig = {
   vc: i.Vc;
   description: string;
   installer: typeof Installer;
+  prompt?: typeof Prompt;
 }
 
 export type LangConfig = {
   steps: typeof Steps;
+  prompt?: typeof Prompt;
   instructions: {
     quickstart: string[];
     allCommands: {

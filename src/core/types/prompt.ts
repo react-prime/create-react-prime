@@ -5,3 +5,5 @@ export type CRPQuestion<T extends Question = Question> = T & {
   isOptional: boolean;
   answer?(answers: Answers): Promise<void>;
 }
+
+export type PromptWhen = 'pre' | 'post';
