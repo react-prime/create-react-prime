@@ -2,25 +2,17 @@ import 'reflect-metadata';
 import * as i from 'types';
 
 import InstallStepList from 'core/InstallStepList';
-import Logger from 'core/utils/Logger';
 
 import STEPS from 'modules/steps/identifiers';
 
-import createCliCtx from './utils/createCliCtx';
 import mockConsole from './utils/mockConsole';
 
 describe('InstallStepList', () => {
   const restoreConsole = mockConsole();
 
   const ctx = new class {
-    get logger() {
-      return new Logger();
-    }
-
-    createStepList() {
-      const { cliMgr } = createCliCtx();
-
-      return new InstallStepList(this.logger, cliMgr);
+    get stepList() {
+      return new InstallStepList();
     }
 
     stepOptions(id?: i.InstallStepIds): i.InstallStepOptions {
@@ -42,15 +34,15 @@ describe('InstallStepList', () => {
   });
 
   it('Is an array', () => {
-    expect(Array.isArray(ctx.createStepList())).toEqual(true);
+    expect(Array.isArray(ctx.stepList)).toEqual(true);
   });
 
   it('Starts empty', () => {
-    expect(ctx.createStepList()).toHaveLength(0);
+    expect(ctx.stepList).toHaveLength(0);
   });
 
   it('Returns the first in the list', () => {
-    const stepList = ctx.createStepList()
+    const stepList = ctx.stepList
       .add(ctx.stepOptions(STEPS.Clone))
       .add(ctx.stepOptions(STEPS.NpmInstall));
 
@@ -58,7 +50,7 @@ describe('InstallStepList', () => {
   });
 
   it('Returns the last in the list', () => {
-    const stepList = ctx.createStepList()
+    const stepList = ctx.stepList
       .add(ctx.stepOptions(STEPS.Clone))
       .add(ctx.stepOptions(STEPS.NpmInstall));
 
@@ -67,7 +59,7 @@ describe('InstallStepList', () => {
 
   it('Can add a step to the end of the list', () => {
     // List only has a single entry
-    const stepList = ctx.createStepList()
+    const stepList = ctx.stepList
       .add(ctx.stepOptions(STEPS.Clone));
 
     expect(stepList).toHaveLength(1);
@@ -86,7 +78,7 @@ describe('InstallStepList', () => {
   });
 
   it('Can add a step at any position in the list', () => {
-    const stepList = ctx.createStepList()
+    const stepList = ctx.stepList
       .add(ctx.stepOptions(STEPS.Clone))
       .add(ctx.stepOptions(STEPS.NpmInstall))
       .add(ctx.stepOptions(STEPS.Cleanup));

@@ -1,21 +1,10 @@
 import * as i from 'types';
-import { inject, injectable, decorate } from 'inversify';
 
-import SERVICES from 'core/ioc/services';
 import InstallStep from 'core/InstallStep';
 
 
-// Make Array constructor injectable
-// https://github.com/inversify/InversifyJS/issues/297#issuecomment-234574834
-decorate(injectable(), Array);
-
-
-@injectable()
-export default class InstallStepList extends Array<InstallStep> implements i.InstallStepListType {
-  constructor(
-    @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
-    @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
-  ) {
+export default class InstallStepList extends Array<InstallStep> {
+  constructor() {
     super();
   }
 

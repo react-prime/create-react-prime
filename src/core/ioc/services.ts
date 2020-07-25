@@ -4,7 +4,6 @@ const SERVICES = {
   CLIMgr: 'cliMgr',
   Logger: 'logger',
   Installer: 'installer',
-  InstallStepList: 'installStepList',
   PackageMgr: 'packageMgr',
   Questions: 'questions',
   Steps: 'steps',

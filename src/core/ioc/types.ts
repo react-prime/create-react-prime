@@ -50,13 +50,6 @@ export type InstallStepType = {
   ): InstallStep;
 }
 
-export type InstallStepListType = InstallStepType[] & {
-  first: InstallStep | undefined;
-  last: InstallStep | undefined;
-  add(stepOptions: i.InstallStepOptions): InstallStepList;
-  addAfterStep(stepId: i.InstallStepIds, stepOptions: i.InstallStepOptions): InstallStepList;
-}
-
 export type GetProjectPackage = {
   path: string;
   json: i.PackageJson;

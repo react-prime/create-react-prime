@@ -3,7 +3,6 @@ import { Container } from 'inversify';
 import commander from 'commander';
 
 import SERVICES from 'core/ioc/services';
-import InstallStepList from 'core/InstallStepList';
 import App from 'core/App';
 import initCli from 'core/CLI';
 import CLIMgr from 'core/CLIMgr';
@@ -22,7 +21,6 @@ container.bind<i.AppType>(SERVICES.App).to(App);
 container.bind<commander.Command>(SERVICES.CLI).toConstantValue(initCli());
 container.bind<i.CLIMgrType>(SERVICES.CLIMgr).to(CLIMgr).inSingletonScope();
 container.bind<i.PackageMgrType>(SERVICES.PackageMgr).to(PackageMgr);
-container.bind<i.InstallStepListType>(SERVICES.InstallStepList).to(InstallStepList);
 container.bind<i.QuestionsType>(SERVICES.Questions).to(PreQuestions).whenTargetNamed('pre');
 container.bind<i.QuestionsType>(SERVICES.Questions).to(PostQuestions).whenTargetNamed('post');
 

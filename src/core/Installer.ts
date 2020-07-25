@@ -7,6 +7,7 @@ import ora from 'ora';
 import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
 import { LOG_PREFIX } from 'core/constants';
+import InstallStepList from 'core/InstallStepList';
 
 
 // Wrap utils in promise
@@ -15,12 +16,12 @@ const exec = util.promisify(cp.exec);
 
 @injectable()
 export default class Installer implements i.InstallerType {
+  protected readonly installStepList = new InstallStepList();
   private spinner = ora();
 
   constructor(
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
     @inject(SERVICES.Logger) protected readonly logger: i.LoggerType,
-    @inject(SERVICES.InstallStepList) protected readonly installStepList: i.InstallStepListType,
     @inject(SERVICES.PackageMgr) protected readonly packageMgr: i.PackageMgrType,
   ) {}
 
