@@ -1,8 +1,10 @@
 /* eslint-disable no-console */
 import 'reflect-metadata';
 import color from 'kleur';
-import { LOG_PREFIX } from 'src/constants';
-import Logger from 'src/utils/Logger';
+
+import { LOG_PREFIX } from 'core/constants';
+import Logger from 'core/utils/Logger';
+
 import mockConsole from './utils/mockConsole';
 import createCliCtx from './utils/createCliCtx';
 

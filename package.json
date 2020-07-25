@@ -4,19 +4,19 @@
   "description": "Simplifies setting up your next React-prime project by automating the entire process.",
   "author": "Label A [labela.nl]",
   "license": "MIT",
-  "main": "dist/main",
+  "main": "dist/core/main",
   "bin": {
-    "create-react-prime": "dist/main"
+    "create-react-prime": "dist/core/main"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "build": "rm -rf dist/ && tsc -p tsconfig.app.json && npm run build:env && npm run build:cp",
-    "build:cp": "cp src/main dist;cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist/",
+    "build:cp": "cp src/core/main dist/core; cp ./{tsconfig-paths-bootstrap.js,tsconfig.json} dist",
     "build:env": "node envify.js",
-    "start": "node dist/main",
-    "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/main testing-name",
+    "start": "node dist/core/main",
+    "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/core/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
     "test": "jest",

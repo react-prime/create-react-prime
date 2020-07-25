@@ -6,7 +6,7 @@ const cp = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const rootPath = 'dist';
+const rootPath = 'dist/core';
 
 const files = [
   'CLI.js',

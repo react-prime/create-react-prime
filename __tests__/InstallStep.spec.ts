@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import * as i from 'types';
-import InstallStep from 'src/InstallStep';
+
+import InstallStep from 'core/InstallStep';
+
 
 describe('InstallStep', () => {
   const ctx = new class {

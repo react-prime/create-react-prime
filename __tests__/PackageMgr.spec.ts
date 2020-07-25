@@ -2,8 +2,10 @@ import 'reflect-metadata';
 import fs from 'fs';
 import path from 'path';
 import * as i from 'types';
-import PackageMgr from 'src/utils/PackageMgr';
-import Logger from 'src/utils/Logger';
+
+import PackageMgr from 'core/utils/PackageMgr';
+import Logger from 'core/utils/Logger';
+
 import mockConsole from './utils/mockConsole';
 import createCliCtx from './utils/createCliCtx';
 

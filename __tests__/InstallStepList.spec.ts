@@ -1,8 +1,11 @@
 import 'reflect-metadata';
 import * as i from 'types';
-import InstallStepList from 'src/InstallStepList';
-import Logger from 'src/utils/Logger';
-import STEPS from 'installers/steps/identifiers';
+
+import InstallStepList from 'core/InstallStepList';
+import Logger from 'core/utils/Logger';
+
+import STEPS from 'modules/steps/identifiers';
+
 import createCliCtx from './utils/createCliCtx';
 import mockConsole from './utils/mockConsole';
 

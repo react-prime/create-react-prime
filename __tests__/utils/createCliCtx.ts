@@ -1,7 +1,8 @@
 import * as i from 'types';
 import commander from 'commander';
-import CLIMgr from 'src/CLIMgr';
-import initCLI from 'src/CLI';
+
+import CLIMgr from 'core/CLIMgr';
+import initCLI from 'core/CLI';
 
 
 type CliCtx = {

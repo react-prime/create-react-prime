@@ -1,5 +1,7 @@
 import 'reflect-metadata';
+
 import createCliCtx from './utils/createCliCtx';
+
 
 describe('CLIMgr', () => {
   describe('installType', () => {

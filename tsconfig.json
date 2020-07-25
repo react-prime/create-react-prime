@@ -13,14 +13,9 @@
       "emitDecoratorMetadata": true,
       "baseUrl": "src",
       "paths": {
-          "ioc": ["ioc/container"],
-          "ioc/*": ["ioc/*"],
-          "installers/*": ["installers/*"],
-          "prompt/*": ["prompt/*"],
-          "types": ["types/index"],
-          "types/*": ["types/*"],
-          "utils/*": ["utils/*"],
-          "src/*": ["./*"]
+          "core/*": ["core/*"],
+          "modules/*": ["modules/*"],
+          "types": ["core/types/index"]
       }
   },
   "include": ["src", "__tests__"],
