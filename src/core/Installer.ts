@@ -77,13 +77,6 @@ export default class Installer implements i.InstallerType {
 
 
   /**
-   * Updates node package variables
-   */
-  protected updatePackage(): void {
-    this.packageMgr.update();
-  }
-
-  /**
    * Add the basic installation steps. Can be overloaded to add or modify steps.
    */
   protected initSteps(): void {

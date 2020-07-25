@@ -3,14 +3,14 @@ import path from 'path';
 import cp from 'child_process';
 import * as i from 'types';
 
-import Installer from 'core/Installer';
+import JsInstaller from './Installer';
 
 
 // Wrap utils in promise
 const exec = util.promisify(cp.exec);
 
 
-export default class NativeInstaller extends Installer implements i.InstallerType {
+export default class NativeInstaller extends JsInstaller implements i.InstallerType {
   beforeInit(): void {
     // Native project names can only contain alphanumerical characters
     const orgProjectName = this.cliMgr.projectName;

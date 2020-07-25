@@ -1,9 +1,8 @@
 import * as i from 'types';
 
-import Installer from 'core/Installer';
-
-import NativeInstaller from 'modules/installers/Native';
-import JsSteps from 'modules/steps/Js';
+import JsInstaller from 'modules/installers/js/Installer';
+import NativeInstaller from 'modules/installers/js/Native';
+import JsSteps from 'modules/steps/js/steps';
 
 
 export const vc: Record<string, i.Vc> = {
@@ -22,14 +21,14 @@ const installersConfig: i.InstallersConfig = {
         repository: 'react-prime',
         vc: vc['react-prime'],
         description: 'Client-side rendering',
-        installer: Installer,
+        installer: JsInstaller,
       },
       ssr: {
         name: 'ssr',
         repository: 'react-prime-ssr',
         vc: vc['react-prime'],
         description: 'Server-side rendering',
-        installer: Installer,
+        installer: JsInstaller,
       },
       native: {
         name: 'native',
