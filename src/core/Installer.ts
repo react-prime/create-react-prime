@@ -22,7 +22,6 @@ export default class Installer implements i.InstallerType {
   constructor(
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
     @inject(SERVICES.Logger) protected readonly logger: i.LoggerType,
-    @inject(SERVICES.PackageMgr) protected readonly packageMgr: i.PackageMgrType,
   ) {}
 
 
