@@ -123,14 +123,14 @@ Dependency Injection (DI) is a principle where modules are injected independentl
 
 #### Inversion of Control
 
-Inversion of Control (IoC) is used to decouple the implementation and the shape of a module. This is useful for testing, because this means we only care about the shape of the module and not about the implementation of the module, which in turn makes mocking easier. Coupling happens in `src/ioc/container.ts` This project uses *InversifyJS* to achieve IoC.
+Inversion of Control (IoC) is used to decouple the implementation and the shape of a module. This is useful for testing, because this means we only care about the shape of the module and not about the implementation of the module, which in turn makes mocking easier. Coupling happens in `core/ioc/container.ts` This project uses *InversifyJS* to achieve IoC.
 
 ### Adding installers
 
 To add a new installer, do the following:
 
-1. Navigate to `src/installers/config.ts`
-2. Add the installer to the `installerCfg` list, together with its name (used for the --type option), and the repository. The installer should be the default `Installer`, unless you need extra logic in the installation process.
+1. Navigate to `modules/config.ts`
+2. Add the installer to the `installersConfig` list, together with its name (used for the --type option), and the repository. The installer should be the default `Installer`, unless you need extra logic in the installation process.
 3. Add the new installer to the readme!
 
 #### Custom installer
@@ -142,5 +142,4 @@ To create a custom installer, do the following:
 1. Follow the steps of *Adding installers*.
 2. Extend the class with `Installer`
    - Note: when overriding any of the methods from `Installer`, make sure to always run the super method at some point in the override.
-   - You can add and modify steps in `this.installStepList`. See `InstallStepListType`.
-3. In the `installerCfg` (from step 2 of *Adding installers*), use your custom installer instead of the default installer.
+3. In the `installersConfig` (from step 2 of *Adding installers*), use your custom installer instead of the default installer.
