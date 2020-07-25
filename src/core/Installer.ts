@@ -27,7 +27,11 @@ export default class Installer implements i.InstallerType {
 
 
   init(): void {
+    this.beforeInit();
+
     this.initSteps();
+
+    this.afterInit();
   }
 
   /**
@@ -43,6 +47,8 @@ export default class Installer implements i.InstallerType {
         });
       }
     }
+
+    this.beforeInstall();
 
     for await (const step of this.installStepList) {
       const { skipSteps } = this.cliMgr;
@@ -65,6 +71,8 @@ export default class Installer implements i.InstallerType {
         this.logger.warning(`Skipped '${step.message.pending}'`);
       }
     }
+
+    this.afterInstall();
   }
 
 
@@ -79,6 +87,8 @@ export default class Installer implements i.InstallerType {
    * Add the basic installation steps. Can be overloaded to add or modify steps.
    */
   protected initSteps(): void {
+    this.beforeStepsInit();
+
     const baseSteps = container.getNamed<i.StepsType>(SERVICES.Steps, this.cliMgr.lang);
 
     for (const baseStep of baseSteps) {
@@ -96,13 +106,46 @@ export default class Installer implements i.InstallerType {
 
       this.installStepList.add(baseStep);
     }
+
+    this.afterStepsInit();
   }
+
+
+  /**
+   * HOOKS
+   */
+
+  /* eslint-disable @typescript-eslint/no-empty-function */
+
+  /** Executed before initialization of an installer instance */
+  protected beforeInit(): void {}
+  /** Executed after initialization of an installer instance */
+  protected afterInit(): void {}
+
+  /** Executed before initialization of the installer steps list */
+  protected beforeStepsInit(): void {}
+  /** Executed after initialization of the installer steps list */
+  protected afterStepsInit(): void {}
+
+  /** Executed before iterating the installation steps */
+  protected beforeInstall(): void {}
+  /** Executed after iterating the installation steps */
+  protected afterInstall(): void {}
+
+  /** Executed before every installation step */
+  protected beforeExecuteStep(): void {}
+  /** Executed after every installation step */
+  protected afterExecuteStep(): void {}
+
+  /* eslint-enable */
 
 
   /**
    * Run the installation step
    */
   private async executeStep(step: i.InstallStepType): Promise<void> {
+    this.beforeExecuteStep();
+
     try {
       // Execute command line
       if (step.cmd) {
@@ -116,6 +159,8 @@ export default class Installer implements i.InstallerType {
     } catch (err) {
       this.error(err);
     }
+
+    this.afterExecuteStep();
   }
 
   private error(...reason: i.AnyArr): void {

@@ -11,23 +11,17 @@ const exec = util.promisify(cp.exec);
 
 
 export default class NativeInstaller extends Installer implements i.InstallerType {
-  init(): void {
+  beforeInit(): void {
     // Native project names can only contain alphanumerical characters
     const orgProjectName = this.cliMgr.projectName;
     this.cliMgr.projectName = this.cliMgr.projectName!.replace(/\W/g, '');
 
     if (orgProjectName !== this.cliMgr.projectName) {
-      // eslint-disable-next-line max-len
-      this.logger.warning(`Project name has been renamed to '${this.cliMgr.projectName}'.\nRead more: https://github.com/facebook/react-native/issues/213.\n`);
+      this.logger.warning(`Project name has been renamed to '${this.cliMgr.projectName}'.\nRead more: https://github.com/facebook/react-native/issues/213.\n`); // eslint-disable-line max-len
     }
-
-    super.init();
   }
 
-
-  protected initSteps(): void {
-    super.initSteps();
-
+  afterStepsInit(): void {
     const { projectName } = this.cliMgr;
 
     // Execute file rename scripts before NPM install
