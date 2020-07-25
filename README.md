@@ -125,7 +125,10 @@ Dependency Injection (DI) is a principle where modules are injected independentl
 
 Inversion of Control (IoC) is used to decouple the implementation and the shape of a module. This is useful for testing, because this means we only care about the shape of the module and not about the implementation of the module, which in turn makes mocking easier. Coupling happens in `core/ioc/container.ts` This project uses *InversifyJS* to achieve IoC.
 
-### Adding installers
+## Modules
+This CLI is built around modules. This allows developers to easily modify and even add their own installation flows to the CLI.
+
+### Add installer
 
 To add a new installer, do the following:
 
@@ -133,7 +136,7 @@ To add a new installer, do the following:
 2. Add the installer to the `installersConfig` list, together with its name (used for the --type option), and the repository. The installer should be the default `Installer`, unless you need extra logic in the installation process.
 3. Add the new installer to the readme!
 
-#### Custom installer
+### Add Custom installer
 
 When the default installer does not satisfy the need of the installation process, you can create a custom installer. This will always need to be based off of the default installer.
 
@@ -143,3 +146,13 @@ To create a custom installer, do the following:
 2. Extend the class with `Installer`
    - Note: when overriding any of the methods from `Installer`, make sure to always run the super method at some point in the override.
 3. In the `installersConfig` (from step 2 of *Adding installers*), use your custom installer instead of the default installer.
+
+#### Installer Hooks
+⚠️ TODO
+
+### Installation Steps
+⚠️ TODO
+
+### Prompt
+⚠️ TODO
+
