@@ -3,7 +3,6 @@ import commander from 'commander';
 import { Answers } from 'inquirer';
 
 import InstallStep from 'core/InstallStep';
-import InstallStepList from 'core/InstallStepList';
 
 
 export type AppType = {
