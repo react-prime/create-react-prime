@@ -19,7 +19,7 @@ export default class App implements i.AppType {
 
 
   async install(): Promise<void> {
-    const { projectName, installType } = this.cliMgr;
+    const { installType } = this.cliMgr;
 
     // Get installer for the type that was specified by the user
     this.installer = container.getNamed(SERVICES.Installer, installType!);
@@ -28,6 +28,8 @@ export default class App implements i.AppType {
     this.installer.init();
 
     // Check if directory already exists to prevent overwriting existing data
+    const { projectName } = this.cliMgr;
+
     if (fs.existsSync(projectName!)) {
       this.logger.error(`directory '${projectName}' already exists.`);
     }
