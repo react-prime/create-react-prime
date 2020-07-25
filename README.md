@@ -148,7 +148,27 @@ To create a custom installer, do the following:
 3. In the `installersConfig` (from step 2 of *Adding installers*), use your custom installer instead of the default installer.
 
 #### Installer Hooks
-⚠️ TODO
+```ts
+/** Executed before initialization of an installer instance */
+  beforeInit(): void
+  /** Executed after initialization of an installer instance */
+  afterInit(): void
+
+  /** Executed before initialization of the installer steps list */
+  beforeStepsInit(): void
+  /** Executed after initialization of the installer steps list */
+  afterStepsInit(): void
+
+  /** Executed before iterating the installation steps */
+  beforeInstall(): void
+  /** Executed after iterating the installation steps */
+  afterInstall(): void
+
+  /** Executed before every installation step */
+  beforeExecuteStep(): void
+  /** Executed after every installation step */
+  afterExecuteStep(): void
+```
 
 ### Installation Steps
 ⚠️ TODO
