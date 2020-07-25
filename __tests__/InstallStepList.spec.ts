@@ -24,7 +24,6 @@ describe('InstallStepList', () => {
         emoji: '🧪',
         id: id || STEPS.Clone,
         cmd: 'cmd line script',
-        fn: async () => void {},
       };
     }
   };
@@ -92,5 +91,19 @@ describe('InstallStepList', () => {
     expect(stepList[0].next?.id).toEqual(STEPS.UpdatePackage);
     expect(stepList[1].previous?.id).toEqual(STEPS.Clone);
     expect(stepList[1].next?.id).toEqual(STEPS.NpmInstall);
+  });
+
+  it('Finds the correct step with a step ID', () => {
+    const stepList = ctx.stepList
+      .add(ctx.stepOptions(STEPS.Clone))
+      .add(ctx.stepOptions(STEPS.NpmInstall));
+
+    let step = stepList.findStepById(STEPS.Clone);
+    expect(step?.instance.options).toMatchObject(ctx.stepOptions(STEPS.Clone));
+    expect(step?.index).toEqual(0);
+
+    step = stepList.findStepById(STEPS.NpmInstall);
+    expect(step?.instance.options).toMatchObject(ctx.stepOptions(STEPS.NpmInstall));
+    expect(step?.index).toEqual(1);
   });
 });
