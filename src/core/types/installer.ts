@@ -72,7 +72,7 @@ export type LangConfig = {
   prompt?: typeof Prompt;
   instructions: {
     quickstart: string[];
-    allCommands: {
+    allCommands?: {
       cmd: string;
       desc: string;
     }[];

@@ -94,12 +94,14 @@ export default class App implements i.AppType {
       console.log(`  ${str}`);
     }
 
-    this.logger.whitespace();
+    if (installationLangConfig.instructions.allCommands) {
+      this.logger.whitespace();
 
-    this.logger.msg(`${color.bold().underline('All commands')}\n`);
+      this.logger.msg(`${color.bold().underline('All commands')}\n`);
 
-    for (const str of installationLangConfig.instructions.allCommands) {
-      console.log(formatText(str.cmd, str.desc));
+      for (const str of installationLangConfig.instructions.allCommands) {
+        console.log(formatText(str.cmd, str.desc));
+      }
     }
     /* eslint-enable */
   }
