@@ -83,7 +83,7 @@ export default class App implements i.AppType {
     this.logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}\n`);
 
     function formatText(cmd: string, desc: string): string {
-      return `  ${cmd.padEnd(15)} ${color.dim(desc)}`;
+      return `  ${cmd.padEnd(17)} ${color.dim(desc)}`;
     }
 
     /* eslint-disable no-console */
@@ -91,16 +91,20 @@ export default class App implements i.AppType {
 
     console.log(`  cd ${this.cliMgr.projectName}`);
 
-    for (const str of installationLangConfig.instructions.quickstart) {
+    const qs = installationConfig?.instructions?.quickstart || installationLangConfig.instructions.quickstart;
+
+    for (const str of qs) {
       console.log(`  ${str}`);
     }
 
-    if (installationLangConfig.instructions.allCommands) {
+    const ac = installationConfig?.instructions?.allCommands || installationLangConfig.instructions.allCommands;
+
+    if (ac) {
       this.logger.whitespace();
 
       this.logger.msg(`${color.bold().underline('All commands')}\n`);
 
-      for (const str of installationLangConfig.instructions.allCommands) {
+      for (const str of ac) {
         console.log(formatText(str.cmd, str.desc));
       }
     }

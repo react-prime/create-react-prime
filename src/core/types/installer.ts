@@ -58,6 +58,14 @@ export type Vc = {
   owner: string;
 }
 
+export type InstructionsConfig = {
+  quickstart: string[];
+  allCommands?: {
+    cmd: string;
+    desc: string;
+  }[];
+};
+
 export type InstallationConfig = {
   name: string;
   repository: string;
@@ -65,18 +73,13 @@ export type InstallationConfig = {
   description: string;
   installer: typeof Installer;
   prompt?: typeof Prompt;
+  instructions?: Partial<i.InstructionsConfig>;
 }
 
 export type LangConfig = {
   steps: typeof Steps;
   prompt?: typeof Prompt;
-  instructions: {
-    quickstart: string[];
-    allCommands?: {
-      cmd: string;
-      desc: string;
-    }[];
-  };
+  instructions: i.InstructionsConfig;
   type: {
     [type: string]: i.InstallationConfig;
   };

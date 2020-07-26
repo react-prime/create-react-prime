@@ -36,6 +36,22 @@ const installersConfig: i.InstallersConfig = {
         vc: vc['react-prime'],
         description: 'React-native w/o Expo',
         installer: NativeInstaller,
+        instructions: {
+          allCommands: [
+            {
+              cmd: 'npm start',
+              desc: 'Start your development server',
+            },
+            {
+              cmd: 'npm run ios',
+              desc: 'Start the app on an iOS simulator',
+            },
+            {
+              cmd: 'npm run android',
+              desc: 'Start the app on an Android simulator',
+            },
+          ],
+        },
       },
     },
     instructions: {
@@ -43,15 +59,15 @@ const installersConfig: i.InstallersConfig = {
       allCommands: [
         {
           cmd: 'npm start',
-          desc: 'Start your development server.',
+          desc: 'Start your development server',
         },
         {
           cmd: 'npm run build',
-          desc: 'Build your website for production.',
+          desc: 'Build your website for production',
         },
         {
           cmd: 'npm run server',
-          desc: 'Start your production server.',
+          desc: 'Start your production server',
         },
       ],
     },
