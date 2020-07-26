@@ -33,9 +33,7 @@ export default class Installer implements i.InstallerType {
     this.afterInit();
   }
 
-  /**
-   * Start installation process by iterating through all the installation steps
-   */
+  /** Start installation process by iterating through all the installation steps */
   async install(): Promise<void> {
     // Debug
     if (this.cliMgr.isDebugging) {
@@ -75,9 +73,7 @@ export default class Installer implements i.InstallerType {
   }
 
 
-  /**
-   * Add the basic installation steps. Can be overloaded to add or modify steps.
-   */
+  /** Add and transform the installation steps */
   protected initSteps(): void {
     this.beforeStepsInit();
 
@@ -132,9 +128,7 @@ export default class Installer implements i.InstallerType {
   /* eslint-enable */
 
 
-  /**
-   * Run the installation step
-   */
+  /** Run the installation step */
   private async executeStep(step: i.InstallStepType): Promise<void> {
     this.beforeExecuteStep();
 

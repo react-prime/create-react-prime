@@ -97,7 +97,6 @@ export default function initCLI(): commander.Command {
 
     if (!validate.filename(cli.args[ARG.ProjectName])) {
       logger.error(ERROR_TEXT.Filename);
-      process.exit(1);
     }
   }
 

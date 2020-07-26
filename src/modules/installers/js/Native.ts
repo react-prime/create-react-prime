@@ -3,6 +3,7 @@ import path from 'path';
 import cp from 'child_process';
 import * as i from 'types';
 
+import STEPS from 'modules/steps/identifiers';
 import JsInstaller from './Installer';
 
 
@@ -26,7 +27,7 @@ export default class NativeInstaller extends JsInstaller implements i.InstallerT
 
     // Execute file rename scripts before NPM install
     const renameStep: i.InstallStepOptions = {
-      id: 'runNativeScripts',
+      id: STEPS.RunNativeScripts,
       emoji: '🔤',
       message: {
         pending: `Renaming project files to '${projectName}'...`,
@@ -35,7 +36,7 @@ export default class NativeInstaller extends JsInstaller implements i.InstallerT
       fn: this.runScripts.bind(this),
     };
 
-    this.installStepList.addAfterStep('updatePackage', renameStep);
+    this.installStepList.addAfterStep(STEPS.UpdatePackage, renameStep);
   }
 
 
