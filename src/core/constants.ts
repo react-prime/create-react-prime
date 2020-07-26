@@ -7,4 +7,7 @@ export const ARG = {
 
 export const ERROR_TEXT = {
   Filename: 'Invalid name. Name should not contain ^ \\ / ? % * : | " < > .',
+  DirectoryExists: 'directory \'%s\' already exists.',
+  InvalidSteps: 'Error in --skipSteps. %s is/are invalid. Available steps: %s',
+  PkgNotFound: 'No package.json found in %s',
 };

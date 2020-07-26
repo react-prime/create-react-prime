@@ -51,7 +51,7 @@ describe('Logger', () => {
   });
 
   describe('error', () => {
-    const errorPrefix = [LOG_PREFIX, color.red('ERR!'), 'Installation aborted.'].join(' ');
+    const errorPrefix = [LOG_PREFIX, color.red('ERR!') + ' Installation aborted.'];
     const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
     it('Logs error text with an error prefix and exits with code 1', () => {
@@ -60,9 +60,11 @@ describe('Logger', () => {
       logger.error('test');
       logger.error('test', 'test2');
 
+      const result1 = [...errorPrefix, 'test'].join(' ');
+
       expect(ctx.logSpy.mock.calls).toEqual([
-        [errorPrefix, 'test'],
-        [errorPrefix, 'test', 'test2'],
+        [result1],
+        [result1, 'test2'],
       ]);
 
       expect(mockProcessExit).toHaveBeenCalledWith(1);

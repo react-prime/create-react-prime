@@ -7,6 +7,7 @@ import color from 'kleur';
 import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
 import { Answers } from 'inquirer';
+import { ERROR_TEXT } from './constants';
 
 
 @injectable()
@@ -32,7 +33,7 @@ export default class App implements i.AppType {
     const { projectName } = this.cliMgr;
 
     if (fs.existsSync(projectName!)) {
-      this.logger.error(`directory '${projectName}' already exists.`);
+      this.logger.error(ERROR_TEXT.DirectoryExists, projectName);
     }
 
     // Start the installation process

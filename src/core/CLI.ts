@@ -69,9 +69,7 @@ export default function initCLI(): commander.Command {
           .map((str) => `'${str}'`)
           .join(', ');
 
-        logger.error(
-          `Error in --skipSteps. ${stepsToStr} is/are invalid. Available steps: ${installStepIdList}`,
-        );
+        logger.error(ERROR_TEXT.InvalidSteps, stepsToStr, installStepIdList);
 
         process.exit(1);
       }

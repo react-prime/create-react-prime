@@ -17,7 +17,7 @@ export default class Logger implements i.LoggerType {
   }
 
   error(...reason: i.AnyArr): void {
-    this.log(color.red('ERR!'), 'Installation aborted.', ...reason);
+    this.log(`${color.red('ERR!')} Installation aborted.`, ...reason);
     process.exit(1);
   }
 

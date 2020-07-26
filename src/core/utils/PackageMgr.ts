@@ -5,6 +5,7 @@ import * as i from 'types';
 import { injectable, inject } from 'inversify';
 
 import SERVICES from 'core/ioc/services';
+import { ERROR_TEXT } from 'core/constants';
 
 
 // Wrap utils in promise
@@ -27,7 +28,7 @@ export default class PackageMgr implements i.PackageMgrType {
     const pkgStr = fs.readFileSync(projectPkgPath, 'utf-8');
 
     if (!pkgStr) {
-      this.logger.error(`No package.json found in ${path.resolve(this.cliMgr.projectName!)}`);
+      this.logger.error(ERROR_TEXT.PkgNotFound, path.resolve(this.cliMgr.projectName!));
     }
 
     return {
