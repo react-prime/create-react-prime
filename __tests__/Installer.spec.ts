@@ -32,11 +32,8 @@ describe('Installer', () => {
     FAInstaller = this.installer as any;
   };
 
-  it('Configures the base install steps on init', () => {
+  beforeAll(() => {
     ctx.installer.init();
-
-    expect(ctx.FAInstaller.installStepList).toBeDefined();
-    expect(ctx.FAInstaller.installStepList.length).toBeGreaterThan(0);
   });
 
   it('Executes through all install steps', async () => {

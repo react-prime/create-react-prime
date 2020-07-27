@@ -7,12 +7,11 @@ import ora from 'ora';
 import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
 import { LOG_PREFIX } from 'core/constants';
-import InstallStepList from 'core/InstallStepList';
 
 
 @injectable()
 export default class Installer implements i.InstallerType {
-  protected readonly installStepList = new InstallStepList();
+  protected installSteps!: i.StepsType;
   protected exec = util.promisify(cp.exec); // Wrap exec in promise
   private spinner = ora();
 
@@ -25,7 +24,14 @@ export default class Installer implements i.InstallerType {
   init(): void {
     this.beforeInit();
 
-    this.initSteps();
+    const { installationConfig, lang, installType } = this.cliMgr;
+    let stepsName = `steps_${lang}`;
+
+    if (installationConfig?.steps) {
+      stepsName = `${stepsName}_${installType}`;
+    }
+
+    this.installSteps = container.getNamed<i.StepsType>(SERVICES.Steps, stepsName);
 
     this.afterInit();
   }
@@ -34,7 +40,7 @@ export default class Installer implements i.InstallerType {
   async install(): Promise<void> {
     // Debug
     if (this.cliMgr.isDebugging) {
-      for (const step of this.installStepList) {
+      for (const step of this.installSteps) {
         this.logger.debug({
           msg: step.message,
           next: step.next?.message,
@@ -44,7 +50,7 @@ export default class Installer implements i.InstallerType {
 
     this.beforeInstall();
 
-    for await (const step of this.installStepList) {
+    for await (const step of this.installSteps) {
       const { skipSteps } = this.cliMgr;
       const skipStep = skipSteps?.some((id) => id === step?.id);
 
@@ -79,23 +85,6 @@ export default class Installer implements i.InstallerType {
   /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
   async useStepMethod(step: i.InstallStepIds): Promise<void> {}
   /* eslint-enable */
-
-
-  /** Add and transform the installation steps */
-  protected initSteps(): void {
-    const { installationConfig, lang, installType } = this.cliMgr;
-    let stepsName = `steps_${lang}`;
-
-    if (installationConfig?.steps) {
-      stepsName = `${stepsName}_${installType}`;
-    }
-
-    const baseSteps = container.getNamed<i.StepsType>(SERVICES.Steps, stepsName);
-
-    for (const baseStep of baseSteps) {
-      this.installStepList.add(baseStep);
-    }
-  }
 
 
   /**

@@ -15,7 +15,7 @@ export default class NativeSteps extends JsSteps implements i.StepsType {
 
     // Create native scripts step
     const { projectName } = this.cliMgr;
-    const nativeScriptsStep = this.createStep({
+    const nativeScriptsStep = this.verifyStep({
       id: STEPS.RunNativeScripts,
       emoji: '🔤',
       message: {

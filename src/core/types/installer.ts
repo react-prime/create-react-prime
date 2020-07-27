@@ -18,7 +18,8 @@ export type InstallMessage = {
   fail?: string;
 };
 
-type InstallStepOptionsBase = {
+// This type makes sure least one of 'cmd' or 'fn' is present
+export type InstallStepOptions = {
   /** Unique identifier for this step. */
   id: InstallStepIds;
   /** Message displayed when this step is being executed and is done executing. */
@@ -27,10 +28,7 @@ type InstallStepOptionsBase = {
   emoji: string;
   /** Used for command line scripts. */
   cmd?: string;
-}
-
-// This type makes sure least one of 'cmd' or 'fn' is present
-export type InstallStepOptions = InstallStepOptionsBase;
+};
 
 export type Vc = {
   host: string;
