@@ -34,6 +34,7 @@ export interface LoggerType {
 export type InstallerType = {
   init(): void;
   install(): Promise<void>;
+  useStepMethod?(step: i.InstallStepIds): void;
 }
 
 export type InstallStepType = {
@@ -41,7 +42,6 @@ export type InstallStepType = {
   id: i.InstallStepIds;
   message: i.InstallMessage;
   cmd: string | undefined;
-  fn: (() => Promise<void>) | undefined;
   previous: InstallStep | undefined;
   next: InstallStep | undefined;
   modify(

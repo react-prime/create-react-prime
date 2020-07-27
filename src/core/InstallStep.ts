@@ -37,10 +37,6 @@ export default class InstallStep implements i.InstallStepType {
     return this._options.cmd;
   }
 
-  get fn(): i.PromiseFn | undefined {
-    return this.options.fn as i.PromiseFn | undefined;
-  }
-
   get previous(): InstallStep | undefined {
     return this._previous;
   }

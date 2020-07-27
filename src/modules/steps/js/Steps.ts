@@ -15,7 +15,6 @@ export default class JsSteps extends Steps implements i.StepsType {
           pending: 'Updating package.json...',
           success: 'Updated package.json!',
         },
-        fn: 'updatePackage',
       },
       {
         id: STEPS.NpmInstall,

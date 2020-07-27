@@ -25,33 +25,12 @@ type InstallStepOptionsBase = {
   message: InstallMessage;
   /** Emoji displayed between spinner and message. */
   emoji: string;
-}
-
-type InstallStepOptionsCmd = {
   /** Used for command line scripts. */
-  cmd: string;
-  fn?: string | i.PromiseFn;
-}
-
-type InstallStepOptionsFn = {
   cmd?: string;
-  /**
-   * Used for anything that should be executed with JavaScript,
-   * or is easier to translate into JavaScript rather than a command line script.
-   * Can be used together with a command line script from `cmd`. This function will always run
-   * after the command line script is finished executing.
-   *
-   * Can either be a direct reference to a function,
-   * or a name reference to any method from an Installer instance as string.
-   */
-  fn: string | i.PromiseFn;
 }
 
 // This type makes sure least one of 'cmd' or 'fn' is present
-export type InstallStepOptions = InstallStepOptionsBase & (
-  | InstallStepOptionsCmd
-  | InstallStepOptionsFn
-);
+export type InstallStepOptions = InstallStepOptionsBase;
 
 export type Vc = {
   host: string;

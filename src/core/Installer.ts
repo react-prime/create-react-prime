@@ -10,13 +10,10 @@ import { LOG_PREFIX } from 'core/constants';
 import InstallStepList from 'core/InstallStepList';
 
 
-// Wrap utils in promise
-const exec = util.promisify(cp.exec);
-
-
 @injectable()
 export default class Installer implements i.InstallerType {
   protected readonly installStepList = new InstallStepList();
+  protected exec = util.promisify(cp.exec); // Wrap exec in promise
   private spinner = ora();
 
   constructor(
@@ -72,30 +69,25 @@ export default class Installer implements i.InstallerType {
     this.afterInstall();
   }
 
+  /**
+   * Hook onto a step with a custom function. The first parameter returns the current step ID.
+   * This hook is executed after the 'cmd' property.
+   *
+   * If you need to execute a cmd line script after or during this method, you can use the
+   * asynchronous 'exec' method that is available in the installer instance.
+   */
+  /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
+  async useStepMethod(step: i.InstallStepIds): Promise<void> {}
+  /* eslint-enable */
+
 
   /** Add and transform the installation steps */
   protected initSteps(): void {
-    this.beforeStepsInit();
-
     const baseSteps = container.getNamed<i.StepsType>(SERVICES.Steps, this.cliMgr.lang);
 
     for (const baseStep of baseSteps) {
-      // Convert the name of a function into the reference of the function
-      if (typeof baseStep.fn === 'string') {
-        // Errors, because using 'string' to index 'this' returns 'any', but we don't care
-        // @ts-ignore
-        const fn = this[baseStep.fn];
-
-        // Bind 'this' to the installer instance
-        if (typeof fn === 'function') {
-          baseStep.fn = fn.bind(this);
-        }
-      }
-
       this.installStepList.add(baseStep);
     }
-
-    this.afterStepsInit();
   }
 
 
@@ -109,11 +101,6 @@ export default class Installer implements i.InstallerType {
   protected beforeInit(): void {}
   /** Executed after initialization of an installer instance */
   protected afterInit(): void {}
-
-  /** Executed before initialization of the installer steps list */
-  protected beforeStepsInit(): void {}
-  /** Executed after initialization of the installer steps list */
-  protected afterStepsInit(): void {}
 
   /** Executed before iterating the installation steps */
   protected beforeInstall(): void {}
@@ -135,13 +122,11 @@ export default class Installer implements i.InstallerType {
     try {
       // Execute command line
       if (step.cmd) {
-        await exec(step.cmd);
+        await this.exec(step.cmd);
       }
 
       // Execute function
-      if (step.fn) {
-        await step.fn();
-      }
+      await this.useStepMethod(step.id);
     } catch (err) {
       this.error(err);
     }

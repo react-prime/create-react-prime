@@ -14,7 +14,6 @@ describe('InstallStep', () => {
       emoji: '🧪',
       id: 'clone',
       cmd: 'cmd line script',
-      fn: async () => void {},
     };
 
     readonly step1 = new InstallStep(this.opts);
@@ -28,18 +27,6 @@ describe('InstallStep', () => {
       success: '🧪  success test',
     });
     expect(ctx.step1.options).toEqual(ctx.opts);
-  });
-
-  it('Correctly executes the function', async () => {
-    const mockFn = jest.fn(ctx.step1.fn!);
-
-    await mockFn();
-
-    // Executed once
-    expect(mockFn.mock.calls.length).toBe(1);
-
-    // Return a promise without value
-    expect(mockFn.mock.results[0].value).toEqual(Promise.resolve({}));
   });
 
   it('Returns the next step', () => {

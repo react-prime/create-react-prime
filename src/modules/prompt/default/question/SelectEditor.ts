@@ -1,14 +1,9 @@
-import util from 'util';
-import cp from 'child_process';
 import path from 'path';
 import { readdirSync } from 'fs';
 import * as i from 'types';
 import { ListQuestion, ListChoiceOptions } from 'inquirer';
 
 import Question from 'core/Question';
-
-
-const exec = util.promisify(cp.exec);
 
 
 /**
@@ -68,7 +63,7 @@ export default class SelectEditor extends Question implements i.CRPQuestion<List
 
     const dir = path.resolve(this.cliMgr.projectName!);
 
-    await exec(`open ${dir} -a ${answers.editor.path}`);
+    await this.exec(`open ${dir} -a ${answers.editor.path}`);
   }
 
 

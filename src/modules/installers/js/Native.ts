@@ -1,14 +1,10 @@
-import util from 'util';
 import path from 'path';
 import cp from 'child_process';
 import * as i from 'types';
 
 import STEPS from 'modules/steps/identifiers';
+
 import JsInstaller from './Installer';
-
-
-// Wrap utils in promise
-const exec = util.promisify(cp.exec);
 
 
 export default class NativeInstaller extends JsInstaller implements i.InstallerType {
@@ -22,7 +18,7 @@ export default class NativeInstaller extends JsInstaller implements i.InstallerT
     }
   }
 
-  afterStepsInit(): void {
+  afterInit(): void {
     const { projectName } = this.cliMgr;
 
     // Execute file rename scripts before NPM install
@@ -33,15 +29,19 @@ export default class NativeInstaller extends JsInstaller implements i.InstallerT
         pending: `Renaming project files to '${projectName}'...`,
         success: `Renamed project files to '${projectName}'!`,
       },
-      fn: this.runScripts.bind(this),
     };
 
     this.installStepList.addAfterStep(STEPS.UpdatePackage, renameStep);
   }
 
+  async useStepMethod(step: i.InstallStepIds): Promise<void> {
+    if (step === STEPS.RunNativeScripts) {
+      await this.runScripts();
+    }
+  }
 
   /** Run the rename scripts */
-  private async runScripts(): Promise<void> {
+  async runScripts(): Promise<void> {
     const { projectName, isDebugging } = this.cliMgr;
 
     const scripts = [
@@ -55,7 +55,7 @@ export default class NativeInstaller extends JsInstaller implements i.InstallerT
     };
 
     for await (const [name, script] of scripts) {
-      await exec(script, options)
+      await this.exec(script, options)
         .catch((err) => {
           this.logger.warning(
             `Script '${name}' has failed. Manual file renaming is required after installation.`,
