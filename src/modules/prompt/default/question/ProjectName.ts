@@ -6,9 +6,7 @@ import { ERROR_TEXT } from 'core/constants';
 import Question from 'core/Question';
 
 
-/**
- * Ask user to give the project a name if not given
- * */
+/** Ask user to give the project a name if not given. */
 export default class ProjectName extends Question implements i.CRPQuestion<InputQuestion> {
   /**
    * Question options

@@ -8,7 +8,7 @@ import JsInstaller from './Installer';
 
 
 export default class NativeInstaller extends JsInstaller implements i.InstallerType {
-  beforeInit(): void {
+  beforeInit() {
     // Native project names can only contain alphanumerical characters
     const orgProjectName = this.cliMgr.projectName;
     this.cliMgr.projectName = this.cliMgr.projectName!.replace(/\W/g, '');
@@ -18,7 +18,7 @@ export default class NativeInstaller extends JsInstaller implements i.InstallerT
     }
   }
 
-  async useStepMethod(step: i.InstallStepIds): Promise<void> {
+  async useStepMethod(step: i.InstallStepIds) {
     if (step === STEPS.RunNativeScripts) {
       await this.runScripts();
     }

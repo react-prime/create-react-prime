@@ -5,9 +5,7 @@ import color from 'kleur';
 import Question from 'core/Question';
 
 
-/**
- * Ask user to select a type to install if not given
- * */
+/** Ask user to select a type to install if not given. */
 export default class InstallType extends Question implements i.CRPQuestion<ListQuestion> {
   /**
    * Question options

@@ -6,9 +6,7 @@ import { ListQuestion, ListChoiceOptions } from 'inquirer';
 import Question from 'core/Question';
 
 
-/**
- * Ask user to select an editor to open the project in
- * */
+/** Ask user to select an editor to open the project in. */
 export default class SelectEditor extends Question implements i.CRPQuestion<ListQuestion> {
   macOnly = true;
   optional = true;

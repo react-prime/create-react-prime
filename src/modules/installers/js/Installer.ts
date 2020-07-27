@@ -11,7 +11,7 @@ import STEPS from 'modules/steps/identifiers';
 export default class JsInstaller extends Installer implements i.InstallerType {
   @inject(SERVICES.PackageMgr) protected readonly packageMgr!: i.PackageMgrType;
 
-  async useStepMethod(step: i.InstallStepIds): Promise<void> {
+  async useStepMethod(step: i.InstallStepIds) {
     // Updates node package variables
     if (step === STEPS.UpdatePackage) {
       await this.packageMgr.update();
