@@ -8,6 +8,7 @@ import initCli from 'core/CLI';
 import CLIMgr from 'core/CLIMgr';
 import Logger from 'core/utils/Logger';
 import PackageMgr from 'core/utils/PackageMgr';
+import getIocTargetName from 'core/utils/GetIocTargetName';
 
 import installersConfig from 'modules/config';
 import DefaultPrompt from 'modules/prompt/default/Prompt';
@@ -20,15 +21,17 @@ container.bind<i.AppType>(SERVICES.App).to(App);
 container.bind<commander.Command>(SERVICES.CLI).toConstantValue(initCli());
 container.bind<i.CLIMgrType>(SERVICES.CLIMgr).to(CLIMgr).inSingletonScope();
 container.bind<i.PackageMgrType>(SERVICES.PackageMgr).to(PackageMgr);
-container.bind<i.PromptType>(SERVICES.Prompt).to(DefaultPrompt).whenTargetNamed('prompt_default');
+container.bind<i.PromptType>(SERVICES.Prompt).to(DefaultPrompt).whenTargetNamed(getIocTargetName.prompt());
 
 for (const lang in installersConfig) {
   const langCfg = installersConfig[lang];
+  let stepsName = getIocTargetName.steps(lang as i.InstallLangs);
+  let promptName = getIocTargetName.prompt(lang as i.InstallLangs);
 
-  container.bind<i.StepsType>(SERVICES.Steps).to(langCfg.steps).whenTargetNamed(`steps_${lang}`);
+  container.bind<i.StepsType>(SERVICES.Steps).to(langCfg.steps).whenTargetNamed(stepsName);
 
   if (langCfg.prompt) {
-    container.bind<i.PromptType>(SERVICES.Prompt).to(langCfg.prompt).whenTargetNamed(`prompt_${lang}`);
+    container.bind<i.PromptType>(SERVICES.Prompt).to(langCfg.prompt).whenTargetNamed(promptName);
   }
 
   for (const type in langCfg.type) {
@@ -36,12 +39,14 @@ for (const lang in installersConfig) {
 
     container.bind<i.InstallerType>(SERVICES.Installer).to(langTypeCfg.installer).whenTargetNamed(langTypeCfg.name);
 
-    if (langTypeCfg.prompt) {
-      container.bind<i.PromptType>(SERVICES.Prompt).to(langTypeCfg.prompt).whenTargetNamed(`prompt_${lang}_${type}`);
+    if (langTypeCfg.steps) {
+      stepsName = getIocTargetName.steps(lang as i.InstallLangs, type as i.InstallTypes);
+      container.bind<i.StepsType>(SERVICES.Steps).to(langTypeCfg.steps).whenTargetNamed(stepsName);
     }
 
-    if (langTypeCfg.steps) {
-      container.bind<i.StepsType>(SERVICES.Steps).to(langTypeCfg.steps).whenTargetNamed(`steps_${lang}_${type}`);
+    if (langTypeCfg.prompt) {
+      promptName = getIocTargetName.prompt(lang as i.InstallLangs, type as i.InstallTypes);
+      container.bind<i.PromptType>(SERVICES.Prompt).to(langTypeCfg.prompt).whenTargetNamed(promptName);
     }
   }
 }

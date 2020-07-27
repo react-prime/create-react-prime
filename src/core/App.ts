@@ -8,6 +8,7 @@ import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
 import { Answers } from 'inquirer';
 import { ERROR_TEXT } from './constants';
+import getIocTargetName from './utils/GetIocTargetName';
 
 
 @injectable()
@@ -51,20 +52,20 @@ export default class App implements i.AppType {
     let answers: Answers;
 
     // Default questions
-    let promptName = 'prompt_default';
+    let promptName = getIocTargetName.prompt();
 
     answers = await this.doPrompt(when, promptName);
 
     // Language specific questions
     if (installationLangConfig.prompt) {
-      promptName = `prompt_${lang}`;
+      promptName = getIocTargetName.prompt(lang);
 
       answers = await this.doPrompt(when, promptName);
     }
 
     // Install specific questions
     if (installationConfig?.prompt) {
-      promptName = `prompt_${lang}_${installType}`;
+      promptName = getIocTargetName.prompt(lang, installType);
 
       answers = await this.doPrompt(when, promptName);
     }

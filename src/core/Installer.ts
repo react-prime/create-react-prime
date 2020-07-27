@@ -7,6 +7,7 @@ import ora from 'ora';
 import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
 import { LOG_PREFIX } from 'core/constants';
+import getIocTargetName from 'core/utils/GetIocTargetName';
 
 
 @injectable()
@@ -25,10 +26,10 @@ export default class Installer implements i.InstallerType {
     this.beforeInit();
 
     const { installationConfig, lang, installType } = this.cliMgr;
-    let stepsName = `steps_${lang}`;
+    let stepsName = getIocTargetName.steps(lang);
 
     if (installationConfig?.steps) {
-      stepsName = `${stepsName}_${installType}`;
+      stepsName = getIocTargetName.steps(lang, installType);
     }
 
     this.installSteps = container.getNamed<i.StepsType>(SERVICES.Steps, stepsName);
