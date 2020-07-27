@@ -8,14 +8,14 @@ import SelectEditor from './question/SelectEditor';
 
 
 export default class DefaultPrompt extends Prompt {
-  preQuestions(): i.CRPQuestion[] {
+  beforeInstall(): i.CRPQuestion[] {
     return [
       new InstallType(this.cliMgr),
       new ProjectName(this.cliMgr),
     ];
   }
 
-  postQuestions(): i.CRPQuestion[] {
+  afterInstall(): i.CRPQuestion[] {
     return [
       new SelectEditor(this.cliMgr),
     ];

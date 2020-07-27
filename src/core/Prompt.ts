@@ -15,11 +15,11 @@ export default class Prompt implements i.PromptType {
   constructor(
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
   ) {
-    for (const preq of this.preQuestions()) {
+    for (const preq of this.beforeInstall()) {
       this.add('pre', preq);
     }
 
-    for (const postq of this.postQuestions()) {
+    for (const postq of this.afterInstall()) {
       this.add('post', postq);
     }
   }
@@ -40,11 +40,11 @@ export default class Prompt implements i.PromptType {
   }
 
 
-  protected preQuestions(): i.CRPQuestion[] {
+  protected beforeInstall(): i.CRPQuestion[] {
     return [];
   }
 
-  protected postQuestions(): i.CRPQuestion[] {
+  protected afterInstall(): i.CRPQuestion[] {
     return [];
   }
 
