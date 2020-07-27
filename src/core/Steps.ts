@@ -50,6 +50,12 @@ export default class Steps extends Array<i.InstallStepOptions> implements i.Step
   /**
    * Add any additional steps with this method. These steps will be executed after cloning,
    * and before cleaning up (the last step)
-   * */
+   */
   init(): i.InstallStepOptions[] { return []; }
+
+
+  /** Step options verifier */
+  protected createStep(options: i.InstallStepOptions): i.InstallStepOptions {
+    return options;
+  }
 }

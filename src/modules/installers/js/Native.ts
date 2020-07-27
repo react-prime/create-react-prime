@@ -18,22 +18,6 @@ export default class NativeInstaller extends JsInstaller implements i.InstallerT
     }
   }
 
-  afterInit(): void {
-    const { projectName } = this.cliMgr;
-
-    // Execute file rename scripts before NPM install
-    const renameStep: i.InstallStepOptions = {
-      id: STEPS.RunNativeScripts,
-      emoji: '🔤',
-      message: {
-        pending: `Renaming project files to '${projectName}'...`,
-        success: `Renamed project files to '${projectName}'!`,
-      },
-    };
-
-    this.installStepList.addAfterStep(STEPS.UpdatePackage, renameStep);
-  }
-
   async useStepMethod(step: i.InstallStepIds): Promise<void> {
     if (step === STEPS.RunNativeScripts) {
       await this.runScripts();

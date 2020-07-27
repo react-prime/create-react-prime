@@ -25,7 +25,7 @@ container.bind<i.PromptType>(SERVICES.Prompt).to(DefaultPrompt).whenTargetNamed(
 for (const lang in installersConfig) {
   const langCfg = installersConfig[lang];
 
-  container.bind<i.StepsType>(SERVICES.Steps).to(langCfg.steps).whenTargetNamed(lang);
+  container.bind<i.StepsType>(SERVICES.Steps).to(langCfg.steps).whenTargetNamed(`steps_${lang}`);
 
   if (langCfg.prompt) {
     container.bind<i.PromptType>(SERVICES.Prompt).to(langCfg.prompt).whenTargetNamed(`prompt_${lang}`);
@@ -38,6 +38,10 @@ for (const lang in installersConfig) {
 
     if (langTypeCfg.prompt) {
       container.bind<i.PromptType>(SERVICES.Prompt).to(langTypeCfg.prompt).whenTargetNamed(`prompt_${lang}_${type}`);
+    }
+
+    if (langTypeCfg.steps) {
+      container.bind<i.StepsType>(SERVICES.Steps).to(langTypeCfg.steps).whenTargetNamed(`steps_${lang}_${type}`);
     }
   }
 }

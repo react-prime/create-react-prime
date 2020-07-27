@@ -52,6 +52,7 @@ export type InstallationConfig = {
   description: string;
   installer: typeof Installer;
   prompt?: typeof Prompt;
+  steps?: typeof Steps;
   instructions?: Partial<i.InstructionsConfig>;
 }
 

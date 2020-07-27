@@ -3,6 +3,7 @@ import * as i from 'types';
 import JsInstaller from 'modules/installers/js/Installer';
 import NativeInstaller from 'modules/installers/js/Native';
 import JsSteps from 'modules/steps/js/Steps';
+import NativeSteps from 'modules/steps/js/Native';
 
 
 export const vc: Record<string, i.Vc> = {
@@ -36,6 +37,7 @@ const installersConfig: i.InstallersConfig = {
         vc: vc['react-prime'],
         description: 'React-native w/o Expo',
         installer: NativeInstaller,
+        steps: NativeSteps,
         instructions: {
           allCommands: [
             {

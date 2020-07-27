@@ -83,7 +83,14 @@ export default class Installer implements i.InstallerType {
 
   /** Add and transform the installation steps */
   protected initSteps(): void {
-    const baseSteps = container.getNamed<i.StepsType>(SERVICES.Steps, this.cliMgr.lang);
+    const { installationConfig, lang, installType } = this.cliMgr;
+    let stepsName = `steps_${lang}`;
+
+    if (installationConfig?.steps) {
+      stepsName = `${stepsName}_${installType}`;
+    }
+
+    const baseSteps = container.getNamed<i.StepsType>(SERVICES.Steps, stepsName);
 
     for (const baseStep of baseSteps) {
       this.installStepList.add(baseStep);
