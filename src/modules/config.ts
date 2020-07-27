@@ -7,7 +7,7 @@ import NativeSteps from 'modules/steps/js/Native';
 
 
 export const vc: Record<string, i.Vc> = {
-  'react-prime': {
+  reactPrime: {
     host: 'github.com',
     owner: 'react-prime',
   },
@@ -20,21 +20,21 @@ const installersConfig: i.InstallersConfig = {
       client: {
         name: 'client',
         repository: 'react-prime',
-        vc: vc['react-prime'],
+        vc: vc.reactPrime,
         description: 'Client-side rendering',
         installer: JsInstaller,
       },
       ssr: {
         name: 'ssr',
         repository: 'react-prime-ssr',
-        vc: vc['react-prime'],
+        vc: vc.reactPrime,
         description: 'Server-side rendering',
         installer: JsInstaller,
       },
       native: {
         name: 'native',
         repository: 'react-prime-native',
-        vc: vc['react-prime'],
+        vc: vc.reactPrime,
         description: 'React-native w/o Expo',
         installer: NativeInstaller,
         steps: NativeSteps,
