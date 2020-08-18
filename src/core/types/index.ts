@@ -4,8 +4,6 @@ export * from 'core/types/prompt';
 export * from 'core/ioc/types';
 export * from 'core/utils/types';
 
-export * from 'modules/prompt/types';
-
 export type ValueOf<T> = T[keyof T];
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

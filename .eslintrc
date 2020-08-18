@@ -97,7 +97,6 @@
     "@typescript-eslint/ban-ts-comment": 0,
     "@typescript-eslint/explicit-module-boundary-types": [1, {
       "allowedNames": [
-        "useStepMethod",
         "beforeInit",
         "afterInit",
         "beforeInstall",

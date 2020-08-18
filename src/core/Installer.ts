@@ -76,23 +76,12 @@ export default class Installer implements i.InstallerType {
     this.afterInstall();
   }
 
-  /**
-   * Hook onto a step with a custom function. The first parameter returns the current step ID.
-   * This hook is executed after the 'cmd' property.
-   *
-   * If you need to execute a cmd line script after or during this method, you can use the
-   * asynchronous 'exec' method that is available in the installer instance.
-   */
-  /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
-  async useStepMethod(step: i.InstallStepIds): Promise<void> {}
-  /* eslint-enable */
-
 
   /**
    * HOOKS
    */
 
-  /* eslint-disable @typescript-eslint/no-empty-function */
+  /* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function */
 
   /** Executed before initialization of an installer instance */
   protected beforeInit(): void {}
@@ -104,31 +93,28 @@ export default class Installer implements i.InstallerType {
   /** Executed after iterating the installation steps */
   protected afterInstall(): void {}
 
-  /** Executed before every installation step */
-  protected beforeExecuteStep(): void {}
-  /** Executed after every installation step */
-  protected afterExecuteStep(): void {}
+  /** Executed before every installation step. The first parameter returns the current step ID. */
+  protected async beforeExecuteStep(step: i.InstallStepIds): Promise<void> {}
+  /** Executed after every installation step. The first parameter returns the current step ID. */
+  protected async afterExecuteStep(step: i.InstallStepIds): Promise<void> {}
 
   /* eslint-enable */
 
 
   /** Run the installation step */
   private async executeStep(step: i.InstallStepType): Promise<void> {
-    this.beforeExecuteStep();
-
     try {
+      await this.beforeExecuteStep(step.id);
+
       // Execute command line
       if (step.cmd) {
         await this.exec(step.cmd);
       }
 
-      // Execute function
-      await this.useStepMethod(step.id);
+      await this.afterExecuteStep(step.id);
     } catch (err) {
       this.error(err);
     }
-
-    this.afterExecuteStep();
   }
 
   private error(...reason: i.AnyArr): void {

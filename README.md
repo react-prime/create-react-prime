@@ -162,10 +162,10 @@ beforeInstall(): void
 /** Executed after iterating the installation steps */
 afterInstall(): void
 
-/** Executed before every installation step */
-beforeExecuteStep(): void
-/** Executed after every installation step */
-afterExecuteStep(): void
+/** Executed before every installation step. The first parameter returns the current step ID. */
+async beforeExecuteStep(step: i.InstallStepIds): Promise<void> {}
+/** Executed after every installation step. The first parameter returns the current step ID. */
+async afterExecuteStep(step: i.InstallStepIds): Promise<void> {}
 ```
 
 ### Installation Steps

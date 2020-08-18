@@ -18,7 +18,7 @@ export default class NativeInstaller extends JsInstaller {
     }
   }
 
-  async useStepMethod(step: i.InstallStepIds) {
+  async afterExecuteStep(step: i.InstallStepIds) {
     if (step === STEPS.RunNativeScripts) {
       await this.runScripts();
     }
