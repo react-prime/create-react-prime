@@ -62,7 +62,12 @@
         "index",
         "parent",
         "sibling"
-      ]
+      ],
+      "pathGroups": [{
+        "pattern": "types",
+        "group": "builtin",
+        "position": "before"
+      }]
     }],
     "max-len": [2, 120],
     "interface-name": 0,
