@@ -1,5 +1,4 @@
 import * as i from 'types';
-import { InputQuestion } from 'inquirer';
 
 import Validate from 'core/utils/Validate';
 import { ERROR_TEXT } from 'core/constants';
@@ -7,7 +6,7 @@ import Question from 'core/Question';
 
 
 /** Ask user to give the project a name if not given. */
-export default class ProjectName extends Question implements i.CRPQuestion<InputQuestion> {
+export default class ProjectName extends Question {
   /**
    * Question options
    */

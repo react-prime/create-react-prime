@@ -7,7 +7,7 @@ import STEPS from 'modules/steps/identifiers';
 import JsInstaller from './Installer';
 
 
-export default class NativeInstaller extends JsInstaller implements i.InstallerType {
+export default class NativeInstaller extends JsInstaller {
   beforeInit() {
     // Native project names can only contain alphanumerical characters
     const orgProjectName = this.cliMgr.projectName;

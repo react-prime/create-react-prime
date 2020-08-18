@@ -5,7 +5,8 @@ import Steps from 'core/Steps';
 import STEPS from 'modules/steps/identifiers';
 
 
-export default class JsSteps extends Steps implements i.StepsType {
+// These are the steps required for a complete installation of a JS environment
+export default class JsSteps extends Steps {
   init(): i.InstallStepOptions[] {
     return [
       {

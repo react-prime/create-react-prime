@@ -1,13 +1,20 @@
 import path from 'path';
 import { readdirSync } from 'fs';
 import * as i from 'types';
-import { ListQuestion, ListChoiceOptions } from 'inquirer';
+import { ListChoiceOptions } from 'inquirer';
 
 import Question from 'core/Question';
 
 
+export type EditorSearch = {
+  name: string;
+  search: string;
+  path?: string;
+}
+
+
 /** Ask user to select an editor to open the project in. */
-export default class SelectEditor extends Question implements i.CRPQuestion<ListQuestion> {
+export default class SelectEditor extends Question {
   macOnly = true;
   optional = true;
 
@@ -30,7 +37,7 @@ export default class SelectEditor extends Question implements i.CRPQuestion<List
   /**
    * Editors
    */
-  private readonly editors: i.EditorSearch[] = [
+  private readonly editors: EditorSearch[] = [
     {
       name: 'Visual Studio Code',
       search: 'visual studio',
@@ -54,7 +61,7 @@ export default class SelectEditor extends Question implements i.CRPQuestion<List
 
 
   /** Open an editor programatically */
-  async answer(answers: { editor?: i.EditorSearch }): Promise<void> {
+  async answer(answers: { editor?: EditorSearch }): Promise<void> {
     if (!answers.editor?.path) {
       return;
     }

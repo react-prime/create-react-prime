@@ -1,12 +1,12 @@
 import * as i from 'types';
-import { ListQuestion, ListChoiceOptions } from 'inquirer';
+import { ListChoiceOptions } from 'inquirer';
 import color from 'kleur';
 
 import Question from 'core/Question';
 
 
 /** Ask user to select a type to install if not given. */
-export default class InstallType extends Question implements i.CRPQuestion<ListQuestion> {
+export default class InstallType extends Question {
   /**
    * Question options
    */

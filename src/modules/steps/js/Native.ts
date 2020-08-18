@@ -5,7 +5,8 @@ import STEPS from 'modules/steps/identifiers';
 import JsSteps from './Steps';
 
 
-export default class NativeSteps extends JsSteps implements i.StepsType {
+// Extend JsSteps instead of Steps because we want all the steps from a JS installation
+export default class NativeSteps extends JsSteps {
   init(): i.InstallStepOptions[] {
     // Get base install steps from JsSteps
     const steps = super.init();
