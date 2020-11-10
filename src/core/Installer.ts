@@ -94,9 +94,9 @@ export default class Installer implements i.InstallerType {
   protected afterInstall(): void {}
 
   /** Executed before every installation step. The first parameter returns the current step ID. */
-  protected async beforeExecuteStep(step: i.InstallStepIds): Promise<void> {}
+  protected async beforeInstallStep(step: i.InstallStepIds): Promise<void> {}
   /** Executed after every installation step. The first parameter returns the current step ID. */
-  protected async afterExecuteStep(step: i.InstallStepIds): Promise<void> {}
+  protected async afterInstallStep(step: i.InstallStepIds): Promise<void> {}
 
   /* eslint-enable */
 
@@ -104,14 +104,14 @@ export default class Installer implements i.InstallerType {
   /** Run the installation step */
   private async executeStep(step: i.InstallStepType): Promise<void> {
     try {
-      await this.beforeExecuteStep(step.id);
+      await this.beforeInstallStep(step.id);
 
       // Execute command line
       if (step.cmd) {
         await this.exec(step.cmd);
       }
 
-      await this.afterExecuteStep(step.id);
+      await this.afterInstallStep(step.id);
     } catch (err) {
       this.error(err);
     }
