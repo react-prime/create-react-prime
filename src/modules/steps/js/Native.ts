@@ -5,7 +5,7 @@ import STEPS from 'modules/steps/identifiers';
 import JsDefaultSteps from './Default';
 
 
-// Extend JsSteps with with steps for Native
+// Extend default steps with with steps for Native
 export default class JsNativeSteps extends JsDefaultSteps {
   init(): i.InstallStepOptions[] {
     // Get all install steps from JsSteps

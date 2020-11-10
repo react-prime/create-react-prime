@@ -11,12 +11,17 @@ import STEPS from 'modules/steps/identifiers';
 export default class Steps extends Array<InstallStep> implements i.StepsType {
   constructor(
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
+    @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
   ) {
     super();
 
     const { installationConfig, projectName } = cliMgr;
     const repoName = installationConfig?.repository;
     const vc = installationConfig?.vc;
+
+    if (!vc) {
+      this.logger.error('No version control config found.');
+    }
 
     /**
      * Installation steps
@@ -31,7 +36,7 @@ export default class Steps extends Array<InstallStep> implements i.StepsType {
         pending: `Cloning '${repoName}' into '${projectName}'...`,
         success: `Cloned '${repoName}' into '${projectName}'!`,
       },
-      cmd: `git clone https://${vc?.host}/${vc?.owner}/${repoName}.git ${projectName}`,
+      cmd: `git clone https://${vc!.host}/${vc!.owner}/${repoName}.git ${projectName}`,
     });
 
     // Steps from Steps modules
