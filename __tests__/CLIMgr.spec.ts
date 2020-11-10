@@ -4,33 +4,18 @@ import createCliCtx from './utils/createCliCtx';
 
 
 describe('CLIMgr', () => {
-  describe('installType', () => {
-    it('Returns to correct install type', () => {
+  describe('installBoilerplate', () => {
+    it('Returns to chosen boilerplate', () => {
       const { cli, cliMgr } = createCliCtx();
 
-      cli.type = 'client';
-      expect(cliMgr.installType).toEqual('client');
+      cli.boilerplate = 'client';
+      expect(cliMgr.installBoilerplate).toEqual('client');
 
-      cli.type = 'ssr';
-      expect(cliMgr.installType).toEqual('ssr');
+      cli.boilerplate = 'ssr';
+      expect(cliMgr.installBoilerplate).toEqual('ssr');
 
-      cli.type = 'native';
-      expect(cliMgr.installType).toEqual('native');
-    });
-  });
-
-  describe('installRepository', () => {
-    it('Returns the correct repository name', () => {
-      const { cli, cliMgr } = createCliCtx();
-
-      cli.type = 'client';
-      expect(cliMgr.installationConfig?.repository).toEqual('react-prime');
-
-      cli.type = 'ssr';
-      expect(cliMgr.installationConfig?.repository).toEqual('react-prime-ssr');
-
-      cli.type = 'native';
-      expect(cliMgr.installationConfig?.repository).toEqual('react-prime-native');
+      cli.boilerplate = 'native';
+      expect(cliMgr.installBoilerplate).toEqual('native');
     });
   });
 
@@ -45,7 +30,7 @@ describe('CLIMgr', () => {
   });
 
   describe('isDebugging', () => {
-    it('Returns the correct debug option value', () => {
+    it('Returns the chosen debug option value', () => {
       const { cli, cliMgr } = createCliCtx();
 
       expect(cliMgr.isDebugging).toEqual(false);

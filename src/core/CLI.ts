@@ -36,7 +36,7 @@ export default function initCLI(): commander.Command {
   );
 
   cli.option(
-    '-t, --type <type>',
+    '-b, --boilerplate <boilerplate>',
     `Install given boilerplate. Options: ${repos.join(', ')}`,
   );
 

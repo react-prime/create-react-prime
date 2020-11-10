@@ -7,7 +7,7 @@ import NativeSteps from 'modules/steps/js/Native';
 /**
  * Every type of repository (boilerplate) that the user can select.
  */
-const jsType = {
+const jsBoilerplates = {
   client: {
     name: 'client',
     repository: 'react-prime',
@@ -48,4 +48,4 @@ const jsType = {
   },
 };
 
-export default jsType;
+export default jsBoilerplates;

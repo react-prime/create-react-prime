@@ -5,18 +5,18 @@ import color from 'kleur';
 import Question from 'core/Question';
 
 
-/** Ask user to select a type to install if not given. */
-export default class InstallType extends Question {
+/** Ask user to select a boilerplate to install (if not given). */
+export default class Boilerplate extends Question {
   /**
    * Question options
    */
   readonly type = 'list';
-  readonly name = 'type';
+  readonly name = 'boilerplate';
   readonly message = 'What boilerplate would you like to install?';
   readonly choices: ListChoiceOptions[] = [];
 
   when = (): boolean => {
-    return !this.cliMgr.installType;
+    return !this.cliMgr.installBoilerplate;
   }
 
   constructor(
@@ -24,8 +24,8 @@ export default class InstallType extends Question {
   ) {
     super();
 
-    for (const repo in cliMgr.installationLangConfig.type) {
-      const cfg = cliMgr.installationLangConfig.type[repo];
+    for (const repo in cliMgr.installationLangConfig.boilerplates) {
+      const cfg = cliMgr.installationLangConfig.boilerplates[repo];
       const desc = color.dim(`(${cfg.description})`);
 
       this.choices.push({
@@ -36,9 +36,9 @@ export default class InstallType extends Question {
   }
 
 
-  async answer(answers: { type: i.InstallTypes }): Promise<void> {
-    if (answers.type) {
-      this.cliMgr.installType = answers.type;
+  async answer(answers: { boilerplate: i.BoilerplateTypes }): Promise<void> {
+    if (answers.boilerplate) {
+      this.cliMgr.installBoilerplate = answers.boilerplate;
     }
   }
 }

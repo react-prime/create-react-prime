@@ -16,7 +16,7 @@ export type CLIMgrType = {
   lang: i.InstallLangs;
   installationLangConfig: i.LangConfig;
   installationConfig?: i.InstallationConfig;
-  installType?: i.InstallTypes;
+  installBoilerplate?: i.BoilerplateTypes;
   projectName?: string;
   isDebugging: boolean;
   skipSteps: i.InstallStepIds[];

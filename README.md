@@ -45,7 +45,7 @@ npm start
   </tr>
   <tr>
     <td>
-      -t, --type
+      -b, --boilerplate
     </td>
     <td>
       client, ssr, native
@@ -54,7 +54,7 @@ npm start
       -
     </td>
     <td>
-      Installs one of the supported boilerplate types.
+      Installs one of the supported boilerplates.
     </td>
   </tr>
   <tr>
@@ -133,7 +133,7 @@ This CLI is built around modules. This allows developers to easily modify and ev
 To add a new installer, do the following:
 
 1. Navigate to `modules/config.ts`
-2. Add the installer to the `installersConfig` list, together with its name (used for the --type option), and the repository. The installer should be the default `Installer`, unless you need extra logic in the installation process.
+2. Add the installer to the `installersConfig` list, together with its name (used for the --boilerplate option), and the repository. The installer should be the default `Installer`, unless you need extra logic in the installation process.
 3. Add the new installer to the readme!
 
 ### Add Custom installer

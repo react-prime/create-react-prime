@@ -22,10 +22,10 @@ export default class App implements i.AppType {
 
 
   async install(): Promise<void> {
-    const { installType } = this.cliMgr;
+    const { installBoilerplate } = this.cliMgr;
 
-    // Get installer for the type that was specified by the user
-    this.installer = container.getNamed(SERVICES.Installer, installType!);
+    // Get installer for the boilerplate that was specified by the user
+    this.installer = container.getNamed(SERVICES.Installer, installBoilerplate!);
 
     // Prepare installer environment
     this.installer.init();
@@ -48,7 +48,7 @@ export default class App implements i.AppType {
   }
 
   async prompt(when: i.PromptWhen): Promise<void> {
-    const { installationLangConfig, installationConfig, lang, installType } = this.cliMgr;
+    const { installationLangConfig, installationConfig, lang, installBoilerplate } = this.cliMgr;
     let answers: Answers;
 
     // Default questions
@@ -65,7 +65,7 @@ export default class App implements i.AppType {
 
     // Install specific questions
     if (installationConfig?.prompt) {
-      promptName = getIocTargetName.prompt(lang, installType);
+      promptName = getIocTargetName.prompt(lang, installBoilerplate);
 
       answers = await this.doPrompt(when, promptName);
     }

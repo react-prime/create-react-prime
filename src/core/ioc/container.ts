@@ -34,18 +34,18 @@ for (const lang in installersConfig) {
     container.bind<i.PromptType>(SERVICES.Prompt).to(langCfg.prompt).whenTargetNamed(promptName);
   }
 
-  for (const type in langCfg.type) {
-    const langTypeCfg = langCfg.type[type];
+  for (const boilerplate in langCfg.boilerplates) {
+    const langTypeCfg = langCfg.boilerplates[boilerplate];
 
     container.bind<i.InstallerType>(SERVICES.Installer).to(langTypeCfg.installer).whenTargetNamed(langTypeCfg.name);
 
     if (langTypeCfg.steps) {
-      stepsName = getIocTargetName.steps(lang as i.InstallLangs, type as i.InstallTypes);
+      stepsName = getIocTargetName.steps(lang as i.InstallLangs, boilerplate as i.BoilerplateTypes);
       container.bind<i.StepsType>(SERVICES.Steps).to(langTypeCfg.steps).whenTargetNamed(stepsName);
     }
 
     if (langTypeCfg.prompt) {
-      promptName = getIocTargetName.prompt(lang as i.InstallLangs, type as i.InstallTypes);
+      promptName = getIocTargetName.prompt(lang as i.InstallLangs, boilerplate as i.BoilerplateTypes);
       container.bind<i.PromptType>(SERVICES.Prompt).to(langTypeCfg.prompt).whenTargetNamed(promptName);
     }
   }

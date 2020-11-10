@@ -2,7 +2,7 @@ import * as i from 'types';
 
 import Prompt from 'core/Prompt';
 
-import InstallType from './question/InstallType';
+import Boilerplate from './question/boilerplate';
 import ProjectName from './question/ProjectName';
 import SelectEditor from './question/SelectEditor';
 
@@ -10,7 +10,7 @@ import SelectEditor from './question/SelectEditor';
 export default class DefaultPrompt extends Prompt {
   beforeInstall(): i.CRPQuestion[] {
     return [
-      new InstallType(this.cliMgr),
+      new Boilerplate(this.cliMgr),
       new ProjectName(this.cliMgr),
     ];
   }

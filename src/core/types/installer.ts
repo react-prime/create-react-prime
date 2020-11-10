@@ -8,7 +8,7 @@ import STEPS from 'modules/steps/identifiers';
 
 
 export type InstallLangs = 'js';
-export type InstallTypes = 'client' | 'ssr' | 'native';
+export type BoilerplateTypes = 'client' | 'ssr' | 'native';
 
 export type InstallStepIds = i.ValueOf<typeof STEPS>;
 
@@ -58,8 +58,8 @@ export type LangConfig = {
   steps: typeof Steps;
   prompt?: typeof Prompt;
   instructions: i.InstructionsConfig;
-  type: {
-    [type: string]: i.InstallationConfig;
+  boilerplates: {
+    [boilerplate: string]: i.InstallationConfig;
   };
 };
 

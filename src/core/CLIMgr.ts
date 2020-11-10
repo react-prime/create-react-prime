@@ -17,7 +17,10 @@ export default class CLIMgr implements i.CLIMgrType {
   ) {}
 
 
-  /** These values come from option flags, i.e. --type */
+  /**
+   * These next values come from option flags, i.e. --boilerplate
+  */
+
   get lang(): i.InstallLangs {
     return this.cli.lang;
   }
@@ -27,19 +30,19 @@ export default class CLIMgr implements i.CLIMgrType {
   }
 
   get installationConfig(): i.InstallationConfig | undefined {
-    if (!this.installType) {
+    if (!this.installBoilerplate) {
       return;
     }
 
-    return installersConfig[this.lang].type[this.installType];
+    return installersConfig[this.lang].boilerplates[this.installBoilerplate];
   }
 
-  get installType(): i.InstallTypes | undefined {
-    return this.cli.type;
+  get installBoilerplate(): i.BoilerplateTypes | undefined {
+    return this.cli.boilerplate;
   }
 
-  set installType(type: i.InstallTypes | undefined) {
-    this.cli.type = type;
+  set installBoilerplate(boilerplate: i.BoilerplateTypes | undefined) {
+    this.cli.boilerplate = boilerplate;
   }
 
   /** Args are passed without an option flag, i.e. the project name */
