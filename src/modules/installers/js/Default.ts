@@ -8,7 +8,7 @@ import STEPS from 'modules/steps/identifiers';
 
 
 @injectable()
-export default class JsInstaller extends Installer {
+export default class JsDefaultInstaller extends Installer {
   @inject(SERVICES.PackageMgr) protected readonly packageMgr!: i.PackageMgrType;
 
   async afterInstallStep(step: i.InstallStepIds) {

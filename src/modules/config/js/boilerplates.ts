@@ -1,7 +1,7 @@
 import vc from 'modules/config/vc';
-import JsInstaller from 'modules/installers/js/Installer';
-import NativeInstaller from 'modules/installers/js/Native';
-import NativeSteps from 'modules/steps/js/Native';
+import JsDefaultInstaller from 'modules/installers/js/Default';
+import JsNativeInstaller from 'modules/installers/js/Native';
+import JsNativeSteps from 'modules/steps/js/Native';
 
 
 /**
@@ -13,22 +13,22 @@ const jsBoilerplates = {
     repository: 'react-prime',
     vc: vc.reactPrime,
     description: 'Client-side rendering',
-    installer: JsInstaller,
+    installer: JsDefaultInstaller,
   },
   ssr: {
     name: 'ssr',
     repository: 'react-prime-ssr',
     vc: vc.reactPrime,
     description: 'Server-side rendering',
-    installer: JsInstaller,
+    installer: JsDefaultInstaller,
   },
   native: {
     name: 'native',
     repository: 'react-prime-native',
     vc: vc.reactPrime,
     description: 'React-native w/o Expo',
-    installer: NativeInstaller,
-    steps: NativeSteps,
+    installer: JsNativeInstaller,
+    steps: JsNativeSteps,
     instructions: {
       allCommands: [
         {

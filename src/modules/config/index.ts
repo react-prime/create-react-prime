@@ -1,13 +1,13 @@
 import * as i from 'types';
 
-import JsSteps from 'modules/steps/js/Steps';
+import JsDefaultSteps from 'modules/steps/js/Default';
 import jsBoilerplates from './js/boilerplates';
 import jsInstructions from './js/instructions';
 
 
 const installersConfig: i.InstallersConfig = {
   js: {
-    steps: JsSteps,
+    steps: JsDefaultSteps,
     boilerplates: jsBoilerplates,
     instructions: jsInstructions,
   },
