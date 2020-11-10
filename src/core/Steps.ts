@@ -23,7 +23,7 @@ export default class Steps extends Array<InstallStep> implements i.StepsType {
      * These steps are required to run a proper installation
      */
 
-    // Clone project
+    // Add clone project step
     this.add({
       id: STEPS.Clone,
       emoji: '🚚',
@@ -77,24 +77,24 @@ export default class Steps extends Array<InstallStep> implements i.StepsType {
   addAfterStep(stepId: i.InstallStepIds, stepOptions: i.InstallStepOptions): this {
     const step = this.findStepById(stepId);
 
-    // No step, just push into array
+    // No step found, just push into array
     if (!step) {
       this.add(stepOptions);
       return this;
     }
 
     // Add new step in array after the found step
-    let iter = step.index;
-    this.splice(++iter, 0, this.createStep(stepOptions, step.instance));
+    let index = step.index + 1;
+    this.splice(index, 0, this.createStep(stepOptions, step.instance));
 
     // Update the current and next steps
-    for (const j = iter; iter <= j + 1; iter++) {
-      const step = this[iter];
+    for (const startIndex = index; index <= startIndex + 1; index++) {
+      const step = this[index];
       // Because of reordering, we can not use step.previous
-      const prev = this[iter - 1];
+      const prev = this[index - 1];
 
       if (step) {
-        this[iter] = this.createStep(step.options, prev, step.next);
+        this[index] = this.createStep(step.options, prev, step.next);
       }
     }
 
@@ -126,12 +126,6 @@ export default class Steps extends Array<InstallStep> implements i.StepsType {
       instance: step,
       index: i,
     };
-  }
-
-
-  /** Easy step verify method */
-  protected verifyStep(options: i.InstallStepOptions): i.InstallStepOptions {
-    return options;
   }
 
 
