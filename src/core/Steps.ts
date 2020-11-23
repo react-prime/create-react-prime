@@ -78,61 +78,6 @@ export default class Steps extends Array<InstallStep> implements i.StepsType {
     return this;
   }
 
-  /** Add a step after the given step ID */
-  addAfterStep(stepId: i.InstallStepIds, stepOptions: i.InstallStepOptions): this {
-    const step = this.findStepById(stepId);
-
-    // No step found, just push into array
-    if (!step) {
-      this.add(stepOptions);
-      return this;
-    }
-
-    // Add new step in array after the found step
-    let index = step.index + 1;
-    this.splice(index, 0, this.createStep(stepOptions, step.instance));
-
-    // Update the current and next steps
-    for (const startIndex = index; index <= startIndex + 1; index++) {
-      const step = this[index];
-      // Because of reordering, we can not use step.previous
-      const prev = this[index - 1];
-
-      if (step) {
-        this[index] = this.createStep(step.options, prev, step.next);
-      }
-    }
-
-    return this;
-  }
-
-  /** Find a step from this list by ID. Returns its instance and the index. */
-  findStepById(stepId: i.InstallStepIds): { instance: InstallStep, index: number } | undefined {
-    let step = this.first;
-    let i = 0;
-
-    // Empty list
-    if (!step) {
-      return;
-    }
-
-    // Loop through the array until we find the step
-    while (step.id !== stepId) {
-      // End of the list
-      if (!step.next) {
-        return;
-      }
-
-      step = step.next;
-      i++;
-    }
-
-    return {
-      instance: step,
-      index: i,
-    };
-  }
-
 
   /** Step factory */
   private createStep(

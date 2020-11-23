@@ -67,6 +67,4 @@ export type PromptType = {
 export type StepsType = InstallStep[] & {
   init(): void;
   add(...options: i.InstallStepOptions[]): i.StepsType;
-  addAfterStep(stepId: i.InstallStepIds, stepOptions: i.InstallStepOptions): i.StepsType;
-  findStepById(stepId: i.InstallStepIds): { instance: InstallStep, index: number } | undefined;
 }
