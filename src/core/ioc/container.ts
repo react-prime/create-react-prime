@@ -6,7 +6,6 @@ import SERVICES from 'core/ioc/services';
 import App from 'core/App';
 import initCli from 'core/CLI';
 import CLIMgr from 'core/CLIMgr';
-import Logger from 'core/utils/Logger';
 import PackageMgr from 'core/utils/PackageMgr';
 import getIocTargetName from 'core/utils/GetIocTargetName';
 
@@ -16,7 +15,6 @@ import DefaultPrompt from 'modules/prompt/default/Prompt';
 
 const container = new Container();
 
-container.bind<i.LoggerType>(SERVICES.Logger).to(Logger);
 container.bind<i.AppType>(SERVICES.App).to(App);
 container.bind<commander.Command>(SERVICES.CLI).toConstantValue(initCli());
 container.bind<i.CLIMgrType>(SERVICES.CLIMgr).to(CLIMgr).inSingletonScope();

@@ -3,21 +3,22 @@ import path from 'path';
 import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import color from 'kleur';
+import { Answers } from 'inquirer';
 
 import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
-import { Answers } from 'inquirer';
-import { ERROR_TEXT } from './constants';
-import getIocTargetName from './utils/GetIocTargetName';
+import Logger from 'core/utils/Logger';
+import getIocTargetName from 'core/utils/GetIocTargetName';
+import { ERROR_TEXT } from 'core/constants';
 
 
 @injectable()
 export default class App implements i.AppType {
+  private readonly logger = new Logger();
   private installer!: i.InstallerType;
 
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
-    @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
   ) {}
 
 

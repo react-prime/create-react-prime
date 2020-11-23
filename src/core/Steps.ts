@@ -3,15 +3,17 @@ import { injectable, inject } from 'inversify';
 
 import SERVICES from 'core/ioc/services';
 import InstallStep from 'core/InstallStep';
+import Logger from 'core/utils/Logger';
 
 import STEPS from 'modules/steps/identifiers';
 
 
 @injectable()
 export default class Steps extends Array<InstallStep> implements i.StepsType {
+  private readonly logger = new Logger();
+
   constructor(
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
-    @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
   ) {
     super();
 

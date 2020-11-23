@@ -8,17 +8,18 @@ import container from 'core/ioc/container';
 import SERVICES from 'core/ioc/services';
 import { LOG_PREFIX } from 'core/constants';
 import getIocTargetName from 'core/utils/GetIocTargetName';
+import Logger from 'core/utils/Logger';
 
 
 @injectable()
 export default class Installer implements i.InstallerType {
+  protected readonly exec = util.promisify(cp.exec); // Wrap exec in promise
+  protected readonly logger = new Logger();
   protected installSteps!: i.StepsType;
-  protected exec = util.promisify(cp.exec); // Wrap exec in promise
   private spinner = ora();
 
   constructor(
     @inject(SERVICES.CLIMgr) protected readonly cliMgr: i.CLIMgrType,
-    @inject(SERVICES.Logger) protected readonly logger: i.LoggerType,
   ) {}
 
 

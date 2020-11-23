@@ -7,6 +7,8 @@ import { injectable, inject } from 'inversify';
 import SERVICES from 'core/ioc/services';
 import { ERROR_TEXT } from 'core/constants';
 
+import Logger from './Logger';
+
 
 // Wrap utils in promise
 const writeFile = util.promisify(fs.writeFile);
@@ -14,9 +16,10 @@ const writeFile = util.promisify(fs.writeFile);
 
 @injectable()
 export default class PackageMgr implements i.PackageMgrType {
+  private readonly logger = new Logger();
+
   constructor(
     @inject(SERVICES.CLIMgr) private readonly cliMgr: i.CLIMgrType,
-    @inject(SERVICES.Logger) private readonly logger: i.LoggerType,
   ) {}
 
 
