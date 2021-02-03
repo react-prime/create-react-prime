@@ -9,7 +9,9 @@
     "create-react-prime": "dist/core/main"
   },
   "files": [
-    "dist"
+    "dist",
+    "tsconfig-paths-bootstrap.js",
+    "tsconfig.json"
   ],
   "scripts": {
     "build": "rm -rf dist/ && tsc -p tsconfig.app.json && npm run build:env && npm run build:cp",
@@ -22,7 +24,7 @@
     "test": "jest",
     "test:watch": "npm t -- --watch",
     "test:full": "npm run lint; npm run typecheck; npm t",
-    "prepublishOnly": "npm run test:full && npm run build",
+    "prepublishOnly": "npm run build",
     "pub:patch": "npm version patch; npm publish",
     "pub:minor": "npm version minor; npm publish",
     "pub:major": "npm version major; npm publish"
