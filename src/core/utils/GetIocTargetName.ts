@@ -1,4 +1,4 @@
-import * as i from 'types';
+import * as i from '../types';
 
 class GetIocTargetName {
   prompt(lang?: i.InstallLangs, boilerplate?: i.BoilerplateTypes) {

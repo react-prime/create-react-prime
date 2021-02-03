@@ -1,8 +1,8 @@
-import * as i from 'types';
+import * as i from '../../../core/types';
 
-import Steps from 'core/Steps';
+import Steps from '../../../core/Steps';
 
-import STEPS from 'modules/steps/identifiers';
+import STEPS from '../../steps/identifiers';
 
 
 // These are the steps required for a complete installation of a JS environment

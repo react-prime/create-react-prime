@@ -1,11 +1,11 @@
+import * as i from '../types';
 import path from 'path';
 import fs from 'fs';
 import util from 'util';
-import * as i from 'types';
 import { injectable, inject } from 'inversify';
 
-import SERVICES from 'core/ioc/services';
-import { ERROR_TEXT } from 'core/constants';
+import SERVICES from '../ioc/services';
+import { ERROR_TEXT } from '../constants';
 
 import Logger from './Logger';
 

@@ -1,9 +1,9 @@
+import * as i from '../../../../core/types';
 import path from 'path';
 import { readdirSync } from 'fs';
-import * as i from 'types';
 import { ListChoiceOptions } from 'inquirer';
 
-import Question from 'core/Question';
+import Question from '../../../../core/Question';
 
 
 export type EditorSearch = {

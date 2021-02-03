@@ -1,12 +1,12 @@
-import * as i from 'types';
+import * as i from './types';
 import commander, { Command } from 'commander';
 
-import Validate from 'core/utils/Validate';
-import Logger from 'core/utils/Logger';
-import { ARG, ERROR_TEXT } from 'core/constants';
+import installersConfig from '../modules/config';
+import STEPS from '../modules/steps/identifiers';
 
-import installersConfig from 'modules/config';
-import STEPS from 'modules/steps/identifiers';
+import Validate from './utils/Validate';
+import Logger from './utils/Logger';
+import { ARG, ERROR_TEXT } from './constants';
 
 
 export default function initCLI(): commander.Command {

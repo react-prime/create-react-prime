@@ -1,8 +1,8 @@
-import * as i from 'types';
+import * as i from '../../../../core/types';
 
-import Validate from 'core/utils/Validate';
-import { ERROR_TEXT } from 'core/constants';
-import Question from 'core/Question';
+import Validate from '../../../../core/utils/Validate';
+import { ERROR_TEXT } from '../../../../core/constants';
+import Question from '../../../../core/Question';
 
 
 /** Ask user to give the project a name if not given. */

@@ -1,10 +1,10 @@
-import * as i from 'types';
+import * as i from '.';
 
-import Installer from 'core/Installer';
-import Steps from 'core/Steps';
-import Prompt from 'core/Prompt';
+import Installer from '../Installer';
+import Steps from '../Steps';
+import Prompt from '../Prompt';
 
-import STEPS from 'modules/steps/identifiers';
+import STEPS from '../../modules/steps/identifiers';
 
 
 export type InstallLangs = 'js';

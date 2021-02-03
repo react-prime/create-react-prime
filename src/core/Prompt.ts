@@ -1,8 +1,8 @@
-import * as i from 'types';
+import * as i from './types';
 import { injectable, inject } from 'inversify';
 import { Answers, prompt } from 'inquirer';
 
-import SERVICES from 'core/ioc/services';
+import SERVICES from './ioc/services';
 
 
 @injectable()

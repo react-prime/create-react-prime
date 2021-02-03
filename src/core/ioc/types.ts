@@ -1,8 +1,8 @@
-import * as i from 'types';
+import * as i from '../types';
 import commander from 'commander';
 import { Answers } from 'inquirer';
 
-import InstallStep from 'core/InstallStep';
+import InstallStep from '../InstallStep';
 
 
 export type AppType = {

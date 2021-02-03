@@ -1,15 +1,15 @@
+import * as i from './types';
 import fs from 'fs';
 import path from 'path';
-import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import color from 'kleur';
 import { Answers } from 'inquirer';
 
-import container from 'core/ioc/container';
-import SERVICES from 'core/ioc/services';
-import Logger from 'core/utils/Logger';
-import getIocTargetName from 'core/utils/GetIocTargetName';
-import { ERROR_TEXT } from 'core/constants';
+import container from './ioc/container';
+import SERVICES from './ioc/services';
+import Logger from './utils/Logger';
+import getIocTargetName from './utils/GetIocTargetName';
+import { ERROR_TEXT } from './constants';
 
 
 @injectable()

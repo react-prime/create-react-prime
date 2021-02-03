@@ -1,14 +1,14 @@
+import * as i from './types';
 import util from 'util';
 import cp from 'child_process';
-import * as i from 'types';
 import { injectable, inject } from 'inversify';
 import ora from 'ora';
 
-import container from 'core/ioc/container';
-import SERVICES from 'core/ioc/services';
-import { LOG_PREFIX } from 'core/constants';
-import getIocTargetName from 'core/utils/GetIocTargetName';
-import Logger from 'core/utils/Logger';
+import container from './ioc/container';
+import SERVICES from './ioc/services';
+import { LOG_PREFIX } from './constants';
+import getIocTargetName from './utils/GetIocTargetName';
+import Logger from './utils/Logger';
 
 
 @injectable()

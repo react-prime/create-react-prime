@@ -1,6 +1,6 @@
-import * as i from 'types';
+import * as i from '../../../core/types';
 
-import STEPS from 'modules/steps/identifiers';
+import STEPS from '../../steps/identifiers';
 
 import JsDefaultSteps from './Default';
 

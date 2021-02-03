@@ -10,13 +10,7 @@
       "strict": true,
       "resolveJsonModule": true,
       "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "baseUrl": "src",
-      "paths": {
-          "core/*": ["core/*"],
-          "modules/*": ["modules/*"],
-          "types": ["core/types/index"]
-      }
+      "emitDecoratorMetadata": true
   },
   "include": ["src", "__tests__"],
   "exclude": ["node_modules"]

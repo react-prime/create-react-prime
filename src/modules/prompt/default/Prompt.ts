@@ -1,6 +1,6 @@
-import * as i from 'types';
+import * as i from '../../../core/types';
 
-import Prompt from 'core/Prompt';
+import Prompt from '../../../core/Prompt';
 
 import Boilerplate from './question/boilerplate';
 import ProjectName from './question/ProjectName';

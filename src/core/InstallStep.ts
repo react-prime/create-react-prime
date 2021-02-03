@@ -1,4 +1,4 @@
-import * as i from 'types';
+import * as i from './types';
 
 
 export default class InstallStep implements i.InstallStepType {

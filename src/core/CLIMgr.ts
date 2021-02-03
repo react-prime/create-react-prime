@@ -1,11 +1,11 @@
-import * as i from 'types';
+import * as i from './types';
 import { injectable, inject } from 'inversify';
 import commander from 'commander';
 
-import SERVICES from 'core/ioc/services';
-import { ARG } from 'core/constants';
+import installersConfig from '../modules/config';
 
-import installersConfig from 'modules/config';
+import SERVICES from './ioc/services';
+import { ARG } from './constants';
 
 
 @injectable()
