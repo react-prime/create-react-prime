@@ -86,7 +86,7 @@ export default function initCLI(): commander.Command {
   );
 
   // Set other variables
-  cli.version(process.env.npm_package_version!);
+  cli.version(process.env.VERSION!);
   cli.parse(process.argv);
 
   // Validate project name

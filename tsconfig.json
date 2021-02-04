@@ -2,15 +2,22 @@
   "compilerOptions": {
       "noEmit": true,
       "target": "es6",
-      "module": "commonjs",
+      "module": "es2015",
       "lib": ["esnext"],
+      "moduleResolution": "node",
       "removeComments": true,
       "esModuleInterop": true,
       "skipLibCheck": true,
       "strict": true,
       "resolveJsonModule": true,
       "experimentalDecorators": true,
-      "emitDecoratorMetadata": true
+      "emitDecoratorMetadata": true,
+      "baseUrl": "src",
+      "paths": {
+          "core/*": ["core/*"],
+          "modules/*": ["modules/*"],
+          "types": ["core/types/index"]
+      }
   },
   "include": ["src", "__tests__"],
   "exclude": ["node_modules"]

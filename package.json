@@ -4,17 +4,15 @@
   "description": "Simplifies setting up your next React-prime project by automating the entire process.",
   "author": "Label A [labela.nl]",
   "license": "MIT",
-  "main": "dist/core/main",
+  "main": "dist/main.js",
   "bin": {
-    "create-react-prime": "dist/core/main"
+    "create-react-prime": "dist/main.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "rm -rf dist/ && tsc -p tsconfig.app.json && npm run build:env && npm run build:cp",
-    "build:cp": "cp src/core/main dist/core; cp ./tsconfig.json dist",
-    "build:env": "node envify.js",
+    "build": "rm -rf dist/ && rollup -c",
     "start": "node dist/core/main",
     "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/core/main testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
@@ -36,6 +34,11 @@
     "reflect-metadata": "0.1.13"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "17.1.0",
+    "@rollup/plugin-json": "4.1.0",
+    "@rollup/plugin-node-resolve": "11.1.1",
+    "@rollup/plugin-replace": "2.3.4",
+    "@rollup/plugin-typescript": "8.1.1",
     "@types/inquirer": "6.5.0",
     "@types/jest": "26.0.3",
     "@types/node": "14.0.13",
@@ -44,7 +47,7 @@
     "eslint": "7.2.0",
     "eslint-plugin-import": "2.21.2",
     "jest": "26.1.0",
-    "loose-envify": "1.4.0",
+    "rollup-plugin-typescript-paths": "1.2.2",
     "ts-jest": "26.1.1",
     "typescript": "3.9.5",
     "typescript-eslint-parser": "22.0.0"

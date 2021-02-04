@@ -1,4 +1,5 @@
-import * as i from './types';
+import 'reflect-metadata';
+import * as i from 'types';
 import color from 'kleur';
 
 import container from './ioc/container';
@@ -9,8 +10,8 @@ import Logger from './utils/Logger';
 async function main(): Promise<void> {
   // Startup message
   const logger = new Logger();
-  const packageName = color.yellow().bold(process.env.npm_package_name!);
-  const version = process.env.npm_package_version;
+  const packageName = color.yellow().bold(process.env.NAME!);
+  const version = process.env.VERSION;
 
   logger.msg(`${packageName} v${version} ${color.dim('(ctrl + c to exit)')}\n`);
 
