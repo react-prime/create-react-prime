@@ -1,16 +1,16 @@
-import * as i from '../types';
+import * as i from 'types';
 import { Container } from 'inversify';
 import commander from 'commander';
 
-import App from '../App';
-import initCli from '../CLI';
-import CLIMgr from '../CLIMgr';
-import PackageMgr from '../utils/PackageMgr';
-import getIocTargetName from '../utils/GetIocTargetName';
+import App from 'core/App';
+import initCli from 'core/CLI';
+import CLIMgr from 'core/CLIMgr';
+import SERVICES from 'core/ioc/services';
+import PackageMgr from 'core/utils/PackageMgr';
+import getIocTargetName from 'core/utils/GetIocTargetName';
 
-import installersConfig from '../../modules/config';
-import DefaultPrompt from '../../modules/prompt/default/Prompt';
-import SERVICES from './services';
+import installersConfig from 'modules/config';
+import DefaultPrompt from 'modules/prompt/default/Prompt';
 
 
 const container = new Container();

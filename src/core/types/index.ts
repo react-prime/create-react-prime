@@ -1,8 +1,8 @@
 export * from './installer';
 export * from './prompt';
 
-export * from '../ioc/types';
-export * from '../utils/types';
+export * from 'core/ioc/types';
+export * from 'core/utils/types';
 
 export type ValueOf<T> = T[keyof T];
 

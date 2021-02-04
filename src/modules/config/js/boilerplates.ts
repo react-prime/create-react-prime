@@ -1,7 +1,7 @@
-import vc from '../../config/vc';
-import JsDefaultInstaller from '../../installers/js/Default';
-import JsNativeInstaller from '../../installers/js/Native';
-import JsNativeSteps from '../../steps/js/Native';
+import vc from 'modules/config/vc';
+import JsDefaultInstaller from 'modules/installers/js/Default';
+import JsNativeInstaller from 'modules/installers/js/Native';
+import JsNativeSteps from 'modules/steps/js/Native';
 
 
 /**

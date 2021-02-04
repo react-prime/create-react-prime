@@ -1,8 +1,8 @@
-import * as i from '../../../../core/types';
+import * as i from 'types';
 import { ListChoiceOptions } from 'inquirer';
 import color from 'kleur';
 
-import Question from '../../../../core/Question';
+import Question from 'core/Question';
 
 
 /** Ask user to select a boilerplate to install (if not given). */

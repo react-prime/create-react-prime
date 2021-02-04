@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import * as i from '../types';
+import * as i from 'types';
 import color from 'kleur';
 
-import { LOG_PREFIX } from '../constants';
+import { LOG_PREFIX } from 'core/constants';
 
 
 export default class Logger implements i.LoggerType {

@@ -1,10 +1,10 @@
-import * as i from '../../../core/types';
+import * as i from 'types';
 import { injectable, inject } from 'inversify';
 
-import Installer from '../../../core/Installer';
-import SERVICES from '../../../core/ioc/services';
+import Installer from 'core/Installer';
+import SERVICES from 'core/ioc/services';
 
-import STEPS from '../../steps/identifiers';
+import STEPS from 'modules/steps/identifiers';
 
 
 @injectable()

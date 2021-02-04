@@ -2,10 +2,9 @@ import 'reflect-metadata';
 import * as i from 'types';
 import color from 'kleur';
 
-import container from './ioc/container';
-import SERVICES from './ioc/services';
-import Logger from './utils/Logger';
-
+import container from 'core/ioc/container';
+import SERVICES from 'core/ioc/services';
+import Logger from 'core/utils/Logger';
 
 async function main(): Promise<void> {
   // Startup message

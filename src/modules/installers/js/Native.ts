@@ -1,8 +1,8 @@
-import * as i from '../../../core/types';
+import * as i from 'types';
 import path from 'path';
 import cp from 'child_process';
 
-import STEPS from '../../steps/identifiers';
+import STEPS from 'modules/steps/identifiers';
 
 import JsDefaultInstaller from './Default';
 

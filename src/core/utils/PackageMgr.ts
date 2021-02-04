@@ -1,13 +1,13 @@
-import * as i from '../types';
+import * as i from 'types';
 import path from 'path';
 import fs from 'fs';
 import util from 'util';
 import { injectable, inject } from 'inversify';
 
-import SERVICES from '../ioc/services';
-import { ERROR_TEXT } from '../constants';
+import SERVICES from 'core/ioc/services';
+import { ERROR_TEXT } from 'core/constants';
 
-import Logger from './Logger';
+import Logger from 'core/utils/Logger';
 
 
 // Wrap utils in promise

@@ -1,4 +1,4 @@
-import * as i from '../../core/types';
+import * as i from 'types';
 
 
 const vc: Record<string, i.Vc> = {
