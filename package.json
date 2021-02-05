@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "build": "rm -rf dist/ && rollup -c",
-    "start": "node dist/core/main",
-    "dev": "rm -rf testingname/ testing-name/; npm run build; node dist/core/main testing-name",
+    "start": "node dist/main.js",
+    "dev": "rm -rf testingname/ testing-name/ && npm run build && node dist/main.js testing-name",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
     "test": "jest",
