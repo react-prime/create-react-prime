@@ -31,7 +31,7 @@ export default class ProjectName extends Question {
   validate(input: string): boolean | string {
     const validate = new Validate();
 
-    if (validate.filename(input)) {
+    if (validate.folderName(input)) {
       return true;
     }
 

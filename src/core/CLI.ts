@@ -93,7 +93,7 @@ export default function initCLI(): commander.Command {
   if (cli.args[ARG.ProjectName] != null) {
     const validate = new Validate();
 
-    if (!validate.filename(cli.args[ARG.ProjectName])) {
+    if (!validate.folderName(cli.args[ARG.ProjectName])) {
       logger.error(ERROR_TEXT.Filename);
     }
   }
