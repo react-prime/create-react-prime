@@ -106,7 +106,7 @@ npm start
 
 This project uses the *Object Oriented Programming* (OOP), *Dependency Injection* (DI) and *Inversion of Control* (IoC) principles.
 
-When adding, modifying or extending installers, only OOP knowledge is relevant. DI and IoC is used outside of the installers.
+When adding, modifying or extending modules, only OOP knowledge is relevant. DI and IoC is used outside of the modules.
 
 When modifying the core code, however, it is important to have basic knowledge of these principles before starting.
 
@@ -126,46 +126,25 @@ Dependency Injection (DI) is a principle where modules are injected independentl
 Inversion of Control (IoC) is used to decouple the implementation and the shape of a module. This is useful for testing, because this means we only care about the shape of the module and not about the implementation of the module, which in turn makes mocking easier. Coupling happens in `core/ioc/container.ts` This project uses *InversifyJS* to achieve IoC.
 
 ## Modules
-This CLI is built around modules. This allows developers to easily modify and even add their own installation flows to the CLI.
+This CLI is built around modules. This allows developers to easily modify and even add their own installation flows to the CLI, without digging deep into the core code.
 
-### Add installer
+### Add installer (new module)
 
-To add a new installer, do the following:
-
-1. Navigate to `modules/config.ts`
-2. Add the installer to the `installersConfig` list, together with its name (used for the --boilerplate option), and the repository. The installer should be the default `Installer`, unless you need extra logic in the installation process.
-3. Add the new installer to the readme!
+⚠️ TODO
 
 ### Add Custom installer
 
-When the default installer does not satisfy the need of the installation process, you can create a custom installer. This will always need to be based off of the default installer.
-
-To create a custom installer, do the following:
-
-1. Follow the steps of *Adding installers*.
-2. Extend the class with `Installer`
-   - Note: when overriding any of the methods from `Installer`, make sure to always run the super method at some point in the override.
-3. In the `installersConfig` (from step 2 of *Adding installers*), use your custom installer instead of the default installer.
+⚠️ TODO
 
 #### Installer Hooks
 ```ts
 /** Executed after initialization of an installer instance */
 afterInit(): void
 
-/** Executed before initialization of the installer steps list */
-beforeStepsInit(): void
-/** Executed after initialization of the installer steps list */
-afterStepsInit(): void
-
 /** Executed before iterating the installation steps */
 beforeInstall(): void
 /** Executed after iterating the installation steps */
 afterInstall(): void
-
-/** Executed before every installation step. The first parameter returns the current step ID. */
-async beforeExecuteStep(step: i.InstallStepIds): Promise<void> {}
-/** Executed after every installation step. The first parameter returns the current step ID. */
-async afterExecuteStep(step: i.InstallStepIds): Promise<void> {}
 ```
 
 ### Installation Steps
@@ -173,4 +152,3 @@ async afterExecuteStep(step: i.InstallStepIds): Promise<void> {}
 
 ### Prompt
 ⚠️ TODO
-
