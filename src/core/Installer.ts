@@ -26,11 +26,11 @@ export default class Installer implements i.InstallerType {
   init(): void {
     this.beforeInit();
 
-    const { installationConfig, lang, installBoilerplate } = this.cliMgr;
+    const { installationConfig, lang, boilerplateTypeName } = this.cliMgr;
     let stepsName = getIocTargetName.steps(lang);
 
     if (installationConfig?.steps) {
-      stepsName = getIocTargetName.steps(lang, installBoilerplate);
+      stepsName = getIocTargetName.steps(lang, boilerplateTypeName);
     }
 
     this.installSteps = container.getNamed<i.StepsType>(SERVICES.Steps, stepsName);

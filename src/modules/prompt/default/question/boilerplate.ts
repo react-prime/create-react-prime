@@ -16,7 +16,7 @@ export default class Boilerplate extends Question {
   readonly choices: ListChoiceOptions[] = [];
 
   when = (): boolean => {
-    return !this.cliMgr.installBoilerplate;
+    return !this.cliMgr.boilerplateTypeName;
   }
 
   constructor(
@@ -38,7 +38,7 @@ export default class Boilerplate extends Question {
 
   async answer(answers: { boilerplate: i.BoilerplateTypes }): Promise<void> {
     if (answers.boilerplate) {
-      this.cliMgr.installBoilerplate = answers.boilerplate;
+      this.cliMgr.boilerplateTypeName = answers.boilerplate;
     }
   }
 }

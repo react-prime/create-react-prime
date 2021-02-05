@@ -9,13 +9,13 @@ describe('CLIMgr', () => {
       const { cli, cliMgr } = createCliCtx();
 
       cli.boilerplate = 'client';
-      expect(cliMgr.installBoilerplate).toEqual('client');
+      expect(cliMgr.boilerplateTypeName).toEqual('client');
 
       cli.boilerplate = 'ssr';
-      expect(cliMgr.installBoilerplate).toEqual('ssr');
+      expect(cliMgr.boilerplateTypeName).toEqual('ssr');
 
       cli.boilerplate = 'native';
-      expect(cliMgr.installBoilerplate).toEqual('native');
+      expect(cliMgr.boilerplateTypeName).toEqual('native');
     });
   });
 

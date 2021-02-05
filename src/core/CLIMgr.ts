@@ -30,18 +30,18 @@ export default class CLIMgr implements i.CLIMgrType {
   }
 
   get installationConfig(): i.InstallationConfig | undefined {
-    if (!this.installBoilerplate) {
+    if (!this.boilerplateTypeName) {
       return;
     }
 
-    return installersConfig[this.lang].boilerplates[this.installBoilerplate];
+    return installersConfig[this.lang].boilerplates[this.boilerplateTypeName];
   }
 
-  get installBoilerplate(): i.BoilerplateTypes | undefined {
+  get boilerplateTypeName(): i.BoilerplateTypes | undefined {
     return this.cli.boilerplate;
   }
 
-  set installBoilerplate(boilerplate: i.BoilerplateTypes | undefined) {
+  set boilerplateTypeName(boilerplate: i.BoilerplateTypes | undefined) {
     this.cli.boilerplate = boilerplate;
   }
 
