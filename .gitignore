@@ -1,5 +1,4 @@
 .DS_Store
-.vscode
 .gitattributes
 .progress-estimations
 
@@ -7,5 +6,7 @@ node_modules
 reactprime
 reactprimessr
 reactprimenative
+dist
 
+testing*
 crptest*

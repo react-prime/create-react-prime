@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+      "noEmit": true,
+      "target": "es6",
+      "module": "es2015",
+      "lib": ["esnext"],
+      "moduleResolution": "node",
+      "removeComments": true,
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "strict": true,
+      "resolveJsonModule": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "baseUrl": ".",
+      "paths": {
+          "core/*": ["core/*"],
+          "modules/*": ["modules/*"],
+          "types": ["core/types.ts"]
+      }
+  },
+  "include": [
+    "core",
+    "modules"
+  ],
+  "exclude": ["node_modules"]
+}
