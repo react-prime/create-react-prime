@@ -1,5 +1,5 @@
 {
-  "name": "create-react-prime-rewrite",
+  "name": "create-react-prime",
   "version": "2.0.0",
   "description": "",
   "author": "Label A [labela.nl]",
@@ -31,7 +31,8 @@
     "react-prime"
   ],
   "dependencies": {
-    "commander": "7.2.0"
+    "commander": "7.2.0",
+    "kleur": "3.0.3"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "17.1.0",

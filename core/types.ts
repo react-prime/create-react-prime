@@ -7,6 +7,9 @@ export interface Newable<T = any> extends Function {
   new (...args: any[]): T;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyArr = any[];
+
 export interface Step {
   name: string;
   after: string;
