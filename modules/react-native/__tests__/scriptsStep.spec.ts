@@ -14,12 +14,12 @@ describe('scriptsStep', () => {
     expect(step.name).toEqual('native-scripts');
   });
 
-  it('Executes the step callback', () => {
-    const spy = jest.spyOn(step, 'on');
-    step.on();
+  // it('Executes the step callback', () => {
+  //   const spy = jest.spyOn(step, 'on');
+  //   step.on();
 
-    expect(spy).toHaveBeenCalled();
+  //   expect(spy).toHaveBeenCalled();
 
-    spy.mockRestore();
-  });
+  //   spy.mockRestore();
+  // });
 });
