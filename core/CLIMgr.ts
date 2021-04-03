@@ -2,11 +2,12 @@ import commander from 'commander';
 
 import bootstrapCLI from './cli';
 
+
 // Create CLI ASAP in runtime
-const cli = bootstrapCLI();
+const cliAPI = bootstrapCLI();
 
 class CLIMgr {
-  private cli = cli;
+  private cli = cliAPI;
   private projectName: string = this.cli.args[0];
 
   getCLI(): commander.Command {
