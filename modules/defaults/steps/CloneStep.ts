@@ -1,3 +1,5 @@
+import * as i from 'types';
+
 import Step from 'core/decorators/Step';
 
 
@@ -5,8 +7,8 @@ import Step from 'core/decorators/Step';
   name: 'clone',
 })
 export class CloneStep {
-  constructor(
-    private repoUrl: string,
-  ) {}
+  on(options: i.StepOptions): void {
+    return;
+  }
 }
 

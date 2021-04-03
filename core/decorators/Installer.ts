@@ -1,39 +1,37 @@
 import * as i from 'types';
 
 import StepList from 'core/StepList';
-import { CloneStep, NpmInstallStep } from 'core/steps';
+import { CloneStep, NpmInstallStep } from 'modules/defaults/steps';
 
 
-function Installer(options: InstallerOptions) {
+function Installer(options: i.InstallerOptions): <T extends i.Newable>(constructor: T) => T {
+  const { prompts, steps, ...opts } = options;
+
   const defaultSteps = [
-      new CloneStep(options.repositoryUrl),
-      new NpmInstallStep(),
+    new CloneStep(),
+    new NpmInstallStep(),
   ] as i.Step[];
-  const customSteps = options.steps.map((Step) => new Step()) as i.Step[];
-  const steps = new StepList();
+  const customSteps = steps?.map((Step) => new Step() as i.Step);
+  const stepList = new StepList(opts);
 
   for (const step of defaultSteps) {
-      steps.push(step);
+    stepList.push(step);
 
+    if (customSteps) {
       for (const cStep of customSteps) {
-          if (step.name === cStep.after) {
-              steps.push(cStep);
-          }
+        if (step.name === cStep.after) {
+          stepList.push(cStep);
+        }
       }
+    }
   }
 
-  return function<T extends i.Newable<any>>(constructor: T) {
-      return class extends constructor {
-          name = options.name;
-          steps = steps;
-      }
-  }
-}
-
-interface InstallerOptions {
-  name: string;
-  repositoryUrl: string;
-  steps: i.Newable<any>[];
+  return function<T extends i.Newable> (constructor: T): T {
+    return class extends constructor {
+      name = opts.name;
+      steps = stepList;
+    };
+  };
 }
 
 export default Installer;

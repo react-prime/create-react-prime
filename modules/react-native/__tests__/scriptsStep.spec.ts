@@ -4,15 +4,15 @@ import ScriptsStep from '../steps/scriptsStep';
 
 
 describe('scriptsStep', () => {
-  let step: i.Step;
+  // let step: i.Step;
 
-  beforeEach(() => {
-    step = new ScriptsStep() as i.Step;
-  });
+  // beforeEach(() => {
+  //   step = new ScriptsStep() as i.Step;
+  // });
 
-  it('Has the correct name', () => {
-    expect(step.name).toEqual('native-scripts');
-  });
+  // it('Has the correct name', () => {
+  //   expect(step.name).toEqual('native-scripts');
+  // });
 
   // it('Executes the step callback', () => {
   //   const spy = jest.spyOn(step, 'on');
