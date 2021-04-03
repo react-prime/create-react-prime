@@ -1,3 +1,4 @@
+import CLIMgr from 'core/CLIMgr';
 import Installer from 'core/decorators/Installer';
 
 import ScriptsStep from './steps/scriptsStep';
@@ -10,12 +11,10 @@ import ScriptsStep from './steps/scriptsStep';
   steps: [ScriptsStep],
 })
 export default class ReactNativeInstaller {
-  // private cliMgr = new CLIMgr();
-  // private logger = new Logger();
-
   beforeInstall() {
+    const cliMgr = new CLIMgr();
     // this.cliMgr.setProjectName(
-    //   this.cliMgr.projectName.replace(/\W/g, '')
+    //   this.cliMgr.projectName.replace(/\W/g, ''),
     // );
 
     // if (diff) {

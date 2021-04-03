@@ -1,13 +1,13 @@
 {
   "name": "create-react-prime-rewrite",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "",
   "author": "Label A [labela.nl]",
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist/ && rollup -c",
     "start": "node dist/main.js",
-    "dev": "rm -rf testingname/ testing-name/ && npm run build && node dist/main.js testing-name",
+    "dev": "rm -rf testingname/ testing-name/ && npm run build && node dist/main.js testing-name -b react-native",
     "lint": "eslint --ext .ts --ext .tsx src/",
     "typecheck": "tsc --noEmit",
     "test": "jest",
