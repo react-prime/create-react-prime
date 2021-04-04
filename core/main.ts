@@ -26,14 +26,20 @@ async function bootstrap() {
   const prePrompt = new Prompt('pre');
   await prePrompt.ask();
 
-  for (const Installer of module.imports) {
+  logger.whitespace();
+
+  for await (const Installer of module.imports) {
     installer = new Installer() as i.Installer;
 
     if (installer.name === cliMgr.getBoilerplate()) {
       // TODO: Prompt questions from installer
-      installer.beforeInstall?.();
-      installer.steps.execute();
-      installer.afterInstall?.();
+      try {
+        installer.beforeInstall?.();
+        await installer.steps.execute();
+        installer.afterInstall?.();
+      } catch (err) {
+        logger.error(err);
+      }
     }
   }
 

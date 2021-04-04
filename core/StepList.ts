@@ -8,10 +8,9 @@ class StepList extends Array<i.Step> {
     super();
   }
 
-  execute(): void {
-    for (const step of this) {
-      console.log('execute step', step);
-      step.on(this.options);
+  async execute(): Promise<void> {
+    for await (const step of this) {
+      await step.on(this.options);
     }
   }
 }

@@ -22,7 +22,8 @@ export interface Question {
 export interface Step {
   name: string;
   after: string;
-  on: (options: i.StepOptions) => void;
+  on: (options: i.StepOptions) => void | Promise<void>;
+  spinner: i.SpinnerOptions;
 }
 
 export interface Installer {
@@ -55,3 +56,11 @@ export type QuestionOptions = QuestionOptionsBase & (
   | ListQuestion
   | CheckboxQuestion
 )
+
+export interface SpinnerOptions {
+  emoji: string;
+  message: {
+    pending: () => string;
+    success: () => string;
+  }
+}

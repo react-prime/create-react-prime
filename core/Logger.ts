@@ -2,10 +2,10 @@
 import * as i from 'types';
 import color from 'kleur';
 
+import { LOG_PREFIX } from './constants';
+
 
 export default class Logger {
-  private LOG_PREFIX = 'crp';
-
   msg(...str: i.AnyArr): void {
     this.log('⚡️', ...str);
   }
@@ -15,7 +15,8 @@ export default class Logger {
   }
 
   error(...reason: i.AnyArr): void {
-    this.log(`${color.red('ERR!')} Installation aborted.`, ...reason);
+    const err = reason[0] ? reason : 'unknown error. Please try again.';
+    this.log(`${color.red('ERR!')} Installation aborted:`, err);
     process.exit(1);
   }
 
@@ -28,7 +29,7 @@ export default class Logger {
   }
 
   private log(prefix: string, ...str: i.AnyArr): void {
-    const pre = `${this.LOG_PREFIX} ${prefix}`;
+    const pre = `${LOG_PREFIX} ${prefix}`;
     const [first, ...rest] = str;
 
     console.log(`${pre} ${first}`, ...rest);
