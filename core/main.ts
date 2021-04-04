@@ -1,16 +1,15 @@
 import * as i from 'types';
 import color from 'kleur';
 
-import CLIMgr from 'core/CLIMgr';
 import Logger from 'core/Logger';
 import Prompt from 'core/Prompt';
+import cliMgr from 'core/CLIMgr';
 
 import Module from 'modules/Module';
 
 
 async function bootstrap() {
   const module = new Module();
-  const cliMgr = new CLIMgr();
   const logger = new Logger();
 
 

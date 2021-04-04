@@ -1,7 +1,7 @@
 import os from 'os';
 import { Answers } from 'inquirer';
 
-import CLIMgr from 'core/CLIMgr';
+import cliMgr from 'core/CLIMgr';
 import Question from 'core/decorators/Question';
 
 
@@ -13,14 +13,10 @@ import Question from 'core/decorators/Question';
 })
 class ProjectNameQuestion {
   when = (): boolean => {
-    const cliMgr = new CLIMgr();
-
     return cliMgr.getProjectName() ? false : true;
   }
 
   default = (answers: Answers): string => {
-    const cliMgr = new CLIMgr();
-
     return cliMgr.getBoilerplate() || answers.boilerplate || '';
   }
 
@@ -37,8 +33,6 @@ class ProjectNameQuestion {
   }
 
   answer = (answers: Answers): void => {
-    const cliMgr = new CLIMgr();
-
     cliMgr.setProjectName(answers.name);
   }
 

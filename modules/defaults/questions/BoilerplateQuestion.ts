@@ -1,7 +1,7 @@
 import { Answers } from 'inquirer';
 
-import CLIMgr from 'core/CLIMgr';
 import Question from 'core/decorators/Question';
+import cliMgr from 'core/CLIMgr';
 
 
 @Question({
@@ -14,14 +14,10 @@ import Question from 'core/decorators/Question';
 })
 class BoilerplateQuestion {
   when = (): boolean => {
-    const cliMgr = new CLIMgr();
-
     return cliMgr.getBoilerplate() ? false : true;
   }
 
   answer = (answers: Answers): void => {
-    const cliMgr = new CLIMgr();
-
     cliMgr.setBoilerplate(answers.boilerplate);
   }
 }

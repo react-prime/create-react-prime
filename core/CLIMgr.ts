@@ -1,5 +1,3 @@
-import commander from 'commander';
-
 import bootstrapCLI from './cli';
 
 
@@ -11,25 +9,23 @@ class CLIMgr {
   private projectName: string = this.cli.args[0];
   private boilerplate: string = this.cli.opts().boilerplate;
 
-  getCLI(): commander.Command {
-    return this.cli;
-  }
-
-  getProjectName(): string {
+  getProjectName = (): string => {
     return this.projectName || this.cli.args[0];
   }
 
-  setProjectName(name: string): void {
+  setProjectName = (name: string): void => {
     this.projectName = name;
   }
 
-  getBoilerplate(): string {
+  getBoilerplate = (): string => {
     return this.boilerplate || this.cli.opts().boilerplate;
   }
 
-  setBoilerplate(boilerplate: string): string {
-    return this.boilerplate = boilerplate;
+  setBoilerplate = (boilerplate: string): void => {
+    this.boilerplate = boilerplate;
   }
 }
 
-export default CLIMgr;
+const cliMgr = new CLIMgr();
+
+export default cliMgr;
