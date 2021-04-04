@@ -35,14 +35,14 @@ class Prompt {
       // Ask question
       const answer: Answers = await prompt(question.options);
 
-      // Respond to answer
-      await question.answer(answers);
-
       // Add answer to answers
       answers = {
         ...answers,
         ...answer,
       };
+
+      // Respond to answer
+      await question.answer(answers);
     }
 
     return answers;
