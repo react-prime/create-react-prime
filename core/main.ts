@@ -3,10 +3,12 @@ import color from 'kleur';
 
 import CLIMgr from 'core/CLIMgr';
 import Logger from 'core/Logger';
+import Prompt from 'core/Prompt';
+
 import Module from 'modules/Module';
 
 
-function bootstrap() {
+async function bootstrap() {
   const module = new Module();
   const cliMgr = new CLIMgr();
   const logger = new Logger();
@@ -22,15 +24,23 @@ function bootstrap() {
   // Run installer
   let installer!: i.Installer;
 
+  const prePrompt = new Prompt('pre');
+  await prePrompt.ask();
+
   for (const Installer of module.imports) {
     installer = new Installer() as i.Installer;
 
     if (installer.name === cliMgr.getBoilerplate()) {
+      // TODO: Prompt questions from installer
       installer.beforeInstall?.();
       installer.steps.execute();
       installer.afterInstall?.();
     }
   }
+
+  const postPrompt = new Prompt('post');
+  await postPrompt.ask();
+
 
   // Exit node process
   process.exit();

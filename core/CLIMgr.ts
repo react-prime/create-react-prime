@@ -9,13 +9,14 @@ const cliAPI = bootstrapCLI();
 class CLIMgr {
   private cli = cliAPI;
   private projectName: string = this.cli.args[0];
+  private boilerplate: string = this.cli.opts().boilerplate;
 
   getCLI(): commander.Command {
     return this.cli;
   }
 
   getProjectName(): string {
-    return this.projectName;
+    return this.projectName || this.cli.args[0];
   }
 
   setProjectName(name: string): void {
@@ -23,7 +24,11 @@ class CLIMgr {
   }
 
   getBoilerplate(): string {
-    return this.cli.opts().boilerplate;
+    return this.boilerplate || this.cli.opts().boilerplate;
+  }
+
+  setBoilerplate(boilerplate: string): string {
+    return this.boilerplate = boilerplate;
   }
 }
 
