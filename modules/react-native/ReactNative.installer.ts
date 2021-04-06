@@ -2,7 +2,7 @@ import Installer from 'core/decorators/Installer';
 import cliMgr from 'core/CLIMgr';
 import Logger from 'core/Logger';
 
-import ScriptsStep from './steps/scriptsStep';
+import ScriptsStep from './steps/scripts.step';
 
 
 @Installer({

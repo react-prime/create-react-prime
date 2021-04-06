@@ -1,4 +1,4 @@
-export { CloneStep } from './CloneStep';
-export { NpmPackageUpdateStep } from './NpmPackageUpdateStep';
-export { NpmInstallStep } from './NpmInstallStep';
-export { CleanupStep } from './CleanupStep';
+export { CloneStep } from './Clone.step';
+export { NpmPackageUpdateStep } from './NpmPackageUpdate.step';
+export { NpmInstallStep } from './NpmInstall.step';
+export { CleanupStep } from './Cleanup.step';
