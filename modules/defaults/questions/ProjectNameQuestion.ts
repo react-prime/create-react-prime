@@ -1,8 +1,9 @@
-import os from 'os';
 import { Answers } from 'inquirer';
 
+import { ERROR_TEXT } from 'core/constants';
 import cliMgr from 'core/CLIMgr';
 import Question from 'core/decorators/Question';
+import Validate from 'core/Validate';
 
 
 @Question({
@@ -21,33 +22,15 @@ class ProjectNameQuestion {
   }
 
   validate = (input: string): string | boolean => {
-    if (!input) {
-      return false;
-    }
+    const validate = new Validate();
 
-    const hasIllegalChars = this.illegalChars.test(input);
-
-    return hasIllegalChars
-      ? 'Invalid folder name'
-      : true;
+    return validate.folderName(input)
+      ? true
+      : ERROR_TEXT.ProjectName;
   }
 
   answer = (answers: Answers): void => {
     cliMgr.setProjectName(answers.name);
-  }
-
-  private get illegalChars(): RegExp {
-    // source: https://kb.acronis.com/content/39790
-    switch (os.type()) {
-      case 'WINDOWS_NT':
-        return /[\^\\/?*:|"<> ]+/;
-      case 'Darwin':
-        // / is allowed but produces unwanted results
-        return /[\/:]+/;
-      case 'Linux':
-      default:
-        return /[\/]+/;
-    }
   }
 }
 

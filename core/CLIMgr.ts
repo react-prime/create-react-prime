@@ -1,16 +1,18 @@
 import bootstrapCLI from './cli';
 
+import { ARG } from 'core/constants';
+
 
 // Create CLI ASAP in runtime
 const cliAPI = bootstrapCLI();
 
 class CLIMgr {
   private cli = cliAPI;
-  private projectName: string = this.cli.args[0];
+  private projectName: string = this.cli.args[ARG.ProjectName];
   private boilerplate: string = this.cli.opts().boilerplate;
 
   getProjectName = (): string => {
-    return this.projectName || this.cli.args[0];
+    return this.projectName || this.cli.args[ARG.ProjectName];
   }
 
   setProjectName = (name: string): void => {
