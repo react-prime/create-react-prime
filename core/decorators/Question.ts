@@ -1,4 +1,5 @@
 import * as i from 'types';
+import { Answers } from 'inquirer';
 
 
 function Question(options: i.QuestionOptions) {
@@ -42,6 +43,7 @@ function Question(options: i.QuestionOptions) {
 interface QuestionClass {
   when?(): boolean;
   validate?(input: string): string | boolean;
+  answer(answers: Answers): void;
 }
 
 type QuestionClassProps = keyof QuestionClass | 'constructor';

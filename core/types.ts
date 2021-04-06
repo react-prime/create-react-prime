@@ -29,6 +29,7 @@ export interface Step {
 export interface Installer {
   name: string;
   steps: StepList;
+  questions?: i.QuestionsObj<i.Newable<i.Question>[]>;
   beforeInstall: () => void;
   afterInstall: () => void;
 }
@@ -67,4 +68,10 @@ export interface SpinnerOptions {
     pending: () => string;
     success: () => string;
   }
+}
+
+export type QuestionWhen = 'before' | 'after';
+
+export type QuestionsObj<T> = {
+  [key in QuestionWhen]: T;
 }

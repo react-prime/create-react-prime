@@ -7,7 +7,7 @@ import { CloneStep, NpmInstallStep } from 'modules/defaults/steps';
 
 function Installer(options: i.InstallerOptions): <T extends i.Newable>(constructor: T) => T {
   const { questions, steps, ...opts } = options;
-  // TODO: Add questions to prompt
+
 
   const defaultSteps = [
     new CloneStep(),
@@ -29,10 +29,29 @@ function Installer(options: i.InstallerOptions): <T extends i.Newable>(construct
   }
 
 
+  const questionsObj: i.QuestionsObj<i.Newable<i.Question>[]> = {
+    before: [],
+    after: [],
+  };
+
+  if (questions) {
+    for (const Q of questions) {
+      const question = new Q() as i.Question;
+
+      if (question.options.beforeInstall) {
+        questionsObj.before.push(Q);
+      }
+      if (question.options.afterInstall) {
+        questionsObj.after.push(Q);
+      }
+    }
+  }
+
   return function<T extends i.Newable> (constructor: T): T {
     return class extends constructor {
       name = opts.name;
       steps = stepList;
+      questions = questionsObj;
     };
   };
 }

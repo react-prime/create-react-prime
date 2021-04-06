@@ -2,12 +2,13 @@ import Installer from 'core/decorators/Installer';
 import cliMgr from 'core/CLIMgr';
 
 import ScriptsStep from './steps/scriptsStep';
+import TestQuestion from './questions/TestQuestion';
 
 
 @Installer({
   name: 'react-native',
   repositoryUrl: '',
-  // questions: [],
+  questions: [TestQuestion],
   steps: [ScriptsStep],
 })
 export default class ReactNativeInstaller {

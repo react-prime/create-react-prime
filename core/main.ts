@@ -6,6 +6,8 @@ import Prompt from 'core/Prompt';
 import cliMgr from 'core/CLIMgr';
 
 import Module from 'modules/Module';
+import BoilerplateQuestion from 'modules/defaults/questions/BoilerplateQuestion';
+import ProjectNameQuestion from 'modules/defaults/questions/ProjectNameQuestion';
 
 
 async function bootstrap() {
@@ -20,19 +22,35 @@ async function bootstrap() {
   logger.msg(`${packageName} v${version} ${color.dim('(ctrl + c to exit)')}\n`);
 
 
+  // Run prompt
+  const beforeInstallQuestions = [
+    BoilerplateQuestion,
+    ProjectNameQuestion,
+  ] as unknown as i.Newable<i.Question>[]; // Typing issue with decorators
+
+  const afterInstallQuestions = [] as unknown as i.Newable<i.Question>[]; // Typing issue with decorators
+
+  const prompt = new Prompt({
+    before: beforeInstallQuestions,
+    after: afterInstallQuestions,
+  });
+  await prompt.ask('before');
+
+
   // Run installer
   let installer!: i.Installer;
-
-  const prePrompt = new Prompt('pre');
-  await prePrompt.ask();
-
-  logger.whitespace();
 
   for await (const Installer of module.imports) {
     installer = new Installer() as i.Installer;
 
     if (installer.name === cliMgr.getBoilerplate()) {
-      // TODO: Prompt questions from installer
+      if (installer.questions) {
+        const installerPrompt = new Prompt(installer.questions);
+        await installerPrompt.ask('before');
+      }
+
+      logger.whitespace();
+
       try {
         installer.beforeInstall?.();
         await installer.steps.execute();
@@ -40,11 +58,15 @@ async function bootstrap() {
       } catch (err) {
         logger.error(err);
       }
+
+      if (installer.questions) {
+        const installerPrompt = new Prompt(installer.questions);
+        await installerPrompt.ask('after');
+      }
     }
   }
 
-  const postPrompt = new Prompt('post');
-  await postPrompt.ask();
+  await prompt.ask('after');
 
 
   // Exit node process

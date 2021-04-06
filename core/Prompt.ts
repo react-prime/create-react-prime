@@ -1,28 +1,26 @@
 import * as i from 'types';
 import { Answers, prompt } from 'inquirer';
 
-import BoilerplateQuestion from 'modules/defaults/questions/BoilerplateQuestion';
-import ProjectNameQuestion from 'modules/defaults/questions/ProjectNameQuestion';
-
 
 class Prompt {
-  private questions: i.Question[] = [];
+  private questions: i.QuestionsObj<i.Question[]> = {
+    before: [],
+    after: [],
+  };
 
-  constructor(when: 'pre' | 'post') {
-    if (when === 'pre') {
-      this.questions = [
-        new BoilerplateQuestion(),
-        new ProjectNameQuestion(),
-      ] as unknown as i.Question[]; // Typing issue with decorators
-    }
+  constructor(questions: i.QuestionsObj<i.Newable<i.Question>[]>) {
+    this.questions = {
+      before: questions.before.map((Q) => new Q()),
+      after: questions.after.map((Q) => new Q()),
+    };
   }
 
-  async ask(): Promise<Answers> {
+  async ask(when: i.QuestionWhen): Promise<Answers> {
     let answers: Answers = {};
     const questions = this.questions;
 
     // Ask questions to user
-    for await (const question of questions) {
+    for await (const question of questions[when]) {
       // Look for methods, call them with current answers and set the return value
       let prop: keyof i.QuestionOptions;
       for (prop in question.options) {
