@@ -14,6 +14,7 @@ export default class App extends CRPApp {
       defaultSteps.CloneStep,
       defaultSteps.NpmPackageUpdateStep,
       defaultSteps.NpmInstallStep,
+      defaultSteps.CleanupStep,
     ],
     questions: [
       defaultQuestions.BoilerplateQuestion,
