@@ -2,14 +2,11 @@ import * as i from 'types';
 
 import Prompt from 'core/Prompt';
 
-import * as defaultQuestions from 'modules/defaults/questions';
-
 
 class MainPrompt extends Prompt {
-  constructor() {
+  constructor(questions: i.Newable[]) {
     const beforeInstallQuestions = [] as i.Newable<i.Question>[];
     const afterInstallQuestions = [] as i.Newable<i.Question>[];
-    const questions = Object.values(defaultQuestions) as unknown as i.Newable<i.Question>[]; // Decorator type issue
 
     for (const Q of questions) {
       const question = new Q();

@@ -6,6 +6,7 @@ import Logger from 'core/Logger';
 import StepList from 'core/StepList';
 import Prompt from 'core/Prompt';
 import Validate from 'core/Validate';
+import MainPrompt from 'core/MainPrompt';
 
 
 export default class CRPApp {
@@ -16,14 +17,23 @@ export default class CRPApp {
   installers = [] as i.Newable[];
 
 
-  async start(): Promise<void> {
+  start = async (): Promise<void> => {
     const logger = new Logger();
+
+
+    // Run prompt
+    const prompt = new MainPrompt(this.defaults.questions);
+    await prompt.ask('before');
+
+
+    // Get installer config
     const installer = this.getInstaller();
 
     if (!installer) {
       return logger.error('Something is wrong with this installation configuration.');
     }
 
+    // Run installer prompt
     if (installer.questions) {
       const installerPrompt = new Prompt(installer.questions);
       await installerPrompt.ask('before');
@@ -31,17 +41,22 @@ export default class CRPApp {
 
     logger.whitespace();
 
+
+    // Run installation steps
     const steps = this.generateStepList(installer);
     const validate = new Validate();
 
     try {
       await installer.beforeInstall?.();
 
+      // Check if folder exists before we continue
       if (validate.folderExists(cliMgr.getProjectName())) {
         return logger.error(ERROR_TEXT.DirectoryExists, cliMgr.getProjectName());
       }
 
+      // Run installation steps
       await steps.execute();
+
       await installer.afterInstall?.();
     } catch (err) {
       logger.error(err);
@@ -49,18 +64,23 @@ export default class CRPApp {
 
     logger.whitespace();
 
+
+    // Run installation prompt
     if (installer.questions) {
       const installerPrompt = new Prompt(installer.questions);
       await installerPrompt.ask('after');
     }
+
+    // Run prompt
+    await prompt.ask('after');
   }
 
-  async end(): Promise<void> {
+  end = async (): Promise<void> => {
     return;
   }
 
 
-  private getInstaller(): i.Installer | undefined {
+  private getInstaller = (): i.Installer | undefined => {
     let installer: i.Installer | undefined = undefined;
     let found = false;
     let i = 0;
@@ -76,7 +96,7 @@ export default class CRPApp {
     return installer;
   }
 
-  private generateStepList(installer: i.Installer): StepList {
+  private generateStepList = (installer: i.Installer): StepList => {
     const customSteps = installer.steps?.map((Step) => new Step() as i.Step);
     const stepList = new StepList(installer.options);
 

@@ -1,6 +1,7 @@
 import CRPApp from 'core/CRPApp';
 
 import * as defaultSteps from './defaults/steps';
+import * as defaultQuestions from './defaults/questions';
 import ReactSPAInstaller from './react-spa/ReactSPA.installer';
 import ReactSSRInstaller from './react-ssr/reactSSR.installer';
 import ReactNativeInstaller from './react-native/ReactNative.installer';
@@ -14,7 +15,11 @@ export default class App extends CRPApp {
       defaultSteps.NpmPackageUpdateStep,
       defaultSteps.NpmInstallStep,
     ],
-    questions: [],
+    questions: [
+      defaultQuestions.BoilerplateQuestion,
+      defaultQuestions.ProjectNameQuestion,
+      defaultQuestions.OpenEditorQuestion,
+    ],
   };
 
   installers = [
