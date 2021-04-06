@@ -13,14 +13,14 @@ import TestQuestion from './questions/TestQuestion';
 })
 export default class ReactNativeInstaller {
   beforeInstall() {
-    const tempProjectName = cliMgr.getProjectName();
+    // const tempProjectName = cliMgr.getProjectName();
 
     cliMgr.setProjectName(
       cliMgr.getProjectName().replace(/\W/g, ''),
     );
 
     // if (tempProjectName !== cliMgr.getProjectName()) {
-    // eslint-disable-line max-len
+    // eslint-disable-next-line max-len
     // this.logger.warning(`Project name has been renamed to '${this.cliMgr.projectName}'.\nRead more: https://github.com/facebook/react-native/issues/213.\n`);
     // }
   }

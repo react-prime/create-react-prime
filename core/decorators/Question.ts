@@ -26,6 +26,7 @@ function Question(options: i.QuestionOptions) {
     }
 
     // Add methods to object so we can add them as options later
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const optionMethods = {} as Record<keyof QuestionClass, any>;
     for (const method of methods) {
       optionMethods[method] = question[method];

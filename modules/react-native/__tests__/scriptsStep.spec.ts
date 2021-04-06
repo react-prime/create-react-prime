@@ -1,6 +1,6 @@
-import * as i from 'types';
+// import * as i from 'types';
 
-import ScriptsStep from '../steps/scriptsStep';
+// import ScriptsStep from '../steps/scriptsStep';
 
 
 describe('scriptsStep', () => {

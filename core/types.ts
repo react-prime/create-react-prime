@@ -3,8 +3,6 @@ import {
   Answers, CheckboxQuestion, InputQuestion, InputQuestionOptions, ListQuestion, NumberQuestion,
 } from 'inquirer';
 
-import StepList from 'core/StepList';
-
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyArr = any[];
@@ -27,11 +25,11 @@ export interface Step {
 }
 
 export interface Installer {
-  name: string;
-  steps: StepList;
+  options: i.InstallStepArgs;
+  steps: i.Newable[];
   questions?: i.QuestionsObj<i.Newable<i.Question>[]>;
-  beforeInstall: () => void;
-  afterInstall: () => void;
+  beforeInstall: () => void | Promise<void>;
+  afterInstall: () => void | Promise<void>;
 }
 
 export interface InstallerOptions {

@@ -1,3 +1,4 @@
+import { existsSync } from 'fs';
 import os from 'os';
 
 
@@ -26,6 +27,10 @@ class Validate {
     const hasIllegalChars = illegalChars.test(name);
 
     return !hasIllegalChars;
+  }
+
+  folderExists(path: string): boolean {
+    return existsSync(path);
   }
 }
 
