@@ -1,4 +1,6 @@
 import * as i from 'types';
+import path from 'path';
+import color from 'kleur';
 
 import { ERROR_TEXT } from 'core/constants';
 import cliMgr from 'core/CLIMgr';
@@ -73,10 +75,39 @@ export default class CRPApp {
 
     // Run prompt
     await prompt.ask('after');
+
+    logger.whitespace();
   }
 
   end = async (): Promise<void> => {
-    return;
+    const logger = new Logger();
+    const projectName = cliMgr.getProjectName();
+    const projectPath = path.resolve(projectName);
+    const styledProjectName = color.yellow().bold(projectName);
+    const styledRepoName = color.dim(`(${cliMgr.getBoilerplate()})`);
+
+    function formatText(cmd: string, desc: string): string {
+      return `  ${cmd.padEnd(17)} ${color.dim(desc)}`;
+    }
+
+    logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}\n`);
+    logger.msg(`${color.bold().underline('Quickstart')}\n`);
+
+    /* eslint-disable no-console */
+    console.log(`  cd ${projectName}`);
+
+    for (const str of this.instructions.quickstart) {
+      console.log(`  ${str}`);
+    }
+
+    logger.whitespace();
+
+    logger.msg(`${color.bold().underline('All commands')}\n`);
+
+    for (const str of this.instructions.allCommands) {
+      console.log(formatText(str.cmd, str.desc));
+    }
+    /* eslint-enable */
   }
 
 
@@ -115,4 +146,22 @@ export default class CRPApp {
 
     return stepList;
   }
+
+  private instructions = {
+    quickstart: ['npm start'],
+    allCommands: [
+      {
+        cmd: 'npm start',
+        desc: 'Start your development server',
+      },
+      {
+        cmd: 'npm run build',
+        desc: 'Build your website for production',
+      },
+      {
+        cmd: 'npm run server',
+        desc: 'Start your production server',
+      },
+    ],
+  };
 }
