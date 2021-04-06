@@ -4,7 +4,7 @@ import cliMgr from 'core/CLIMgr';
 
 @Step({
   name: 'native-scripts',
-  after: 'clone',
+  after: 'update-package',
   spinner: {
     emoji: '🔤',
     message: {

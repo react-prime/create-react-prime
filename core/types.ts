@@ -77,3 +77,5 @@ export type QuestionWhen = 'before' | 'after';
 export type QuestionsObj<T> = {
   [key in QuestionWhen]: T;
 }
+
+export type Json = string | number | boolean | { [key: string]: Json } | Json[] | null;

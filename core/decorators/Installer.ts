@@ -2,7 +2,7 @@ import * as i from 'types';
 
 import StepList from 'core/StepList';
 
-import { CloneStep, NpmInstallStep } from 'modules/defaults/steps';
+import { CloneStep, NpmInstallStep, NpmPackageUpdateStep } from 'modules/defaults/steps';
 
 
 function Installer(options: i.InstallerOptions): <T extends i.Newable>(constructor: T) => T {
@@ -11,6 +11,7 @@ function Installer(options: i.InstallerOptions): <T extends i.Newable>(construct
 
   const defaultSteps = [
     new CloneStep(),
+    new NpmPackageUpdateStep(),
     new NpmInstallStep(),
   ] as i.Step[];
   const customSteps = steps?.map((Step) => new Step() as i.Step);
