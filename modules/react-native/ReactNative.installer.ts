@@ -1,5 +1,6 @@
 import Installer from 'core/decorators/Installer';
 import cliMgr from 'core/CLIMgr';
+import Logger from 'core/Logger';
 
 import ScriptsStep from './steps/scriptsStep';
 import TestQuestion from './questions/TestQuestion';
@@ -12,16 +13,19 @@ import TestQuestion from './questions/TestQuestion';
   steps: [ScriptsStep],
 })
 export default class ReactNativeInstaller {
-  beforeInstall() {
-    // const tempProjectName = cliMgr.getProjectName();
+  beforeInstall(): void {
+    const tempProjectName = cliMgr.getProjectName();
 
+    // Remove non-alphanumeric characters
     cliMgr.setProjectName(
       cliMgr.getProjectName().replace(/\W/g, ''),
     );
 
-    // if (tempProjectName !== cliMgr.getProjectName()) {
-    // eslint-disable-next-line max-len
-    // this.logger.warning(`Project name has been renamed to '${this.cliMgr.projectName}'.\nRead more: https://github.com/facebook/react-native/issues/213.\n`);
-    // }
+    if (tempProjectName !== cliMgr.getProjectName()) {
+      const logger = new Logger();
+
+      // eslint-disable-next-line max-len
+      logger.warning(`Project name has been renamed to '${cliMgr.getProjectName()}'.\nRead more: https://github.com/facebook/react-native/issues/213.\n`);
+    }
   }
 }
