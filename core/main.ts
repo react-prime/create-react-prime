@@ -8,6 +8,7 @@ import cliMgr from 'core/CLIMgr';
 import Module from 'modules/Module';
 import BoilerplateQuestion from 'modules/defaults/questions/BoilerplateQuestion';
 import ProjectNameQuestion from 'modules/defaults/questions/ProjectNameQuestion';
+import OpenEditorQuestion from 'modules/defaults/questions/OpenEditorQuestion';
 
 
 async function bootstrap() {
@@ -28,7 +29,9 @@ async function bootstrap() {
     ProjectNameQuestion,
   ] as unknown as i.Newable<i.Question>[]; // Typing issue with decorators
 
-  const afterInstallQuestions = [] as unknown as i.Newable<i.Question>[]; // Typing issue with decorators
+  const afterInstallQuestions = [
+    OpenEditorQuestion,
+  ] as unknown as i.Newable<i.Question>[]; // Typing issue with decorators
 
   const prompt = new Prompt({
     before: beforeInstallQuestions,
