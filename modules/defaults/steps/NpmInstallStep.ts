@@ -1,6 +1,6 @@
-import * as i from 'types';
-
 import Step from 'core/decorators/Step';
+import Util from 'core/util';
+import cliMgr from 'core/CLIMgr';
 
 
 @Step({
@@ -14,7 +14,8 @@ import Step from 'core/decorators/Step';
   },
 })
 export class NpmInstallStep {
-  on(): void {
-    return;
+  async on(): Promise<void> {
+    const util = new Util();
+    await util.asyncExec(`npm --prefix ${cliMgr.getProjectName()} install`);
   }
 }
