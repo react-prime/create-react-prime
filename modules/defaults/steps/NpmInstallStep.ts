@@ -14,7 +14,7 @@ import Step from 'core/decorators/Step';
   },
 })
 export class NpmInstallStep {
-  on(options: i.StepOptions): void {
+  on(): void {
     return;
   }
 }

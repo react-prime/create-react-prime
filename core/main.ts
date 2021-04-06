@@ -1,12 +1,14 @@
 import * as i from 'types';
+import { existsSync } from 'fs';
 import color from 'kleur';
 
+import { ERROR_TEXT } from 'core/constants';
 import Logger from 'core/Logger';
 import Prompt from 'core/Prompt';
 import cliMgr from 'core/CLIMgr';
+import MainPrompt from 'core/MainPrompt';
 
 import Module from 'modules/Module';
-import MainPrompt from './MainPrompt';
 
 
 async function bootstrap() {
@@ -42,6 +44,12 @@ async function bootstrap() {
 
       try {
         installer.beforeInstall?.();
+
+        // Check if folder exists
+        if (existsSync(cliMgr.getProjectName())) {
+          logger.error(ERROR_TEXT.DirectoryExists, cliMgr.getProjectName());
+        }
+
         await installer.steps.execute();
         installer.afterInstall?.();
       } catch (err) {

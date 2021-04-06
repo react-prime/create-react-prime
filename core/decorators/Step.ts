@@ -11,7 +11,7 @@ function Step(options: i.StepOptions) {
       name = options.name;
       after = options.after;
 
-      async on() {
+      async on(args: i.InstallStepArgs) {
         const logger = new Logger();
         const { emoji, message } = options.spinner;
 
@@ -21,7 +21,7 @@ function Step(options: i.StepOptions) {
         spinner.start();
 
         try {
-          await super.on(options);
+          await super.on(args);
           spinner.succeed(`${emoji}  ${message.success()}`);
         } catch (err) {
           spinner.fail();
@@ -33,7 +33,7 @@ function Step(options: i.StepOptions) {
 }
 
 interface StepConstructor {
-  on(options: i.StepOptions): void | Promise<void>;
+  on(args: i.InstallStepArgs): void | Promise<void>;
 }
 
 export default Step;

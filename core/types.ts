@@ -22,7 +22,7 @@ export interface Question {
 export interface Step {
   name: string;
   after: string;
-  on: (options: i.StepOptions) => void | Promise<void>;
+  on: (args: i.InstallStepArgs) => void | Promise<void>;
   spinner: i.SpinnerOptions;
 }
 
@@ -36,10 +36,12 @@ export interface Installer {
 
 export interface InstallerOptions {
   name: string;
-  repositoryUrl: string;
+  cloneUrl: string;
   steps?: i.Newable[];
   questions?: i.Newable[];
 }
+
+export type InstallStepArgs = Omit<InstallerOptions, 'steps' | 'questions'>;
 
 // eslint-disable-next-line max-len
 type QuestionOptionsBase = InputQuestionOptions & {

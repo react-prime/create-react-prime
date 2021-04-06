@@ -1,5 +1,6 @@
 import * as i from 'types';
 
+import Util from 'core/util';
 import Step from 'core/decorators/Step';
 import cliMgr from 'core/CLIMgr';
 
@@ -15,9 +16,8 @@ import cliMgr from 'core/CLIMgr';
   },
 })
 export class CloneStep {
-  async on(options: i.StepOptions): Promise<void> {
-    return new Promise((res) => setTimeout(() => {
-      res();
-    }, 2000));
+  async on(options: i.InstallStepArgs): Promise<void> {
+    const util = new Util();
+    await util.asyncExec(`git clone ${options.cloneUrl} ${cliMgr.getProjectName()}`);
   }
 }

@@ -15,7 +15,7 @@ function Installer(options: i.InstallerOptions): <T extends i.Newable>(construct
   ] as i.Step[];
   const customSteps = steps?.map((Step) => new Step() as i.Step);
 
-  const stepList = new StepList();
+  const stepList = new StepList(opts);
   for (const step of defaultSteps) {
     stepList.push(step);
 

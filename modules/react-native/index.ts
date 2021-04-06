@@ -7,7 +7,7 @@ import TestQuestion from './questions/TestQuestion';
 
 @Installer({
   name: 'react-native',
-  repositoryUrl: '',
+  cloneUrl: 'https://github.com/react-prime/react-prime-native.git',
   questions: [TestQuestion],
   steps: [ScriptsStep],
 })

@@ -15,8 +15,7 @@ export default class Logger {
   }
 
   error(...reason: i.AnyArr): void {
-    const err = reason[0] ? reason : 'unknown error. Please try again.';
-    this.log(`${color.red('ERR!')} Installation aborted:`, err);
+    this.log(`${color.red('ERR!')} Installation aborted:`, ...reason);
     process.exit(1);
   }
 

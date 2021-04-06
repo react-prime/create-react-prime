@@ -1,2 +1,2 @@
-export * from './CloneStep';
-export * from './NpmInstallStep';
+export { CloneStep } from './CloneStep';
+export { NpmInstallStep } from './NpmInstallStep';
