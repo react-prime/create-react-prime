@@ -235,12 +235,20 @@ Questions can be asked before or after the installation.
 - `OS: Array<'mac' | 'windows' | 'linux'>`: Specify on what operating system this question should be asked. If not specified, the question will be asked on all systems.
 
 ### Useful Utilities
-To help you achieve what you want, there are some utility classes you can use
+To help you achieve whatever you want, there are some utility classes you can use.
 
 #### cliMgr
-`import cliMgr from 'core/CLIMgr';`
+```ts
+import cliMgr from 'core/CLIMgr';
 
-The cliMgr is a singleton that saves the data passed to the CLI by the user. You can get data such as the boilerplate name or the project name from this utility class. All data given as answers to questions are also saved here.
+function fn() {
+  // You can directly access its methods and properties
+  // without creating a new instance
+  const projectName = cliMgr.getProjectName();
+}
+```
+
+The cliMgr is a singleton class that stores the data passed to the CLI by the user. You can get data such as the boilerplate name or the project name from this utility class. All data given as answers to questions are also saved here.
 
 #### Util
 ```ts
