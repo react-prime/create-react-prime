@@ -14,7 +14,7 @@ import Util from 'core/util';
   afterInstall: true,
   OS: ['mac'],
 })
-class OpenEditorQuestion {
+export class OpenEditorQuestion {
   when = (): boolean => {
     return this.choices().length > 1;
   }
@@ -99,5 +99,3 @@ interface EditorSearchItem {
   search: string;
   path?: string;
 }
-
-export default OpenEditorQuestion;

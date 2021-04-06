@@ -12,7 +12,7 @@ import Validate from 'core/Validate';
   message: 'Project Name',
   beforeInstall: true,
 })
-class ProjectNameQuestion {
+export class ProjectNameQuestion {
   when = (): boolean => {
     return cliMgr.getProjectName() ? false : true;
   }
@@ -33,5 +33,3 @@ class ProjectNameQuestion {
     cliMgr.setProjectName(answers.name);
   }
 }
-
-export default ProjectNameQuestion;

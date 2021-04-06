@@ -6,9 +6,7 @@ import Prompt from 'core/Prompt';
 import cliMgr from 'core/CLIMgr';
 
 import Module from 'modules/Module';
-import BoilerplateQuestion from 'modules/defaults/questions/BoilerplateQuestion';
-import ProjectNameQuestion from 'modules/defaults/questions/ProjectNameQuestion';
-import OpenEditorQuestion from 'modules/defaults/questions/OpenEditorQuestion';
+import MainPrompt from './MainPrompt';
 
 
 async function bootstrap() {
@@ -24,19 +22,7 @@ async function bootstrap() {
 
 
   // Run prompt
-  const beforeInstallQuestions = [
-    BoilerplateQuestion,
-    ProjectNameQuestion,
-  ] as unknown as i.Newable<i.Question>[]; // Typing issue with decorators
-
-  const afterInstallQuestions = [
-    OpenEditorQuestion,
-  ] as unknown as i.Newable<i.Question>[]; // Typing issue with decorators
-
-  const prompt = new Prompt({
-    before: beforeInstallQuestions,
-    after: afterInstallQuestions,
-  });
+  const prompt = new MainPrompt();
   await prompt.ask('before');
 
 
@@ -62,6 +48,8 @@ async function bootstrap() {
         logger.error(err);
       }
 
+      logger.whitespace();
+
       if (installer.questions) {
         const installerPrompt = new Prompt(installer.questions);
         await installerPrompt.ask('after');
@@ -69,6 +57,8 @@ async function bootstrap() {
     }
   }
 
+
+  // Run prompt
   await prompt.ask('after');
 
 

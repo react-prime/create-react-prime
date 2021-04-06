@@ -12,7 +12,7 @@ import cliMgr from 'core/CLIMgr';
   default: '',
   beforeInstall: true,
 })
-class BoilerplateQuestion {
+export class BoilerplateQuestion {
   when = (): boolean => {
     return cliMgr.getBoilerplate() ? false : true;
   }
@@ -21,5 +21,3 @@ class BoilerplateQuestion {
     cliMgr.setBoilerplate(answers.boilerplate);
   }
 }
-
-export default BoilerplateQuestion;
