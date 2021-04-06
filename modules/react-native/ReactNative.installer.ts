@@ -3,13 +3,11 @@ import cliMgr from 'core/CLIMgr';
 import Logger from 'core/Logger';
 
 import ScriptsStep from './steps/scriptsStep';
-import TestQuestion from './questions/TestQuestion';
 
 
 @Installer({
   name: 'react-native',
   cloneUrl: 'https://github.com/react-prime/react-prime-native.git',
-  questions: [TestQuestion],
   steps: [ScriptsStep],
 })
 export default class ReactNativeInstaller {
