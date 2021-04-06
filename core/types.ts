@@ -40,8 +40,6 @@ export interface InstallerOptions {
   questions?: i.Newable[];
 }
 
-export type StepOptions = Omit<i.InstallerOptions, 'steps' | 'questions'>;
-
 // eslint-disable-next-line max-len
 type QuestionOptionsBase = InputQuestionOptions & {
   beforeInstall?: boolean;
@@ -56,6 +54,12 @@ export type QuestionOptions = QuestionOptionsBase & (
   | ListQuestion
   | CheckboxQuestion
 )
+
+export interface StepOptions {
+  name: string;
+  after?: string;
+  spinner: i.SpinnerOptions;
+}
 
 export interface SpinnerOptions {
   emoji: string;

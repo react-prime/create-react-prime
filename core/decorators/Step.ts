@@ -5,8 +5,8 @@ import Logger from 'core/Logger';
 import { LOG_PREFIX } from 'core/constants';
 
 
-function Step(options: StepOptions) {
-  return function<T extends i.Newable> (constructor: T): T {
+function Step(options: i.StepOptions) {
+  return function<T extends i.Newable<StepConstructor>> (constructor: T): T {
     return class extends constructor {
       name = options.name;
       after = options.after;
@@ -16,11 +16,12 @@ function Step(options: StepOptions) {
         const { emoji, message } = options.spinner;
 
         const spinner = ora(`${emoji}  ${message.pending()}`);
+        spinner.color = 'yellow';
         spinner.prefixText = LOG_PREFIX;
         spinner.start();
 
         try {
-          await super.on();
+          await super.on(options);
           spinner.succeed(`${emoji}  ${message.success()}`);
         } catch (err) {
           spinner.fail();
@@ -31,10 +32,8 @@ function Step(options: StepOptions) {
   };
 }
 
-interface StepOptions {
-  name: string;
-  after?: string;
-  spinner: i.SpinnerOptions;
+interface StepConstructor {
+  on(options: i.StepOptions): void | Promise<void>;
 }
 
 export default Step;

@@ -1,6 +1,7 @@
 import * as i from 'types';
 
 import StepList from 'core/StepList';
+
 import { CloneStep, NpmInstallStep } from 'modules/defaults/steps';
 
 
@@ -14,7 +15,7 @@ function Installer(options: i.InstallerOptions): <T extends i.Newable>(construct
   ] as i.Step[];
   const customSteps = steps?.map((Step) => new Step() as i.Step);
 
-  const stepList = new StepList(opts);
+  const stepList = new StepList();
   for (const step of defaultSteps) {
     stepList.push(step);
 

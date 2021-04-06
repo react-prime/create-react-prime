@@ -6,20 +6,20 @@ import ProjectNameQuestion from 'modules/defaults/questions/ProjectNameQuestion'
 
 
 class Prompt {
-  private questions: any[] = [];
+  private questions: i.Question[] = [];
 
   constructor(when: 'pre' | 'post') {
     if (when === 'pre') {
       this.questions = [
         new BoilerplateQuestion(),
         new ProjectNameQuestion(),
-      ];
+      ] as unknown as i.Question[]; // Typing issue with decorators
     }
   }
 
   async ask(): Promise<Answers> {
     let answers: Answers = {};
-    const questions = this.questions as i.Question[];
+    const questions = this.questions;
 
     // Ask questions to user
     for await (const question of questions) {
