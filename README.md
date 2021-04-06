@@ -95,9 +95,9 @@ export default class ModuleNameInstaller {
 #### Module Hooks
 ```ts
 /** Executed before the installation steps */
-beforeInstall(): void | Promise<void>
+beforeInstall(): void | Promise<void> {}
 /** Executed after the installation steps */
-afterInstall(): void | Promise<void>
+afterInstall(): void | Promise<void> {}
 ```
 
 ### Installation Steps
@@ -256,27 +256,45 @@ The Util class has methods that are by default not asynchronous. Currently it ha
 
 ```ts
 // child_progress.exec
-asyncExec(): Promise<void>
+asyncExec(): Promise<void> {}
 // fs.writeFile
-asyncWriteFile(): Promise<void>
+asyncWriteFile(): Promise<void> {}
 ```
 
 See the Node.JS documentation for how to use these functions.
 
 #### Logger
+```ts
+import Logger from 'core/Logger';
+
+function fn() {
+  const logger = new Logger();
+  ...
+}
+```
+
 Logging utility class.
 
 ```ts
 // Add a simple message with CRP prefix to the console
-msg(...str: i.AnyArr): void
+msg(...str: i.AnyArr): void {}
 
 // Add a message with a warning icon and CRP prefix to the console
-warning(...reason: i.AnyArr): void
+warning(...reason: i.AnyArr): void {}
 
 // Add a message with an error icon and CRP prefix to the console
 // This will also terminate the installation process
-error(...reason: i.AnyArr): void
+error(...reason: i.AnyArr): void {}
 
 // Add a white space to the console
-whitespace(): void
+whitespace(): void {}
+```
+
+#### Constants
+See `core/constants.ts` for all constant values to use in this project.
+
+The `ERROR_TEXT` strings use placeholder values. You can use them like so:
+
+```ts
+logger.error(ERROR_TEXT.DirectoryExists, value, /**...add more data if there are more placeholders */);
 ```
