@@ -2,7 +2,7 @@ import * as i from 'types';
 import { Answers } from 'inquirer';
 
 
-function Question(options: i.QuestionOptions) {
+export default function Question(options: i.QuestionOptions) {
   return function<T extends i.Newable<QuestionClass>> (constructor: T): T {
     const question = new constructor();
 
@@ -48,5 +48,3 @@ interface QuestionClass {
 }
 
 type QuestionClassProps = keyof QuestionClass | 'constructor';
-
-export default Question;

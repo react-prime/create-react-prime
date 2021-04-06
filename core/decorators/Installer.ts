@@ -1,7 +1,7 @@
 import * as i from 'types';
 
 
-function Installer(options: i.InstallerOptions): <T extends i.Newable>(constructor: T) => T {
+export default function Installer(options: i.InstallerOptions): <T extends i.Newable>(constructor: T) => T {
   const { questions, steps, ...opts } = options;
 
 
@@ -31,5 +31,3 @@ function Installer(options: i.InstallerOptions): <T extends i.Newable>(construct
     };
   };
 }
-
-export default Installer;

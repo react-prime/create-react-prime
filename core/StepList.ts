@@ -1,7 +1,7 @@
 import * as i from 'types';
 
 
-class StepList extends Array<i.Step> {
+export default class StepList extends Array<i.Step> {
   constructor(
     private args: i.InstallStepArgs,
   ) {
@@ -14,5 +14,3 @@ class StepList extends Array<i.Step> {
     }
   }
 }
-
-export default StepList;

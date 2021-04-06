@@ -2,7 +2,7 @@ import * as i from 'types';
 import { Answers, prompt } from 'inquirer';
 
 
-class Prompt {
+export default class Prompt {
   private questions: i.QuestionsObj<i.Question[]> = {
     before: [],
     after: [],
@@ -46,5 +46,3 @@ class Prompt {
     return answers;
   }
 }
-
-export default Prompt;

@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import os from 'os';
 
 
-class Validate {
+export default class Validate {
   folderName(name?: string): boolean {
     if (!name) {
       return false;
@@ -33,5 +33,3 @@ class Validate {
     return existsSync(path);
   }
 }
-
-export default Validate;

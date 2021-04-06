@@ -5,13 +5,7 @@ import Validate from 'core/Validate';
 import Logger from 'core/Logger';
 
 
-interface CLI extends commander.Command {
-  opts(): {
-    boilerplate: string;
-  };
-}
-
-function bootstrapCLI(): CLI {
+export default function bootstrapCLI(): CLI {
   const cli = new Command() as CLI;
 
   cli.option(
@@ -35,4 +29,8 @@ function bootstrapCLI(): CLI {
   return cli;
 }
 
-export default bootstrapCLI;
+interface CLI extends commander.Command {
+  opts(): {
+    boilerplate: string;
+  };
+}

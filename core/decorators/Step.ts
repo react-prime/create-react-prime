@@ -5,7 +5,7 @@ import Logger from 'core/Logger';
 import { LOG_PREFIX } from 'core/constants';
 
 
-function Step(options: i.StepOptions) {
+export default function Step(options: i.StepOptions) {
   return function<T extends i.Newable<StepConstructor>> (constructor: T): T {
     return class extends constructor {
       name = options.name;
@@ -35,5 +35,3 @@ function Step(options: i.StepOptions) {
 interface StepConstructor {
   on(args: i.InstallStepArgs): void | Promise<void>;
 }
-
-export default Step;

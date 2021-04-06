@@ -3,7 +3,7 @@ import * as i from 'types';
 import Prompt from 'core/Prompt';
 
 
-class MainPrompt extends Prompt {
+export default class MainPrompt extends Prompt {
   constructor(questions: i.Newable[]) {
     const beforeInstallQuestions = [] as i.Newable<i.Question>[];
     const afterInstallQuestions = [] as i.Newable<i.Question>[];
@@ -26,5 +26,3 @@ class MainPrompt extends Prompt {
     });
   }
 }
-
-export default MainPrompt;
