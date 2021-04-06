@@ -8,11 +8,15 @@
     "build": "rm -rf dist/ && rollup -c",
     "start": "node dist/main.js",
     "dev": "rm -rf testingname/ testing-name/ && npm run build && node dist/main.js testing-name",
-    "lint": "eslint --ext .ts --ext .tsx src/",
+    "lint": "eslint --ext .ts --ext .tsx modules/",
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "npm t -- --watch",
-    "test:full": "npm run lint; npm run typecheck; npm t"
+    "test:full": "npm run lint; npm run typecheck; npm t",
+    "prepublishOnly": "npm run build",
+    "pub:patch": "npm version patch; npm publish",
+    "pub:minor": "npm version minor; npm publish",
+    "pub:major": "npm version major; npm publish"
   },
   "main": "dist/main.js",
   "bin": {
