@@ -285,14 +285,14 @@ Logging utility class.
 
 ```ts
 // Add a simple message with CRP prefix to the console
-msg(...str: i.AnyArr): void {}
+msg(...str: any[]): void {}
 
 // Add a message with a warning icon and CRP prefix to the console
-warning(...reason: i.AnyArr): void {}
+warning(...reason: any[]): void {}
 
 // Add a message with an error icon and CRP prefix to the console
 // This will also terminate the installation process
-error(...reason: i.AnyArr): void {}
+error(...reason: any[]): void {}
 
 // Add a white space to the console
 whitespace(): void {}
