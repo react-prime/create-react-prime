@@ -19,10 +19,6 @@ export default class Logger {
     process.exit(1);
   }
 
-  debug(...str: i.AnyArr): void {
-    this.log(color.red('DBG'), ...str);
-  }
-
   whitespace(): void {
     console.log();
   }

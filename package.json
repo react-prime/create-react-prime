@@ -13,7 +13,7 @@
     "test": "jest",
     "test:watch": "npm t -- --watch",
     "test:full": "npm run lint; npm run typecheck; npm t",
-    "prepublishOnly": "npm run build",
+    "prepublishOnly": "npm run test:full && npm run build",
     "pub:patch": "npm version patch; npm publish",
     "pub:minor": "npm version minor; npm publish",
     "pub:major": "npm version major; npm publish"
@@ -56,7 +56,7 @@
     "jest": "26.6.3",
     "rollup-plugin-typescript-paths": "1.2.2",
     "ts-jest": "26.5.4",
-    "typescript": "4.3.0-beta",
+    "typescript": "4.2.3",
     "typescript-eslint-parser": "22.0.0"
   }
 }
