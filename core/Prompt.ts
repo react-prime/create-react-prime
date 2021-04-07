@@ -17,10 +17,9 @@ export default class Prompt {
 
   async ask(when: i.QuestionWhen): Promise<Answers> {
     let answers: Answers = {};
-    const questions = this.questions;
 
     // Ask questions to user
-    for await (const question of questions[when]) {
+    for await (const question of this.questions[when]) {
       // Look for methods, call them with current answers and set the return value
       let prop: keyof i.QuestionOptions;
       for (prop in question.options) {
@@ -31,7 +30,7 @@ export default class Prompt {
       }
 
       // Ask question
-      const answer: Answers = await prompt(question.options);
+      const answer: Answers = await prompt([question.options]);
 
       // Add answer to answers
       answers = {
