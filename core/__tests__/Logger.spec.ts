@@ -20,9 +20,11 @@ function mockConsole(): () => void {
 describe('Logger', () => {
   const restoreConsole = mockConsole();
   const logSpy = jest.spyOn(console, 'log');
+  let logger: Logger;
 
   beforeEach(() => {
     logSpy.mockClear();
+    logger = new Logger();
   });
 
   afterAll(() => {
@@ -33,7 +35,7 @@ describe('Logger', () => {
     const prefix = [LOG_PREFIX, '⚡️'];
 
     it('Logs text with prefix', () => {
-      const logger = new Logger();
+      logger = new Logger();
 
       logger.msg('test');
       logger.msg('test', 'test2');
@@ -52,7 +54,7 @@ describe('Logger', () => {
     const warningPrefix = [LOG_PREFIX, color.yellow('WRN')];
 
     it('Logs text with a warning prefix', () => {
-      const logger = new Logger();
+      logger = new Logger();
 
       logger.warning('test');
       logger.warning('test', 'test2');
@@ -72,7 +74,7 @@ describe('Logger', () => {
     const mockProcessExit = jest.spyOn(process, 'exit').mockImplementation();
 
     it('Logs error text with an error prefix and exits with code 1', () => {
-      const logger = new Logger();
+      logger = new Logger();
 
       logger.error('test');
       logger.error('test', 'test2');
@@ -91,7 +93,7 @@ describe('Logger', () => {
 
   describe('whitespace', () => {
     it('Logs whitespace', () => {
-      const logger = new Logger();
+      logger = new Logger();
 
       logger.whitespace();
 
