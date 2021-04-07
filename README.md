@@ -263,7 +263,7 @@ function fn() {
 The Util class has methods that are by default not asynchronous. Currently it has:
 
 ```ts
-// child_progress.exec
+// child_process.exec
 asyncExec(): Promise<void> {}
 // fs.writeFile
 asyncWriteFile(): Promise<void> {}
