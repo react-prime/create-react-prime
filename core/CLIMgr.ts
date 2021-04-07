@@ -1,10 +1,29 @@
 import bootstrapCLI from './cli';
 
-import { ARG } from 'core/constants';
+import { ARG, ERROR_TEXT } from 'core/constants';
+import Validate from 'core/Validate';
+import Logger from 'core/Logger';
 
 
 // Create CLI ASAP in runtime
-const cliAPI = bootstrapCLI();
+const cliAPI = (() => {
+  const cli = bootstrapCLI();
+
+  // Parse user input
+  cli.parse(process.argv);
+
+  // Validate project name
+  if (cli.args[ARG.ProjectName] != null) {
+    const validate = new Validate();
+    const logger = new Logger();
+
+    if (!validate.folderName(cli.args[ARG.ProjectName])) {
+      logger.error(ERROR_TEXT.ProjectName);
+    }
+  }
+
+  return cli;
+})();
 
 class CLIMgr {
   private cli = cliAPI;
