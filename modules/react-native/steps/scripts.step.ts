@@ -3,7 +3,7 @@ import cp from 'child_process';
 
 import Step from 'core/decorators/Step';
 import cliMgr from 'core/CLIMgr';
-import Util from 'core/util';
+import Util from 'core/Util';
 import Logger from 'core/Logger';
 
 

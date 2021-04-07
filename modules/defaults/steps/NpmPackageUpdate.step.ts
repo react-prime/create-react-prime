@@ -2,7 +2,7 @@ import * as i from 'types';
 import path from 'path';
 import { readFileSync } from 'fs';
 
-import Util from 'core/util';
+import Util from 'core/Util';
 import { ERROR_TEXT } from 'core/constants';
 import Step from 'core/decorators/Step';
 import cliMgr from 'core/CLIMgr';

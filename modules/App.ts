@@ -3,7 +3,7 @@ import CRPApp from 'core/CRPApp';
 import { CleanupStep, CloneStep, NpmInstallStep, NpmPackageUpdateStep } from './defaults/steps';
 import { BoilerplateQuestion, OpenEditorQuestion, ProjectNameQuestion } from './defaults/questions';
 import ReactSPAInstaller from './react-spa/ReactSPA.installer';
-import ReactSSRInstaller from './react-ssr/reactSSR.installer';
+import ReactSSRInstaller from './react-ssr/ReactSSR.installer';
 import ReactNativeInstaller from './react-native/ReactNative.installer';
 
 

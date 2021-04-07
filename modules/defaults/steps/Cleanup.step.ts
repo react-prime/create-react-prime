@@ -1,4 +1,4 @@
-import Util from 'core/util';
+import Util from 'core/Util';
 import Step from 'core/decorators/Step';
 import cliMgr from 'core/CLIMgr';
 

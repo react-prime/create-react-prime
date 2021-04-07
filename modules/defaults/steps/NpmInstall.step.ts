@@ -1,5 +1,5 @@
 import Step from 'core/decorators/Step';
-import Util from 'core/util';
+import Util from 'core/Util';
 import cliMgr from 'core/CLIMgr';
 
 

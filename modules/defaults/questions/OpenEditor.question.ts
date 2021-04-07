@@ -4,7 +4,7 @@ import { ListChoiceOptions } from 'inquirer';
 
 import Question from 'core/decorators/Question';
 import cliMgr from 'core/CLIMgr';
-import Util from 'core/util';
+import Util from 'core/Util';
 
 
 @Question({
