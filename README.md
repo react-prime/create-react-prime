@@ -116,7 +116,7 @@ Every installation has multiple steps that the app will execute in a given order
 })
 ```
 
-### Installation Step Template
+#### Installation Step Template
 
 ```ts
 import * as i from 'types';
@@ -175,7 +175,7 @@ This CLI tool will ask the user questions if necessary. There are a couple defau
 })
 ```
 
-### Question Template
+#### Question Template
 
 ```ts
 import { Answers } from 'Inquirer';
