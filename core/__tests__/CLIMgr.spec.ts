@@ -2,6 +2,7 @@ import cliMgr, { cliAPI__DO_NOT_USE__ } from 'core/CLIMgr';
 
 
 describe('CLIMgr', () => {
+  // Simulate user input (node dist/main.js doesnt actually do anything here)
   function parse(...str: string[]) {
     cliAPI__DO_NOT_USE__.parse(['node', 'dist/main.js', ...str]);
   }

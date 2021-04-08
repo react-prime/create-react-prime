@@ -3,16 +3,12 @@ import { ARG } from 'core/constants';
 
 
 describe('cli', () => {
-  const logSpy = jest.spyOn(console, 'log');
   const cli = bootstrapCLI();
 
+  // Simulate user input (node dist/main.js doesnt actually do anything here)
   function parse(...str: string[]) {
     cli.parse(['node', 'dist/main.js', ...str]);
   }
-
-  beforeEach(() => {
-    logSpy.mockClear();
-  });
 
   it('Reads project name', () => {
     const name = 'projectname';

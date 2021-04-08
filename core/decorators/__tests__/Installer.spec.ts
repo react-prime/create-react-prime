@@ -1,4 +1,5 @@
 import * as i from 'types';
+
 import Installer from 'core/decorators/Installer';
 import Step from 'core/decorators/Step';
 import Question from 'core/decorators/Question';

@@ -4,6 +4,7 @@ import fs from 'fs';
 
 import Validate from 'core/Validate';
 
+
 jest.mock('os');
 jest.mock('fs');
 
