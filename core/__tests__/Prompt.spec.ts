@@ -1,5 +1,5 @@
-/* eslint-disable no-console */
 import * as i from 'types';
+import os from 'os';
 // @ts-ignore
 import { expectPrompts } from 'inquirer';
 
@@ -7,7 +7,13 @@ import Question from 'core/decorators/Question';
 import Prompt from 'core/Prompt';
 
 
+jest.mock('os');
+
+// Type cast as mocked
+const osMock = os as jest.Mocked<typeof os>;
+
 // Supress console.log output from tests
+/* eslint-disable no-console */
 const orgLog = console.log;
 
 function mockConsole(): () => void {
@@ -17,6 +23,7 @@ function mockConsole(): () => void {
     console.log = orgLog;
   };
 }
+/* eslint-enable */
 
 
 describe('Prompt', () => {
@@ -35,6 +42,7 @@ describe('Prompt', () => {
         { name: 'react-spa', value: 'react-spa' },
         { name: 'react-ssr', value: 'react-ssr' },
       ],
+      beforeInstall: true,
     })
     class TestQuestion1 {
       answer = () => {
@@ -45,17 +53,16 @@ describe('Prompt', () => {
     @Question({
       name: 'projectname',
       type: 'input',
+      afterInstall: true,
     })
     class TestQuestion2 {
       answer = () => {
+        // eslint-disable-next-line no-console
         console.log(1);
       }
     }
 
-    prompt = new Prompt({
-      before: [TestQuestion1 as i.Newable],
-      after: [TestQuestion2 as i.Newable],
-    });
+    prompt = new Prompt([TestQuestion1 as i.Newable, TestQuestion2 as i.Newable]);
   });
 
   afterAll(() => {
@@ -95,5 +102,65 @@ describe('Prompt', () => {
 
     // I guess the mock also executes the answer method???
     expect(logSpy.mock.calls).toEqual([[1], [1]]);
+  });
+
+  it('Excludes a question if current system does not equal question OS', async () => {
+    expectPrompts([{
+      input: 'os',
+    }]);
+
+    const mock = jest.fn();
+    mock.mockReturnValue('Linux');
+
+    const orgTypeFn = osMock.type;
+    osMock.type = mock;
+
+    @Question({
+      name: 'os',
+      type: 'input',
+      OS: ['mac'],
+      beforeInstall: true,
+    })
+    class TestQuestion {
+      answer = () => void {}
+    }
+
+    prompt = new Prompt([TestQuestion as i.Newable]);
+    const answers = await prompt.ask('before');
+
+    expect(answers).toEqual({});
+
+    osMock.type = orgTypeFn;
+  });
+
+  it('Includes a question if current system does equal question OS', async () => {
+    expectPrompts([{
+      input: 'os',
+    }]);
+
+    const mock = jest.fn();
+    mock.mockReturnValue('Linux');
+
+    const orgTypeFn = osMock.type;
+    osMock.type = mock;
+
+    @Question({
+      name: 'os',
+      type: 'input',
+      OS: ['linux'],
+      beforeInstall: true,
+    })
+    class TestQuestion {
+      answer = () => void {}
+    }
+
+    prompt = new Prompt([TestQuestion as i.Newable]);
+    const answers = await prompt.ask('before');
+
+    expect(answers).toEqual({
+      os: 'os',
+    });
+
+    osMock.type = orgTypeFn;
   });
 });

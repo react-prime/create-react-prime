@@ -1,6 +1,8 @@
 import * as i from 'types';
 import { Answers, prompt } from 'inquirer';
 
+import Validate from './Validate';
+
 
 export default class Prompt {
   private questions: i.QuestionsObj<i.Question[]> = {
@@ -8,11 +10,24 @@ export default class Prompt {
     after: [],
   };
 
-  constructor(questions: i.QuestionsObj<i.Newable<i.Question>[]>) {
-    this.questions = {
-      before: questions.before.map((Q) => new Q()),
-      after: questions.after.map((Q) => new Q()),
-    };
+  constructor(questions: i.Newable<i.Question>[]) {
+    const validate = new Validate();
+
+    for (const Q of questions) {
+      const q = new Q();
+
+      // If no OS is given we continue
+      // or if OS is given, check if we find a match with current system
+      if (!q.options.OS || q.options.OS.some(validate.isOS)) {
+        if (q.options.beforeInstall) {
+          this.questions.before.push(q);
+        }
+
+        if (q.options.afterInstall) {
+          this.questions.after.push(q);
+        }
+      }
+    }
   }
 
   async ask(when: i.QuestionWhen): Promise<Answers> {

@@ -8,7 +8,6 @@ import Logger from 'core/Logger';
 import StepList from 'core/StepList';
 import Prompt from 'core/Prompt';
 import Validate from 'core/Validate';
-import MainPrompt from 'core/MainPrompt';
 
 
 export default class CRPApp {
@@ -24,7 +23,7 @@ export default class CRPApp {
 
 
     // Run prompt
-    const prompt = new MainPrompt(this.defaults.questions);
+    const prompt = new Prompt(this.defaults.questions);
     await prompt.ask('before');
 
 

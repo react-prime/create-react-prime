@@ -65,9 +65,7 @@ describe('decorators/Installer', () => {
 
   it('Decorates a class with the correct questions', () => {
     expect(installer.questions).toBeDefined();
-    expect(installer.questions?.before).toBeDefined();
-    expect(installer.questions?.after).toBeDefined();
-    expect(installer.questions?.before[0]).toEqual(TestQuestionBefore);
-    expect(installer.questions?.after[0]).toEqual(TestQuestionAfter);
+    expect(installer.questions![0]).toEqual(TestQuestionBefore);
+    expect(installer.questions![1]).toEqual(TestQuestionAfter);
   });
 });

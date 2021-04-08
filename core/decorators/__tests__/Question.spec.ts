@@ -9,6 +9,7 @@ describe('decorators/Question', () => {
     type: 'input',
     name: 'before',
     beforeInstall: true,
+    OS: ['mac'],
   })
   class TestQuestionBefore {
     answer = () => void {}
@@ -32,6 +33,7 @@ describe('decorators/Question', () => {
     expect(q.options.type).toBe('input');
     expect(q.options.name).toBe('before');
     expect(q.options.beforeInstall).toBe(true);
+    expect(q.options.OS).toEqual(['mac']);
 
     q = new TestQuestionAfter() as unknown as i.Question;
 
@@ -40,6 +42,7 @@ describe('decorators/Question', () => {
     expect(q.options.name).toBe('after');
     expect((q.options as ListQuestion).choices).toEqual(['1', '2']);
     expect(q.options.afterInstall).toBe(true);
+    expect(q.options.OS).toBeUndefined();
   });
 
   it('Adds any function method to the options', () => {

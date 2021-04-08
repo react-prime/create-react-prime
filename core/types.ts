@@ -27,7 +27,7 @@ export interface Step {
 export interface Installer {
   options: i.InstallStepArgs;
   steps: i.Newable[];
-  questions?: i.QuestionsObj<i.Newable<i.Question>[]>;
+  questions?: i.Newable<i.Question>[];
   beforeInstall?: () => void | Promise<void>;
   afterInstall?: () => void | Promise<void>;
 }
@@ -41,12 +41,14 @@ export interface InstallerOptions {
 
 export type InstallStepArgs = Omit<InstallerOptions, 'steps' | 'questions'>;
 
+export type OSNames = 'windows' | 'mac' | 'linux';
+
 // eslint-disable-next-line max-len
 type QuestionOptionsBase = InputQuestionOptions & {
   beforeInstall?: boolean;
   afterInstall?: boolean;
   after?: string;
-  OS?: ('windows' | 'mac' | 'linux')[];
+  OS?: i.OSNames[];
 }
 
 export type QuestionOptions = QuestionOptionsBase & (

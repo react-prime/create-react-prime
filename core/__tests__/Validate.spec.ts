@@ -4,8 +4,8 @@ import fs from 'fs';
 
 import Validate from 'core/Validate';
 
-jest.mock('fs');
 jest.mock('os');
+jest.mock('fs');
 
 // Type cast as mocked
 const osMock = os as jest.Mocked<typeof os>;
@@ -107,5 +107,25 @@ describe('Validate', () => {
     expect(validate.folderExists('name')).toBeTruthy();
 
     fsMock.existsSync = orgExistsFn;
+  });
+
+  it('Validates the current OS', () => {
+    const mock = jest.fn();
+    const orgTypeFn = osMock.type;
+    osMock.type = mock;
+
+    mock.mockReturnValue('Linux');
+    expect(validate.isOS('linux')).toBe(true);
+
+    mock.mockReturnValue('Darwin');
+    expect(validate.isOS('mac')).toBe(true);
+
+    mock.mockReturnValue('WINDOWS_NT');
+    expect(validate.isOS('windows')).toBe(true);
+
+    mock.mockReturnValue('WINDOWS_NT');
+    expect(validate.isOS('mac')).toBe(false);
+
+    osMock.type = orgTypeFn;
   });
 });

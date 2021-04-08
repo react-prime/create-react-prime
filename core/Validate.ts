@@ -1,3 +1,4 @@
+import * as i from 'types';
 import { existsSync } from 'fs';
 import os from 'os';
 
@@ -31,5 +32,14 @@ export default class Validate {
 
   folderExists(path: string): boolean {
     return existsSync(path);
+  }
+
+  isOS(system: i.OSNames): boolean {
+    switch (system) {
+      case 'windows': return os.type() === 'WINDOWS_NT';
+      case 'mac': return os.type() === 'Darwin';
+      case 'linux': return os.type() === 'Linux';
+      default: return false;
+    }
   }
 }
