@@ -10,6 +10,7 @@ class CLIMgr {
   private cli = cliAPI__DO_NOT_USE__;
   private projectName: string = this.cli.args[ARG.ProjectName];
   private boilerplate: string = this.cli.opts().boilerplate;
+  private boilerplateList: string[] = [];
 
   getProjectName = (): string => {
     return this.projectName || this.cli.args[ARG.ProjectName];
@@ -25,6 +26,14 @@ class CLIMgr {
 
   setBoilerplate = (boilerplate: string): void => {
     this.boilerplate = boilerplate;
+  }
+
+  getBoilerplateList = (): string[] => {
+    return this.boilerplateList;
+  }
+
+  setBoilerplateList = (list: string[]): void => {
+    this.boilerplateList = list;
   }
 }
 

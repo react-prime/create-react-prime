@@ -8,8 +8,8 @@ import cliMgr from 'core/CLIMgr';
   type: 'list',
   name: 'boilerplate',
   message: 'What boilerplate would you like to install?',
-  choices: ['react-spa', 'react-ssr', 'react-native'],
   default: '',
+  choices: cliMgr.getBoilerplateList,
   beforeInstall: true,
 })
 export class BoilerplateQuestion {

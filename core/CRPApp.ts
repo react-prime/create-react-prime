@@ -17,9 +17,12 @@ export default class CRPApp {
   };
   installers = [] as i.Newable[];
 
-
   start = async (): Promise<void> => {
     const logger = new Logger();
+
+
+    // Initialize variables for the app
+    this.init();
 
 
     // Run prompt
@@ -109,6 +112,17 @@ export default class CRPApp {
     /* eslint-enable */
   }
 
+
+  private init = (): void => {
+    // Add all boilerplate names to a list
+    const list: string[] = [];
+    for (const I of this.installers) {
+      const installer = new I() as i.Installer;
+      list.push(installer.options.name);
+    }
+
+    cliMgr.setBoilerplateList(list);
+  }
 
   private getInstaller = (): i.Installer | undefined => {
     let installer: i.Installer | undefined = undefined;
