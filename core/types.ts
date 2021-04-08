@@ -28,8 +28,8 @@ export interface Installer {
   options: i.InstallStepArgs;
   steps: i.Newable[];
   questions?: i.QuestionsObj<i.Newable<i.Question>[]>;
-  beforeInstall: () => void | Promise<void>;
-  afterInstall: () => void | Promise<void>;
+  beforeInstall?: () => void | Promise<void>;
+  afterInstall?: () => void | Promise<void>;
 }
 
 export interface InstallerOptions {
