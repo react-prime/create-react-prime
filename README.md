@@ -61,7 +61,7 @@ This CLI is built around modules. This allows developers to easily modify and ev
 
 ### Add New Module (Installer)
 
-It's very simple to add a new module!
+It's very simple to add a new module! Every module will by default have the clone, update package, npm install and cleanup steps.
 
 1. Create a new folder in `modules` with a clear description of what it is for
 2. Create the installer file with a descriptive name (in CamelCase) and end it with `.installer.ts`
