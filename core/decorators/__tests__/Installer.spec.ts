@@ -40,12 +40,14 @@ describe('decorators/Installer', () => {
   };
   let installer: i.Installer;
 
+
   beforeEach(() => {
     @Installer(options)
     class TestInstaller {}
 
     installer = new TestInstaller() as i.Installer;
   });
+
 
   it('Decorates a class with the correct options', () => {
     expect(installer.options).toBeDefined();
