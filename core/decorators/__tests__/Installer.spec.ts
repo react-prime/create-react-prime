@@ -50,7 +50,6 @@ describe('decorators/Installer', () => {
 
 
   it('Decorates a class with the correct options', () => {
-    expect(installer.options).toBeDefined();
     expect(installer.options.cloneUrl).toBe('https://test.com/');
     expect(installer.options.name).toBe('test');
     // Make sure these properties are not leaked into options
@@ -59,12 +58,10 @@ describe('decorators/Installer', () => {
   });
 
   it('Decorates a class with the correct steps', () => {
-    expect(installer.steps).toBeDefined();
     expect(installer.steps[0]).toEqual(TestStep);
   });
 
   it('Decorates a class with the correct questions', () => {
-    expect(installer.questions).toBeDefined();
     expect(installer.questions![0]).toEqual(TestQuestionBefore);
     expect(installer.questions![1]).toEqual(TestQuestionAfter);
   });

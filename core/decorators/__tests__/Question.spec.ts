@@ -29,7 +29,6 @@ describe('decorators/Question', () => {
   it('Has the question options', () => {
     let q = new TestQuestionBefore() as unknown as i.Question;
 
-    expect(q.options).toBeDefined();
     expect(q.options.type).toBe('input');
     expect(q.options.name).toBe('before');
     expect(q.options.beforeInstall).toBe(true);
@@ -37,7 +36,6 @@ describe('decorators/Question', () => {
 
     q = new TestQuestionAfter() as unknown as i.Question;
 
-    expect(q.options).toBeDefined();
     expect(q.options.type).toBe('list');
     expect(q.options.name).toBe('after');
     expect((q.options as ListQuestion).choices).toEqual(['1', '2']);
@@ -48,7 +46,6 @@ describe('decorators/Question', () => {
   it('Adds any function method to the options', () => {
     const q = new TestQuestionBefore() as unknown as i.Question;
 
-    expect(q.options.when).toBeDefined();
     expect(typeof q.options.when).toBe('function');
   });
 });
