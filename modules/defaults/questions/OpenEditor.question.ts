@@ -11,8 +11,8 @@ import Util from 'core/Util';
   type: 'list',
   name: 'editor',
   message: 'Open project in editor?',
-  afterInstall: true,
   OS: ['mac'],
+  afterInstall: true,
 })
 export class OpenEditorQuestion {
   when = (): boolean => {

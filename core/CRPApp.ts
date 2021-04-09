@@ -1,6 +1,7 @@
 import * as i from 'types';
 import path from 'path';
 import color from 'kleur';
+import { Answers } from 'inquirer';
 
 import { ERROR_TEXT } from 'core/constants';
 import cliMgr from 'core/CLIMgr';
@@ -17,8 +18,28 @@ export default class CRPApp {
   };
   installers = [] as i.Newable[];
 
+  private instructions = {
+    quickstart: ['npm start'],
+    allCommands: [
+      {
+        cmd: 'npm start',
+        desc: 'Start your development server',
+      },
+      {
+        cmd: 'npm run build',
+        desc: 'Build your website for production',
+      },
+      {
+        cmd: 'npm run server',
+        desc: 'Start your production server',
+      },
+    ],
+  };
+
+
   start = async (): Promise<void> => {
     const logger = new Logger();
+    let answers = {} as Answers;
 
 
     // Initialize variables for the app
@@ -27,7 +48,9 @@ export default class CRPApp {
 
     // Run prompt
     const prompt = new Prompt(this.defaults.questions);
-    await prompt.ask('before');
+    let a = await prompt.ask('before');
+
+    answers = { ...answers, ...a };
 
 
     // Get installer config
@@ -40,14 +63,16 @@ export default class CRPApp {
     // Run installer prompt
     if (installer.questions) {
       const installerPrompt = new Prompt(installer.questions);
-      await installerPrompt.ask('before');
+      a = await installerPrompt.ask('before');
+
+      answers = { ...answers, ...a };
     }
 
     logger.whitespace();
 
 
     // Run installation steps
-    const steps = this.generateStepList(installer);
+    const steps = this.generateStepList(installer, answers);
     const validate = new Validate();
 
     try {
@@ -112,19 +137,7 @@ export default class CRPApp {
     /* eslint-enable */
   }
 
-
-  private init = (): void => {
-    // Add all boilerplate names to a list
-    const list: string[] = [];
-    for (const I of this.installers) {
-      const installer = new I() as i.Installer;
-      list.push(installer.options.name);
-    }
-
-    cliMgr.setBoilerplateList(list);
-  }
-
-  private getInstaller = (): i.Installer | undefined => {
+  getInstaller = (): i.Installer | undefined => {
     let installer: i.Installer | undefined = undefined;
     let found = false;
     let i = 0;
@@ -140,13 +153,16 @@ export default class CRPApp {
     return installer;
   }
 
-  private generateStepList = (installer: i.Installer): StepList => {
+  generateStepList = (installer: i.Installer, answers: Answers): StepList => {
     const customSteps = installer.steps?.map((Step) => new Step() as i.Step);
     const stepList = new StepList(installer.options);
 
     for (const Step of this.defaults.steps) {
       const s = new Step() as i.Step;
-      stepList.push(s);
+
+      if (!s.when || s.when(answers)) {
+        stepList.push(s);
+      }
 
       if (customSteps) {
         for (const cStep of customSteps) {
@@ -160,21 +176,15 @@ export default class CRPApp {
     return stepList;
   }
 
-  private instructions = {
-    quickstart: ['npm start'],
-    allCommands: [
-      {
-        cmd: 'npm start',
-        desc: 'Start your development server',
-      },
-      {
-        cmd: 'npm run build',
-        desc: 'Build your website for production',
-      },
-      {
-        cmd: 'npm run server',
-        desc: 'Start your production server',
-      },
-    ],
-  };
+
+  private init = (): void => {
+    // Add all boilerplate names to a list
+    const list: string[] = [];
+    for (const I of this.installers) {
+      const installer = new I() as i.Installer;
+      list.push(installer.options.name);
+    }
+
+    cliMgr.setBoilerplateList(list);
+  }
 }

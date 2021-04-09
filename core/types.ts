@@ -22,6 +22,7 @@ export interface Step {
   after: string;
   on: (args: i.InstallStepArgs) => void | Promise<void>;
   spinner: i.SpinnerOptions;
+  when?: (answers: Answers) => boolean;
 }
 
 export interface Installer {
