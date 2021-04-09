@@ -9,4 +9,5 @@ module.exports = {
   transform: {
     '\\.ts$': 'esbuild-runner/jest',
   },
+  maxWorkers: '50%',
 };
