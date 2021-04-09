@@ -1,7 +1,7 @@
 import * as i from 'types';
 import { Answers, prompt } from 'inquirer';
 
-import Validate from './Validate';
+import Validate from 'core/Validate';
 
 
 export default class Prompt {

@@ -1,5 +1,4 @@
-import bootstrapCLI from './cli';
-
+import bootstrapCLI from 'core/cli';
 import { ARG } from 'core/constants';
 
 
