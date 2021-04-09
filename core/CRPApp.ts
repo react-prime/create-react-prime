@@ -38,6 +38,8 @@ export default class CRPApp {
 
 
   start = async (): Promise<void> => {
+    this.startMessage();
+
     const logger = new Logger();
     let answers = {} as Answers;
 
@@ -84,7 +86,7 @@ export default class CRPApp {
       }
 
       // Run installation steps
-      await steps.execute();
+      await steps.execute(installer.options);
 
       await installer.afterInstall?.();
     } catch (err) {
@@ -112,13 +114,16 @@ export default class CRPApp {
     const projectPath = path.resolve(projectName);
     const styledProjectName = color.yellow().bold(projectName);
     const styledRepoName = color.dim(`(${cliMgr.getBoilerplate()})`);
+    const styledProjectPath = color.cyan(projectPath);
 
     function formatText(cmd: string, desc: string): string {
       return `  ${cmd.padEnd(17)} ${color.dim(desc)}`;
     }
 
-    logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${color.cyan(projectPath)}\n`);
-    logger.msg(`${color.bold().underline('Quickstart')}\n`);
+    logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${styledProjectPath}`);
+    logger.whitespace();
+    logger.msg(`${color.bold().underline('Quickstart')}`);
+    logger.whitespace();
 
     /* eslint-disable no-console */
     console.log(`  cd ${projectName}`);
@@ -128,13 +133,25 @@ export default class CRPApp {
     }
 
     logger.whitespace();
-
-    logger.msg(`${color.bold().underline('All commands')}\n`);
+    logger.msg(`${color.bold().underline('All commands')}`);
+    logger.whitespace();
 
     for (const str of this.instructions.allCommands) {
       console.log(formatText(str.cmd, str.desc));
     }
     /* eslint-enable */
+  }
+
+  // Startup msg
+  startMessage = (): void => {
+    const logger = new Logger();
+
+    const packageName = color.yellow().bold(process.env.NAME!);
+    const version = process.env.VERSION;
+
+    logger.msg(`${packageName} v${version} ${color.dim('(ctrl + c to exit)')}`);
+
+    logger.whitespace();
   }
 
   getInstaller = (): i.Installer | undefined => {
@@ -155,7 +172,7 @@ export default class CRPApp {
 
   generateStepList = (installer: i.Installer, answers: Answers): StepList => {
     const customSteps = installer.steps?.map((Step) => new Step() as i.Step);
-    const stepList = new StepList(installer.options);
+    const stepList = new StepList();
 
     for (const Step of this.defaults.steps) {
       const s = new Step() as i.Step;
@@ -167,6 +184,18 @@ export default class CRPApp {
       if (customSteps) {
         for (const cStep of customSteps) {
           if (s.name === cStep.after) {
+            if (!cStep.when || cStep.when(answers)) {
+              stepList.push(cStep);
+            }
+          }
+        }
+      }
+    }
+
+    if (customSteps) {
+      for (const cStep of customSteps) {
+        if (!cStep.after) {
+          if (!cStep.when || cStep.when(answers)) {
             stepList.push(cStep);
           }
         }

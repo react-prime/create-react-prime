@@ -41,7 +41,7 @@ describe('StepList', () => {
   const spy2 = jest.spyOn(step2, 'on');
   const installerOptions = { cloneUrl: '', name: 'installer' };
 
-  const stepList = new StepList(installerOptions);
+  const stepList = new StepList();
   stepList.push(step1, step2);
 
 
@@ -52,14 +52,14 @@ describe('StepList', () => {
 
 
   it('Executes all steps in the list', async () => {
-    await stepList.execute();
+    await stepList.execute(installerOptions);
 
     expect(spy1).toHaveBeenCalled();
     expect(spy2).toHaveBeenCalled();
   });
 
   it('Calls the step function with the correct arguments', async () => {
-    await stepList.execute();
+    await stepList.execute(installerOptions);
 
     expect(spy1).toHaveBeenCalledWith(installerOptions);
     expect(spy2).toHaveBeenCalledWith(installerOptions);
