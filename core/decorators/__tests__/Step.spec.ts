@@ -16,6 +16,10 @@ import Step from 'core/decorators/Step';
 // })));
 // const ora = require('ora');
 
+// jest.mock('ora', jest.fn().mockImplementation(() => oraMockConstructor));
+// const ora = require('ora');
+// ora.mockImplementation(() => oraMockConstructor);
+
 
 describe('decorators/Step', () => {
   @Step({
@@ -45,19 +49,16 @@ describe('decorators/Step', () => {
 
 
   it('Receives the step name', () => {
-    expect(step.name).toBeDefined();
     expect(step.name).toBe('test');
   });
 
   it('Receives the "after" step name', () => {
-    expect(step.after).toBeDefined();
     expect(step.after).toBe('first-step');
   });
 
   // TODO: Figure out how to properly mock Ora
   // it('Starts the spinner', async () => {
   //   step.on(installerOptions);
-  //   ora().start();
 
   //   expect(oraStartMock).toHaveBeenCalled();
   // });
