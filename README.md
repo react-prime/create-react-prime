@@ -14,7 +14,7 @@ npm start
 
 ## Options
 
-All options are optional. If no options are given, the CLI will prompt a question for the missing required arguments.
+Passing options to the CLI is optional! The CLI will prompt questions for any missing required options.
 
 <table>
   <tr>
