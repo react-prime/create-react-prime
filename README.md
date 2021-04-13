@@ -143,6 +143,14 @@ export class CustomStep {
     // Code whatever this installation step needs to do here!
   }
 
+  // async when(answers: Answers): Promise<boolean> {
+    // Optional
+
+    // Dynamically decide if this step needs to be executed.
+    // For example: you can use one of the answers
+    // to decide if this step is relevant
+  // }
+
   // You are free to add more methods and properties
   // to the class if needed
 }
