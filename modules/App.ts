@@ -5,6 +5,7 @@ import { BoilerplateQuestion, OpenEditorQuestion, ProjectNameQuestion } from './
 import ReactSPAInstaller from './react-spa/ReactSPA.installer';
 import ReactSSRInstaller from './react-ssr/ReactSSR.installer';
 import ReactNativeInstaller from './react-native/ReactNative.installer';
+import GatsbyInstaller from './gatsby/Gatsby.installer';
 
 
 export default class App extends CRPApp {
@@ -27,5 +28,6 @@ export default class App extends CRPApp {
     ReactSPAInstaller,
     ReactSSRInstaller,
     ReactNativeInstaller,
+    GatsbyInstaller,
   ];
 }

@@ -10,7 +10,10 @@ require('esbuild').build({
     'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
     'process.env.NAME': JSON.stringify(process.env.npm_package_name),
   },
-  banner: '#!/usr/bin/env node',
+  banner: {
+    js: '#!/usr/bin/env node',
+  },
+  target: 'es2018',
   external: Object.keys(pkg.dependencies),
 })
   .catch(() => process.exit(1));
