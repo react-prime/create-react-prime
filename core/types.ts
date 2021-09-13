@@ -2,6 +2,7 @@ import * as i from 'types';
 import {
   Answers, CheckboxQuestion, InputQuestion, InputQuestionOptions, ListQuestion, NumberQuestion,
 } from 'inquirer';
+import { OptionValues } from 'commander';
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -80,3 +81,7 @@ export type QuestionsObj<T> = {
 }
 
 export type Json = string | number | boolean | { [key: string]: Json } | Json[] | null;
+
+export interface Opts extends OptionValues {
+  boilerplate: string;
+}

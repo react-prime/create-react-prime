@@ -5,8 +5,8 @@ import Validate from 'core/Validate';
 import Logger from 'core/Logger';
 
 
-export default function bootstrapCLI(): CLI {
-  const cli = new Command() as CLI;
+export default function bootstrapCLI(): commander.Command {
+  const cli = new Command();
 
   cli.version(process.env.VERSION!);
 
@@ -29,10 +29,4 @@ export default function bootstrapCLI(): CLI {
   }
 
   return cli;
-}
-
-interface CLI extends commander.Command {
-  opts(): {
-    boilerplate: string;
-  };
 }

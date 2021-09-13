@@ -1,3 +1,4 @@
+import * as i from 'types';
 import bootstrapCLI from 'core/cli';
 import { ARG } from 'core/constants';
 
@@ -20,9 +21,9 @@ describe('cli', () => {
   it('Reads boilerplate name', () => {
     const name = 'react-spa';
     parse('-b', name);
-    expect(cli.opts().boilerplate).toBe(name);
+    expect(cli.opts<i.Opts>().boilerplate).toBe(name);
 
     parse('--boilerplate', name);
-    expect(cli.opts().boilerplate).toBe(name);
+    expect(cli.opts<i.Opts>().boilerplate).toBe(name);
   });
 });
