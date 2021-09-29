@@ -6,11 +6,13 @@ This package allows you to easily install and setup [react-prime](https://github
 
 # Create React Prime
 ## Quick start
-```
+```shell
 npx create-react-prime my-app
 cd my-app
 npm start
 ```
+
+Note: Because of caching, you can also use `npx create-react-prime@latest my-app` to always get the latest version.
 
 ## Options
 
