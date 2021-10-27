@@ -14,6 +14,7 @@ require('esbuild').build({
     js: '#!/usr/bin/env node',
   },
   target: 'es2018',
+  treeShaking: true,
   external: Object.keys(pkg.dependencies),
 })
   .catch(() => process.exit(1));
