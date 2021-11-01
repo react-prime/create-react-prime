@@ -12,7 +12,15 @@ cd my-app
 npm start
 ```
 
-Note: Because of caching, you can also use `npx create-react-prime@latest my-app` to always get the latest version.
+or
+
+```shell
+npm init react-prime my-app
+cd my-app
+npm start
+```
+
+Note: Because of caching, you can also use `npx create-react-prime@latest my-app` or `npm init react-prime@latest my-app` to always get the latest version.
 
 ## Options
 
