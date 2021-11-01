@@ -14,9 +14,9 @@
     "test:watch": "npm t -- --watch",
     "test:full": "npm run lint; npm run typecheck; npm t",
     "prepublishOnly": "npm run test:full && npm run build",
-    "pub:patch": "npm version patch; npm publish",
-    "pub:minor": "npm version minor; npm publish",
-    "pub:major": "npm version major; npm publish"
+    "pub:patch": "npm version patch; npm publish; git push",
+    "pub:minor": "npm version minor; npm publish; git push",
+    "pub:major": "npm version major; npm publish; git push"
   },
   "main": "dist/main.js",
   "bin": {
