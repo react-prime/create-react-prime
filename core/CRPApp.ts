@@ -44,10 +44,6 @@ export default class CRPApp {
     let answers = {} as Answers;
 
 
-    // Initialize variables for the app
-    this.init();
-
-
     // Run prompt
     const prompt = new Prompt(this.defaults.questions);
     let a = await prompt.ask('before');
@@ -203,17 +199,5 @@ export default class CRPApp {
     }
 
     return stepList;
-  }
-
-
-  private init = (): void => {
-    // Add all boilerplate names to a list
-    const list: string[] = [];
-    for (const I of this.installers) {
-      const installer = new I() as i.Installer;
-      list.push(installer.options.name);
-    }
-
-    cliMgr.setBoilerplateList(list);
   }
 }

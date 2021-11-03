@@ -1,6 +1,7 @@
 import * as i from 'types';
 import bootstrapCLI from 'core/cli';
 import { ARG } from 'core/constants';
+import scriptsMgr from 'core/ScriptsMgr';
 
 
 // Create CLI ASAP in runtime
@@ -10,7 +11,7 @@ class CLIMgr {
   private cli = cliAPI__DO_NOT_USE__;
   private projectName: string = this.cli.args[ARG.ProjectName];
   private boilerplate: string = this.cli.opts<i.Opts>().boilerplate;
-  private boilerplateList: string[] = [];
+  private readonly boilerplateList: string[] = scriptsMgr.json().modules;
 
   getProjectName = (): string => {
     return this.projectName || this.cli.args[ARG.ProjectName];
@@ -30,10 +31,6 @@ class CLIMgr {
 
   getBoilerplateList = (): string[] => {
     return this.boilerplateList;
-  }
-
-  setBoilerplateList = (list: string[]): void => {
-    this.boilerplateList = list;
   }
 
 

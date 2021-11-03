@@ -1,6 +1,5 @@
 import * as i from 'types';
 import path from 'path';
-import { readFileSync } from 'fs';
 
 import Util from 'core/Util';
 import { ERROR_TEXT } from 'core/constants';
@@ -21,7 +20,7 @@ import Logger from 'core/Logger';
 })
 export class NpmPackageUpdateStep {
   async on(): Promise<void> {
-    const pkg = this.getNPMPackage().json;
+    const pkg = this.getNPMPackage().json as PackageJson;
 
     // Overwrite boilerplate defaults
     pkg.name = cliMgr.getProjectName();
@@ -35,9 +34,10 @@ export class NpmPackageUpdateStep {
   }
 
 
-  private getNPMPackage() {
+  private getNPMPackage(): { path: string; json: i.Json } {
+    const util = new Util();
     const projectPkgPath = path.resolve(`${cliMgr.getProjectName()}/package.json`);
-    const pkgStr = readFileSync(projectPkgPath, 'utf-8');
+    const pkgStr = util.parseJSONFile(projectPkgPath);
 
     if (!pkgStr) {
       const logger = new Logger();
@@ -46,8 +46,7 @@ export class NpmPackageUpdateStep {
 
     return {
       path: projectPkgPath,
-      // Create new object instead of a reference
-      json: JSON.parse(pkgStr),
+      json: pkgStr!,
     };
   }
 
@@ -65,5 +64,5 @@ export interface PackageJson {
     url: string;
     [key: string]: string;
   };
-  [key: string]: i.Json | undefined;
+  [key: string]: i.JsonValues | undefined;
 }
