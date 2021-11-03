@@ -4,6 +4,7 @@ import {
 } from 'inquirer';
 import { OptionValues } from 'commander';
 
+export * from 'generated/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyArr = any[];
@@ -80,7 +81,8 @@ export type QuestionsObj<T> = {
   [key in QuestionWhen]: T;
 }
 
-export type Json = string | number | boolean | { [key: string]: Json } | Json[] | null;
+export type JsonValues = string | number | boolean | { [key: string]: JsonValues } | JsonValues[];
+export type Json = Record<string, JsonValues>;
 
 export interface Opts extends OptionValues {
   boilerplate: string;

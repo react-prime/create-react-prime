@@ -15,7 +15,8 @@
       "paths": {
           "core/*": ["core/*"],
           "modules/*": ["modules/*"],
-          "types": ["core/types.ts"]
+          "types": ["core/types.ts"],
+          "generated/*": ["core/generated/*"]
       }
   },
   "include": [

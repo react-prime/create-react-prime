@@ -1,8 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const pkg = require('./package.json');
 
+// Bundle CRP app
 require('esbuild').build({
-  entryPoints: ['core/main.ts'],
+  entryPoints: [
+    'core/main.ts',
+  ],
   platform: 'node',
   bundle: true,
   outfile: 'dist/main.js',
