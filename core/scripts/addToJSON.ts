@@ -6,8 +6,8 @@ import Util from 'core/Util';
 
 import { getGeneratedFolder } from './generatedFolder';
 
-
-const PATH = path.resolve('core/generated/build.json');
+// Path can stay as is — scripts are not involved in production env
+const FILE = path.resolve('core/generated/build.json');
 
 function prettyStringify(value: Record<string, unknown>): string {
   return JSON.stringify(value, null, 2);
@@ -15,7 +15,7 @@ function prettyStringify(value: Record<string, unknown>): string {
 
 function generateJSONType(): void {
   const util = new Util();
-  const json = util.parseJSONFile(PATH);
+  const json = util.parseJSONFile(FILE);
 
   if (json != null) {
     let typeStr = 'export interface BuildJSON {';
@@ -41,16 +41,16 @@ function generateJSONType(): void {
 export function addToJSON(key: string, value: i.JsonValues): void {
   getGeneratedFolder();
 
-  if (!fs.existsSync(PATH)) {
-    fs.writeFileSync(PATH, prettyStringify({ [key]: value }));
+  if (!fs.existsSync(FILE)) {
+    fs.writeFileSync(FILE, prettyStringify({ [key]: value }));
   } else {
     const util = new Util();
-    const json = util.parseJSONFile(PATH);
+    const json = util.parseJSONFile(FILE);
 
     if (json != null) {
       json[key] = value;
 
-      fs.writeFileSync(PATH, prettyStringify(json));
+      fs.writeFileSync(FILE, prettyStringify(json));
     }
   }
 

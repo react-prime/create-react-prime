@@ -1,3 +1,4 @@
+const fs = require('fs');
 const pkg = require('./package.json');
 
 // Bundle CRP app
@@ -19,4 +20,7 @@ require('esbuild').build({
   treeShaking: true,
   external: Object.keys(pkg.dependencies),
 })
+  .then(() => {
+    fs.copyFileSync('core/generated/build.json', 'dist/build.json');
+  })
   .catch(() => process.exit(1));

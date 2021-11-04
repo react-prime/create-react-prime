@@ -4,12 +4,10 @@ import Util from './Util';
 
 
 class ScriptsMgr {
-  private readonly PATH = path.resolve('core/generated');
-
   json(): i.BuildJSON {
     const util = new Util();
 
-    const p = path.resolve(this.PATH, 'build.json');
+    const p = path.resolve('dist/build.json');
     return util.parseJSONFile(p)! as unknown as i.BuildJSON;
   }
 }
