@@ -17,8 +17,10 @@ function generateJSONType(): void {
   const util = new Util();
   const json = util.parseJSONFile(FILE);
 
+  /* eslint-disable quotes */
   if (json != null) {
-    let typeStr = 'export interface BuildJSON {';
+    let typeStr = "import * as i from 'types';\n\n";
+    typeStr += 'export interface BuildJSON extends i.Json {';
 
     for (const key in json) {
       const t = typeof json[key];
@@ -33,6 +35,7 @@ function generateJSONType(): void {
     }
 
     typeStr += '\n}\n';
+    /* eslint-enable */
 
     fs.writeFileSync('core/generated/types.ts', typeStr);
   }

@@ -8,11 +8,11 @@ export default class Util {
   asyncExec = util.promisify(cp.exec);
   asyncWriteFile = util.promisify(fs.writeFile);
 
-  parseJSONFile = (path: string): i.Json | undefined => {
+  parseJSONFile = <R extends i.Json = i.Json>(path: string): R | undefined => {
     const raw = fs.readFileSync(path, { encoding: 'utf8' });
 
     if (raw) {
-      const parsed = JSON.parse(raw) as i.Json;
+      const parsed = JSON.parse(raw) as R;
       const copy = { ...parsed };
 
       return copy;
