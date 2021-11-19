@@ -1,14 +1,13 @@
 // Compile scripts
 require('esbuild').buildSync({
   entryPoints: [
-    'core/scripts/index.ts',
+    'core/scripts/main.ts',
   ],
   platform: 'node',
-  outdir: 'core/scripts',
-  target: 'node12',
+  outfile: 'core/scripts/index.js',
   bundle: true,
+  format: 'cjs',
+  banner: {
+    js: '#!/usr/bin/env node',
+  },
 });
-
-// Run scripts
-const scripts = require('./core/scripts/index.js');
-scripts.generateModulesArray();
