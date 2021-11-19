@@ -10,4 +10,8 @@ module.exports = {
     '\\.ts$': 'esbuild-runner/jest',
   },
   maxWorkers: '50%',
+  globals: {
+    __PROD__: false,
+    __TEST__: true,
+  },
 };

@@ -3,6 +3,7 @@ import commander, { Command } from 'commander';
 import { ARG, ERROR_TEXT } from 'core/constants';
 import Validate from 'core/Validate';
 import Logger from 'core/Logger';
+import scriptsMgr from 'core/ScriptsMgr';
 
 
 export default function bootstrapCLI(): commander.Command {
@@ -12,7 +13,7 @@ export default function bootstrapCLI(): commander.Command {
 
   cli.option(
     '-b, --boilerplate <boilerplate>',
-    'Install chosen boilerplate. Options: gatsby, react-native, react-spa, react-ssr',
+    `Install chosen boilerplate. Options: ${scriptsMgr.json().modules.join(', ')}`,
   );
 
   // Parse user input
