@@ -19,6 +19,10 @@
     "envify.js",
     "src/main"
   ],
+  "globals": {
+    "__PROD__": false,
+    "__TEST__": false
+  },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": 2,

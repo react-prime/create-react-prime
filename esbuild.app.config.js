@@ -20,6 +20,8 @@ async function build() {
     define: {
       'process.env.VERSION': JSON.stringify(process.env.npm_package_version),
       'process.env.NAME': JSON.stringify(process.env.npm_package_name),
+      '__TEST__': process.env.NODE_ENV === 'test',
+      '__PROD__': process.env.NODE_ENV == null || process.env.NODE_ENV === 'production',
     },
     banner: {
       js: '#!/usr/bin/env node',

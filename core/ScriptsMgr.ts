@@ -9,7 +9,7 @@ class ScriptsMgr {
 
     // Need __dirname to resolve CRP dist path
     // or else it will resolve with the dir path from where the user runs CRP
-    const p = path.resolve(__dirname, 'build.json');
+    const p = path.resolve(__dirname, __TEST__ ? 'generated' : '', 'build.json');
     return util.parseJSONFile<i.BuildJSON>(p)!;
   }
 }
