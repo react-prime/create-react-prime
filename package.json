@@ -14,7 +14,6 @@
     "test": "NODE_ENV=test jest",
     "test:watch": "npm t -- --watch",
     "test:full": "npm run lint; npm run typecheck; npm t",
-    "postinstall": "npm run build:scripts",
     "prepublishOnly": "npm run test:full && npm run build",
     "pub:patch": "npm version patch; npm publish; git push",
     "pub:minor": "npm version minor; npm publish; git push",
