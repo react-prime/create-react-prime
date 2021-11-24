@@ -7,20 +7,59 @@ This package allows you to easily install and setup [react-prime](https://github
 # Create React Prime
 ## Quick start
 ```shell
-npx create-react-prime my-app
-cd my-app
+npx create-react-prime@latest
+cd <project name>
 npm start
 ```
 
 or
 
 ```shell
-npm init react-prime my-app
-cd my-app
+npm init react-prime@latest
+cd <project name>
 npm start
 ```
 
-Note: Because of caching, you can also use `npx create-react-prime@latest my-app` or `npm init react-prime@latest my-app` to always get the latest version.
+## Arguments
+
+Passing arguments to the CLI is optional! The CLI will prompt questions for any missing required arguments. The order they are passed determines what they are used for.
+
+<table>
+  <tr>
+    <th>
+        #
+    </th>
+    <th>
+        Argument name
+    </th>
+    <th>
+        Value
+    </th>
+    <th>
+        Default
+    </th>
+    <th>
+        Description
+    </th>
+  </tr>
+  <tr>
+    <td>
+      1
+    </td>
+    <td>
+      Project Name
+    </td>
+    <td>
+      Any text (no spaces)
+    </td>
+    <td>
+      Boilerplate name
+    </td>
+    <td>
+      The name of the project. No spaces allowed. Follows the directory naming rules of your current OS. This name will be applied to the installation directory, the package.json and depending on the boilerplate, can be applied to other files or directories as well.
+    </td>
+  </tr>
+</table>
 
 ## Options
 
@@ -55,7 +94,6 @@ Passing options to the CLI is optional! The CLI will prompt questions for any mi
       Installs one of the supported boilerplates.
     </td>
   </tr>
-  
 </table>
 
 ## Development
