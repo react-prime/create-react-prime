@@ -85,5 +85,6 @@ export type JsonValues = string | number | boolean | { [key: string]: JsonValues
 export type Json = Record<string, JsonValues>;
 
 export interface Opts extends OptionValues {
-  boilerplate: string;
+  boilerplate?: string;
+  token?: string;
 }

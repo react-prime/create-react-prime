@@ -9,8 +9,8 @@ export const cliAPI__DO_NOT_USE__ = bootstrapCLI();
 
 class CLIMgr {
   private cli = cliAPI__DO_NOT_USE__;
-  private projectName: string = this.cli.args[ARG.ProjectName];
-  private boilerplate: string = this.cli.opts<i.Opts>().boilerplate;
+  private projectName?: string = this.cli.args[ARG.ProjectName];
+  private boilerplate?: string = this.cli.opts<i.Opts>().boilerplate;
   private readonly boilerplateList: string[] = scriptsMgr.json().modules;
 
   getProjectName = (): string => {
@@ -22,7 +22,7 @@ class CLIMgr {
   }
 
   getBoilerplate = (): string => {
-    return this.boilerplate || this.getOpts().boilerplate;
+    return this.boilerplate || this.getOpts().boilerplate!;
   }
 
   setBoilerplate = (boilerplate: string): void => {

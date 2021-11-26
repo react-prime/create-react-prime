@@ -16,6 +16,11 @@ export default function bootstrapCLI(): commander.Command {
     `Install chosen boilerplate. Options: ${scriptsMgr.json().modules.join(', ')}`,
   );
 
+  cli.option(
+    '-t, --token <token>',
+    'Add an access token for authentication. For example: private Gitlab repositories.',
+  );
+
   // Parse user input
   cli.parse(process.argv);
 
