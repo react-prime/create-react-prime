@@ -362,3 +362,9 @@ The `ERROR_TEXT` strings use placeholder values. You can use them like so:
 ```ts
 logger.error(ERROR_TEXT.DirectoryExists, value, /**...add more data if there are more placeholders */);
 ```
+
+### Lowdb
+
+This app uses the Lowdb library to keep track of user settings. It uses v1 because of compatibility issues of later versions that are pure ESM.
+
+The README for v1 can be found [HERE](https://github.com/typicode/lowdb/tree/de5d8f59cc8f764bbd4a427230c406e6106027fd).

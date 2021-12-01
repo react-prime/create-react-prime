@@ -81,9 +81,6 @@ export type QuestionsObj<T> = {
   [key in QuestionWhen]: T;
 }
 
-export type JsonValues = string | number | boolean | { [key: string]: JsonValues } | JsonValues[];
-export type Json = Record<string, JsonValues>;
-
 export interface Opts extends OptionValues {
   boilerplate?: string;
   token?: string;
