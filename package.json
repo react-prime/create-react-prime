@@ -5,7 +5,7 @@
   "author": "Label A [labela.nl]",
   "license": "MIT",
   "scripts": {
-    "build": "npm run build:scripts && node esbuild.app.config.js",
+    "build": "npm run build:scripts && NODE_ENV=production node esbuild.app.config.js",
     "build:scripts": "node esbuild.scripts.config.js",
     "start": "node dist/main.js",
     "dev": "rm -rf testingname/ testing-name/ && npm run build && node dist/main.js testing-name",
