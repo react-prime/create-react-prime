@@ -10,11 +10,10 @@ export const cliAPI__DO_NOT_USE__ = bootstrapCLI();
 
 
 class CLIMgr {
-  private cli = cliAPI__DO_NOT_USE__;
+  private readonly cli = cliAPI__DO_NOT_USE__;
+  private readonly boilerplateList: readonly string[] = scriptsMgr.json().modules;
   private projectName?: string = this.cli.args[ARG.ProjectName];
   private boilerplate?: string = this.cli.opts<i.Opts>().boilerplate;
-  private boilerplateList: readonly string[] = scriptsMgr.json().modules;
-
 
   getProjectName = (): string => {
     return this.projectName || this.cli.args[ARG.ProjectName];

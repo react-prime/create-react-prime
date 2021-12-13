@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
       "noEmit": true,
-      "module": "es2015",
+      "module": "esnext",
       "lib": ["esnext"],
       "moduleResolution": "node",
       "removeComments": true,
@@ -11,6 +11,7 @@
       "resolveJsonModule": true,
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
+      "exactOptionalPropertyTypes": true,
       "baseUrl": ".",
       "paths": {
           "core/*": ["core/*"],
@@ -21,7 +22,8 @@
   },
   "include": [
     "core",
-    "modules"
+    "modules",
+    "cli",
   ],
   "exclude": ["node_modules"]
 }

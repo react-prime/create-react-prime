@@ -290,6 +290,38 @@ Questions can be asked before or after the installation.
 **Optional:**
 - `OS: Array<'mac' | 'windows' | 'linux'>`: Specify on what operating system this question should be asked. If not specified, the question will be asked on all systems.
 
+#### CLI Option Template
+
+```ts
+import * as i from 'types';
+
+import Option from 'core/decorators/Option';
+
+
+@Option<string | number | boolean | null>({
+  flags: '-o, --option <optionVarName>',
+})
+export class CustomOption {
+  on(flags: i.Opts): void {
+    // Required
+
+    // Entry point of this option
+    // Code whatever this option needs to do here!
+  }
+
+  // You are free to add more methods and properties
+  // to the class if needed
+}
+```
+
+**Required:**
+- `flags: -${string}, --${string} | -${string}, --${string} <${string}>`: This string will determine the option template. Single dash is for shorthand, double dash is for the full option name. The string between the arrows (`<>`) is used to set the variable name. The variable name is optional.
+
+**Optional:**
+- `defaultValue: null | string | boolean | number` The default value for this option. Used when this option is not passed to the CLI by the user. Default is undefined.
+- `description: string` Short description of what the option is used for.
+- `terminate: boolean` Determines whether the CLI should exit and not continue to the installation wizard. Default is false.
+
 ### Useful Utilities
 To help you achieve whatever you want, there are some utility classes you can use.
 
