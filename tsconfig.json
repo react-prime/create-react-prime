@@ -14,6 +14,7 @@
       "exactOptionalPropertyTypes": true,
       "baseUrl": ".",
       "paths": {
+          "cli/*": ["cli/*"],
           "core/*": ["core/*"],
           "modules/*": ["modules/*"],
           "types": ["core/types.ts"],
@@ -23,7 +24,7 @@
   "include": [
     "core",
     "modules",
-    "cli",
+    "cli"
   ],
   "exclude": ["node_modules"]
 }
