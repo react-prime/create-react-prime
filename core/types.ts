@@ -16,9 +16,12 @@ export interface Newable<T = any> extends Function {
   new (...args: i.AnyArr): T;
 }
 
+type WhenFn = (answers: Answers) => boolean;
+
 export interface Question {
   options: i.QuestionOptions;
   answer: (answers: Answers) => void | Promise<void>;
+  when?: WhenFn;
 }
 
 export interface Step {
@@ -26,7 +29,7 @@ export interface Step {
   after: string;
   on: (args: i.InstallStepArgs) => void | Promise<void>;
   spinner: i.SpinnerOptions;
-  when?: (answers: Answers) => boolean;
+  when?: WhenFn;
 }
 
 export interface Installer {
