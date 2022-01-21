@@ -1,0 +1,12 @@
+{
+  "ignore": {
+    "ora": {
+      "versions": ">5",
+      "reason": "v5+ is ESM"
+    },
+    "lowdb": {
+      "versions": ">1",
+      "reason": "v2+ is ESM"
+    }
+  }
+}
