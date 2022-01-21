@@ -100,8 +100,7 @@ describe('Prompt', () => {
 
     await prompt.ask('after');
 
-    // I guess the mock also executes the answer method???
-    expect(logSpy.mock.calls).toEqual([[1], [1]]);
+    expect(logSpy.mock.calls).toEqual([[1]]);
   });
 
   it('Excludes a question if current system does not equal question OS', async () => {

@@ -44,23 +44,22 @@ async function build() {
       js: '#!/usr/bin/env node',
     },
     target: 'node14',
-    treeShaking: true,
     external: Object.keys(pkg.dependencies),
     watch: DEV && {
       onRebuild(err) {
         if (err) {
-          console.error('watch build failed:', err);
+          console.error('⚡️ ERR: Watch build failed:', err);
           process.exit(1);
         }
 
-        console.info('🚧 Rebuild complete!\n');
+        console.info('⚡️ Rebuild complete!\n');
         onBuildComplete();
       },
     },
   })
     .catch(() => process.exit(1));
 
-  console.info('🚧 Build complete!\n');
+  console.info('⚡️ Build complete!\n');
   onBuildComplete();
 }
 
