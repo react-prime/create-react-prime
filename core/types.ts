@@ -102,9 +102,7 @@ export interface SpinnerOptions {
 
 export type QuestionWhen = 'before' | 'after';
 
-export type QuestionsObj<T> = {
-  [key in QuestionWhen]: T;
-}
+export type QuestionsObj<T> = Record<QuestionWhen, T>;
 
 export interface Opts extends OptionValues {
   boilerplate?: string;
