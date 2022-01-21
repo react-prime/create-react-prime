@@ -85,7 +85,7 @@ Passing options to the CLI is optional! The CLI will prompt questions for any mi
       -b, --boilerplate
     </td>
     <td>
-      react-spa, react-native
+      react-web, react-mobile
     </td>
     <td>
       -

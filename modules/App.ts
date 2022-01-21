@@ -2,10 +2,8 @@ import CRPApp from 'core/CRPApp';
 
 import { CleanupStep, CloneStep, NpmInstallStep, NpmPackageUpdateStep } from './defaults/steps';
 import { BoilerplateQuestion, OpenEditorQuestion, ProjectNameQuestion } from './defaults/questions';
-import ReactSPAInstaller from './react-spa/ReactSPA.installer';
-import ReactSSRInstaller from './react-ssr/ReactSSR.installer';
-import ReactNativeInstaller from './react-native/ReactNative.installer';
-import GatsbyInstaller from './gatsby/Gatsby.installer';
+import ReactWebInstaller from './react-web/ReactSPA.installer';
+import ReactMobileInstaller from './react-mobile/ReactMobile.installer';
 
 
 export default class App extends CRPApp {
@@ -25,9 +23,7 @@ export default class App extends CRPApp {
   };
 
   installers = [
-    ReactSPAInstaller,
-    ReactSSRInstaller,
-    ReactNativeInstaller,
-    GatsbyInstaller,
+    ReactWebInstaller,
+    ReactMobileInstaller,
   ];
 }

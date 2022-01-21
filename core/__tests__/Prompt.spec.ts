@@ -39,8 +39,8 @@ describe('Prompt', () => {
       name: 'boilerplate',
       type: 'list',
       choices: [
-        { name: 'react-spa', value: 'react-spa' },
-        { name: 'react-ssr', value: 'react-ssr' },
+        { name: 'react-web', value: 'react-web' },
+        { name: 'react-mobile', value: 'react-mobile' },
       ],
       beforeInstall: true,
     })
@@ -72,13 +72,13 @@ describe('Prompt', () => {
 
   it('Asks the before install question and returns the given answer', async () => {
     expectPrompts([{
-      choices: ['react-spa', 'react-ssr'],
+      choices: ['react-web', 'react-mobile'],
       choose: 0,
     }]);
 
     const answers = await prompt.ask('before');
     expect(answers).toEqual({
-      boilerplate: 'react-spa',
+      boilerplate: 'react-web',
     });
   });
 

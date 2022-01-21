@@ -6,11 +6,11 @@ import ScriptsStep from './steps/scripts.step';
 
 
 @Installer({
-  name: 'react-native',
+  name: 'react-mobile',
   cloneUrl: 'https://github.com/react-prime/react-prime-native.git',
   steps: [ScriptsStep],
 })
-export default class ReactNativeInstaller {
+export default class ReactMobileInstaller {
   beforeInstall(): void {
     const tempProjectName = cliMgr.getProjectName();
 

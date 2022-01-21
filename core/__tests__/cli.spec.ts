@@ -19,7 +19,7 @@ describe('cli', () => {
   });
 
   it('Reads boilerplate name', () => {
-    const name = 'react-spa';
+    const name = 'react-web';
     parse('-b', name);
     expect(cli.opts<i.Opts>().boilerplate).toBe(name);
 

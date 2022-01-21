@@ -9,7 +9,7 @@ import Installer from 'core/decorators/Installer';
 import Step from 'core/decorators/Step';
 import { LOG_PREFIX } from 'core/constants';
 
-import ReactSPAInstaller from 'modules/react-spa/ReactSPA.installer';
+import ReactWebInstaller from 'modules/react-web/ReactSPA.installer';
 import { CloneStep } from 'modules/defaults/steps';
 
 
@@ -49,10 +49,10 @@ describe('CRPApp', () => {
       cliAPI__DO_NOT_USE__.parse(['node', 'dist/main.js', ...str]);
     }
 
-    const name = 'react-spa';
+    const name = 'react-web';
     parse('-b', name);
 
-    app.installers = [ReactSPAInstaller];
+    app.installers = [ReactWebInstaller];
 
     expect(app.getInstaller()?.options.name).toEqual(name);
   });

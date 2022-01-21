@@ -15,7 +15,7 @@ describe('CLIMgr', () => {
   });
 
   it('Returns the correct boilerplate', () => {
-    const bp = 'react-spa';
+    const bp = 'react-web';
 
     parse('-b', bp);
     expect(cliMgr.getBoilerplate()).toBe(bp);
@@ -32,7 +32,7 @@ describe('CLIMgr', () => {
   });
 
   it('Sets the boilerplate correctly', () => {
-    const bp = 'react-spa';
+    const bp = 'react-web';
     cliMgr.setBoilerplate(bp);
 
     expect(cliMgr.getBoilerplate()).toBe(bp);
