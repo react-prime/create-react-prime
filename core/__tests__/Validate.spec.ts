@@ -21,6 +21,12 @@ describe('Validate', () => {
   });
 
   it('Validates a foldername on Mac OS', () => {
+    const mock = jest.fn();
+    mock.mockReturnValue('Darwin');
+
+    const orgTypeFn = osMock.type;
+    osMock.type = mock;
+
     // invalid
     expect(validate.folderName('/')).toBeFalsy();
     expect(validate.folderName(':')).toBeFalsy();
@@ -33,6 +39,8 @@ describe('Validate', () => {
     expect(validate.folderName('a-name')).toBeTruthy();
     expect(validate.folderName('a_name')).toBeTruthy();
     expect(validate.folderName('A Name')).toBeTruthy();
+
+    osMock.type = orgTypeFn;
   });
 
   it('Validates a foldername on Windows OS', () => {

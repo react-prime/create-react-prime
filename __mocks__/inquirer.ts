@@ -1,3 +1,4 @@
+// @ts-nocheck
 /** SOURCE: https://gist.github.com/yyx990803/f61f347b6892078c40a9e8e77b9bd984 */
 let pendingAssertions;
 
