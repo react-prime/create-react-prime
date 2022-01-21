@@ -17,7 +17,9 @@
     "prepublishOnly": "npm run test:full && npm run build",
     "pub:patch": "npm version patch; npm publish; git push",
     "pub:minor": "npm version minor; npm publish; git push",
-    "pub:major": "npm version major; npm publish; git push"
+    "pub:major": "npm version major; npm publish; git push",
+    "cs:add": "npx changeset",
+    "cs:ver": "npx changeset version"
   },
   "main": "dist/main.js",
   "bin": {
@@ -43,6 +45,7 @@
     "ora": "5.4.1"
   },
   "devDependencies": {
+    "@changesets/cli": "2.19.0",
     "@types/inquirer": "7.3.3",
     "@types/jest": "27.0.1",
     "@types/lowdb": "1.0.11",
