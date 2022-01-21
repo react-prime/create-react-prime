@@ -1,5 +1,6 @@
 import * as i from 'types';
 import { Answers, prompt } from 'inquirer';
+import { assert, is } from 'tsafe';
 
 import Validate from 'core/Validate';
 
@@ -36,10 +37,18 @@ export default class Prompt {
     // Ask questions to user
     for await (const question of this.questions[when]) {
       // Look for methods, call them with current answers and set the return value
-      let prop: keyof i.QuestionOptions;
+      let prop: keyof i.QuestionOptions | keyof Omit<i.Question, 'options'>;
       for (prop in question.options) {
-        // Let Inquirer call Validate
-        if (typeof question.options[prop] === 'function' && prop !== 'validate') {
+        // Let Inquirer call Validate, skip Answer for later
+        if (['validate', 'answer'].includes(prop)) {
+          continue;
+        }
+
+        // Assert prop to not have above filtered props
+        assert(is<keyof i.QuestionOptions>(prop));
+
+        // Return the value of the prop's function
+        if (typeof question.options[(prop)] === 'function') {
           question.options[prop] = question.options[prop](answers);
         }
       }

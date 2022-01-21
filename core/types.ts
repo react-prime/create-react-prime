@@ -3,6 +3,8 @@ import {
   Answers, CheckboxQuestion, InputQuestion, InputQuestionOptions, ListQuestion, NumberQuestion,
 } from 'inquirer';
 import { OptionValues } from 'commander';
+import { JsonPrimitive, SetRequired } from 'type-fest';
+
 
 export * from 'generated/types';
 
@@ -14,9 +16,12 @@ export interface Newable<T = any> extends Function {
   new (...args: i.AnyArr): T;
 }
 
+type WhenFn = (answers: Answers) => boolean;
+
 export interface Question {
   options: i.QuestionOptions;
   answer: (answers: Answers) => void | Promise<void>;
+  when?: WhenFn;
 }
 
 export interface Step {
@@ -24,7 +29,7 @@ export interface Step {
   after: string;
   on: (args: i.InstallStepArgs) => void | Promise<void>;
   spinner: i.SpinnerOptions;
-  when?: (answers: Answers) => boolean;
+  when?: WhenFn;
 }
 
 export interface Installer {
@@ -34,6 +39,19 @@ export interface Installer {
   beforeInstall?: () => void | Promise<void>;
   afterInstall?: () => void | Promise<void>;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface CLIOptionBase<T extends JsonPrimitive> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  on: (flags: i.Opts, options: Record<string, any>) => void;
+  getName(): string | undefined;
+}
+
+export interface CLIOption<T extends JsonPrimitive> extends
+  SetRequired<i.CLIOptionOptions<T>, 'description' | 'defaultValue'>,
+  CLIOptionBase<T> {}
+
+export interface CLIOptionClass<T extends JsonPrimitive> extends Partial<CLIOptionBase<T>> {}
 
 export interface InstallerOptions {
   name: string;
@@ -47,7 +65,7 @@ export type InstallStepArgs = Omit<InstallerOptions, 'steps' | 'questions'>;
 export type OSNames = 'windows' | 'mac' | 'linux';
 
 // eslint-disable-next-line max-len
-type QuestionOptionsBase = InputQuestionOptions & {
+interface QuestionOptionsBase extends InputQuestionOptions {
   beforeInstall?: boolean;
   afterInstall?: boolean;
   after?: string;
@@ -59,7 +77,14 @@ export type QuestionOptions = QuestionOptionsBase & (
   | NumberQuestion
   | ListQuestion
   | CheckboxQuestion
-)
+);
+
+export interface CLIOptionOptions<T extends JsonPrimitive> {
+  flags: `-${string}, --${string}` | `-${string}, --${string} <${string}>`;
+  description?: string;
+  defaultValue?: T;
+  terminate?: boolean;
+}
 
 export interface StepOptions {
   name: string;
@@ -77,13 +102,13 @@ export interface SpinnerOptions {
 
 export type QuestionWhen = 'before' | 'after';
 
-export type QuestionsObj<T> = {
-  [key in QuestionWhen]: T;
-}
-
-export type JsonValues = string | number | boolean | { [key: string]: JsonValues } | JsonValues[];
-export type Json = Record<string, JsonValues>;
+export type QuestionsObj<T> = Record<QuestionWhen, T>;
 
 export interface Opts extends OptionValues {
-  boilerplate: string;
+  boilerplate?: string;
+  labela?: boolean;
+}
+
+export interface Settings {
+  labela: boolean;
 }

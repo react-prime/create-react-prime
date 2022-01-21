@@ -1,6 +1,9 @@
 import * as i from 'types';
 import path from 'path';
 import fs from 'fs';
+import type { JsonObject } from 'type-fest';
+import lowdb, { LowdbSync } from 'lowdb';
+import FileSync from 'lowdb/adapters/FileSync';
 
 import Util from 'core/Util';
 
@@ -8,12 +11,23 @@ import { getGeneratedFolder } from '../utils/generatedFolder';
 import { generateModulesArray } from './modulesArray.scripts';
 
 
-const FILE = path.resolve('core/generated/build.json');
+const BUILD_FILE_PATH = path.resolve('core/generated/build.json');
 
 class JSONGenerator {
-  private scripts: (() => i.Json | undefined)[] = [
+  private scripts: (() => JsonObject | undefined)[] = [
     generateModulesArray,
   ];
+  // CRP Build JSON file
+  private readonly buildDB: LowdbSync<i.BuildJSON> = lowdb((() => {
+    getGeneratedFolder();
+    return new FileSync(BUILD_FILE_PATH);
+  })(),
+  );
+
+
+  constructor() {
+    this.buildDB.defaults({}).write();
+  }
 
 
   build = (): void => {
@@ -30,35 +44,22 @@ class JSONGenerator {
     this.generateJSONType();
   }
 
-  private prettyStringify = (value: Record<string, unknown>): string => {
-    return JSON.stringify(value, null, 2);
-  }
-
-  private addToJSON = (obj: i.Json): void => {
-    if (!fs.existsSync(FILE)) {
-      fs.writeFileSync(FILE, this.prettyStringify(obj));
-    } else {
-      const util = new Util();
-      const json = util.parseJSONFile(FILE);
-
-      if (json != null) {
-        for (const key in obj) {
-          json[key] = obj[key];
-        }
-
-        fs.writeFileSync(FILE, this.prettyStringify(json));
-      }
+  private addToJSON = (obj: JsonObject): void => {
+    for (const key in obj) {
+      this.buildDB
+        .set(key, obj[key])
+        .write();
     }
   }
 
   private generateJSONType = (): void => {
     const util = new Util();
-    const json = util.parseJSONFile(FILE);
+    const json = util.parseJSONFile(BUILD_FILE_PATH);
 
     /* eslint-disable quotes */
     if (json != null) {
-      let typeStr = "import * as i from 'types';\n\n";
-      typeStr += 'export interface BuildJSON extends i.Json {';
+      let typeStr = "import type { JsonObject, ReadonlyDeep } from 'type-fest';\n\n";
+      typeStr += 'export type BuildJSON = JsonObject & ReadonlyDeep<{';
 
       for (const key in json) {
         const t = typeof json[key];
@@ -72,7 +73,7 @@ class JSONGenerator {
         }
       }
 
-      typeStr += '\n}\n';
+      typeStr += '\n}>\n';
       /* eslint-enable */
 
       fs.writeFileSync('core/generated/types.ts', typeStr);

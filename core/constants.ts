@@ -1,4 +1,9 @@
+import path from 'path';
+import os from 'os';
+
 export const LOG_PREFIX = 'crp';
+// Save a hidden CRP settings file to user's home directory to store settings between sessions
+export const SETTINGS_FILE_PATH = path.join(os.homedir(), '.crp.json');
 
 /** CLI argument name indices */
 export const ARG = {

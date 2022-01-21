@@ -1,9 +1,10 @@
 import * as i from 'types';
 import path from 'path';
+import fs from 'fs';
 import color from 'kleur';
 import { Answers } from 'inquirer';
 
-import { ERROR_TEXT } from 'core/constants';
+import { ERROR_TEXT, SETTINGS_FILE_PATH } from 'core/constants';
 import cliMgr from 'core/CLIMgr';
 import Logger from 'core/Logger';
 import StepList from 'core/StepList';
@@ -35,6 +36,11 @@ export default class CRPApp {
       },
     ],
   };
+
+
+  constructor() {
+    this.createSettingsFile();
+  }
 
 
   start = async (): Promise<void> => {
@@ -199,5 +205,15 @@ export default class CRPApp {
     }
 
     return stepList;
+  }
+
+
+  // Create file but do not overwrite if exists
+  private createSettingsFile = () => {
+    try {
+      fs.closeSync(fs.openSync(SETTINGS_FILE_PATH, 'a'));
+    } catch (e) {
+      new Logger().error(e);
+    }
   }
 }

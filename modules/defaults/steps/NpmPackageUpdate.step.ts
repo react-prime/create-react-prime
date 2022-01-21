@@ -1,5 +1,5 @@
-import * as i from 'types';
 import path from 'path';
+import type { PackageJson } from 'type-fest';
 
 import Util from 'core/Util';
 import { ERROR_TEXT } from 'core/constants';
@@ -20,7 +20,7 @@ import Logger from 'core/Logger';
 })
 export class NpmPackageUpdateStep {
   async on(): Promise<void> {
-    const pkg = this.getNPMPackage().json as PackageJson;
+    const pkg = this.getNPMPackage().json;
 
     // Overwrite boilerplate defaults
     pkg.name = cliMgr.getProjectName();
@@ -28,13 +28,16 @@ export class NpmPackageUpdateStep {
     pkg.description = `Repository of ${cliMgr.getProjectName()}.`;
     pkg.author = 'Label A [labela.nl]';
     pkg.keywords = [];
-    pkg.repository = { url: '' };
+    pkg.repository = {
+      type: 'git',
+      url: '',
+    };
 
     await this.write(pkg);
   }
 
 
-  private getNPMPackage(): { path: string; json: i.Json } {
+  private getNPMPackage(): { path: string; json: PackageJson } {
     const util = new Util();
     const projectPkgPath = path.resolve(`${cliMgr.getProjectName()}/package.json`);
     const pkgStr = util.parseJSONFile(projectPkgPath);
@@ -56,13 +59,4 @@ export class NpmPackageUpdateStep {
 
     await util.asyncWriteFile(path, JSON.stringify(npmPkg, null, 2));
   }
-}
-
-export interface PackageJson {
-  scripts?: Record<string, string>;
-  repository?: {
-    url: string;
-    [key: string]: string;
-  };
-  [key: string]: i.JsonValues | undefined;
 }
