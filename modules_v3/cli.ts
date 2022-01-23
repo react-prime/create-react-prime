@@ -1,8 +1,6 @@
-#!/usr/bin/env ts-node
-import commander, { Command } from 'commander';
+import { Command } from 'commander';
 
 import * as utils from './utils';
-import state from './state';
 
 type CLIOptions = {
   boilerplate?: string;
@@ -11,10 +9,11 @@ type CLIOptions = {
 declare module 'commander' {
   export interface Command {
     opts(): CLIOptions;
+    action(fn: (flags: CLIOptions) => void | Promise<void>): this;
   }
 }
 
-const ARGS = {
+export const ARGS = {
   ProjectName: 0,
 };
 
@@ -26,14 +25,11 @@ cli.version(process.env.VERSION!);
 cli
   .option('-b, --boilerplate <boilerplate>')
   .description(`Install chosen boilerplate. Options: ${utils.getBoilerplates()}`)
-  .action((flags, options) => {
+  .action((flags) => {
     console.log(flags);
-    console.log(options);
   });
 
 // Parse user input
 cli.parse(process.argv);
-
-const opts = cli.opts();
 
 export default cli;
