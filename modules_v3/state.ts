@@ -19,24 +19,27 @@ type DraftFn<K extends StateKeys> =
   | State[K];
 
 // State as map with immer setter
-const state = (() => {
-  const map = new Map<StateKeys, State[StateKeys]>();
+const map = new Map<StateKeys, State[StateKeys]>();
 
+const state = (() => {
   map.set('answers', {});
 
   const set = async <K extends StateKeys, F extends DraftFn<K>>(key: K, fn: F): Promise<State[K]> => {
     if (typeof fn !== 'string') {
       /** @TODO fix Promise type issue */
       // @ts-ignore
-      return await produce<Promise<State[K]>>(map.get(key), fn);
+      const next = await produce<Promise<State[K]>>(map.get(key), fn);
+      map.set(key, next);
     } else {
       map.set(key, fn);
-      return map.get(key) as State[K];
     }
+
+    return map.get(key) as State[K];
   };
 
   return {
-    get: map.get,
+    // Returning map.get as function fixes an out-of-sync receiver issue
+    get: (key: StateKeys) => map.get(key),
     set,
   };
 })();

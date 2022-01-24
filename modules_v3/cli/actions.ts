@@ -41,6 +41,6 @@ export async function boilerplate(flags: CLIOptions, cli: Command): Promise<void
     const installer = installersMap.get(answers.boilerplate);
     installer(answers);
   } catch (err) {
-    logger.error(`Unable to find installer for the selected boilerplate '${answers.boilerplate}'!`, err);
+    logger.error(`Unable to find installer for the selected boilerplate '${answers?.boilerplate}'!\n`, err);
   }
 }

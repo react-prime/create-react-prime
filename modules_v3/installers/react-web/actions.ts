@@ -18,7 +18,7 @@ export async function clone(url: string): Promise<void> {
     await promisify(exec)(`git clone ${url} ${projectName}`);
     spinner.succeed(`🚚  Cloned '${boilerplate}' into '${projectName}'!`);
   } catch (err) {
-    spinner.fail('Something went wrong while cloning. Aborting.');
+    spinner.fail(`Something went wrong while cloning '${boilerplate}' into '${projectName}'. Aborting.`);
     logger.error(err);
   }
 }
