@@ -1,6 +1,6 @@
 export type CLIOptions = {
   boilerplate?: string;
-}
+};
 
 declare module 'commander' {
   export interface Command {

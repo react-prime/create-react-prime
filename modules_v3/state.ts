@@ -9,14 +9,14 @@ type State = {
     cms?: string;
     modules?: string[];
     openInEditor?: string;
-  };
-}
+  }
+};
 
-type StateKeys = keyof State
+type StateKeys = keyof State;
 
 type DraftFn<K extends StateKeys> =
   | ((draft: State[K]) => State[K] | Promise<State[K]>)
-  | State[K]
+  | State[K];
 
 // State as map with immer setter
 const state = (() => {
