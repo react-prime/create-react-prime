@@ -1,16 +1,55 @@
+import { produce } from 'immer';
+
+
 type State = {
-  projectName?: string;
-  renderType?: 'ssr' | 'csr';
-  boilerplate?: 'react-web' | 'react-mobile';
+  answers: {
+    projectName?: string;
+    renderType?: string;
+    boilerplate?: string;
+    cms?: string;
+    modules?: string[];
+    openInEditor?: string;
+  };
 }
 
-// Monkeypatch maps to return correct types
-const state = (() => {
-  const map = new Map<keyof State, State[keyof State]>();
-  const set = <K extends keyof State>(k: K, v: State[K]) => map.set(k, v);
-  const get = <K extends keyof State>(k: K): State[K] => (map as Map<K, State[K]>).get(k);
+type StateKeys = keyof State
 
-  return { ...map, set, get };
+type DraftFn<K extends StateKeys> =
+  | ((draft: State[K]) => State[K] | Promise<State[K]>)
+  | State[K]
+
+// State as map with immer setter
+const state = (() => {
+  const map = new Map<StateKeys, State[StateKeys]>();
+
+  map.set('answers', {});
+
+  const set = async <K extends StateKeys, F extends DraftFn<K>>(key: K, fn: F): Promise<State[K]> => {
+    if (typeof fn !== 'string') {
+      /** @TODO fix Promise type issue */
+      // @ts-ignore
+      return await produce<Promise<State[K]>>(map.get(key), fn);
+    } else {
+      map.set(key, fn);
+      return map.get(key) as State[K];
+    }
+  };
+
+  return {
+    get: map.get,
+    set,
+  };
 })();
+
+/** TESTS */
+// state.set('answers', (answers) => {
+//   answers.boilerplate = '';
+//   return answers;
+// });
+
+// state.set('answers', { boilerplate: '' });
+
+// state.set('foo', 'bar');
+// state.set('foo', () => 'bar');
 
 export default state;

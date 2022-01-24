@@ -41,6 +41,7 @@
   "dependencies": {
     "camelcase": "6.3.0",
     "commander": "8.3.0",
+    "immer": "9.0.12",
     "inquirer": "8.2.0",
     "kleur": "4.1.4",
     "lowdb": "1.0.0",

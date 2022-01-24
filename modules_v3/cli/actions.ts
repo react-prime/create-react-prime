@@ -7,6 +7,7 @@ import * as question from '../questions';
 import { ARGS } from '../cli';
 import { getBoilerplates } from '../utils';
 import * as installers from '../installers';
+import state from '../state';
 
 type InstallersMap = Map<string, (answers: Answers) => Promise<void>>;
 
@@ -26,11 +27,20 @@ export async function boilerplate(flags: CLIOptions, cli: Command): Promise<void
     return;
   }
 
-  const answers: Answers = {};
+  const answers = await state.set('answers', async (answers) => {
+    answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
+    answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(answers);
 
-  answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
-  answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(answers);
+    return answers;
+  });
 
-  const installer = installersMap.get(answers.boilerplate);
-  installer(answers);
+
+  try {
+    const installer = installersMap.get(answers.boilerplate);
+    installer(answers);
+  } catch (err) {
+    console.error(`ERR: Unable to find installer for the selected boilerplate '${answers.boilerplate}'!`);
+    console.error(err);
+    process.exit(1);
+  }
 }

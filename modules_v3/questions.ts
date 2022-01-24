@@ -43,14 +43,14 @@ export const cms = () => question({
 });
 
 export const modules = () => question({
-  type: 'list',
-  name: 'What CMS will the project use?',
+  type: 'checkbox',
+  name: 'What extra modules would you like to install?',
   choices: [{
     name: 'Skip',
     value: null,
   }, {
-    name: 'Contentful',
-    value: 'contentful',
+    name: 'API Helper',
+    value: 'api',
   }],
   default: 0,
 });

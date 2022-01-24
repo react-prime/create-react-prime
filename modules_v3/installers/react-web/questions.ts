@@ -1,23 +1,23 @@
-import type { Answers } from 'inquirer';
-
-import type { BaseAnswers } from '../../types';
 import * as question from '../../questions';
+import state from '../../state';
 import * as actions from './actions';
 
-async function questions({ projectName, boilerplate }: BaseAnswers): Promise<void> {
-  const answers: Answers = {};
+async function questions(): Promise<void> {
+  await state.set('answers', async (answers) => {
+    answers.renderType = await question.rendering();
+    answers.cms = await question.cms();
+    answers.modules = await question.modules();
 
-  answers.rendering = await question.rendering();
-  answers.cms = await question.cms();
-  answers.modules = await question.modules();
+    return answers;
+  });
 
-  await actions.clone(
-    'https://github.com/react-prime/react-prime.git',
-    projectName,
-    boilerplate,
-  );
+  await actions.clone('https://github.com/react-prime/react-prime.git');
 
-  answers.openInEditor = await question.openInEditor();
+  await state.set('answers', async (answers) => {
+    answers.openInEditor = await question.openInEditor();
+
+    return answers;
+  });
 }
 
 export default questions;
