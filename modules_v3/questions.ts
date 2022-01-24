@@ -46,9 +46,6 @@ export const modules = () => question({
   type: 'checkbox',
   name: 'What extra modules would you like to install?',
   choices: [{
-    name: 'Skip',
-    value: null,
-  }, {
     name: 'API Helper',
     value: 'api',
   }],
