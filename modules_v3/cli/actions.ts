@@ -2,7 +2,6 @@ import type { Command } from 'commander';
 import type { Answers } from 'inquirer';
 import camelcase from 'camelcase';
 
-import type { CLIOptions } from './types';
 import * as question from '../questions';
 import { ARGS } from '../cli';
 import { getBoilerplates } from '../utils';
@@ -23,10 +22,10 @@ const installersMap: InstallersMap = (() => {
   return map;
 })();
 
-export async function boilerplate(flags: CLIOptions, cli: Command): Promise<void> {
+export async function installBoilerplate(cli: Command): Promise<void> {
   // Only run installer if this is explicitely what the user wants
   // Other flags should not trigger the installation process
-  if (!flags.boilerplate && Object.keys(flags).length > 0) {
+  if (!cli.opts().boilerplate && Object.keys(cli.opts()).length > 0) {
     return;
   }
 
@@ -39,7 +38,7 @@ export async function boilerplate(flags: CLIOptions, cli: Command): Promise<void
 
   try {
     const installer = installersMap.get(answers.boilerplate);
-    installer(answers);
+    await installer(answers);
   } catch (err) {
     logger.error(`Unable to find installer for the selected boilerplate '${answers?.boilerplate}'!\n`, err);
   }
