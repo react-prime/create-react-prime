@@ -1,22 +1,16 @@
-import { prompt, DistinctQuestion, Answers } from 'inquirer';
+import type { Answers } from 'inquirer';
+import { checkboxQuestion, listQuestion, question } from './base';
 
-
-const question = async <Q extends DistinctQuestion>(obj: Q): Promise<string> => {
-  const answers = await prompt([obj]);
-  const { name } = obj;
-
-  return answers[name];
-};
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-export const boilerplate = () => question({
+export const boilerplate = () => listQuestion({
   type: 'list',
   name: 'What boilerplate would you like to install?',
   choices: ['react-web', 'react-mobile'],
   default: 0,
 });
 
-export const rendering = () => question({
+export const rendering = () => listQuestion({
   type: 'list',
   name: 'How should the app be rendered?',
   choices: ['client-side', 'server-side + static'],
@@ -29,7 +23,7 @@ export const projectName = (answers: Answers) => question({
   default: answers.boilerplate,
 });
 
-export const cms = () => question({
+export const cms = () => listQuestion({
   type: 'list',
   name: 'What CMS will the project use?',
   choices: [{
@@ -42,8 +36,7 @@ export const cms = () => question({
   default: 0,
 });
 
-export const modules = () => question({
-  type: 'checkbox',
+export const modules = () => checkboxQuestion({
   name: 'What extra modules would you like to install?',
   choices: [{
     name: 'API Helper',
@@ -52,7 +45,7 @@ export const modules = () => question({
   default: 0,
 });
 
-export const openInEditor = () => question({
+export const openInEditor = () => listQuestion({
   type: 'list',
   name: 'Open project in editor?',
   choices: [{
