@@ -1,0 +1,36 @@
+import type { Command } from 'commander';
+import type { Answers } from 'inquirer';
+import camelcase from 'camelcase';
+
+import type { CLIOptions } from './types';
+import * as question from '../questions';
+import { ARGS } from '../cli';
+import { getBoilerplates } from '../utils';
+import * as installers from '../installers';
+
+type InstallersMap = Map<string, (answers: Answers) => Promise<void>>;
+
+const installersMap: InstallersMap = (() => {
+  const map: InstallersMap = new Map();
+
+  for (const boilerplate of getBoilerplates()) {
+    const exportName = `${camelcase(boilerplate)}Installer`;
+    map.set(boilerplate, installers[exportName]?.default); // eslint-disable-line import/namespace
+  }
+
+  return map;
+})();
+
+export async function boilerplate(flags: CLIOptions, cli: Command): Promise<void> {
+  if (!flags.boilerplate && Object.keys(flags).length > 0) {
+    return;
+  }
+
+  const answers: Answers = {};
+
+  answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
+  answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(answers);
+
+  const installer = installersMap.get(answers.boilerplate);
+  installer(answers);
+}

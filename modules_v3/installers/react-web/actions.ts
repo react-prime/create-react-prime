@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 import { promisify  } from 'util';
 import ora from 'ora';
 
-import { LOG_PREFIX } from '../../core/constants';
+import { LOG_PREFIX } from '../../../core/constants';
 
 export async function clone(url: string, name: string, boilerplate: string): Promise<void> {
   const spinner = ora(`🚚  Cloning '${boilerplate}' into '${name}'...`);

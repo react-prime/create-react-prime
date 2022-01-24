@@ -1,15 +1,10 @@
-import { Answers } from 'inquirer';
+import type { Answers } from 'inquirer';
 
-import * as question from '../questions';
+import type { BaseAnswers } from '../../types';
+import * as question from '../../questions';
 import * as actions from './actions';
 
-
-type BaseAnswers = {
-  projectName: string;
-  boilerplate: string;
-}
-
-export default async ({ projectName, boilerplate }: BaseAnswers): Promise<void> => {
+async function questions({ projectName, boilerplate }: BaseAnswers): Promise<void> {
   const answers: Answers = {};
 
   answers.rendering = await question.rendering();
@@ -23,4 +18,6 @@ export default async ({ projectName, boilerplate }: BaseAnswers): Promise<void> 
   );
 
   answers.openInEditor = await question.openInEditor();
-};
+}
+
+export default questions;
