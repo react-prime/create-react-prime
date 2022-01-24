@@ -5,7 +5,7 @@ import color from 'kleur';
 import { LOG_PREFIX } from 'core/constants';
 
 
-export default class Logger {
+class Logger {
   msg(...str: i.AnyArr): void {
     this.log('⚡️', ...str);
   }
@@ -30,3 +30,6 @@ export default class Logger {
     console.log(`${pre} ${first}`, ...rest);
   }
 }
+
+const logger = new Logger();
+export default logger;

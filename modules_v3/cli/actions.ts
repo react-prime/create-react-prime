@@ -8,6 +8,7 @@ import { ARGS } from '../cli';
 import { getBoilerplates } from '../utils';
 import * as installers from '../installers';
 import state from '../state';
+import logger from '../../core/Logger';
 
 type InstallersMap = Map<string, (answers: Answers) => Promise<void>>;
 
@@ -23,6 +24,8 @@ const installersMap: InstallersMap = (() => {
 })();
 
 export async function boilerplate(flags: CLIOptions, cli: Command): Promise<void> {
+  // Only run installer if this is explicitely what the user wants
+  // Other flags should not trigger the installation process
   if (!flags.boilerplate && Object.keys(flags).length > 0) {
     return;
   }
@@ -34,13 +37,10 @@ export async function boilerplate(flags: CLIOptions, cli: Command): Promise<void
     return answers;
   });
 
-
   try {
     const installer = installersMap.get(answers.boilerplate);
     installer(answers);
   } catch (err) {
-    console.error(`ERR: Unable to find installer for the selected boilerplate '${answers.boilerplate}'!`);
-    console.error(err);
-    process.exit(1);
+    logger.error(`Unable to find installer for the selected boilerplate '${answers.boilerplate}'!`, err);
   }
 }

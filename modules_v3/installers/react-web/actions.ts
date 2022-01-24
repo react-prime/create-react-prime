@@ -3,6 +3,7 @@ import { promisify  } from 'util';
 import ora from 'ora';
 
 import { LOG_PREFIX } from '../../../core/constants';
+import logger from '../../../core/Logger';
 import state from '../../state';
 
 export async function clone(url: string): Promise<void> {
@@ -18,7 +19,6 @@ export async function clone(url: string): Promise<void> {
     spinner.succeed(`🚚  Cloned '${boilerplate}' into '${projectName}'!`);
   } catch (err) {
     spinner.fail('Something went wrong while cloning. Aborting.');
-    console.error(err);
-    process.exit(1);
+    logger.error(err);
   }
 }
