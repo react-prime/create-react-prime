@@ -3,6 +3,7 @@ import * as question from '../../questions';
 import state from '../../state';
 import * as actions from '../actions';
 
+
 async function installer(): Promise<void> {
   await state.set('answers', async (answers) => {
     answers.renderType = await question.rendering();

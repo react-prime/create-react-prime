@@ -9,6 +9,7 @@ import * as installers from '../installers';
 import state from '../state';
 import logger from '../../core/Logger';
 
+
 type InstallersMap = Map<string, (answers: Answers) => Promise<void>>;
 
 const installersMap: InstallersMap = (() => {
