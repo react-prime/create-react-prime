@@ -1,5 +1,4 @@
 import type { Command } from 'commander';
-import type { Answers } from 'inquirer';
 import camelcase from 'camelcase';
 
 import * as question from '../questions';
