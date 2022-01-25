@@ -4,6 +4,9 @@
   "description": "",
   "author": "Label A [labela.nl]",
   "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
   "scripts": {
     "build": "npm run build:scripts && NODE_ENV=production node esbuild.app.config.js",
     "build:scripts": "node esbuild.scripts.config.js",
@@ -11,16 +14,17 @@
     "dev": "rm -rf testingname/ testing-name/ && npm run build && node dist/main.js testing-name",
     "lint": "eslint --ext .ts --ext .tsx modules/",
     "typecheck": "tsc --noEmit",
-    "test": "NODE_ENV=test jest",
+    "test": "vitest --reporter verbose --root ./modules_v3",
+    "test:run": "npm t -- --run",
+    "test:cov": "npm t -- --coverage",
     "test:watch": "npm t -- --watch",
-    "test:full": "npm run lint; npm run typecheck; npm t",
+    "test:full": "npm run lint; npm run typecheck; npm run test:run",
     "prepublishOnly": "npm run test:full && npm run build",
     "pub:patch": "npm version patch; npm publish; git push",
     "pub:minor": "npm version minor; npm publish; git push",
     "pub:major": "npm version major; npm publish; git push",
     "cs:add": "npx changeset",
-    "cs:ver": "npx changeset version",
-    "v3:cli": "ts-node modules_v3/cli.ts"
+    "cs:ver": "npx changeset version"
   },
   "main": "dist/main.js",
   "bin": {
@@ -64,6 +68,7 @@
     "tsafe": "0.9.0",
     "type-fest": "2.10.0",
     "typescript": "4.5.5",
-    "typescript-eslint-parser": "22.0.0"
+    "typescript-eslint-parser": "22.0.0",
+    "vitest": "0.2.3"
   }
 }
