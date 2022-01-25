@@ -15,7 +15,7 @@ type State = {
 type StateKeys = keyof State;
 
 type DraftFn<K extends StateKeys> =
-  | ((draft: State[K]) => State[K] | Promise<State[K]>)
+  | ((draft: State[K]) => void)
   | State[K];
 
 // State as map with immer setter

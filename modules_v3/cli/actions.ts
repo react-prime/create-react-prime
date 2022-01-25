@@ -31,10 +31,12 @@ export async function installBoilerplate(cli: Command): Promise<void> {
 
   const answers = await state.set('answers', async (answers) => {
     answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
-    answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(answers);
-
-    return answers;
+    answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(answers.boilerplate);
   });
+
+  if (!answers.boilerplate || !answers.projectName) {
+    logger.error('No boilerplate or project name found!', answers.boilerplate, answers.projectName);
+  }
 
   try {
     const installer = installersMap.get(answers.boilerplate);

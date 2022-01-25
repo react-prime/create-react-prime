@@ -2,10 +2,10 @@ import { prompt, type DistinctQuestion, type CheckboxQuestion, type ListQuestion
 
 
 export const question = async <Q extends DistinctQuestion>(obj: Q): Promise<string> => {
-  const answers = await prompt([obj]);
+  const answer = await prompt([obj]);
   const { name } = obj;
 
-  return answers[name];
+  return answer[name];
 };
 
 export const checkboxQuestion = async <Q extends Omit<CheckboxQuestion, 'type'>>(obj: Q): Promise<string[]> => {
@@ -13,10 +13,10 @@ export const checkboxQuestion = async <Q extends Omit<CheckboxQuestion, 'type'>>
     ...obj,
     type: 'checkbox',
   };
-  const answers = await prompt([options]);
+  const answer = await prompt([options]);
   const { name } = options;
 
-  return answers[name];
+  return answer[name];
 };
 
 export const listQuestion = async <Q extends Omit<ListQuestion, 'type'>>(obj: Q): Promise<string | null> => {
@@ -24,8 +24,8 @@ export const listQuestion = async <Q extends Omit<ListQuestion, 'type'>>(obj: Q)
     ...obj,
     type: 'list',
   };
-  const answers = await prompt([options]);
+  const answer = await prompt([options]);
   const { name } = options;
 
-  return answers[name];
+  return answer[name];
 };

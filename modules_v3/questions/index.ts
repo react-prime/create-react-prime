@@ -1,5 +1,4 @@
-import type { Answers } from 'inquirer';
-import { checkboxQuestion, listQuestion, question } from './base';
+import { checkboxQuestion, listQuestion, question } from './templates';
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -17,10 +16,10 @@ export const rendering = () => listQuestion({
   default: 0,
 });
 
-export const projectName = (answers: Answers) => question({
+export const projectName = (projectName: string) => question({
   type: 'input',
   name: 'Project name',
-  default: answers.boilerplate,
+  default: projectName,
 });
 
 export const cms = () => listQuestion({
