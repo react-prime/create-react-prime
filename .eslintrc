@@ -82,6 +82,7 @@
       "after": true
     }],
 
+    "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/semi": ["error", "always"],
     "@typescript-eslint/no-var-requires": 0,

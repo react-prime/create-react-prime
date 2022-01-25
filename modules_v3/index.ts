@@ -1,21 +1,26 @@
 import path from 'path';
 import color from 'kleur';
 
-import logger from '../core/Logger';
+import logger from './Logger';
 import { bootstrap as bootstrapCLI } from './cli';
+import * as actions from './cli/actions';
 import instructions from './installers/instructions';
 import state from './state';
-
 
 async function main() {
   start();
   await bootstrapCLI();
-  close();
 
+  // Start CLI actions
+  for await (const action of Object.values(actions)) {
+    await action();
+  }
+
+  close();
   process.exit();
 }
 
-function start() {
+export function start(): void {
   const packageName = color.yellow().bold(process.env.NAME);
   const version = process.env.VERSION;
 
@@ -23,7 +28,7 @@ function start() {
   logger.whitespace();
 }
 
-function close() {
+export function close(): void {
   const { projectName, boilerplate } = state.get('answers');
   const projectPath = path.resolve(projectName);
   const styledProjectName = color.yellow().bold(projectName);

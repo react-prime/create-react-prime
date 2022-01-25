@@ -1,4 +1,4 @@
-import logger from '../../../core/Logger';
+import logger from '../../Logger';
 import * as question from '../../questions';
 import state from '../../state';
 import * as actions from '../actions';

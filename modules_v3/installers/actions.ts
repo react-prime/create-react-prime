@@ -3,7 +3,7 @@ import { promisify  } from 'util';
 import ora from 'ora';
 
 import { LOG_PREFIX } from '../../core/constants';
-import logger from '../../core/Logger';
+import logger from '../Logger';
 import state from '../state';
 
 

@@ -1,12 +1,11 @@
-import type { Command } from 'commander';
 import camelcase from 'camelcase';
 
 import * as question from '../questions';
-import { ARGS } from '../cli';
+import cli, { ARGS } from '../cli';
 import { getBoilerplates } from '../utils';
 import * as installers from '../installers';
 import state from '../state';
-import logger from '../../core/Logger';
+import logger from '../Logger';
 
 
 type InstallersMap = Map<string, () => Promise<void>>;
@@ -22,7 +21,7 @@ const installersMap: InstallersMap = (() => {
   return map;
 })();
 
-export async function installBoilerplate(cli: Command): Promise<void> {
+export async function installBoilerplate(): Promise<void> {
   // Only run installer if this is explicitely what the user wants
   // Other flags should not trigger the installation process
   if (!cli.opts().boilerplate && Object.keys(cli.opts()).length > 0) {
