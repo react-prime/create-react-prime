@@ -10,7 +10,7 @@ import state from '../state';
 import logger from '../../core/Logger';
 
 
-type InstallersMap = Map<string, (answers: Answers) => Promise<void>>;
+type InstallersMap = Map<string, () => Promise<void>>;
 
 const installersMap: InstallersMap = (() => {
   const map: InstallersMap = new Map();
@@ -41,7 +41,7 @@ export async function installBoilerplate(cli: Command): Promise<void> {
 
   try {
     const installer = installersMap.get(answers.boilerplate);
-    await installer(answers);
+    await installer();
   } catch (err) {
     logger.error(`Unable to find installer for the selected boilerplate '${answers?.boilerplate}'!\n`, err);
   }
