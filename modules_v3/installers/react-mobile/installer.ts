@@ -1,7 +1,7 @@
 import logger from '../../../core/Logger';
 import * as question from '../../questions';
 import state from '../../state';
-import * as actions from './actions';
+import * as actions from '../actions';
 
 async function installer(): Promise<void> {
   logger.whitespace();
