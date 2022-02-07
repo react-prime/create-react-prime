@@ -1,14 +1,10 @@
 import { produce } from 'immer';
 
+import { map } from './model';
 import type { State, StateKeys, DraftFn } from './types';
 
 
-// State as map with immer setter
-const map = new Map<StateKeys, State[StateKeys]>();
-
 const state = (() => {
-  map.set('answers', {});
-
   async function set<K extends StateKeys, F extends DraftFn<K>>(key: K, fn: F): Promise<State[K]> {
     if (typeof fn === 'function') {
       /** @TODO fix map.get type issue */
@@ -43,6 +39,7 @@ const state = (() => {
   };
 })();
 
+// Used for testing only
 export const __DO_NOT_USE__STATE_MAP__ = map;
 
 export default state;
