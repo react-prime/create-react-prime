@@ -20,6 +20,8 @@ export function createSpinner<Action extends ActionFn>(
   spinner.prefixText = LOG_PREFIX;
 
   async function start() {
+    spinner.start();
+
     try {
       await action();
       spinner.succeed(text.success);
