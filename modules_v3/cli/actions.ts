@@ -4,8 +4,8 @@ import * as question from '../questions';
 import cli, { ARGS } from '../cli';
 import { getBoilerplates } from '../utils';
 import * as installers from '../installers';
-import state from '../state';
 import logger from '../Logger';
+import prompt from '../questions/prompt';
 
 
 type InstallersMap = Map<string, () => Promise<void>>;
@@ -28,10 +28,11 @@ export async function installBoilerplate(): Promise<void> {
     return;
   }
 
-  const answers = await state.set('answers', async (answers) => {
-    answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
-    answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(answers.boilerplate);
-  });
+  let answers = await prompt('boilerplate', cli.opts().boilerplate || question.boilerplate);
+  answers = await prompt(
+    'projectName',
+    cli.args[ARGS.ProjectName] || (() => question.projectName(answers.boilerplate)),
+  );
 
   if (!answers.boilerplate || !answers.projectName) {
     logger.error('No boilerplate or project name found!', answers.boilerplate, answers.projectName);

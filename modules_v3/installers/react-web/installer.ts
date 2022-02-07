@@ -1,23 +1,19 @@
 import logger from '../../Logger';
 import * as question from '../../questions';
-import state from '../../state';
-import * as actions from '../actions';
+import prompt from '../../questions/prompt';
+import actions from './actions';
 
 
 async function installer(): Promise<void> {
-  await state.set('answers', async (answers) => {
-    answers.renderType = await question.rendering();
-    answers.cms = await question.cms();
-    answers.modules = await question.modules();
-  });
+  await prompt('renderType', question.rendering);
+  await prompt('cms', question.cms);
+  await prompt('modules', question.modules);
 
   logger.whitespace();
-  await actions.clone('https://github.com/react-prime/react-prime.git');
+  await actions();
   logger.whitespace();
 
-  await state.set('answers', async (answers) => {
-    answers.openInEditor = await question.openInEditor();
-  });
+  await prompt('openInEditor', question.openInEditor);
 }
 
 export default installer;
