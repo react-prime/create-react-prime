@@ -6,16 +6,19 @@ import { LOG_PREFIX } from './constants';
 
 
 class Logger {
+  readonly warningMsg = color.yellow('WRN');
+  readonly errorMsg = `${color.red('ERR!')} Installation aborted:`;
+
   msg(...str: i.AnyArr): void {
     this.log('⚡️', ...str);
   }
 
   warning(...reason: i.AnyArr): void {
-    this.log(color.yellow('WRN'), ...reason);
+    this.log(this.warningMsg, ...reason);
   }
 
   error(...reason: i.AnyArr): void {
-    this.log(`${color.red('ERR!')} Installation aborted:`, ...reason);
+    this.log(this.errorMsg, ...reason);
     process.exit(1);
   }
 

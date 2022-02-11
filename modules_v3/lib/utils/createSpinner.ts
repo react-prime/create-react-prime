@@ -20,7 +20,8 @@ export function createSpinner<Action extends ActionFn>(
       spinner.succeed(text.success);
     } catch (err) {
       spinner.fail(text.fail);
-      logger.error(err);
+      logger.whitespace();
+      logger.error('Something went wrong during the installation process.\n', err);
     }
   }
 

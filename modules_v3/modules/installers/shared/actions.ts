@@ -12,16 +12,26 @@ import { ERROR_TEXT } from '../../../lib/constants';
 
 const asyncExec = util.promisify(cp.exec);
 const asyncWrite = util.promisify(fs.writeFile);
+const asyncExists = util.promisify(fs.exists);
 
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
+  async function action() {
+    // Check if directory already exists
+    if (await asyncExists(projectName)) {
+      throw Error(ERROR_TEXT.DirectoryExists.replace('%s', projectName));
+    }
+
+    await asyncExec(`git clone ${url} ${projectName}`);
+  }
+
   const spinner = createSpinner(
-    () => asyncExec(`git clone ${url} ${projectName}`),
+    () => action(),
     {
       start: `🚚  Cloning '${boilerplate}' into '${projectName}'...`,
       success: `🚚  Cloned '${boilerplate}' into '${projectName}'!`,
-      fail: `Something went wrong while cloning '${boilerplate}' into '${projectName}'. Aborting.`,
+      fail: `🚚  Something went wrong while cloning '${boilerplate}' into '${projectName}'.`,
     },
   );
 
@@ -36,7 +46,7 @@ export async function npmInstall(): Promise<void> {
     {
       start: '📦  Installing packages...',
       success: '📦  Installed packages!',
-      fail: `Something went wrong while NPM installing '${projectName}'. Aborting.`,
+      fail: `📦  Something went wrong while NPM installing '${projectName}'.`,
     },
   );
 
@@ -97,7 +107,7 @@ export async function npmPackageUpdate(): Promise<void> {
     {
       start: '✏️  Updating package.json...',
       success: '✏️  Updated package.json!',
-      fail: `Something went wrong while updating package.json for '${projectName}'. Aborting.`,
+      fail: `✏️  Something went wrong while updating package.json for '${projectName}'.`,
     },
   );
 
@@ -112,7 +122,7 @@ export async function cleanup(): Promise<void> {
     {
       start: '🧹  Cleaning up...',
       success: '🧹  Cleaned up!',
-      fail: `Something went wrong while cleaning up files for '${projectName}'. Aborting.`,
+      fail: `🧹  Something went wrong while cleaning up files for '${projectName}'.`,
     },
   );
 
