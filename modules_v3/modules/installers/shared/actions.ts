@@ -103,3 +103,18 @@ export async function npmPackageUpdate(): Promise<void> {
 
   await spinner.start();
 }
+
+export async function cleanup(): Promise<void> {
+  const { projectName } = state.answers;
+
+  const spinner = createSpinner(
+    () => asyncExec(`rm -rf ${projectName}/.git ${projectName}/.travis.yml`),
+    {
+      start: '🧹  Cleaning up...',
+      success: '🧹  Cleaned up!',
+      fail: `Something went wrong while cleaning up files for '${projectName}'. Aborting.`,
+    },
+  );
+
+  await spinner.start();
+}
