@@ -1,4 +1,4 @@
-const instructions = {
+export const npmInstructions = {
   quickstart: ['npm start'],
   allCommands: [
     {
@@ -15,5 +15,3 @@ const instructions = {
     },
   ],
 };
-
-export default instructions;

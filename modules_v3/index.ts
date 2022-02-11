@@ -1,11 +1,12 @@
 import path from 'path';
 import color from 'kleur';
 
-import logger from './Logger';
+import logger from './lib/logger';
 import { bootstrap as bootstrapCLI } from './cli';
 import * as actions from './cli/actions';
-import instructions from './installers/instructions';
-import state from './state';
+import { npmInstructions } from './modules/installers/shared/instructions';
+import state from './lib/state';
+
 
 async function main() {
   start();
@@ -47,7 +48,7 @@ export function close(): void {
 
   console.info(`  cd ${projectName}`);
 
-  for (const str of instructions.quickstart) {
+  for (const str of npmInstructions.quickstart) {
     console.info(`  ${str}`);
   }
 
@@ -55,7 +56,7 @@ export function close(): void {
   logger.msg(`${color.bold().underline('All commands')}`);
   logger.whitespace();
 
-  for (const str of instructions.allCommands) {
+  for (const str of npmInstructions.allCommands) {
     console.info(formatText(str.cmd, str.desc));
   }
 }

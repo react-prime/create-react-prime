@@ -1,15 +1,8 @@
 import ora from 'ora';
 
-import { LOG_PREFIX } from './constants';
-import logger from './Logger';
+import { LOG_PREFIX } from '../constants';
+import logger from '../logger';
 
-
-/** @TODO */
-export function getBoilerplates(): string[] {
-  // fs.readdirSync();
-
-  return ['react-web', 'react-mobile'];
-}
 
 export function createSpinner<Action extends ActionFn>(
   action: Action,

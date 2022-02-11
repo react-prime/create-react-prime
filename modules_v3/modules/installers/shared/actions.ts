@@ -1,8 +1,8 @@
 import { exec } from 'child_process';
 import { promisify  } from 'util';
 
-import state from '../state';
-import { createSpinner } from '../utils';
+import state from '../../../lib/state';
+import { createSpinner } from '../../../lib/utils';
 
 
 const asyncExec = promisify(exec);

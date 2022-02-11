@@ -1,6 +1,6 @@
 import { expect, it, describe, beforeEach } from 'vitest';
 
-import state from '../state';
+import state from '../lib/state';
 
 
 describe('State', () => {
