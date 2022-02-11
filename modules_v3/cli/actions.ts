@@ -5,7 +5,7 @@ import cli, { ARGS } from '../cli';
 import { getBoilerplates } from '../utils';
 import * as installers from '../installers';
 import logger from '../Logger';
-import prompt from '../questions/prompt';
+import state from '../state';
 
 
 type InstallersMap = Map<string, () => Promise<void>>;
@@ -28,20 +28,18 @@ export async function installBoilerplate(): Promise<void> {
     return;
   }
 
-  let answers = await prompt('boilerplate', cli.opts().boilerplate || question.boilerplate);
-  answers = await prompt(
-    'projectName',
-    cli.args[ARGS.ProjectName] || (() => question.projectName(answers.boilerplate)),
-  );
+  state.answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
+  state.answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(state.answers.boilerplate);
 
-  if (!answers.boilerplate || !answers.projectName) {
-    logger.error('No boilerplate or project name found!', answers.boilerplate, answers.projectName);
+  const { boilerplate, projectName } = state.answers;
+  if (!boilerplate || !projectName) {
+    logger.error('No boilerplate or project name found!', boilerplate, projectName);
   }
 
   try {
-    const installer = installersMap.get(answers.boilerplate);
+    const installer = installersMap.get(boilerplate);
     await installer();
   } catch (err) {
-    logger.error(`Unable to find installer for the selected boilerplate '${answers?.boilerplate}'!\n`, err);
+    logger.error(`Unable to find installer for the selected boilerplate '${boilerplate}'!\n`, err);
   }
 }

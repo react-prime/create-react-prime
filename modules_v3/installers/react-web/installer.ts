@@ -1,19 +1,19 @@
 import logger from '../../Logger';
 import * as question from '../../questions';
-import prompt from '../../questions/prompt';
+import state from '../../state';
 import actions from './actions';
 
 
 async function installer(): Promise<void> {
-  await prompt('renderType', question.rendering);
-  await prompt('cms', question.cms);
-  await prompt('modules', question.modules);
+  state.answers.renderType = await question.rendering();
+  state.answers.renderType = await question.cms();
+  state.answers.modules = await question.modules();
 
   logger.whitespace();
   await actions();
   logger.whitespace();
 
-  await prompt('openInEditor', question.openInEditor);
+  state.answers.openInEditor = await question.openInEditor();
 }
 
 export default installer;

@@ -29,7 +29,7 @@ export function start(): void {
 }
 
 export function close(): void {
-  const { projectName, boilerplate } = state.get('answers');
+  const { projectName, boilerplate } = state.answers;
   const projectPath = path.resolve(projectName);
   const styledProjectName = color.yellow().bold(projectName);
   const styledRepoName = color.dim(`(${boilerplate})`);

@@ -4,10 +4,11 @@ import { promisify  } from 'util';
 import state from '../state';
 import { createSpinner } from '../utils';
 
+
 const asyncExec = promisify(exec);
 
 export async function clone(url: string): Promise<void> {
-  const { boilerplate, projectName } = state.get('answers');
+  const { boilerplate, projectName } = state.answers;
 
   const spinner = createSpinner(
     {
@@ -22,7 +23,7 @@ export async function clone(url: string): Promise<void> {
 }
 
 export async function npmInstall(): Promise<void> {
-  const { projectName } = state.get('answers');
+  const { projectName } = state.answers;
 
   const spinner = createSpinner(
     {

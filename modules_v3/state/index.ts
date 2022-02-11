@@ -1,45 +1,8 @@
-import { produce } from 'immer';
-
-import { map } from './model';
-import type { State, StateKeys, DraftFn } from './types';
+import type { State } from './types';
 
 
-const state = (() => {
-  async function set<K extends StateKeys, F extends DraftFn<K>>(key: K, fn: F): Promise<State[K]> {
-    if (typeof fn === 'function') {
-      /** @TODO fix map.get type issue */
-      // @ts-ignore
-      const next: State[K] = await produce<Promise<State[K]>>(map.get(key), fn);
-      map.set(key, next);
-    } else {
-      map.set(key, fn);
-    }
-
-    return map.get(key) as State[K];
-  }
-
-  function setSync<K extends StateKeys, F extends DraftFn<K>>(key: K, fn: F): State[K] {
-    if (typeof fn === 'function') {
-      /** @TODO fix map.get type issue */
-      // @ts-ignore
-      const next = produce<State[K]>(map.get(key), fn);
-      map.set(key, next);
-    } else {
-      map.set(key, fn);
-    }
-
-    return map.get(key) as State[K];
-  }
-
-  return {
-    // Returning map.get as function fixes an out-of-sync receiver issue
-    get: (key: StateKeys) => map.get(key),
-    set,
-    setSync,
-  };
-})();
-
-// Used for testing only
-export const __DO_NOT_USE__STATE_MAP__ = map;
+const state: State = {
+  answers: {},
+};
 
 export default state;
