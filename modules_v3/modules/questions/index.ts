@@ -1,6 +1,11 @@
 import os from 'os';
+import fs from 'fs';
+import path from 'path';
 
+import type { ChoiceItem, EditorSearchItem } from '../../lib/state';
 import { checkboxQuestion, listQuestion, question } from './templates';
+import state from '../../lib/state';
+import { asyncExec } from '../../lib/utils/async';
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -74,12 +79,62 @@ export function modules() {
 }
 
 export function openInEditor() {
-  return listQuestion({
+  const choices: ChoiceItem[] = [];
+  const files = fs.readdirSync('/Applications/');
+
+  // Look for editors in the Applications folder
+  const editors: EditorSearchItem[] = [
+    {
+      name: 'Visual Studio Code',
+      search: 'visual studio',
+    },
+    {
+      name: 'Atom',
+      search: 'atom',
+    },
+    {
+      name: 'Sublime Text',
+      search: 'sublime',
+    },
+  ];
+
+  for (const file of files) {
+    const filePath = file.toLowerCase();
+
+    for (const editor of editors) {
+      if (filePath.includes(editor.search)) {
+        editor.path = file.replace(/(\s+)/g, '\\$1');
+      }
+    }
+  }
+
+  // Add found editors as choice
+  for (const editor of editors) {
+    if (editor.path) {
+      choices.push({
+        name: editor.name,
+        value: editor,
+      });
+    }
+  }
+
+  return listQuestion<EditorSearchItem>({
     name: 'Open project in editor?',
-    choices: [{
-      name: 'Skip',
-      value: null,
-    }],
+    choices: [
+      {
+        name: 'Skip',
+        value: null,
+      },
+      ...choices,
+    ],
+    when: os.type() === 'Darwin' && choices.length > 0,
   });
+}
+
+export async function answerOpenInEditor() {
+  const { projectName, openInEditor } = state.answers;
+  const dir = path.resolve(projectName);
+
+  await asyncExec(`open ${dir} -a ${openInEditor.path}`);
 }
 /* eslint-enable */

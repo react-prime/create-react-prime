@@ -2,9 +2,9 @@ import * as question from '../../questions';
 import logger from '../../../lib/logger';
 import state from '../../../lib/state';
 import * as actions from '../shared/actions';
+import { ERROR_TEXT } from '../../../lib/constants';
 
 import * as moduleActions from './actions';
-import { ERROR_TEXT } from '../../../lib/constants';
 
 
 async function installer(): Promise<void> {
@@ -32,6 +32,10 @@ async function installer(): Promise<void> {
 
   // Closing prompt
   state.answers.openInEditor = await question.openInEditor();
+
+  if (state.answers.openInEditor != null) {
+    await question.answerOpenInEditor();
+  }
 }
 
 export default installer;

@@ -8,7 +8,10 @@ export async function question<Q extends DistinctQuestion>(obj: Q): Promise<stri
   return answer[name];
 }
 
-export async function checkboxQuestion<Q extends Omit<CheckboxQuestion, 'type'>>(obj: Q): Promise<string[]> {
+export async function checkboxQuestion<
+  R extends Record<string, unknown>[] | string[] | null = string[],
+  Q extends Omit<CheckboxQuestion, 'type'> = Omit<CheckboxQuestion, 'type'>,
+>(obj: Q): Promise<R> {
   const options: CheckboxQuestion = {
     ...obj,
     type: 'checkbox',
@@ -19,7 +22,10 @@ export async function checkboxQuestion<Q extends Omit<CheckboxQuestion, 'type'>>
   return answer[name];
 }
 
-export async function listQuestion<Q extends Omit<ListQuestion, 'type'>>(obj: Q): Promise<string | null> {
+export async function listQuestion<
+  R extends Record<string, unknown> | string | null = string,
+  Q extends Omit<ListQuestion, 'type'> = Omit<ListQuestion, 'type'>,
+>(obj: Q): Promise<R> {
   const options: ListQuestion = {
     ...obj,
     type: 'list',

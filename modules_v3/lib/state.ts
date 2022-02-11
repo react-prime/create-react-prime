@@ -10,7 +10,18 @@ export type CRPAnswers = {
   boilerplate?: string;
   cms?: string;
   modules?: string[];
-  openInEditor?: string;
+  openInEditor?: EditorSearchItem;
+};
+
+export type ChoiceItem = {
+  name: string;
+  value: EditorSearchItem;
+};
+
+export type EditorSearchItem = {
+  name: string;
+  search: string;
+  path?: string;
 };
 
 

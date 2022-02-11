@@ -21,6 +21,10 @@ async function installer(): Promise<void> {
 
   // Closing prompt
   state.answers.openInEditor = await question.openInEditor();
+
+  if (state.answers.openInEditor != null) {
+    await question.answerOpenInEditor();
+  }
 }
 
 export default installer;
