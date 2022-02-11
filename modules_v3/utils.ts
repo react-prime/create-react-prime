@@ -12,8 +12,8 @@ export function getBoilerplates(): string[] {
 }
 
 export function createSpinner<Action extends ActionFn>(
-  text: SpinnerText,
   action: Action,
+  text: SpinnerText,
 ): CreateSpinner {
   const spinner = ora(text.start);
   spinner.color = 'yellow';

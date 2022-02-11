@@ -11,12 +11,12 @@ export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
   const spinner = createSpinner(
+    () => asyncExec(`git clone ${url} ${projectName}`),
     {
       start: `🚚  Cloning '${boilerplate}' into '${projectName}'...`,
       success: `🚚  Cloned '${boilerplate}' into '${projectName}'!`,
       fail: `Something went wrong while cloning '${boilerplate}' into '${projectName}'. Aborting.`,
     },
-    () => asyncExec(`git clone ${url} ${projectName}`),
   );
 
   await spinner.start();
@@ -26,12 +26,12 @@ export async function npmInstall(): Promise<void> {
   const { projectName } = state.answers;
 
   const spinner = createSpinner(
+    () => asyncExec(`npm --prefix ${projectName} install`),
     {
       start: '📦  Installing packages...',
       success: '📦  Installed packages!',
       fail: `Something went wrong while NPM installing '${projectName}'. Aborting.`,
     },
-    () => asyncExec(`npm --prefix ${projectName} install`),
   );
 
   await spinner.start();
