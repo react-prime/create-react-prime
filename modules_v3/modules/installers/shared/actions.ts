@@ -8,6 +8,7 @@ import { createSpinner } from '../../../lib/utils';
 import { ERROR_TEXT } from '../../../lib/constants';
 import { asyncExec, asyncExists, asyncWrite } from '../../../lib/utils/async';
 
+
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
@@ -32,6 +33,7 @@ export async function clone(url: string): Promise<void> {
   await spinner.start();
 }
 
+
 export async function npmInstall(): Promise<void> {
   const { projectName } = state.answers;
 
@@ -46,6 +48,7 @@ export async function npmInstall(): Promise<void> {
 
   await spinner.start();
 }
+
 
 export async function npmPackageUpdate(): Promise<void> {
   const { projectName } = state.answers;
@@ -107,6 +110,7 @@ export async function npmPackageUpdate(): Promise<void> {
 
   await spinner.start();
 }
+
 
 export async function cleanup(): Promise<void> {
   const { projectName } = state.answers;

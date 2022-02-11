@@ -1,3 +1,5 @@
+import os from 'os';
+
 import { checkboxQuestion, listQuestion, question } from './templates';
 
 
@@ -22,6 +24,27 @@ export function projectName(projectName: string) {
     type: 'input',
     name: 'Project name',
     default: projectName,
+    validate: (input: string) => {
+      // source: https://kb.acronis.com/content/39790
+      let illegalChars = new RegExp('');
+
+      switch (os.type()) {
+        case 'WINDOWS_NT':
+          illegalChars = /[\^\\/?*:|"<> ]+/;
+          break;
+        case 'Darwin':
+          // These are allowed but produce unwanted results
+          illegalChars = /[\/:]+/;
+          break;
+        case 'Linux':
+        default:
+          illegalChars = /[\/]+/;
+      }
+
+      const hasIllegalChars = illegalChars.test(input);
+
+      return !hasIllegalChars;
+    },
   });
 }
 
