@@ -15,4 +15,6 @@ export const ERROR_TEXT = {
   DirectoryExists: 'directory \'%s\' already exists.',
   InvalidSteps: 'Error in --skipSteps. %s is/are invalid. Available steps: %s',
   PkgNotFound: 'No package.json found in %s',
+  ProjectRename:
+    'Project name has been renamed to \'%s\'.\nRead more: https://github.com/facebook/react-native/issues/213.\n',
 };

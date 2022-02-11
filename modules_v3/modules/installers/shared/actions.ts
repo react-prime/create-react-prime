@@ -10,9 +10,9 @@ import { createSpinner } from '../../../lib/utils';
 import { ERROR_TEXT } from '../../../lib/constants';
 
 
-const asyncExec = util.promisify(cp.exec);
-const asyncWrite = util.promisify(fs.writeFile);
-const asyncExists = util.promisify(fs.exists);
+export const asyncExec = util.promisify(cp.exec);
+export const asyncWrite = util.promisify(fs.writeFile);
+export const asyncExists = util.promisify(fs.exists);
 
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;

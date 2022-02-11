@@ -11,6 +11,7 @@ async function installer(): Promise<void> {
 
   logger.whitespace();
 
+  // Installation process
   await actions.clone('https://github.com/react-prime/react-prime.git');
   await actions.npmInstall();
   await actions.npmPackageUpdate();
@@ -18,6 +19,7 @@ async function installer(): Promise<void> {
 
   logger.whitespace();
 
+  // Closing prompt
   state.answers.openInEditor = await question.openInEditor();
 }
 
