@@ -6,6 +6,7 @@ import { getInstallers } from '../../lib/utils';
 import * as installers from '../../modules/installers';
 import logger from '../../lib/logger';
 import state from '../../lib/state';
+import { ERROR_TEXT } from '../../lib/constants';
 
 
 type InstallersMap = Map<string, () => Promise<void>>;
@@ -36,6 +37,6 @@ export default async function installerEntry(): Promise<void> {
     const installer = installersMap.get(boilerplate);
     await installer();
   } catch (err) {
-    logger.error(`Unable to find installer for the selected boilerplate '${boilerplate}'!\n`, err);
+    logger.error(`${ERROR_TEXT.GenericError}\n`, boilerplate, err);
   }
 }
