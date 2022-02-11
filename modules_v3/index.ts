@@ -3,21 +3,28 @@ import color from 'kleur';
 
 import logger from './lib/logger';
 import { bootstrap as bootstrapCLI } from './cli';
-import * as actions from './cli/actions';
+import getAction from './cli/actions/entry';
 import { npmInstructions } from './modules/installers/shared/instructions';
 import state from './lib/state';
 
 
 async function main() {
+  // Show startup text
   start();
-  await bootstrapCLI();
 
-  // Start CLI actions
-  for await (const action of Object.values(actions)) {
-    await action();
-  }
+  // Parse CLI arguments
+  const cli = await bootstrapCLI();
 
+  // Find entry point for given CLI arguments
+  const action = getAction(cli.opts());
+
+  // Run action
+  await action();
+
+  // Show closing text
   close();
+
+  // Exit application
   process.exit();
 }
 

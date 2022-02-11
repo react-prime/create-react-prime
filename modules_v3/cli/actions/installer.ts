@@ -1,11 +1,11 @@
 import camelcase from 'camelcase';
 
-import * as question from '../modules/questions';
-import cli, { ARGS } from '../cli';
-import { getInstallers } from '../lib/utils';
-import * as installers from '../modules/installers';
-import logger from '../lib/logger';
-import state from '../lib/state';
+import * as question from '../../modules/questions';
+import cli, { ARGS } from '..';
+import { getInstallers } from '../../lib/utils';
+import * as installers from '../../modules/installers';
+import logger from '../../lib/logger';
+import state from '../../lib/state';
 
 
 type InstallersMap = Map<string, () => Promise<void>>;
@@ -21,13 +21,8 @@ const installersMap: InstallersMap = (() => {
   return map;
 })();
 
-export async function installerEntry(): Promise<void> {
-  // Only run installer if this is explicitely what the user wants
-  // Other flags should not trigger the installation process
-  if (!cli.opts().boilerplate && Object.keys(cli.opts()).length > 0) {
-    return;
-  }
-
+export default async function installerEntry(): Promise<void> {
+  // Prompt questions
   state.answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
   state.answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(state.answers.boilerplate);
 
@@ -36,6 +31,7 @@ export async function installerEntry(): Promise<void> {
     logger.error('No boilerplate or project name found!', boilerplate, projectName);
   }
 
+  // Trigger installer for given answer
   try {
     const installer = installersMap.get(boilerplate);
     await installer();
