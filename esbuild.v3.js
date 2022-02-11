@@ -1,5 +1,7 @@
+const fs = require('fs');
 const cp = require('child_process');
 const pkg = require('./package.json');
+const scripts = require('./scripts');
 
 const DEV = process.env.NODE_ENV == 'development';
 
@@ -12,9 +14,15 @@ function onBuildComplete() {
       stdio: 'inherit',
     });
   }
+
+  // Copy generated files
+  fs.copyFileSync('modules_v3/lib/generated/build.json', 'dist/build.json');
 }
 
 async function build() {
+  // Run all scripts
+  scripts.run();
+
   await require('esbuild').build({
     entryPoints: [
       'modules_v3/index.ts',

@@ -8,8 +8,8 @@ reactprimessr
 reactprimenative
 dist
 coverage
-core/generated
+generated/
 
 testing*
 crptest*
-core/scripts/**.js
+**/*.js
