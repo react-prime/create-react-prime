@@ -4,7 +4,7 @@ import path from 'path';
 import logger from '../../../lib/logger';
 import state from '../../../lib/state';
 import { createSpinner } from '../../../lib/utils';
-import { asyncExec } from '../shared/actions';
+import { asyncExec } from '../../../lib/utils/async';
 
 
 export async function renameFiles(): Promise<void> {

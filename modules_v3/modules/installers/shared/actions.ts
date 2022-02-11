@@ -1,18 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import cp from 'child_process';
-import util from 'util';
 import type { PackageJson } from 'type-fest';
 
 import logger from '../../../lib/logger';
 import state from '../../../lib/state';
 import { createSpinner } from '../../../lib/utils';
 import { ERROR_TEXT } from '../../../lib/constants';
-
-
-export const asyncExec = util.promisify(cp.exec);
-export const asyncWrite = util.promisify(fs.writeFile);
-export const asyncExists = util.promisify(fs.exists);
+import { asyncExec, asyncExists, asyncWrite } from '../../../lib/utils/async';
 
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
