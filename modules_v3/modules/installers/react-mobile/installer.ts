@@ -9,6 +9,7 @@ async function installer(): Promise<void> {
 
   await actions.clone('https://github.com/react-prime/react-prime-native.git');
   await actions.npmInstall();
+  await actions.npmPackageUpdate();
 
   logger.whitespace();
 
