@@ -1,12 +1,12 @@
 import type { Command } from 'commander';
 
-import { getInstallers } from '../lib/utils';
+import json from '../lib/generated/build.json';
 
 
 function addOptions(cli: Command): void {
   cli
     .option('-b, --boilerplate <boilerplate>')
-    .description(`Install chosen boilerplate. Options: ${getInstallers().join(', ')}`);
+    .description(`Install chosen boilerplate. Options: ${json.modules.join(', ')}`);
 }
 
 export default addOptions;

@@ -2,11 +2,11 @@ import camelcase from 'camelcase';
 
 import * as question from '../../modules/questions';
 import cli, { ARGS } from '..';
-import { getInstallers } from '../../lib/utils';
 import * as installers from '../../modules/installers';
 import logger from '../../lib/logger';
 import state from '../../lib/state';
 import { ERROR_TEXT } from '../../lib/constants';
+import json from '../../lib/generated/build.json';
 
 
 type InstallersMap = Map<string, () => Promise<void>>;
@@ -14,7 +14,7 @@ type InstallersMap = Map<string, () => Promise<void>>;
 const installersMap: InstallersMap = (() => {
   const map: InstallersMap = new Map();
 
-  for (const boilerplate of getInstallers()) {
+  for (const boilerplate of json.modules) {
     const exportName = `${camelcase(boilerplate)}Installer`;
     map.set(boilerplate, installers[exportName]?.default); // eslint-disable-line import/namespace
   }
