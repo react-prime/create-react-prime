@@ -17,6 +17,7 @@
       "paths": {
           "cli/*": ["cli/*"],
           "@crp/*": ["lib/*"],
+          "@crp": ["lib/index.ts"],
           "modules/*": ["modules/*"],
           "generated/*": ["lib/generated/*"],
           "types": ["lib/types.ts"],

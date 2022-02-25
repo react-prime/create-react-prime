@@ -1,5 +1,6 @@
-import { prompt, type DistinctQuestion, type CheckboxQuestion, type ListQuestion } from 'inquirer';
 import type { SetRequired } from 'type-fest';
+import type { DistinctQuestion, CheckboxQuestion, ListQuestion } from 'inquirer';
+import { prompt } from 'inquirer';
 
 
 export async function question<Q extends AugmentedDistinctQuestion>(obj: Q): Promise<string> {

@@ -1,5 +1,5 @@
-import logger from '@crp/logger';
-import state from '@crp/state';
+import { state } from '@crp';
+import { logger } from '@crp/utils';
 import { ERROR_TEXT, WARN_TEXT } from '@crp/constants';
 
 import * as question from 'modules/questions';

@@ -1,5 +1,5 @@
 import type * as i from 'types';
-import logger from '@crp/logger';
+import { logger } from '@crp/utils';
 import { ERROR_TEXT } from '@crp/constants';
 
 export const answersProxy: ProxyHandler<i.CRPAnswers> = {

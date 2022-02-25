@@ -2,9 +2,8 @@ import type * as i from 'types';
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-
-import state from '@crp/state';
-import { asyncExec } from '@crp/utils/async';
+import { state } from '@crp';
+import { asyncExec } from '@crp/utils';
 
 import { checkboxQuestion, listQuestion, question } from './templates';
 

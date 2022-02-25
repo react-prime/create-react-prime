@@ -1,12 +1,10 @@
 import camelcase from 'camelcase';
-
-import logger from '@crp/logger';
-import state from '@crp/state';
-import json from '@crp/generated/build.json';
+import { state } from '@crp';
+import { logger } from '@crp/utils';
+import { runtimeJSON } from '@crp/generated';
 import { ERROR_TEXT } from '@crp/constants';
 
 import cli, { ARGS } from 'cli';
-
 import * as question from 'modules/questions';
 import * as installers from 'modules/installers';
 
@@ -16,7 +14,7 @@ type InstallersMap = Record<string, () => Promise<void>>;
 const installersMap: InstallersMap = (() => {
   const map: InstallersMap = {};
 
-  for (const boilerplate of json.modules) {
+  for (const boilerplate of runtimeJSON.modules) {
     const exportName = `${camelcase(boilerplate)}Installer`;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     map[boilerplate] = (installers as Record<string, any>)[exportName]?.default;

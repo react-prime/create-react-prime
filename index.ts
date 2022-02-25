@@ -1,8 +1,7 @@
 import path from 'path';
 import color from 'kleur';
-
-import logger from '@crp/logger';
-import state from '@crp/state';
+import { state } from '@crp';
+import { logger } from '@crp/utils';
 
 import { bootstrap as bootstrapCLI } from 'cli';
 import getAction from 'cli/actions/entry';

@@ -7,8 +7,8 @@ import type { LowdbSync } from 'lowdb';
 import lowdb from 'lowdb';
 import FileSync from 'lowdb/adapters/FileSync';
 
-import { getGeneratedFolder } from '../utils/generatedFolder';
 import { generateModulesArray } from '../generateModulesArray';
+import { getGeneratedFolder } from './generatedFolder';
 
 
 const BUILD_FILE_PATH = path.resolve('lib/generated/build.json');

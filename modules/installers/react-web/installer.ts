@@ -1,5 +1,5 @@
-import logger from '@crp/logger';
-import state from '@crp/state';
+import { state } from '@crp';
+import { logger } from '@crp/utils';
 
 import * as question from 'modules/questions';
 import * as actions from '../shared/actions';

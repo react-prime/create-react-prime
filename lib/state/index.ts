@@ -7,4 +7,4 @@ const state: i.State = {
   answers: new Proxy({} as i.CRPAnswers, answersProxy),
 };
 
-export default state;
+export { state };

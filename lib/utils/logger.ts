@@ -2,7 +2,7 @@
 import type * as i from 'types';
 import color from 'kleur';
 
-import { LOG_PREFIX } from './constants';
+import { LOG_PREFIX } from '@crp/constants';
 
 
 class Logger {
@@ -38,4 +38,4 @@ class Logger {
 }
 
 const logger = new Logger();
-export default logger;
+export { logger };

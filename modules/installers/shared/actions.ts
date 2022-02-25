@@ -1,10 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import type { PackageJson } from 'type-fest';
-
-import logger from '@crp/logger';
-import state from '@crp/state';
-import { createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp/utils';
+import { state } from '@crp';
+import { logger, createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp/utils';
 import { ERROR_TEXT } from '@crp/constants';
 
 
