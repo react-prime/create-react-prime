@@ -1,11 +1,11 @@
 import path from 'path';
 import color from 'kleur';
 
-import logger from './lib/logger';
-import { bootstrap as bootstrapCLI } from './cli';
-import getAction from './cli/actions/entry';
-import { npmInstructions } from './modules/installers/shared/instructions';
-import state from './lib/state';
+import logger from '@crp/logger';
+import state from '@crp/state';
+import { bootstrap as bootstrapCLI } from 'cli';
+import getAction from 'cli/actions/entry';
+import { npmInstructions } from 'modules/installers/shared/instructions';
 
 
 async function main() {

@@ -1,9 +1,9 @@
-import * as i from 'types';
-import {
+import type * as i from 'types';
+import type {
   Answers, CheckboxQuestion, InputQuestion, InputQuestionOptions, ListQuestion, NumberQuestion,
 } from 'inquirer';
-import { OptionValues } from 'commander';
-import { JsonPrimitive, SetRequired } from 'type-fest';
+import type { OptionValues } from 'commander';
+import type { JsonPrimitive, SetRequired } from 'type-fest';
 
 
 export * from 'generated/types';

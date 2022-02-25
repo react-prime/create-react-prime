@@ -15,16 +15,12 @@
       "baseUrl": ".",
       "paths": {
           "cli/*": ["cli/*"],
-          "core/*": ["core/*"],
+          "@crp/*": ["lib/*"],
           "modules/*": ["modules/*"],
-          "types": ["core/types.ts"],
-          "generated/*": ["core/generated/*"]
+          "generated/*": ["lib/generated/*"],
+          "types": ["lib/types.ts"],
       }
   },
-  "include": [
-    "core",
-    "modules",
-    "cli"
-  ],
+  "include": ["lib", "modules", "cli", "scripts", "index.ts"],
   "exclude": ["node_modules"]
 }
