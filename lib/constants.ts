@@ -16,9 +16,4 @@ export const ERROR_TEXT = {
   PkgNotFound: 'No package.json found in %s.',
   GenericError: 'Something went wrong during the installation of \'%s\'.',
   InvalidCLIState: 'Something is wrong with the CLI state.',
-};
-
-export const WARN_TEXT = {
-  ProjectRename:
-    'Project name has been renamed to \'%s\'.\nRead more: https://github.com/facebook/react-native/issues/213.\n',
-};
+} as const;
