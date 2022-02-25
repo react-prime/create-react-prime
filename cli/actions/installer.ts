@@ -30,10 +30,7 @@ export default async function installerEntry(): Promise<void> {
   state.answers.boilerplate = cli.opts().boilerplate || await question.boilerplate();
   state.answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(state.answers.boilerplate);
 
-  const { boilerplate, projectName } = state.answers;
-  if (!boilerplate || !projectName) {
-    logger.error('No boilerplate or project name found!', boilerplate, projectName);
-  }
+  const { boilerplate } = state.answers;
 
   // Trigger installer for given answer
   try {
