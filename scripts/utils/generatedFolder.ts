@@ -3,7 +3,7 @@ import path from 'path';
 
 
 export function getGeneratedFolder(): string {
-  const PATH = path.resolve('modules_v3/lib/generated');
+  const PATH = path.resolve('lib/generated');
 
   if (!fs.existsSync(PATH)) {
     fs.mkdirSync(PATH);

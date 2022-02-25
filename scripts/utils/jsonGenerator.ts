@@ -11,7 +11,7 @@ import { getGeneratedFolder } from '../utils/generatedFolder';
 import { generateModulesArray } from '../generateModulesArray';
 
 
-const BUILD_FILE_PATH = path.resolve('modules_v3/lib/generated/build.json');
+const BUILD_FILE_PATH = path.resolve('lib/generated/build.json');
 
 class JSONGenerator {
   private scripts: (() => JsonObject | undefined)[] = [
@@ -86,7 +86,7 @@ class JSONGenerator {
       typeStr += '\n}>;\n';
       /* eslint-enable */
 
-      fs.writeFileSync('modules_v3/lib/generated/types.ts', typeStr);
+      fs.writeFileSync('lib/generated/types.ts', typeStr);
     }
   };
 }
