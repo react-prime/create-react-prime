@@ -1,14 +1,18 @@
-import * as question from '../../questions';
-import logger from '../../../lib/logger';
-import state from '../../../lib/state';
-import * as actions from '../shared/actions';
-import { ERROR_TEXT } from '../../../lib/constants';
+import logger from '@crp/logger';
+import state from '@crp/state';
+import { ERROR_TEXT, WARN_TEXT } from '@crp/constants';
 
+import * as question from 'modules/questions';
+import * as actions from '../shared/actions';
 import * as moduleActions from './actions';
 
 
 async function installer(): Promise<void> {
   const tempProjectName = state.answers.projectName;
+
+  if (!state.answers.projectName) {
+    return logger.error(ERROR_TEXT.InvalidCLIState);
+  }
 
   // Remove non-alphanumeric characters
   state.answers.projectName = state.answers.projectName.replace(/\W/g, '');
@@ -16,7 +20,7 @@ async function installer(): Promise<void> {
   // Let user know we renamed the project
   if (tempProjectName !== state.answers.projectName) {
     logger.whitespace();
-    logger.warning(ERROR_TEXT.ProjectRename, state.answers.projectName);
+    logger.warning(WARN_TEXT.ProjectRename, state.answers.projectName);
   } else {
     logger.whitespace();
   }

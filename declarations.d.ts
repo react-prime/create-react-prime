@@ -1,3 +1,12 @@
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv {
+      NAME: string;
+      VERSION: string;
+    }
+  }
+}
+
 export type CLIOptions = {
   boilerplate?: string;
 };

@@ -1,37 +1,39 @@
 import { prompt, type DistinctQuestion, type CheckboxQuestion, type ListQuestion } from 'inquirer';
+import type { SetRequired } from 'type-fest';
 
 
-export async function question<Q extends DistinctQuestion>(obj: Q): Promise<string> {
+export async function question<Q extends AugmentedDistinctQuestion>(obj: Q): Promise<string> {
   const answer = await prompt(obj);
-  const { name } = obj;
 
-  return answer[name];
+  return answer[obj.name!];
 }
 
 export async function checkboxQuestion<
   R extends Record<string, unknown>[] | string[] | null = string[],
-  Q extends Omit<CheckboxQuestion, 'type'> = Omit<CheckboxQuestion, 'type'>,
+  Q extends AugmentedCheckboxQuestion = AugmentedCheckboxQuestion,
 >(obj: Q): Promise<R> {
-  const options: CheckboxQuestion = {
+  const options: Q = {
     ...obj,
     type: 'checkbox',
   };
   const answer = await prompt(options);
-  const { name } = options;
 
-  return answer[name];
+  return answer[options.name!];
 }
 
 export async function listQuestion<
   R extends Record<string, unknown> | string | null = string,
-  Q extends Omit<ListQuestion, 'type'> = Omit<ListQuestion, 'type'>,
+  Q extends AugmentedListQuestion = AugmentedListQuestion,
 >(obj: Q): Promise<R> {
-  const options: ListQuestion = {
+  const options: Q = {
     ...obj,
     type: 'list',
   };
   const answer = await prompt(options);
-  const { name } = options;
 
-  return answer[name];
+  return answer[options.name!];
 }
+
+type AugmentedDistinctQuestion = SetRequired<DistinctQuestion, 'name'>;
+type AugmentedCheckboxQuestion = Omit<SetRequired<CheckboxQuestion, 'name' | 'choices'>, 'type'>;
+type AugmentedListQuestion = Omit<SetRequired<ListQuestion, 'name' | 'choices'>, 'type'>;

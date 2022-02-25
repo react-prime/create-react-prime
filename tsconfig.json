@@ -12,6 +12,7 @@
       "experimentalDecorators": true,
       "emitDecoratorMetadata": true,
       "exactOptionalPropertyTypes": true,
+      "downlevelIteration": true,
       "baseUrl": ".",
       "paths": {
           "cli/*": ["cli/*"],
@@ -21,6 +22,6 @@
           "types": ["lib/types.ts"],
       }
   },
-  "include": ["lib", "modules", "cli", "scripts", "index.ts"],
+  "include": ["lib", "modules", "cli", "scripts", "index.ts", "./declarations.d.ts"],
   "exclude": ["node_modules"]
 }

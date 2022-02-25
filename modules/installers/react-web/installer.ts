@@ -1,6 +1,7 @@
-import * as question from '../../questions';
-import logger from '../../../lib/logger';
-import state from '../../../lib/state';
+import logger from '@crp/logger';
+import state from '@crp/state';
+
+import * as question from 'modules/questions';
 import * as actions from '../shared/actions';
 
 

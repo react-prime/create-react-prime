@@ -1,22 +1,25 @@
 import camelcase from 'camelcase';
 
-import * as question from '../../modules/questions';
-import cli, { ARGS } from '..';
-import * as installers from '../../modules/installers';
-import logger from '../../lib/logger';
-import state from '../../lib/state';
-import { ERROR_TEXT } from '../../lib/constants';
-import json from '../../lib/generated/build.json';
+import logger from '@crp/logger';
+import state from '@crp/state';
+import json from '@crp/generated/build.json';
+import { ERROR_TEXT } from '@crp/constants';
+
+import cli, { ARGS } from 'cli';
+
+import * as question from 'modules/questions';
+import * as installers from 'modules/installers';
 
 
-type InstallersMap = Map<string, () => Promise<void>>;
+type InstallersMap = Record<string, () => Promise<void>>;
 
 const installersMap: InstallersMap = (() => {
-  const map: InstallersMap = new Map();
+  const map: InstallersMap = {};
 
   for (const boilerplate of json.modules) {
     const exportName = `${camelcase(boilerplate)}Installer`;
-    map.set(boilerplate, installers[exportName]?.default); // eslint-disable-line import/namespace
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    map[boilerplate] = (installers as Record<string, any>)[exportName]?.default;
   }
 
   return map;
@@ -34,7 +37,7 @@ export default async function installerEntry(): Promise<void> {
 
   // Trigger installer for given answer
   try {
-    const installer = installersMap.get(boilerplate);
+    const installer = installersMap[boilerplate];
     await installer();
   } catch (err) {
     logger.error(`${ERROR_TEXT.GenericError}\n`, boilerplate, err);

@@ -2,11 +2,10 @@ import fs from 'fs';
 import path from 'path';
 import type { PackageJson } from 'type-fest';
 
-import logger from '../../../lib/logger';
-import state from '../../../lib/state';
-import { createSpinner } from '../../../lib/utils';
-import { ERROR_TEXT } from '../../../lib/constants';
-import { asyncExec, asyncExists, asyncWrite } from '../../../lib/utils/async';
+import logger from '@crp/logger';
+import state from '@crp/state';
+import { createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp/utils';
+import { ERROR_TEXT } from '@crp/constants';
 
 
 export async function clone(url: string): Promise<void> {
@@ -54,7 +53,7 @@ export async function npmPackageUpdate(): Promise<void> {
   const { projectName } = state.answers;
 
   // Helper to get path to the project's package.json + JS object of its content
-  function getPackageJson(): { path: string; json: PackageJson } {
+  function getPackageJson(): never | { path: string; json: PackageJson } {
     const projectPkgPath = path.resolve(`${projectName}/package.json`);
     const pkgStr = (() => {
       const raw = fs.readFileSync(projectPkgPath, 'utf8');
@@ -75,7 +74,7 @@ export async function npmPackageUpdate(): Promise<void> {
 
     return {
       path: projectPkgPath,
-      json: pkgStr,
+      json: pkgStr!,
     };
   }
 

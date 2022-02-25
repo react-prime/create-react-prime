@@ -3,6 +3,7 @@ import color from 'kleur';
 
 import logger from '@crp/logger';
 import state from '@crp/state';
+
 import { bootstrap as bootstrapCLI } from 'cli';
 import getAction from 'cli/actions/entry';
 import { npmInstructions } from 'modules/installers/shared/instructions';
@@ -17,6 +18,10 @@ async function main() {
 
   // Find entry point for given CLI arguments
   const action = getAction(cli.opts());
+
+  if (!action) {
+    return logger.error('No action found for given arguments.');
+  }
 
   // Run action
   await action();
@@ -38,6 +43,7 @@ export function start(): void {
 
 export function close(): void {
   const { projectName, boilerplate } = state.answers;
+
   const projectPath = path.resolve(projectName);
   const styledProjectName = color.yellow().bold(projectName);
   const styledRepoName = color.dim(`(${boilerplate})`);

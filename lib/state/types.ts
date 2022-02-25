@@ -5,9 +5,10 @@ export type State = {
 export type StateKeys = keyof State;
 
 export type CRPAnswers = {
-  projectName?: string;
+  // projectName and boilerplate are secured by proxy
+  projectName: string;
+  boilerplate: string;
   renderType?: string;
-  boilerplate?: string;
   cms?: string;
   modules?: string[];
   openInEditor?: EditorSearchItem;
@@ -23,10 +24,3 @@ export type EditorSearchItem = {
   search: string;
   path?: string;
 };
-
-
-const state: State = {
-  answers: {},
-};
-
-export default state;

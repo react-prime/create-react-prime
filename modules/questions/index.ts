@@ -1,11 +1,12 @@
+import type * as i from 'types';
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
 
-import type { ChoiceItem, EditorSearchItem } from '../../lib/state';
+import state from '@crp/state';
+import { asyncExec } from '@crp/utils/async';
+
 import { checkboxQuestion, listQuestion, question } from './templates';
-import state from '../../lib/state';
-import { asyncExec } from '../../lib/utils/async';
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
@@ -79,11 +80,11 @@ export function modules() {
 }
 
 export function openInEditor() {
-  const choices: ChoiceItem[] = [];
+  const choices: i.ChoiceItem[] = [];
   const files = fs.readdirSync('/Applications/');
 
   // Look for editors in the Applications folder
-  const editors: EditorSearchItem[] = [
+  const editors: i.EditorSearchItem[] = [
     {
       name: 'Visual Studio Code',
       search: 'visual studio',
@@ -118,7 +119,7 @@ export function openInEditor() {
     }
   }
 
-  return listQuestion<EditorSearchItem>({
+  return listQuestion<i.EditorSearchItem>({
     name: 'Open project in editor?',
     choices: [
       {
@@ -133,6 +134,11 @@ export function openInEditor() {
 
 export async function answerOpenInEditor() {
   const { projectName, openInEditor } = state.answers;
+
+  if (!openInEditor) {
+    return;
+  }
+
   const dir = path.resolve(projectName);
 
   await asyncExec(`open ${dir} -a ${openInEditor.path}`);

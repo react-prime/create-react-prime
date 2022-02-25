@@ -17,7 +17,10 @@ class Logger {
     this.log(this.warningMsg, ...reason);
   }
 
-  error(...reason: i.AnyArr): void {
+  /**
+   * @throws {Error}
+   */
+  error(...reason: i.AnyArr): never {
     this.log(this.errorMsg, ...reason);
     process.exit(1);
   }

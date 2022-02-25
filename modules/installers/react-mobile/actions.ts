@@ -1,10 +1,10 @@
 import type cp from 'child_process';
 import path from 'path';
 
-import logger from '../../../lib/logger';
-import state from '../../../lib/state';
-import { createSpinner } from '../../../lib/utils';
-import { asyncExec } from '../../../lib/utils/async';
+import logger from '@crp/logger';
+import state from '@crp/state';
+import { createSpinner } from '@crp/utils';
+import { asyncExec } from '@crp/utils/async';
 
 
 export async function renameFiles(): Promise<void> {

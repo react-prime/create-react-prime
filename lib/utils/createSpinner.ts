@@ -1,7 +1,7 @@
 import ora from 'ora';
 
-import { LOG_PREFIX } from '../constants';
-import logger from '../logger';
+import { LOG_PREFIX } from '@crp/constants';
+import logger from '@crp/logger';
 
 
 export function createSpinner<Action extends ActionFn>(
