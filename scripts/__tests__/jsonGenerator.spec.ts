@@ -1,5 +1,6 @@
 import fs from 'fs';
 import { spyOn } from 'vitest';
+import tempy from 'tempy';
 
 import { JSONGenerator } from 'scripts/utils/jsonGenerator';
 
@@ -8,7 +9,7 @@ describe('jsonGenerator', () => {
   let jsonGenerator: JSONGenerator;
 
   beforeEach(() => {
-    jsonGenerator = new JSONGenerator('./test.json');
+    jsonGenerator = new JSONGenerator(tempy.file());
   });
 
   it('Starts with an empty JSON file', () => {
