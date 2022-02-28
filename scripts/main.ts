@@ -1,5 +1,5 @@
 import { jsonGenerator } from './utils/jsonGenerator';
 
-export function run(): void {
-  jsonGenerator.build();
+export async function run(): Promise<void> {
+  await jsonGenerator.build();
 }

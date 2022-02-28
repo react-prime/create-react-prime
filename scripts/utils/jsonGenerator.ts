@@ -1,11 +1,7 @@
-// @ts-check
-import type * as i from 'types';
 import path from 'path';
 import fs from 'fs';
 import type { JsonObject } from 'type-fest';
-import type { LowdbSync } from 'lowdb';
-import lowdb from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
+import { Low, JSONFile } from 'lowdb';
 
 import { generateModulesArray } from '../generateModulesArray';
 import { getGeneratedFolder } from './generatedFolder';
@@ -18,38 +14,34 @@ class JSONGenerator {
     generateModulesArray,
   ];
   // CRP Build JSON file
-  private readonly buildDB: LowdbSync<i.BuildJSON> = lowdb((() => {
-    getGeneratedFolder();
-    return new FileSync(BUILD_FILE_PATH);
-  })(),
-  );
+  private readonly buildDB: Low<JsonObject> = new Low(new JSONFile(BUILD_FILE_PATH));
 
 
   constructor() {
-    this.buildDB.defaults({}).write();
+    this.buildDB.data ||= {};
   }
 
 
-  build = (): void => {
+  build = async (): Promise<void> => {
     getGeneratedFolder();
 
-    for (const fn of this.scripts) {
+    for await (const fn of this.scripts) {
       const val = fn();
 
       if (val) {
-        this.addToJSON(val);
+        await this.addToJSON(val);
       }
     }
 
     this.generateJSONType();
   };
 
-  private addToJSON = (obj: JsonObject): void => {
+  private addToJSON = async (obj: JsonObject): Promise<void> => {
     for (const key in obj) {
-      this.buildDB
-        .set(key, obj[key])
-        .write();
+      this.buildDB.data![key] = obj[key];
     }
+
+    await this.buildDB.write();
   };
 
   private generateJSONType = (): void => {

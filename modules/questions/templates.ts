@@ -1,10 +1,10 @@
 import type { SetRequired } from 'type-fest';
 import type { DistinctQuestion, CheckboxQuestion, ListQuestion } from 'inquirer';
-import { prompt } from 'inquirer';
+import inquirer from 'inquirer';
 
 
 export async function question<Q extends AugmentedDistinctQuestion>(obj: Q): Promise<string> {
-  const answer = await prompt(obj);
+  const answer = await inquirer.prompt(obj);
 
   return answer[obj.name!];
 }
@@ -17,7 +17,7 @@ export async function checkboxQuestion<
     ...obj,
     type: 'checkbox',
   };
-  const answer = await prompt(options);
+  const answer = await inquirer.prompt(options);
 
   return answer[options.name!];
 }
@@ -30,7 +30,7 @@ export async function listQuestion<
     ...obj,
     type: 'list',
   };
-  const answer = await prompt(options);
+  const answer = await inquirer.prompt(options);
 
   return answer[options.name!];
 }

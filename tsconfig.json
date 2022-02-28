@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
       "noEmit": true,
+      "target": "esnext",
       "module": "esnext",
       "lib": ["esnext"],
       "moduleResolution": "node",
@@ -16,8 +17,8 @@
       "baseUrl": ".",
       "paths": {
           "cli/*": ["cli/*"],
-          "@crp/*": ["lib/*"],
           "@crp": ["lib/index.ts"],
+          "@crp/*": ["lib/*"],
           "modules/*": ["modules/*"],
           "generated/*": ["lib/generated/*"],
           "types": ["lib/types.ts"],

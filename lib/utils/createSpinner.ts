@@ -1,4 +1,4 @@
-import ora from 'ora';
+import ora, { type Ora } from 'ora';
 import { logger } from '@crp/utils';
 import { LOG_PREFIX } from '@crp/constants';
 
@@ -39,6 +39,6 @@ type SpinnerText = {
 type ActionFn = (...args: unknown[]) => Promise<unknown>;
 
 type CreateSpinner = {
-  spinner: ora.Ora;
+  spinner: Ora;
   start: () => Promise<void>;
 };
