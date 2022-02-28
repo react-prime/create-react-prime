@@ -1,6 +1,6 @@
 import type { Command } from 'commander';
 
-import json from '../lib/generated/build.json';
+import json from '../lib/generated/crp.json';
 
 
 function addOptions(cli: Command): void {

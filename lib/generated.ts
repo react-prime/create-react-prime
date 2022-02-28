@@ -1,1 +1,1 @@
-export { default as runtimeJSON } from './generated/build.json';
+export { default as crpJSON } from './generated/crp.json';

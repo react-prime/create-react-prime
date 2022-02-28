@@ -1,15 +1,17 @@
 import fs from 'fs';
-import { spyOn } from 'vitest';
+import { type SpyInstanceFn, spyOn } from 'vitest';
 import tempy from 'tempy';
 
 import { JSONGenerator } from 'scripts/utils/jsonGenerator';
 
 
 describe('jsonGenerator', () => {
+  let scriptFn: SpyInstanceFn<[], { foo: string }>;
   let jsonGenerator: JSONGenerator;
 
   beforeEach(() => {
-    jsonGenerator = new JSONGenerator(tempy.file());
+    scriptFn = vi.fn(() => ({ foo: 'bar' }));
+    jsonGenerator = new JSONGenerator(tempy.file(), [scriptFn]);
   });
 
   it('Starts with an empty JSON file', () => {
@@ -35,5 +37,41 @@ describe('jsonGenerator', () => {
     str += '\n}>;\n';
 
     expect(typeStr).toEqual(str);
+  });
+
+  it('Generates the JSON file and type', async () => {
+    vi.mock('./generatedFolder', () => tempy);
+    const genTypeSpy = spyOn(jsonGenerator, 'generateJSONType');
+    const genJSONSpy = spyOn(jsonGenerator, 'addToJSON');
+    const writeFileSpy = spyOn(fs, 'writeFileSync').mockImplementationOnce(() => void {});
+
+    await jsonGenerator.build();
+
+    expect(scriptFn).toHaveBeenCalled();
+    expect(jsonGenerator.buildDB.data).toEqual({ foo: 'bar' });
+    expect(genJSONSpy).toHaveBeenCalled();
+    expect(genTypeSpy).toHaveBeenCalled();
+    expect(writeFileSpy).toHaveBeenCalled();
+  });
+
+  it('Throws an error if the JSON file is invalid', async () => {
+    vi.mock('./generatedFolder', () => tempy);
+    const genTypeSpy = spyOn(jsonGenerator, 'generateJSONType');
+    const genJSONSpy = spyOn(jsonGenerator, 'addToJSON');
+    // @ts-ignore
+    const exitSpy = spyOn(process, 'exit').mockImplementationOnce(() => void {});
+    const errorLogSpy = spyOn(console, 'error').mockImplementationOnce(() => void {});
+
+    // @ts-expect-error
+    spyOn(fs, 'readFileSync').mockImplementationOnce(() => undefined);
+
+    await jsonGenerator.build();
+
+    expect(scriptFn).toHaveBeenCalled();
+    expect(jsonGenerator.buildDB.data).toEqual({ foo: 'bar' });
+    expect(genJSONSpy).toHaveBeenCalled();
+    expect(genTypeSpy).toHaveBeenCalled();
+    expect(exitSpy).toHaveBeenCalled();
+    expect(errorLogSpy).toHaveBeenCalled();
   });
 });

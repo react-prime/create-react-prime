@@ -18,7 +18,7 @@ function onBuildComplete() {
   }
 
   // Copy generated files
-  fs.copyFileSync('lib/generated/build.json', 'dist/build.json');
+  fs.copyFileSync('lib/generated/crp.json', 'dist/crp.json');
 }
 
 // Run all scripts

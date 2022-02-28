@@ -1,25 +1,16 @@
-import path from 'path';
 import fs from 'fs';
 import type { JsonObject } from 'type-fest';
 import { Low, JSONFile } from 'lowdb';
 
-import { generateModulesArray } from '../generateModulesArray';
 import { getGeneratedFolder } from './generatedFolder';
 
 
-// CRP Build JSON file
-const BUILD_FILE_PATH = path.resolve('lib/generated/build.json');
-
-
 export class JSONGenerator {
-  private scripts: (() => JsonObject | undefined)[] = [
-    generateModulesArray,
-  ];
   readonly buildDB!: Low<JsonObject>;
-
 
   constructor(
     private path: string,
+    private scripts: (() => JsonObject | undefined)[],
   ) {
     this.buildDB = new Low(new JSONFile(path));
     this.buildDB.data ||= {};
@@ -93,5 +84,3 @@ export class JSONGenerator {
     }
   };
 }
-
-export const jsonGenerator = new JSONGenerator(BUILD_FILE_PATH);
