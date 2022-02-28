@@ -38,7 +38,7 @@ type SpinnerText = {
 
 type ActionFn = (...args: unknown[]) => Promise<unknown>;
 
-type CreateSpinner = {
+export type CreateSpinner = {
   spinner: Ora;
   start: () => Promise<void>;
 };

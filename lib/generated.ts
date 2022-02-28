@@ -1,3 +1,1 @@
-import runtimeJSON from './generated/build.json';
-
-export { runtimeJSON };
+export { default as runtimeJSON } from './generated/build.json';
