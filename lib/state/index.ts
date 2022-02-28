@@ -3,8 +3,12 @@ import type * as i from 'types';
 import { answersProxy } from './proxy';
 
 
-const state: i.State = {
-  answers: new Proxy({} as i.CRPAnswers, answersProxy),
-};
+function createState(): i.State {
+  return {
+    answers: new Proxy({} as i.CRPAnswers, answersProxy),
+  };
+}
 
-export { state };
+const state = createState();
+
+export { state, createState };

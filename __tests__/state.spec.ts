@@ -1,53 +1,64 @@
 import type * as i from 'types';
-import { state } from '@crp';
+import { spyOn } from 'vitest';
+import { createState } from '@crp';
 
 
 describe('State', () => {
+  let _state: i.State;
+
   beforeEach(() => {
-    state.answers = {} as i.CRPAnswers;
+    _state = createState();
   });
 
   it('Gets the data from state', () => {
-    expect(state.answers).toStrictEqual({});
+    expect(_state.answers).toStrictEqual({});
   });
 
   it('Starts with the correct default state', () => {
     // This should error if we add more keys to the state
-    expect(Object.keys(state).length).toEqual(1);
+    expect(Object.keys(_state).length).toEqual(1);
 
     let key: i.StateKeys;
-    for (key in state) {
-      expect(state[key]).toStrictEqual({});
+    for (key in _state) {
+      expect(_state[key]).toStrictEqual({});
     }
   });
 
   it('Stores data to state (sync)', () => {
-    expect(state.answers).toStrictEqual({});
+    expect(_state.answers).toStrictEqual({});
 
-    state.answers.boilerplate = 'foo';
+    _state.answers.boilerplate = 'foo';
 
-    expect(state.answers).toStrictEqual({
+    expect(_state.answers).toStrictEqual({
       boilerplate: 'foo',
     });
 
     // @ts-expect-error
-    state.foo = 'bar';
+    _state.foo = 'bar';
     // @ts-expect-error
-    expect(state.foo).toEqual('bar');
+    expect(_state.foo).toEqual('bar');
   });
 
   it('Stores data to state (async)', async () => {
-    expect(state.answers).toStrictEqual({});
+    expect(_state.answers).toStrictEqual({});
 
-    state.answers.boilerplate = await Promise.resolve('foo');
+    _state.answers.boilerplate = await Promise.resolve('foo');
 
-    expect(state.answers).toStrictEqual({
+    expect(_state.answers).toStrictEqual({
       boilerplate: 'foo',
     });
 
     // @ts-expect-error
-    state.foo = await Promise.resolve('bar');
+    _state.foo = await Promise.resolve('bar');
     // @ts-expect-error
-    expect(state.foo).toEqual('bar');
+    expect(_state.foo).toEqual('bar');
+  });
+
+  it('Exits if important state values are not found with proxy', () => {
+    // @ts-ignore
+    const exitMock = spyOn(process, 'exit').mockImplementationOnce(() => void {});
+    spyOn(console, 'log').mockImplementationOnce(() => void {});
+    expect(_state.answers.projectName).toEqual(undefined);
+    expect(exitMock).toBeCalled();
   });
 });
