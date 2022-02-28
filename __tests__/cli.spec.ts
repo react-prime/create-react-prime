@@ -1,6 +1,4 @@
-import { expect, it, describe, beforeAll } from 'vitest';
-
-import cli, { ARGS, bootstrap } from '../cli';
+import cli, { ARGS, bootstrap } from 'cli';
 
 
 describe('CLI', () => {

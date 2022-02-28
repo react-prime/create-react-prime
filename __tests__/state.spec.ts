@@ -1,11 +1,10 @@
-import { expect, it, describe, beforeEach } from 'vitest';
-
-import state from '../lib/state';
+import type * as i from 'types';
+import { state } from '@crp';
 
 
 describe('State', () => {
   beforeEach(() => {
-    state.answers = {};
+    state.answers = {} as i.CRPAnswers;
   });
 
   it('Gets the data from state', () => {
@@ -16,7 +15,8 @@ describe('State', () => {
     // This should error if we add more keys to the state
     expect(Object.keys(state).length).toEqual(1);
 
-    for (const key in state) {
+    let key: i.StateKeys;
+    for (key in state) {
       expect(state[key]).toStrictEqual({});
     }
   });

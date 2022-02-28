@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
-import { expect, it, describe, spyOn, fn, beforeEach, afterAll } from 'vitest';
+import { fn, spyOn } from 'vitest';
 import color from 'kleur';
-
-import { LOG_PREFIX } from '../lib/constants';
-import logger from '../lib/logger';
+import { logger } from '@crp/utils';
+import { LOG_PREFIX } from '@crp/constants';
 
 
 // Supress console.log output from tests
@@ -66,6 +65,7 @@ describe('Logger', () => {
 
   describe('error', () => {
     const errorPrefix = [LOG_PREFIX, color.red('ERR!') + ' Installation aborted:'];
+    // @ts-ignore
     const mockProcessExit = spyOn(process, 'exit').mockImplementation(() => void {});
 
     it('Logs error text with an error prefix and exits with code 1', () => {
