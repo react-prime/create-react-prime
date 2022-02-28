@@ -5,7 +5,6 @@ import { Low, JSONFile } from 'lowdb';
 
 import { generateModulesArray } from '../generateModulesArray';
 import { getGeneratedFolder } from './generatedFolder';
-import { logger } from '@crp';
 
 
 // CRP Build JSON file
@@ -43,7 +42,8 @@ export class JSONGenerator {
     if (typeStr) {
       fs.writeFileSync('lib/generated/types.ts', typeStr);
     } else {
-      logger.warning(`Something went wrong generating types for '${this.path}'`);
+      console.error(`Something went wrong generating types for '${this.path}'`);
+      process.exit(1);
     }
   };
 
