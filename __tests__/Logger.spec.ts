@@ -81,6 +81,8 @@ describe('Logger', () => {
       ]);
 
       expect(mockProcessExit).toHaveBeenCalledWith(1);
+
+      mockProcessExit.mockClear();
     });
   });
 
