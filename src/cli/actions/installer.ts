@@ -2,7 +2,7 @@ import { installersMap, state, cli } from '@crp';
 import { logger } from '@crp/utils';
 import { ERROR_TEXT, CLI_ARGS } from '@crp/constants';
 
-import * as question from 'modules/questions';
+import * as question from '../../modules/questions';
 
 
 export default async function installerEntry(): Promise<void> {

@@ -13,7 +13,7 @@
     "build:scripts": "node esbuild.scripts.config.js",
     "start": "node dist/main.js",
     "dev": "rm -rf react-web/ react-mobile/ reactmobile/ && npm run build:scripts && NODE_ENV=development node esbuild.app.config.js",
-    "lint": "eslint --ext .ts lib/ cli/ modules/ scripts/ index.ts",
+    "lint": "eslint --ext .ts lib/ src/ index.ts",
     "typecheck": "tsc --noEmit",
     "test:run": "vitest --run",
     "test:cov": "vitest --coverage",

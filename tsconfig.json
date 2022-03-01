@@ -16,10 +16,10 @@
     "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
-      "cli/*": ["cli/*"],
       "@crp": ["lib/index.ts"],
       "@crp/*": ["lib/*"],
-      "modules/*": ["modules/*"],
+      "questions/*": ["src/modules/questions/index.ts"],
+      "installers/*": ["src/modules/installers/*"],
       "generated/*": ["lib/generated/*"],
       "types": ["lib/types.ts"],
     },

@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 
-import { addOptions } from 'cli/options';
+import { addOptions } from 'src/cli/options';
 
 
 const cli = new Command();

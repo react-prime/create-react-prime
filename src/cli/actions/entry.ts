@@ -1,7 +1,6 @@
 import { state, type cli } from '@crp';
 
-import * as question from 'modules/questions';
-
+import * as question from '../../modules/questions';
 import installerEntry from './installer';
 
 

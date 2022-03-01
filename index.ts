@@ -3,8 +3,8 @@ import color from 'kleur';
 import { state, bootstrapCLI } from '@crp';
 import { logger } from '@crp/utils';
 
-import { getActionForOption } from 'cli/actions/entry';
-import { npmInstructions } from 'modules/installers/shared/instructions';
+import { getActionForOption } from 'src/cli/actions/entry';
+import { npmInstructions } from 'installers/shared/instructions';
 
 
 async function main() {

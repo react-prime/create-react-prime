@@ -1,19 +1,20 @@
 import { state } from '@crp';
 import { logger } from '@crp/utils';
 
-import * as question from 'modules/questions';
+
+import * as question from '../../questions';
 import * as actions from '../shared/actions';
+import * as moduleActions from './actions';
 
 
 async function installer(): Promise<void> {
-  state.answers.renderType = await question.rendering();
-  state.answers.cms = await question.cms();
-  state.answers.modules = await question.modules();
-
-  logger.whitespace();
+  if (!moduleActions.validateProjectName()) {
+    moduleActions.renameProject();
+  }
 
   // Installation process
-  await actions.clone('https://github.com/react-prime/react-prime.git');
+  await actions.clone('https://github.com/react-prime/react-prime-native.git');
+  await moduleActions.renameFiles();
   await actions.npmInstall();
   await actions.npmPackageUpdate();
   await actions.cleanup();
