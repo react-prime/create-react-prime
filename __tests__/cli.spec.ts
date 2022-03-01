@@ -18,20 +18,19 @@ describe('CLI', () => {
     expect(cli.args[ARGS.ProjectName]).toBe(name);
   });
 
-  it('Reads boilerplate name', () => {
-    const name = 'react-web';
-    parse('-b', name);
-    expect(cli.opts().boilerplate).toBe(name);
+  it('Reads boilerplate flag', () => {
+    parse('-b');
+    expect(cli.opts().boilerplate).toBeTruthy();
 
-    parse('--boilerplate', name);
-    expect(cli.opts().boilerplate).toBe(name);
+    parse('--boilerplate');
+    expect(cli.opts().boilerplate).toBeTruthy();
   });
 
   it('Reads debug flag', () => {
     parse('-d');
-    expect(cli.opts().debug).toBe(true);
+    expect(cli.opts().debug).toBeTruthy();
 
     parse('--debug');
-    expect(cli.opts().debug).toBe(true);
+    expect(cli.opts().debug).toBeTruthy();
   });
 });

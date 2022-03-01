@@ -16,4 +16,5 @@ export const ERROR_TEXT = {
   PkgNotFound: 'No package.json found in %s.',
   GenericError: 'Something went wrong during the installation of \'%s\'.',
   InvalidCLIState: 'Something is wrong with the CLI state.',
+  InstallerNotFound: 'Installer for \'%s\' not found.',
 } as const;

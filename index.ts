@@ -4,7 +4,7 @@ import { state } from '@crp';
 import { logger } from '@crp/utils';
 
 import { bootstrap as bootstrapCLI } from 'cli';
-import getAction from 'cli/actions/entry';
+import { getAction } from 'cli/actions/entry';
 import { npmInstructions } from 'modules/installers/shared/instructions';
 
 
@@ -16,11 +16,7 @@ async function main() {
   const cli = await bootstrapCLI();
 
   // Find entry point for given CLI arguments
-  const action = getAction(cli.opts());
-
-  if (!action) {
-    return logger.error('No action found for given arguments.');
-  }
+  const action = await getAction(cli.opts());
 
   // Run action
   await action();

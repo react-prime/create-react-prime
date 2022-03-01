@@ -1,6 +1,7 @@
 import os from 'os';
 import { spyOn } from 'vitest';
 
+
 describe('constants', () => {
   it('Returns a valid .crp.json path', async () => {
     spyOn(os, 'homedir').mockImplementationOnce(() => '/foo/bar');

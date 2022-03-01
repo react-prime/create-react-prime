@@ -9,6 +9,19 @@ import { checkboxQuestion, listQuestion, question } from './templates';
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+export function entry() {
+  return listQuestion<i.Entry>({
+    name: 'What would you like to do?',
+    choices: [{
+      name: 'Install a boilerplate',
+      value: 'boilerplate',
+    }, {
+      name: 'Exit',
+      value: null,
+    }],
+  });
+}
+
 export function boilerplate() {
   return listQuestion({
     name: 'What boilerplate would you like to install?',
@@ -24,6 +37,7 @@ export function rendering() {
     default: 0,
   });
 }
+
 export function projectName(projectName: string) {
   return question({
     type: 'input',
