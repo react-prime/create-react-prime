@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { fn, spyOn } from 'vitest';
-import color from 'kleur';
 import { logger } from '@crp/utils';
 import { LOG_PREFIX } from '@crp/constants';
 
@@ -47,7 +46,7 @@ describe('Logger', () => {
   });
 
   describe('warning', () => {
-    const warningPrefix = [LOG_PREFIX, color.yellow('WRN')];
+    const warningPrefix = [LOG_PREFIX, logger.warningMsg];
 
     it('Logs text with a warning prefix', () => {
       logger.warning('test');
@@ -64,7 +63,7 @@ describe('Logger', () => {
   });
 
   describe('error', () => {
-    const errorPrefix = [LOG_PREFIX, color.red('ERR!') + ' Installation aborted.'];
+    const errorPrefix = [LOG_PREFIX, logger.errorMsg];
     // @ts-ignore
     const mockProcessExit = spyOn(process, 'exit').mockImplementation(() => void {});
 
