@@ -25,7 +25,7 @@ function onBuildComplete() {
 await scripts.run();
 
 await build({
-  entryPoints: ['index.ts'],
+  entryPoints: ['src/index.ts'],
   platform: 'node',
   bundle: true,
   format: 'esm',
