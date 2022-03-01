@@ -3,10 +3,10 @@ import { buildSync } from 'esbuild';
 // Compile scripts
 buildSync({
   entryPoints: [
-    'scripts/main.ts',
+    'lib/scripts/main.ts',
   ],
   platform: 'node',
-  outfile: 'scripts/index.js',
+  outfile: 'lib/scripts/index.js',
   bundle: true,
   format: 'esm',
   banner: {

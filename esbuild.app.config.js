@@ -2,7 +2,7 @@ import fs from 'fs';
 import cp from 'child_process';
 import { build } from 'esbuild';
 
-import * as scripts from './scripts/index.js';
+import * as scripts from './lib/scripts/index.js';
 
 const DEV = process.env.NODE_ENV == 'development';
 const pkg = JSON.parse(fs.readFileSync('./package.json'));
@@ -42,7 +42,7 @@ await build({
   watch: DEV && {
     onRebuild(err) {
       if (err) {
-        console.error('⚡️ ERR: Watch build failed:', err);
+        console.error('⚡️ ERR: Watch build failed.', err);
         process.exit(1);
       }
 

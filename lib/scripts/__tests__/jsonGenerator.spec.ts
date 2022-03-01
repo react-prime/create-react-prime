@@ -2,7 +2,7 @@ import fs from 'fs';
 import { type SpyInstanceFn, spyOn } from 'vitest';
 import tempy from 'tempy';
 
-import { JSONGenerator } from 'scripts/utils/jsonGenerator';
+import { JSONGenerator } from '../utils/jsonGenerator';
 
 
 describe('jsonGenerator', () => {

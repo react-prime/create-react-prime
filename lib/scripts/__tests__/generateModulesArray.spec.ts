@@ -1,7 +1,7 @@
 import fs from 'fs';
 import { spyOn, type SpyInstance } from 'vitest';
 
-import { generateModulesArray } from 'scripts/generateModulesArray';
+import { generateModulesArray } from '../generateModulesArray';
 
 
 describe('generateModulesArray', () => {

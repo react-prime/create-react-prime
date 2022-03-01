@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { type SpyInstance, spyOn } from 'vitest';
 
-import { getGeneratedFolder } from 'scripts/utils/generatedFolder';
+import { getGeneratedFolder } from '../utils/generatedFolder';
 
 
 describe('generatedFolder', () => {
