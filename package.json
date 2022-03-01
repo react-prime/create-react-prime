@@ -18,13 +18,14 @@
     "test:run": "vitest --run",
     "test:cov": "vitest --coverage",
     "test:watch": "vitest --watch",
-    "test:full": "npm run lint && npm run typecheck && npm run test:run",
-    "prepublishOnly": "npm run test:full && npm run build",
+    "test": "npm run lint && npm run typecheck && npm run test:run",
+    "prepublishOnly": "npm run test && npm run build",
     "pub:patch": "npm version patch && npm publish && git push",
     "pub:minor": "npm version minor && npm publish && git push",
     "pub:major": "npm version major && npm publish && git push",
     "cs:add": "npx changeset",
-    "cs:ver": "npx changeset version"
+    "cs:ver": "npx changeset version",
+    "prepare": "husky install"
   },
   "main": "dist/main.js",
   "bin": {
@@ -68,6 +69,7 @@
     "typescript-eslint-parser": "22.0.0",
     "vite": "^2.8.5",
     "vite-tsconfig-paths": "^3.4.1",
-    "vitest": "0.5.9"
+    "vitest": "0.5.9",
+    "husky": "^7.0.0"
   }
 }
