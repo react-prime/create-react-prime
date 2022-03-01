@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
 import type * as i from 'types';
 import color from 'kleur';
-
 import { LOG_PREFIX } from '@crp/constants';
+
+import cli from 'cli';
 
 
 class Logger {
   readonly warningMsg = color.yellow('WRN');
-  readonly errorMsg = `${color.red('ERR!')} Installation aborted:`;
+  readonly errorMsg = `${color.red('ERR!')} Installation aborted.`;
 
   msg(...str: i.AnyArr): void {
     this.log('⚡️', ...str);
@@ -22,6 +23,11 @@ class Logger {
    */
   error(...reason: i.AnyArr): never {
     this.log(this.errorMsg, ...reason);
+
+    if (cli.opts().debug) {
+      console.trace();
+    }
+
     process.exit(1);
   }
 

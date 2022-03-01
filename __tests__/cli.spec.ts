@@ -26,4 +26,12 @@ describe('CLI', () => {
     parse('--boilerplate', name);
     expect(cli.opts().boilerplate).toBe(name);
   });
+
+  it('Reads debug flag', () => {
+    parse('-d');
+    expect(cli.opts().debug).toBe(true);
+
+    parse('--debug');
+    expect(cli.opts().debug).toBe(true);
+  });
 });

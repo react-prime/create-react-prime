@@ -64,7 +64,7 @@ describe('Logger', () => {
   });
 
   describe('error', () => {
-    const errorPrefix = [LOG_PREFIX, color.red('ERR!') + ' Installation aborted:'];
+    const errorPrefix = [LOG_PREFIX, color.red('ERR!') + ' Installation aborted.'];
     // @ts-ignore
     const mockProcessExit = spyOn(process, 'exit').mockImplementation(() => void {});
 
