@@ -1,10 +1,9 @@
 import path from 'path';
 import color from 'kleur';
-import { state } from '@crp';
+import { state, bootstrapCLI } from '@crp';
 import { logger } from '@crp/utils';
 
-import { bootstrap as bootstrapCLI } from 'cli';
-import { getAction } from 'cli/actions/entry';
+import { getActionForOption } from 'cli/actions/entry';
 import { npmInstructions } from 'modules/installers/shared/instructions';
 
 
@@ -15,10 +14,8 @@ async function main() {
   // Parse CLI arguments
   const cli = await bootstrapCLI();
 
-  // Find entry point for given CLI arguments
-  const action = await getAction(cli.opts());
-
-  // Run action
+  // Find and run entry point for given CLI option
+  const action = await getActionForOption(cli.opts());
   await action();
 
   // Show closing text

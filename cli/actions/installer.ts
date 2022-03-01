@@ -1,19 +1,18 @@
-import { installersMap, state } from '@crp';
+import { installersMap, state, cli } from '@crp';
 import { logger } from '@crp/utils';
-import { ERROR_TEXT } from '@crp/constants';
+import { ERROR_TEXT, CLI_ARGS } from '@crp/constants';
 
-import cli, { ARGS } from 'cli';
 import * as question from 'modules/questions';
 
 
 export default async function installerEntry(): Promise<void> {
   // Prompt questions
   state.answers.boilerplate = await question.boilerplate();
-  state.answers.projectName = cli.args[ARGS.ProjectName] || await question.projectName(state.answers.boilerplate);
-
-  const { boilerplate } = state.answers;
+  state.answers.projectName = cli.args[CLI_ARGS.ProjectName] || await question.projectName(state.answers.boilerplate);
 
   // Trigger installer for given answer
+  const { boilerplate } = state.answers;
+
   try {
     const installer = installersMap.get(boilerplate);
 

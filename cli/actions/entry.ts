@@ -1,26 +1,39 @@
-import { state } from '@crp';
-import type cli from 'cli';
-import * as questions from 'modules/questions';
+import { state, type cli } from '@crp';
+
+import * as question from 'modules/questions';
 
 import installerEntry from './installer';
 
 
-export async function getAction(options?: ReturnType<typeof cli.opts>): Promise<() => Promise<void>> {
-  if (options) {
-    // Boilerplate installer entry
-    if (options.boilerplate) {
-      return installerEntry;
+type Options = ReturnType<typeof cli.opts>;
+type Entries = {
+  [key in NonNullable<keyof Options>]?: () => Promise<void>;
+};
+
+export async function getActionForOption(options: Options): Promise<() => Promise<void>> {
+  const entries: Entries = {
+    boilerplate: installerEntry,
+  };
+
+  // Lookup entry point for given CLI option
+  let key: keyof Options;
+  for (key in options) {
+    const entry = entries[key];
+
+    if (entry != null) {
+      return entry;
     }
   }
 
-  // No options found, ask for entry
-  state.answers.entry = await questions.entry();
+  // No entry found, ask for entry
+  state.answers.entry = await question.entry();
   const { entry } = state.answers;
 
+  // User chose Exit
   if (entry == null) {
     process.exit();
   }
 
   // Get action with user's answer
-  return getAction({ [entry]: true });
+  return getActionForOption({ [entry]: true });
 }

@@ -1,9 +1,10 @@
-import cli, { ARGS, bootstrap } from 'cli';
+import { cli, bootstrapCLI } from '@crp';
+import { CLI_ARGS } from '@crp/constants';
 
 
 describe('CLI', () => {
   beforeAll(() => {
-    bootstrap();
+    bootstrapCLI();
   });
 
   // Simulate user input (node dist/main.js doesnt actually do anything here)
@@ -15,7 +16,7 @@ describe('CLI', () => {
     const name = 'projectname';
     parse(name);
 
-    expect(cli.args[ARGS.ProjectName]).toBe(name);
+    expect(cli.args[CLI_ARGS.ProjectName]).toBe(name);
   });
 
   it('Reads boilerplate flag', () => {

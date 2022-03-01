@@ -1,11 +1,7 @@
 import { Command } from 'commander';
 
-import addOptions from './options';
+import { addOptions } from 'cli/options';
 
-
-export const ARGS = {
-  ProjectName: 0,
-};
 
 const cli = new Command();
 

@@ -6,7 +6,7 @@ export const LOG_PREFIX = 'crp';
 export const SETTINGS_FILE_PATH = path.join(os.homedir(), '.crp.json');
 
 /** CLI argument name indices */
-export const ARG = {
+export const CLI_ARGS = {
   ProjectName: 0,
 } as const;
 
