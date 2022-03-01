@@ -10,10 +10,7 @@
     "skipLibCheck": true,
     "strict": true,
     "resolveJsonModule": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "exactOptionalPropertyTypes": true,
-    "downlevelIteration": true,
     "baseUrl": ".",
     "paths": {
       "@crp": ["lib/index.ts"],
