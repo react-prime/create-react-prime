@@ -85,13 +85,27 @@ Passing options to the CLI is optional! The CLI will prompt questions for any mi
       -b, --boilerplate
     </td>
     <td>
-      react-web, react-mobile
+      -
+    </td>
+    <td>
+      false
+    </td>
+    <td>
+      Start installation process for boilerplates
+    </td>
+  </tr>
+  <tr>
+    <td>
+      -d, --debug
     </td>
     <td>
       -
     </td>
     <td>
-      Installs one of the supported boilerplates.
+      false
+    </td>
+    <td>
+      Enable additional logging
     </td>
   </tr>
 </table>

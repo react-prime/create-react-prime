@@ -2,27 +2,18 @@
   "root": true,
   "parser": "@typescript-eslint/parser",
   "extends": [
-      "plugin:@typescript-eslint/recommended",
-      "plugin:import/errors",
-      "plugin:import/warnings",
-      "plugin:import/typescript"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
   ],
   "parserOptions": {
-      "ecmaVersion": 2018,
-      "sourceType": "module",
-      "ecmaFeatures": {
-        "jsx": true
-    }
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
   "ignorePatterns": [
-    "**/dist/**/*.js",
-    "envify.js",
-    "src/main"
+    "**/*.js"
   ],
-  "globals": {
-    "__PROD__": false,
-    "__TEST__": false
-  },
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": 2,
@@ -57,21 +48,28 @@
     "eol-last": ["error", "always"],
     "import/no-unresolved": 0,
     "import/named": 0,
-    // "import/order": ["error", {
-    //   "groups": [
-    //     "builtin",
-    //     "external",
-    //     "internal",
-    //     "index",
-    //     "parent",
-    //     "sibling"
-    //   ],
-    //   "pathGroups": [{
-    //     "pattern": "types",
-    //     "group": "builtin",
-    //     "position": "before"
-    //   }]
-    // }],
+    "import/order": ["error", {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        "index",
+        "parent",
+        "sibling"
+      ],
+      "pathGroups": [
+        {
+          "pattern": "types",
+          "group": "builtin",
+          "position": "before"
+        },
+        {
+          "pattern": "@crp",
+          "group": "external"
+        }
+      ],
+      "pathGroupsExcludedImportTypes": ["builtin"]
+    }],
     "max-len": [2, 120],
     "interface-name": 0,
     "align": 0,
@@ -102,15 +100,6 @@
     "@typescript-eslint/ban-ts-ignore": 0,
     "@typescript-eslint/no-namespace": 0,
     "@typescript-eslint/ban-ts-comment": 0,
-    "@typescript-eslint/explicit-module-boundary-types": [1, {
-      "allowedNames": [
-        "beforeInit",
-        "afterInit",
-        "beforeInstall",
-        "afterInstall",
-        "beforeInstallStep",
-        "afterInstallStep"
-      ]
-    }]
+    "@typescript-eslint/explicit-module-boundary-types": 1
   }
 }
