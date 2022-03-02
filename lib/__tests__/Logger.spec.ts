@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { fn, spyOn } from 'vitest';
+import { cli } from '@crp';
 import { logger } from '@crp/utils';
 import { LOG_PREFIX } from '@crp/constants';
 
@@ -91,5 +92,15 @@ describe('Logger', () => {
 
       expect(logSpy.mock.calls).toEqual([[]]);
     });
+  });
+
+  it('Shows the error stack when debug is enabled', () => {
+    spyOn(cli, 'opts').mockReturnValueOnce({ debug: true });
+    spyOn(process, 'exit').mockImplementationOnce(() => 0 as never);
+    const traceSpy = spyOn(console, 'trace').mockImplementationOnce(() => void {});
+
+    logger.error();
+
+    expect(traceSpy).toHaveBeenCalled();
   });
 });
