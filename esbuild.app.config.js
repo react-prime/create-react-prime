@@ -20,6 +20,7 @@ function onBuildComplete() {
   // Copy generated files
   fs.copyFileSync('lib/generated/crp.json', 'dist/crp.json');
   fs.copyFileSync('.env', 'dist/.env');
+  cp.execSync('cp -r prisma dist/prisma');
 }
 
 // Run all scripts
