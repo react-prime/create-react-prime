@@ -27,6 +27,11 @@ export async function bootstrap(): Promise<Command> {
     })
       .then((data) => {
         state.session.id = data.id;
+      })
+      .catch((err) => {
+        if (cli.opts().debug) {
+          console.error(err);
+        }
       });
   }
 

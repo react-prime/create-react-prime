@@ -1,6 +1,5 @@
 .DS_Store
 .gitattributes
-.progress-estimations
 
 node_modules
 reactprime

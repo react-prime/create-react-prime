@@ -1,4 +1,4 @@
-import { state } from '@crp';
+import { state, cli } from '@crp';
 import { db } from '@crp/db';
 
 
@@ -14,7 +14,12 @@ export async function closeApp(): Promise<void> {
     data: {
       success: true,
     },
-  });
+  })
+    .catch((err) => {
+      if (cli.opts().debug) {
+        console.error(err);
+      }
+    });
 
   await db.$disconnect();
 
