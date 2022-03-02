@@ -1,6 +1,6 @@
 import path from 'path';
 import color from 'kleur';
-import { state, bootstrapCLI } from '@crp';
+import { state, bootstrapCLI, closeApp } from '@crp';
 import { logger } from '@crp/utils';
 
 import { getActionForOption } from 'src/cli/actions/entry';
@@ -22,7 +22,7 @@ async function main() {
   close();
 
   // Exit application
-  process.exit();
+  await closeApp();
 }
 
 export function start(): void {

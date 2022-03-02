@@ -1,8 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import type { PackageJson } from 'type-fest';
-import { state } from '@crp';
-import { logger, createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp/utils';
+import { state, logger, createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp';
 import { ERROR_TEXT } from '@crp/constants';
 
 
@@ -21,6 +20,7 @@ export async function clone(url: string): Promise<void> {
   const spinner = createSpinner(
     () => action(),
     {
+      name: 'clone',
       start: `🚚  Cloning '${boilerplate}' into '${projectName}'...`,
       success: `🚚  Cloned '${boilerplate}' into '${projectName}'!`,
       fail: `🚚  Something went wrong while cloning '${boilerplate}' into '${projectName}'.`,
@@ -37,6 +37,7 @@ export async function npmInstall(): Promise<void> {
   const spinner = createSpinner(
     () => asyncExec(`npm --prefix ${projectName} install`),
     {
+      name: 'npm install',
       start: '📦  Installing packages...',
       success: '📦  Installed packages!',
       fail: `📦  Something went wrong while NPM installing '${projectName}'.`,
@@ -96,6 +97,7 @@ export async function npmPackageUpdate(): Promise<void> {
   const spinner = createSpinner(
     () => updatePackageJson(),
     {
+      name: 'package.json update',
       start: '✏️  Updating package.json...',
       success: '✏️  Updated package.json!',
       fail: `✏️  Something went wrong while updating package.json for '${projectName}'.`,
@@ -112,6 +114,7 @@ export async function cleanup(): Promise<void> {
   const spinner = createSpinner(
     () => asyncExec(`rm -rf ${projectName}/.git ${projectName}/.travis.yml`),
     {
+      name: 'cleanup',
       start: '🧹  Cleaning up...',
       success: '🧹  Cleaned up!',
       fail: `🧹  Something went wrong while cleaning up files for '${projectName}'.`,

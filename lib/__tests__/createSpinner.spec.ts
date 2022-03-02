@@ -13,6 +13,7 @@ describe('createSpinner', () => {
     const fn = () => Promise.resolve();
 
     _spinner = createSpinner(fn, {
+      name: 'test',
       start: 'start',
       success: 'success',
       fail: 'fail',
@@ -63,6 +64,7 @@ describe('createSpinner', () => {
     const fn = () => new Promise((_, fail) => fail());
 
     const { spinner, start } = createSpinner(fn, {
+      name: 'test',
       start: 'start',
       success: 'success',
       fail: 'fail',

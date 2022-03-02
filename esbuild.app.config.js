@@ -12,7 +12,7 @@ function onBuildComplete() {
   if (DEV) {
     // Run app with node
     fork?.kill();
-    fork = cp.fork('dist/main.js', {
+    fork = cp.fork('dist/main.js', ['-d'], {
       stdio: 'inherit',
     });
   }

@@ -46,6 +46,7 @@ export async function renameFiles(): Promise<void> {
   const spinner = createSpinner(
     () => action(),
     {
+      name: 'rename files',
       start: `🔤  Renaming project files to '${projectName}'...`,
       success: `🔤  Renamed project files to '${projectName}'!`,
       fail: `🔤  Something went wrong while renaming files for '${projectName}'.`,

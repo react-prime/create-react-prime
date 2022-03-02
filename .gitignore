@@ -6,6 +6,8 @@ node_modules
 reactprime
 reactprimessr
 reactprimenative
+react-web
+reactmobile
 dist
 coverage
 generated/

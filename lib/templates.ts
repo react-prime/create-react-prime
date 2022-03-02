@@ -1,12 +1,16 @@
 import type { SetRequired } from 'type-fest';
 import type { DistinctQuestion, CheckboxQuestion, ListQuestion } from 'inquirer';
 import inquirer from 'inquirer';
+import { logAction } from '@crp/db';
 
 
 export async function question<Q extends AugmentedDistinctQuestion>(obj: Q): Promise<string> {
   const answer = await inquirer.prompt(obj);
+  const value = answer[obj.name!];
 
-  return answer[obj.name!];
+  logAction('question:' + obj.name!, value, { success: true });
+
+  return value;
 }
 
 export async function checkboxQuestion<
@@ -18,8 +22,11 @@ export async function checkboxQuestion<
     type: 'checkbox',
   };
   const answer = await inquirer.prompt(options);
+  const value = answer[obj.name!];
 
-  return answer[options.name!];
+  logAction('question:' + obj.name!, value, { success: true });
+
+  return value;
 }
 
 export async function listQuestion<
@@ -31,8 +38,11 @@ export async function listQuestion<
     type: 'list',
   };
   const answer = await inquirer.prompt(options);
+  const value = answer[obj.name!];
 
-  return answer[options.name!];
+  logAction('question:' + obj.name!, value, { success: true });
+
+  return value;
 }
 
 type AugmentedDistinctQuestion = SetRequired<DistinctQuestion, 'name'>;

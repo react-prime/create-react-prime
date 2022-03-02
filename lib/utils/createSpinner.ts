@@ -1,6 +1,7 @@
 import ora, { type Ora } from 'ora';
-import { logger } from '@crp/utils';
-import { LOG_PREFIX } from '@crp/constants';
+import { logger } from '@crp';
+import { ERROR_TEXT, LOG_PREFIX } from '@crp/constants';
+import { logAction } from '@crp/db';
 
 
 export function createSpinner<Action extends ActionFn>(
@@ -17,10 +18,18 @@ export function createSpinner<Action extends ActionFn>(
     try {
       await action();
       spinner.succeed(text.success);
+
+      logAction('action:' + text.name, '', { success: true });
     } catch (err) {
       spinner.fail(text.fail);
+
+      logAction('action:' + text.name, {
+        success: false,
+        error: JSON.stringify(err),
+      });
+
       logger.whitespace();
-      logger.error('Something went wrong during the installation process.\n', err);
+      logger.error(ERROR_TEXT.GenericError, err);
     }
   }
 
@@ -31,6 +40,7 @@ export function createSpinner<Action extends ActionFn>(
 }
 
 type SpinnerText = {
+  name: string;
   start: string;
   success: string;
   fail: string;

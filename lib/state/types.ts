@@ -1,8 +1,13 @@
 export type State = {
   answers: CRPAnswers;
+  session: CRPSession;
 };
 
 export type StateKeys = keyof State;
+
+export type CRPSession = {
+  id: string;
+};
 
 export type CRPAnswers = {
   // projectName and boilerplate are secured by proxy

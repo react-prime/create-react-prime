@@ -6,6 +6,7 @@ import { answersProxy } from './proxy';
 function createState(): i.State {
   return {
     answers: new Proxy({} as i.CRPAnswers, answersProxy),
+    session: {} as i.CRPSession,
   };
 }
 
