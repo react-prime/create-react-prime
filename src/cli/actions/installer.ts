@@ -25,7 +25,7 @@ export default async function installerEntry(): Promise<void> {
     if (err) {
       logger.error(err, boilerplate);
     } else {
-      logger.error(`${ERROR_TEXT.GenericError}\n`, boilerplate);
+      logger.error(ERROR_TEXT.GenericError, boilerplate);
     }
   }
 }
