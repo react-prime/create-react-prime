@@ -12,7 +12,7 @@ export async function clone(url: string): Promise<void> {
   async function action() {
     // Check if directory already exists
     if (await asyncExists(projectName)) {
-      throw Error(ERROR_TEXT.DirectoryExists.replace('%s', projectName));
+      logger.error(ERROR_TEXT.DirectoryExists, projectName);
     }
 
     await asyncExec(`git clone ${url} ${projectName}`);
@@ -54,20 +54,17 @@ export async function npmPackageUpdate(): Promise<void> {
   function getPackageJson(): never | { path: string; json: PackageJson } {
     const projectPkgPath = path.resolve(`${projectName}/package.json`);
     const pkgStr = (() => {
-      const raw = fs.readFileSync(projectPkgPath, 'utf8');
+      try {
+        const raw = fs.readFileSync(projectPkgPath, 'utf8');
+        const parsed = JSON.parse(raw) as PackageJson;
+        const copy = { ...parsed };
 
-      if (!raw) {
-        return;
-      }
-
-      const parsed = JSON.parse(raw) as PackageJson;
-      const copy = { ...parsed };
-
-      return copy;
+        return copy;
+      } catch (err) {}
     })();
 
     if (!pkgStr) {
-      logger.error(ERROR_TEXT.PkgNotFound, path.resolve(projectName));
+      logger.error(ERROR_TEXT.PkgNotFound, projectPkgPath);
     }
 
     return {
@@ -83,7 +80,7 @@ export async function npmPackageUpdate(): Promise<void> {
     // Overwrite boilerplate defaults
     pkg.name = projectName;
     pkg.version = '0.1.0';
-    pkg.description = `Repository of ${projectName}.`;
+    pkg.description = `Repository of ${projectName}`;
     pkg.author = 'Label A B.V. [labela.nl]';
     pkg.keywords = [];
     pkg.private = true;
