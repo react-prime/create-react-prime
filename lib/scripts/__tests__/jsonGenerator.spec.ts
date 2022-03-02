@@ -5,6 +5,9 @@ import tempy from 'tempy';
 import { JSONGenerator } from '../utils/jsonGenerator';
 
 
+vi.mock('./generatedFolder', () => tempy.file());
+
+
 describe('jsonGenerator', () => {
   let scriptFn: SpyInstanceFn<[], { foo: string }>;
   let jsonGenerator: JSONGenerator;
@@ -40,7 +43,6 @@ describe('jsonGenerator', () => {
   });
 
   it('Generates the JSON file and type', async () => {
-    vi.mock('./generatedFolder', () => tempy);
     const genTypeSpy = spyOn(jsonGenerator, 'generateJSONType');
     const genJSONSpy = spyOn(jsonGenerator, 'addToJSON');
     const writeFileSpy = spyOn(fs, 'writeFileSync').mockImplementationOnce(() => void {});
@@ -55,7 +57,6 @@ describe('jsonGenerator', () => {
   });
 
   it('Throws an error if the JSON file is invalid', async () => {
-    vi.mock('./generatedFolder', () => tempy);
     const genTypeSpy = spyOn(jsonGenerator, 'generateJSONType');
     const genJSONSpy = spyOn(jsonGenerator, 'addToJSON');
     // @ts-ignore
