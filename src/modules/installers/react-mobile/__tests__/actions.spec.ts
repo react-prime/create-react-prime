@@ -1,7 +1,16 @@
 import { state, logger } from '@crp';
 import * as crpUtils from '@crp/utils';
 
-import { renameFiles, action, renameProject, validateProjectName } from '../actions';
+import { renameFiles, renameProject, validateProjectName } from '../actions';
+
+
+vi.mock('ora', () => ({
+  default: vi.fn(() => ({
+    start: vi.fn(),
+    succeed: vi.fn(),
+    fail: vi.fn(),
+  })),
+}));
 
 
 describe('react-mobile actions', () => {
@@ -68,7 +77,7 @@ describe('react-mobile actions', () => {
     });
 
     it('Runs through the scripts', async () => {
-      await action();
+      await renameFiles();
 
       expect(execAsyncSpy).toHaveBeenCalledTimes(3);
       expect(warningSpy).not.toHaveBeenCalled();
@@ -78,7 +87,7 @@ describe('react-mobile actions', () => {
       const execAsyncFailSpy = execAsyncSpy.mockRejectedValueOnce(new Error());
       const warningSpy = vi.spyOn(logger, 'warning').mockImplementation(() => void 0);
 
-      await action();
+      await renameFiles();
 
       expect(execAsyncFailSpy).toHaveBeenCalledTimes(3);
       expect(warningSpy).toHaveBeenCalledOnce();

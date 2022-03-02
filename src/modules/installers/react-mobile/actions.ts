@@ -21,28 +21,27 @@ export function renameProject(): void {
   );
 }
 
-export async function action(): Promise<void> {
-  const { projectName } = state.answers;
-  const scripts = [
-    ['rename files', `npx react-native-rename ${projectName}`],
-    ['replace text', `npx replace 'reactprimenative' '${projectName}' . -r --exclude="package*.json"`],
-    ['replace schemes', `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`],
-  ];
-
-  const options: cp.ExecOptions = {
-    cwd: path.resolve(projectName),
-  };
-
-  for await (const [name, script] of scripts) {
-    await asyncExec(script, options)
-      .catch(() => {
-        logger.warning(`Script '${name}' has failed. Manual file renaming is required after installation.`);
-      });
-  }
-}
-
 export async function renameFiles(): Promise<void> {
   const { projectName } = state.answers;
+
+  async function action(): Promise<void> {
+    const scripts = [
+      ['rename files', `npx react-native-rename ${projectName}`],
+      ['replace text', `npx replace 'reactprimenative' '${projectName}' . -r --exclude="package*.json"`],
+      ['replace schemes', `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`],
+    ];
+
+    const options: cp.ExecOptions = {
+      cwd: path.resolve(projectName),
+    };
+
+    for await (const [name, script] of scripts) {
+      await asyncExec(script, options)
+        .catch(() => {
+          logger.warning(`Script '${name}' has failed. Manual file renaming is required after installation.`);
+        });
+    }
+  }
 
   const spinner = createSpinner(
     () => action(),
