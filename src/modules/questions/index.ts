@@ -2,10 +2,8 @@ import type * as i from 'types';
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import { state } from '@crp';
+import { state, question, listQuestion, checkboxQuestion } from '@crp';
 import { asyncExec } from '@crp/utils';
-
-import { checkboxQuestion, listQuestion, question } from './templates';
 
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
