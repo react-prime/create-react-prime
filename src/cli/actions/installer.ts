@@ -1,11 +1,18 @@
-import { installersMap, state, cli } from '@crp';
-import { logger } from '@crp/utils';
+import camelcase from 'camelcase';
+import { state, cli, logger } from '@crp';
 import { ERROR_TEXT, CLI_ARGS } from '@crp/constants';
 
-import * as question from '../../modules/questions';
+import * as installers from 'src/modules/installers';
+import * as question from 'src/modules/questions';
 
 
-export default async function installerEntry(): Promise<void> {
+export function getInstaller(boilerplate: string): () => Promise<void> | undefined {
+  const installersMap = installers as Record<string, { default: () => Promise<void> }>;
+
+  return installersMap[`${camelcase(boilerplate)}Installer`]?.default;
+}
+
+export async function installerEntry(): Promise<void> {
   // Prompt questions
   state.answers.boilerplate = await question.boilerplate();
   state.answers.projectName = cli.args[CLI_ARGS.ProjectName] || await question.projectName(state.answers.boilerplate);
@@ -14,9 +21,10 @@ export default async function installerEntry(): Promise<void> {
   const { boilerplate } = state.answers;
 
   try {
-    const installer = installersMap.get(boilerplate);
+    const installer = getInstaller(boilerplate);
+    // console.log(installer);
 
-    if (!installer) {
+    if (typeof installer !== 'function') {
       throw ERROR_TEXT.InstallerNotFound;
     }
 

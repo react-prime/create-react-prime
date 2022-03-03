@@ -33,8 +33,11 @@ export async function logAction(name: string, value?: unknown, data?: ActionData
       value: JSON.stringify(value),
       success: data?.success ?? false,
       session: {
-        connect: {
-          id: state.session.id,
+        connectOrCreate: {
+          where: {
+            id: state.session.id || '',
+          },
+          create: {},
         },
       },
     },

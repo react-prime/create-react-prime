@@ -1,7 +1,7 @@
 import { state, type cli } from '@crp';
 
 import * as question from '../../modules/questions';
-import installerEntry from './installer';
+import { installerEntry } from './installer';
 
 
 type Options = ReturnType<typeof cli.opts>;

@@ -1,6 +1,6 @@
 {
   "name": "create-react-prime",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-dev.7",
   "description": "Code for the create-react-prime CLI",
   "author": "Label A [labela.nl]",
   "license": "MIT",
@@ -9,10 +9,12 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "npm run build:scripts && NODE_ENV=production node esbuild.app.config.js",
-    "build:scripts": "node esbuild.scripts.config.js",
-    "start": "node dist/main.js",
-    "dev": "rm -rf react-web/ react-mobile/ reactmobile/ && npm run build:scripts && NODE_ENV=development node esbuild.app.config.js",
+    "postinstall": "prisma generate",
+    "build": "tsup && npm run copyfiles",
+    "start": "node dist/index.js",
+    "dev": "rm -rf react-web/ react-mobile/ reactmobile/ && NODE_ENV=development tsup",
+    "copyfiles": "cp .env dist/.env && cp -r prisma dist && mkdir -p dist/node_modules && cp -r node_modules/.prisma dist/node_modules && cp -r node_modules/@prisma dist/node_modules/@prisma",
+    "postdev": "npm run copyfiles && node dist/index.js -d",
     "lint": "eslint --ext .ts lib/ src/",
     "typecheck": "tsc --noEmit",
     "test:run": "vitest --run",
@@ -28,9 +30,9 @@
     "prepare": "husky install",
     "db:migrate": "npx prisma db push"
   },
-  "main": "dist/main.js",
+  "main": "dist/index.js",
   "bin": {
-    "create-react-prime": "dist/main.js"
+    "create-react-prime": "dist/index.js"
   },
   "files": [
     "dist"
@@ -53,7 +55,7 @@
     "inquirer": "8.2.0",
     "kleur": "4.1.4",
     "lowdb": "^3.0.0",
-    "ora": "^6.1.0"
+    "ora": "^5.4.1"
   },
   "devDependencies": {
     "@changesets/cli": "2.21.0",
@@ -70,6 +72,7 @@
     "husky": "^7.0.4",
     "prisma": "^3.10.0",
     "tempy": "^2.0.0",
+    "tsup": "^5.11.13",
     "type-fest": "2.12.0",
     "typescript": "^4.6.2",
     "typescript-eslint-parser": "22.0.0",
