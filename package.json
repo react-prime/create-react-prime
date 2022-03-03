@@ -1,6 +1,6 @@
 {
   "name": "create-react-prime",
-  "version": "4.0.0-dev.7",
+  "version": "4.0.0-dev.12",
   "description": "Code for the create-react-prime CLI",
   "author": "Label A [labela.nl]",
   "license": "MIT",
@@ -9,11 +9,10 @@
     "node": ">=14"
   },
   "scripts": {
-    "postinstall": "prisma generate",
-    "build": "tsup && npm run copyfiles",
+    "build": "rm -rf dist && tsup && npm run copyfiles",
     "start": "node dist/index.js",
     "dev": "rm -rf react-web/ react-mobile/ reactmobile/ && NODE_ENV=development tsup",
-    "copyfiles": "cp .env dist/.env && cp -r prisma dist && mkdir -p dist/node_modules && cp -r node_modules/.prisma dist/node_modules && cp -r node_modules/@prisma dist/node_modules/@prisma",
+    "copyfiles": "cp .env dist && cp -r prisma dist && mkdir -p dist/node_modules/{@prisma/client,.prisma/client} && cp node_modules/.prisma/client/{index.js,schema.prisma} dist/node_modules/.prisma/client && cp node_modules/@prisma/client/index.js dist/node_modules/@prisma/client",
     "postdev": "npm run copyfiles && node dist/index.js -d",
     "lint": "eslint --ext .ts lib/ src/",
     "typecheck": "tsc --noEmit",
@@ -55,7 +54,7 @@
     "inquirer": "8.2.0",
     "kleur": "4.1.4",
     "lowdb": "^3.0.0",
-    "ora": "^5.4.1"
+    "ora": "^6.1.0"
   },
   "devDependencies": {
     "@changesets/cli": "2.21.0",
@@ -65,7 +64,7 @@
     "@typescript-eslint/eslint-plugin": "5.13.0",
     "@typescript-eslint/parser": "5.13.0",
     "c8": "^7.11.0",
-    "esbuild": "0.14.23",
+    "esbuild": "0.14.24",
     "esbuild-runner": "2.2.1",
     "eslint": "8.10.0",
     "eslint-plugin-import": "2.25.4",

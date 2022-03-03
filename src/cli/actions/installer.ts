@@ -22,7 +22,6 @@ export async function installerEntry(): Promise<void> {
 
   try {
     const installer = getInstaller(boilerplate);
-    // console.log(installer);
 
     if (typeof installer !== 'function') {
       throw ERROR_TEXT.InstallerNotFound;
