@@ -17,7 +17,6 @@ model Action {
   name        String
   value       String?
   success     Boolean     @default(false)
-  error       String?     @db.LongText
   session     Session     @relation(fields: [sessionId], references: [id])
   sessionId   String
 }
@@ -27,6 +26,7 @@ model Session {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   gitUsername String?
-  success     Boolean     @default(false)
+  result      String      @default("pending")
+  error       String?     @db.LongText
   actions     Action[]
 }

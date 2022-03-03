@@ -1,3 +1,4 @@
+import type * as i from 'types';
 import prisma from '@prisma/client';
 import { cli, state } from '@crp';
 const { PrismaClient } = prisma;
@@ -12,9 +13,13 @@ export const db = (() => {
 })();
 
 // Disconnect from DB when process exits
-process.on('exit', () => {
+process.on('exit', async () => {
   if (process.env.NODE_ENV === 'test') {
     return;
+  }
+
+  if (state.session.result === 'pending') {
+    await updateSessionResult('exited');
   }
 
   db.$disconnect();
@@ -40,6 +45,32 @@ export async function logAction(name: string, value?: unknown, data?: ActionData
           create: {},
         },
       },
+    },
+  })
+    .catch((err) => {
+      if (cli.opts().debug) {
+        console.error(err);
+      }
+    });
+}
+
+export async function updateSessionResult(
+  result: i.SessionResult,
+  data?: Record<string, unknown>,
+): Promise<void> {
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+
+  state.session.result = result;
+
+  db.session.update({
+    where: {
+      id: state.session.id,
+    },
+    data: {
+      result,
+      ...data,
     },
   })
     .catch((err) => {

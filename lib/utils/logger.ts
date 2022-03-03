@@ -3,6 +3,7 @@ import type * as i from 'types';
 import color from 'kleur';
 import { cli } from '@crp';
 import { LOG_PREFIX } from '@crp/constants';
+import { updateSessionResult } from '@crp/db';
 
 
 class Logger {
@@ -26,6 +27,10 @@ class Logger {
     if (cli.opts().debug) {
       console.trace();
     }
+
+    updateSessionResult('error', {
+      error: reason.join(' '),
+    });
 
     process.exit(1);
   }

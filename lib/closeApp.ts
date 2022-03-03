@@ -1,5 +1,4 @@
-import { state, cli } from '@crp';
-import { db } from '@crp/db';
+import { db, updateSessionResult } from '@crp/db';
 
 
 export async function closeApp(): Promise<void> {
@@ -7,20 +6,7 @@ export async function closeApp(): Promise<void> {
     return;
   }
 
-  await db.session.update({
-    where: {
-      id: state.session.id,
-    },
-    data: {
-      success: true,
-    },
-  })
-    .catch((err) => {
-      if (cli.opts().debug) {
-        console.error(err);
-      }
-    });
-
+  await updateSessionResult('success');
   await db.$disconnect();
 
   process.exit();

@@ -7,6 +7,7 @@ export type StateKeys = keyof State;
 
 export type CRPSession = {
   id: string;
+  result: 'pending' | SessionResult;
 };
 
 export type CRPAnswers = {
@@ -21,6 +22,8 @@ export type CRPAnswers = {
 };
 
 export type Entry = 'boilerplate' | null;
+
+export type SessionResult = 'success' | 'error' | 'exited';
 
 export type ChoiceItem = {
   name: string;

@@ -17,11 +17,6 @@ describe('State', () => {
   it('Starts with the correct default state', () => {
     // This should error if we add more keys to the state
     expect(Object.keys(state).length).toEqual(2);
-
-    let key: i.StateKeys;
-    for (key in state) {
-      expect(state[key]).toStrictEqual({});
-    }
   });
 
   it('Stores data to state (sync)', () => {
