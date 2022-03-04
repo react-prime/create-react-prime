@@ -6,7 +6,7 @@ import { state } from '@crp';
 import { logAction } from '@crp/db';
 
 export async function canAskQuestion(): Promise<void | true> {
-  if (state.session.result === 'error') {
+  if (state.operation.result === 'error') {
     await new Promise((_, reject) => setTimeout(reject, 10_000));
   }
 

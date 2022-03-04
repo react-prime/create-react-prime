@@ -19,14 +19,14 @@ export async function bootstrap(): Promise<Command> {
 
   // Add new usage to db
   if (process.env.NODE_ENV !== 'test') {
-    db.session
+    db.operation
       .create({
         data: {
           gitUsername: gitUsername(),
         },
       })
       .then((data) => {
-        state.session.id = data.id;
+        state.operation.id = data.id;
       })
       .catch((err) => {
         if (cli.opts().debug) {

@@ -17,11 +17,11 @@ model Action {
   name        String
   value       String?
   success     Boolean     @default(false)
-  session     Session     @relation(fields: [sessionId], references: [id])
-  sessionId   String
+  operation   Operation   @relation(fields: [operationId], references: [id])
+  operationId String
 }
 
-model Session {
+model Operation {
   id          String      @id @default(uuid())
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt

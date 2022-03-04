@@ -3,7 +3,7 @@ import type * as i from 'types';
 import color from 'kleur';
 import { cli } from '@crp';
 import { LOG_PREFIX } from '@crp/constants';
-import { updateSessionResult } from '@crp/db';
+import { updateOperationResult } from '@crp/db';
 
 class Logger {
   readonly warningMsg = color.yellow('WRN');
@@ -21,7 +21,7 @@ class Logger {
    * @throws {Error}
    */
   async error(...reason: i.AnyArr): Promise<never> {
-    return updateSessionResult('error', {
+    return updateOperationResult('error', {
       error: reason.join(' '),
     }).then(() => {
       this.log(this.errorMsg, ...reason);

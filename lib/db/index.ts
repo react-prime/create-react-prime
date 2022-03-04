@@ -1,5 +1,5 @@
 import type * as i from 'types';
-import prisma, { type Session } from '@prisma/client';
+import prisma, { type Operation } from '@prisma/client';
 import { cli, state } from '@crp';
 const { PrismaClient } = prisma;
 
@@ -36,10 +36,10 @@ export async function logAction(
         name,
         value: JSON.stringify(value),
         success: data?.success ?? false,
-        session: {
+        operation: {
           connectOrCreate: {
             where: {
-              id: state.session.id || '',
+              id: state.operation.id || '',
             },
             create: {},
           },
@@ -53,20 +53,20 @@ export async function logAction(
     });
 }
 
-export async function updateSessionResult(
-  result: i.SessionResult,
+export async function updateOperationResult(
+  result: i.OperationResult,
   data?: Record<string, unknown>,
-): Promise<Session | void> {
+): Promise<Operation | void> {
   if (process.env.NODE_ENV === 'test') {
     return;
   }
 
-  state.session.result = result;
+  state.operation.result = result;
 
-  return db.session
+  return db.operation
     .update({
       where: {
-        id: state.session.id,
+        id: state.operation.id,
       },
       data: {
         result,

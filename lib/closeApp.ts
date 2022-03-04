@@ -1,11 +1,11 @@
-import { db, updateSessionResult } from '@crp/db';
+import { db, updateOperationResult } from '@crp/db';
 
 export async function closeApp(): Promise<void> {
   if (process.env.NODE_ENV === 'test') {
     return;
   }
 
-  await updateSessionResult('success');
+  await updateOperationResult('success');
   await db.$disconnect();
 
   process.exit();

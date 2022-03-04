@@ -1,13 +1,13 @@
 export type State = {
   answers: CRPAnswers;
-  session: CRPSession;
+  operation: CRPOperation;
 };
 
 export type StateKeys = keyof State;
 
-export type CRPSession = {
+export type CRPOperation = {
   id: string;
-  result: 'unfinished' | SessionResult;
+  result: 'unfinished' | OperationResult;
 };
 
 export type CRPAnswers = {
@@ -23,7 +23,7 @@ export type CRPAnswers = {
 
 export type Entry = 'boilerplate' | null;
 
-export type SessionResult = 'success' | 'error' | 'exited';
+export type OperationResult = 'success' | 'error' | 'exited';
 
 export type ChoiceItem = {
   name: string;
