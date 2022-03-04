@@ -21,7 +21,7 @@ vi.mock('src/modules/installers', () => ({
 describe('Installer', () => {
   let boilerplateSpy: SpyInstance<[], Promise<string>>;
   let projectNameSpy: SpyInstance<[projectName: string], Promise<string>>;
-  let errorSpy: SpyInstance<[...args: string[]], never>;
+  let errorSpy: SpyInstance<[...args: string[]], Promise<never>>;
 
   beforeEach(() => {
     boilerplateSpy = spyOn(question, 'boilerplate').mockResolvedValueOnce('react-web');

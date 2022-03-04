@@ -8,7 +8,7 @@ function createState(): i.State {
     answers: new Proxy({} as i.CRPAnswers, answersProxy),
     session: {
       id: '',
-      result: 'pending',
+      result: 'unfinished',
     },
   };
 }

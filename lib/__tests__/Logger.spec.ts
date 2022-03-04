@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-import { fn, spyOn } from 'vitest';
 import { cli } from '@crp';
 import { logger } from '@crp/utils';
 import { LOG_PREFIX } from '@crp/constants';
@@ -9,7 +8,7 @@ import { LOG_PREFIX } from '@crp/constants';
 const orgLog = console.log;
 
 function mockConsole(): () => void {
-  console.log = fn();
+  console.log = vi.fn();
 
   return function restoreConsole() {
     console.log = orgLog;
@@ -19,10 +18,10 @@ function mockConsole(): () => void {
 
 describe('Logger', () => {
   const restoreConsole = mockConsole();
-  const logSpy = spyOn(console, 'log');
+  const logSpy = vi.spyOn(console, 'log');
 
   beforeEach(() => {
-    logSpy.mockClear();
+    vi.clearAllMocks();
   });
 
   afterAll(() => {
@@ -30,59 +29,62 @@ describe('Logger', () => {
   });
 
   describe('msg', () => {
-    const prefix = [LOG_PREFIX, '⚡️'];
+    const prefix = [`\n${LOG_PREFIX}`, '⚡️'];
 
     it('Logs text with prefix', () => {
       logger.msg('test');
+      const result = [[...prefix, 'test'].join(' ')];
+
+      expect(logSpy.mock.calls[0]).toEqual(result);
+    });
+
+    it('Logs text with prefix and args', () => {
       logger.msg('test', 'test2');
+      const result = [[...prefix, 'test'].join(' '), 'test2'];
 
-      const result1 = [[...prefix, 'test'].join(' ')];
-      const result2 = [[...prefix, 'test'].join(' '), 'test2'];
-
-      expect(logSpy.mock.calls).toEqual([
-        result1,
-        result2,
-      ]);
+      expect(logSpy.mock.calls[0]).toEqual(result);
     });
   });
 
   describe('warning', () => {
-    const warningPrefix = [LOG_PREFIX, logger.warningMsg];
+    const warningPrefix = [`\n${LOG_PREFIX}`, logger.warningMsg];
 
     it('Logs text with a warning prefix', () => {
       logger.warning('test');
+      const result = [[...warningPrefix, 'test'].join(' ')];
+
+      expect(logSpy.mock.calls[0]).toEqual(result);
+    });
+
+    it('Logs text with prefix and args', () => {
       logger.warning('test', 'test2');
+      const result = [[...warningPrefix, 'test'].join(' '), 'test2'];
 
-      const result1 = [[...warningPrefix, 'test'].join(' ')];
-      const result2 = [[...warningPrefix, 'test'].join(' '), 'test2'];
-
-      expect(logSpy.mock.calls).toEqual([
-        result1,
-        result2,
-      ]);
+      expect(logSpy.mock.calls[0]).toEqual(result);
     });
   });
 
   describe('error', () => {
-    const errorPrefix = [LOG_PREFIX, logger.errorMsg];
-    // @ts-ignore
-    const mockProcessExit = spyOn(process, 'exit').mockImplementation(() => void {});
+    const errorPrefix = [`\n${LOG_PREFIX}`, logger.errorMsg];
+    const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => 0 as never);
 
-    it('Logs error text with an error prefix and exits with code 1', () => {
-      logger.error('test');
-      logger.error('test', 'test2');
+    it('Logs error text with an error prefix and exits with code 1', async () => {
+      const result = [[...errorPrefix, 'test'].join(' ')];
 
-      const result1 = [[...errorPrefix, 'test'].join(' ')];
-      const result2 = [[...errorPrefix, 'test'].join(' '), 'test2'];
+      await logger.error('test');
 
-      expect(logSpy.mock.calls).toEqual([
-        result1,
-        result2,
-      ]);
-
+      expect(logSpy.mock.calls[0]).toEqual(result);
       expect(mockProcessExit).toHaveBeenCalledWith(1);
+    });
 
-      mockProcessExit.mockClear();
+    it('Shows the error stack when debug is enabled', async () => {
+      vi.spyOn(cli, 'opts').mockReturnValueOnce({ debug: true });
+      const traceSpy = vi.spyOn(console, 'trace').mockImplementationOnce(() => void {});
+
+      await logger.error();
+
+      expect(traceSpy).toHaveBeenCalled();
+      expect(mockProcessExit).toHaveBeenCalledWith(1);
     });
   });
 
@@ -92,15 +94,5 @@ describe('Logger', () => {
 
       expect(logSpy.mock.calls).toEqual([[]]);
     });
-  });
-
-  it('Shows the error stack when debug is enabled', () => {
-    spyOn(cli, 'opts').mockReturnValueOnce({ debug: true });
-    spyOn(process, 'exit').mockImplementationOnce(() => 0 as never);
-    const traceSpy = spyOn(console, 'trace').mockImplementationOnce(() => void {});
-
-    logger.error();
-
-    expect(traceSpy).toHaveBeenCalled();
   });
 });

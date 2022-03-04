@@ -26,7 +26,7 @@ model Session {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   gitUsername String?
-  result      String      @default("pending")
+  result      String      @default("unfinished")
   error       String?     @db.LongText
   actions     Action[]
 }

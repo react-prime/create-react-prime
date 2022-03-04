@@ -7,7 +7,7 @@ export type StateKeys = keyof State;
 
 export type CRPSession = {
   id: string;
-  result: 'pending' | SessionResult;
+  result: 'unfinished' | SessionResult;
 };
 
 export type CRPAnswers = {

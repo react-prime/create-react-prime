@@ -1,5 +1,4 @@
 import type * as i from 'types';
-import { spyOn } from 'vitest';
 import { createState } from '@crp';
 
 
@@ -50,10 +49,13 @@ describe('State', () => {
   });
 
   it('Exits if important state values are not found with proxy', () => {
-    // @ts-ignore
-    const exitMock = spyOn(process, 'exit').mockImplementationOnce(() => void {});
-    spyOn(console, 'log').mockImplementationOnce(() => void {});
+    vi.spyOn(console, 'log').mockImplementation(() => void 0);
+    const exitMock = vi.spyOn(process, 'exit').mockImplementation(() => 0 as never);
+
     expect(state.answers.projectName).toEqual(undefined);
-    expect(exitMock).toBeCalled();
+
+    process.nextTick(() => {
+      expect(exitMock).toHaveBeenCalledWith(1);
+    });
   });
 });

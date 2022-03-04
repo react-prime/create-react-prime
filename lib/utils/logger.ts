@@ -21,18 +21,19 @@ class Logger {
   /**
    * @throws {Error}
    */
-  error(...reason: i.AnyArr): never {
-    this.log(this.errorMsg, ...reason);
-
-    if (cli.opts().debug) {
-      console.trace();
-    }
-
-    updateSessionResult('error', {
+  async error(...reason: i.AnyArr): Promise<never> {
+    return updateSessionResult('error', {
       error: reason.join(' '),
-    });
+    })
+      .then(() => {
+        this.log(this.errorMsg, ...reason);
 
-    process.exit(1);
+        if (cli.opts().debug) {
+          console.trace();
+        }
+
+        process.exit(1);
+      });
   }
 
   whitespace(): void {
@@ -43,7 +44,7 @@ class Logger {
     const pre = `${LOG_PREFIX} ${prefix}`;
     const [first, ...rest] = str;
 
-    console.log(`${pre} ${first}`, ...rest);
+    console.log(`\n${pre} ${first}`, ...rest);
   }
 }
 

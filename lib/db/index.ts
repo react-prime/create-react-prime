@@ -1,5 +1,5 @@
 import type * as i from 'types';
-import prisma from '@prisma/client';
+import prisma, { type Session } from '@prisma/client';
 import { cli, state } from '@crp';
 const { PrismaClient } = prisma;
 
@@ -16,10 +16,6 @@ export const db = (() => {
 process.on('exit', async () => {
   if (process.env.NODE_ENV === 'test') {
     return;
-  }
-
-  if (state.session.result === 'pending') {
-    await updateSessionResult('exited');
   }
 
   db.$disconnect();
@@ -57,14 +53,14 @@ export async function logAction(name: string, value?: unknown, data?: ActionData
 export async function updateSessionResult(
   result: i.SessionResult,
   data?: Record<string, unknown>,
-): Promise<void> {
+): Promise<Session | void> {
   if (process.env.NODE_ENV === 'test') {
     return;
   }
 
   state.session.result = result;
 
-  db.session.update({
+  return db.session.update({
     where: {
       id: state.session.id,
     },
