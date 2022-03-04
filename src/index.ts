@@ -6,7 +6,6 @@ import { logger } from '@crp/utils';
 import { getActionForOption } from 'src/cli/actions/entry';
 import { npmInstructions } from 'installers/shared/instructions';
 
-
 async function main() {
   // Show startup text
   start();
@@ -46,7 +45,9 @@ export function close(): void {
   }
 
   logger.whitespace();
-  logger.msg(`${styledProjectName} ${styledRepoName} was succesfully installed at ${styledProjectPath}`);
+  logger.msg(
+    `${styledProjectName} ${styledRepoName} was succesfully installed at ${styledProjectPath}`,
+  );
   logger.whitespace();
   logger.msg(`${color.bold().underline('Quickstart')}`);
   logger.whitespace();

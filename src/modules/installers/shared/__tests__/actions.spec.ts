@@ -8,7 +8,6 @@ import * as utils from '@crp/utils';
 
 import { cleanup, clone, npmInstall, npmPackageUpdate } from '../actions';
 
-
 vi.mock('ora', () => ({
   default: vi.fn(() => ({
     start: vi.fn(),
@@ -21,7 +20,9 @@ vi.mock('ora', () => ({
 describe('shared actions', () => {
   const boilerplate = 'react-web';
   const projectName = 'foo';
-  const loggerErrorSpy = vi.spyOn(logger, 'error').mockImplementation(() => void 0 as never);
+  const loggerErrorSpy = vi
+    .spyOn(logger, 'error')
+    .mockImplementation(() => void 0 as never);
   const execSpy = vi.spyOn(utils, 'asyncExec').mockResolvedValue({} as any);
   vi.spyOn(logger, 'whitespace').mockImplementation(() => void 0);
 
@@ -45,22 +46,28 @@ describe('shared actions', () => {
 
   describe('clone', () => {
     it('Checks if the directory already exists', async () => {
-      const existsSpy = vi.spyOn(utils, 'asyncExists').mockResolvedValueOnce(true);
+      const existsSpy = vi
+        .spyOn(utils, 'asyncExists')
+        .mockResolvedValueOnce(true);
 
       await clone('github.com/url');
 
       expect(existsSpy).toHaveBeenCalledWith(projectName);
-      expect(loggerErrorSpy).toHaveBeenCalledWith(ERROR_TEXT.DirectoryExists, projectName);
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
+        ERROR_TEXT.DirectoryExists,
+        projectName,
+      );
     });
 
     it('Runs the exec script', async () => {
       vi.spyOn(utils, 'asyncExists').mockResolvedValueOnce(false);
 
-
       await clone('github.com/url');
 
       expect(loggerErrorSpy).not.toHaveBeenCalled();
-      expect(execSpy).toHaveBeenCalledWith(`git clone github.com/url ${projectName}`);
+      expect(execSpy).toHaveBeenCalledWith(
+        `git clone github.com/url ${projectName}`,
+      );
     });
   });
 
@@ -68,7 +75,9 @@ describe('shared actions', () => {
     it('Runs the exec script', async () => {
       await npmInstall();
 
-      expect(execSpy).toHaveBeenCalledWith(`npm --prefix ${projectName} install`);
+      expect(execSpy).toHaveBeenCalledWith(
+        `npm --prefix ${projectName} install`,
+      );
     });
   });
 
@@ -94,11 +103,16 @@ describe('shared actions', () => {
     });
 
     it('Exits with error if package.json can not be found', async () => {
-      vi.spyOn(path, 'resolve').mockReturnValueOnce('invalid/path/package.json');
+      vi.spyOn(path, 'resolve').mockReturnValueOnce(
+        'invalid/path/package.json',
+      );
 
       await npmPackageUpdate();
 
-      expect(loggerErrorSpy).toHaveBeenCalledWith(ERROR_TEXT.PkgNotFound, 'invalid/path/package.json');
+      expect(loggerErrorSpy).toHaveBeenCalledWith(
+        ERROR_TEXT.PkgNotFound,
+        'invalid/path/package.json',
+      );
     });
   });
 
@@ -106,7 +120,9 @@ describe('shared actions', () => {
     it('Runs the exec script', async () => {
       await cleanup();
 
-      expect(execSpy).toHaveBeenCalledWith(`rm -rf ${projectName}/.git ${projectName}/.travis.yml`);
+      expect(execSpy).toHaveBeenCalledWith(
+        `rm -rf ${projectName}/.git ${projectName}/.travis.yml`,
+      );
     });
   });
 });

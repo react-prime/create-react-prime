@@ -1,9 +1,9 @@
 import type { SetRequired } from 'type-fest';
-import type { DistinctQuestion, CheckboxQuestion, ListQuestion } from 'inquirer';
+// prettier-ignore
+import type { CheckboxQuestion, DistinctQuestion, ListQuestion } from 'inquirer';
 import inquirer from 'inquirer';
 import { state } from '@crp';
 import { logAction } from '@crp/db';
-
 
 export async function canAskQuestion(): Promise<void | true> {
   if (state.session.result === 'error') {
@@ -13,7 +13,9 @@ export async function canAskQuestion(): Promise<void | true> {
   return true;
 }
 
-export async function question<Q extends AugmentedDistinctQuestion>(obj: Q): Promise<string> {
+export async function question<Q extends AugmentedDistinctQuestion>(
+  obj: Q,
+): Promise<string> {
   await canAskQuestion();
   const answer = await inquirer.prompt(obj);
   const value = answer[obj.name!];
@@ -60,5 +62,11 @@ export async function listQuestion<
 }
 
 type AugmentedDistinctQuestion = SetRequired<DistinctQuestion, 'name'>;
-type AugmentedCheckboxQuestion = Omit<SetRequired<CheckboxQuestion, 'name' | 'choices'>, 'type'>;
-type AugmentedListQuestion = Omit<SetRequired<ListQuestion, 'name' | 'choices'>, 'type'>;
+type AugmentedCheckboxQuestion = Omit<
+  SetRequired<CheckboxQuestion, 'name' | 'choices'>,
+  'type'
+>;
+type AugmentedListQuestion = Omit<
+  SetRequired<ListQuestion, 'name' | 'choices'>,
+  'type'
+>;

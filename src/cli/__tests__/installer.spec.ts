@@ -1,5 +1,4 @@
 import type { SpyInstance } from 'vitest';
-import { spyOn } from 'vitest';
 import { cli, logger, state } from '@crp';
 import { CLI_ARGS, ERROR_TEXT } from '@crp/constants';
 
@@ -7,16 +6,14 @@ import * as question from '../../modules/questions';
 import { installerEntry } from '../actions/installer';
 // import * as installerEntryUtils from '../actions/installer';
 
-
 vi.mock('src/modules/installers', () => ({
-  'reactWebInstaller': {
+  reactWebInstaller: {
     default: vi.fn(),
   },
-  'failInstaller': {
+  failInstaller: {
     default: vi.fn().mockRejectedValue(''),
   },
 }));
-
 
 describe('Installer', () => {
   let boilerplateSpy: SpyInstance<[], Promise<string>>;
@@ -24,9 +21,15 @@ describe('Installer', () => {
   let errorSpy: SpyInstance<[...args: string[]], Promise<never>>;
 
   beforeEach(() => {
-    boilerplateSpy = spyOn(question, 'boilerplate').mockResolvedValueOnce('react-web');
-    projectNameSpy = spyOn(question, 'projectName').mockResolvedValueOnce('bar');
-    errorSpy = spyOn(logger, 'error').mockImplementationOnce(() => void 0 as never);
+    boilerplateSpy = vi
+      .spyOn(question, 'boilerplate')
+      .mockResolvedValueOnce('react-web');
+    projectNameSpy = vi
+      .spyOn(question, 'projectName')
+      .mockResolvedValueOnce('bar');
+    errorSpy = vi
+      .spyOn(logger, 'error')
+      .mockImplementationOnce(() => void 0 as never);
   });
 
   it('Prompts boilerplate and project name questions', async () => {
@@ -50,7 +53,7 @@ describe('Installer', () => {
   /** @TODO Can't get this to track if the mock fn is called */
   // it('Runs the installer when found', async () => {
   //   const mockInstaller = vi.fn(() => Promise.resolve());
-  //   spyOn(installerEntryUtils, 'getInstaller').mockReturnValue(() => void 0);
+  //   vi.spyOn(installerEntryUtils, 'getInstaller').mockReturnValue(() => void 0);
 
   //   await installerEntry();
 
@@ -58,7 +61,9 @@ describe('Installer', () => {
   // });
 
   it('Errors when installer is not found', async () => {
-    boilerplateSpy = spyOn(question, 'boilerplate').mockResolvedValueOnce('foo');
+    boilerplateSpy = vi
+      .spyOn(question, 'boilerplate')
+      .mockResolvedValueOnce('foo');
 
     await installerEntry();
 
@@ -67,8 +72,10 @@ describe('Installer', () => {
   });
 
   it('Throws a generic error when something goes wrong during execution', async () => {
-    spyOn(question, 'boilerplate').mockResolvedValueOnce('fail');
-    const errorSpy = spyOn(logger, 'error').mockImplementationOnce(() => void 0 as never);
+    vi.spyOn(question, 'boilerplate').mockResolvedValueOnce('fail');
+    const errorSpy = vi
+      .spyOn(logger, 'error')
+      .mockImplementationOnce(() => void 0 as never);
 
     await installerEntry();
 

@@ -3,7 +3,6 @@ import prisma, { type Session } from '@prisma/client';
 import { cli, state } from '@crp';
 const { PrismaClient } = prisma;
 
-
 export const db = (() => {
   if (process.env.NODE_ENV === 'test') {
     return {} as prisma.PrismaClient;
@@ -22,27 +21,31 @@ process.on('exit', async () => {
   process.exit();
 });
 
-
-export async function logAction(name: string, value?: unknown, data?: ActionData): Promise<unknown> {
+export async function logAction(
+  name: string,
+  value?: unknown,
+  data?: ActionData,
+): Promise<unknown> {
   if (process.env.NODE_ENV === 'test') {
     return;
   }
 
-  return db.action.create({
-    data: {
-      name,
-      value: JSON.stringify(value),
-      success: data?.success ?? false,
-      session: {
-        connectOrCreate: {
-          where: {
-            id: state.session.id || '',
+  return db.action
+    .create({
+      data: {
+        name,
+        value: JSON.stringify(value),
+        success: data?.success ?? false,
+        session: {
+          connectOrCreate: {
+            where: {
+              id: state.session.id || '',
+            },
+            create: {},
           },
-          create: {},
         },
       },
-    },
-  })
+    })
     .catch((err) => {
       if (cli.opts().debug) {
         console.error(err);
@@ -60,15 +63,16 @@ export async function updateSessionResult(
 
   state.session.result = result;
 
-  return db.session.update({
-    where: {
-      id: state.session.id,
-    },
-    data: {
-      result,
-      ...data,
-    },
-  })
+  return db.session
+    .update({
+      where: {
+        id: state.session.id,
+      },
+      data: {
+        result,
+        ...data,
+      },
+    })
     .catch((err) => {
       if (cli.opts().debug) {
         console.error(err);

@@ -3,7 +3,6 @@ import * as crpUtils from '@crp/utils';
 
 import { renameFiles, renameProject, validateProjectName } from '../actions';
 
-
 vi.mock('ora', () => ({
   default: vi.fn(() => ({
     start: vi.fn(),
@@ -12,9 +11,10 @@ vi.mock('ora', () => ({
   })),
 }));
 
-
 describe('react-mobile actions', () => {
-  const whitespaceMock = vi.spyOn(logger, 'whitespace').mockImplementation(() => void 0);
+  const whitespaceMock = vi
+    .spyOn(logger, 'whitespace')
+    .mockImplementation(() => void 0);
 
   afterAll(() => {
     whitespaceMock.mockRestore();
@@ -44,7 +44,9 @@ describe('react-mobile actions', () => {
     });
 
     it('Shows a warning message that the project was renamed', () => {
-      const warningSpy = vi.spyOn(logger, 'warning').mockImplementation(() => void 0);
+      const warningSpy = vi
+        .spyOn(logger, 'warning')
+        .mockImplementation(() => void 0);
       state.answers.projectName = 'foo-bar';
       renameProject();
 
@@ -53,9 +55,13 @@ describe('react-mobile actions', () => {
   });
 
   describe('renameFiles', () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const execAsyncSpy = vi.spyOn(crpUtils, 'asyncExec').mockResolvedValue({} as any);
-    const warningSpy = vi.spyOn(logger, 'warning').mockImplementation(() => void 0);
+    const execAsyncSpy = vi
+      .spyOn(crpUtils, 'asyncExec')
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      .mockResolvedValue({} as any);
+    const warningSpy = vi
+      .spyOn(logger, 'warning')
+      .mockImplementation(() => void 0);
 
     beforeEach(() => {
       vi.clearAllMocks();
@@ -66,10 +72,13 @@ describe('react-mobile actions', () => {
     });
 
     it('Creates a spinner', async () => {
-      const spinnerSpy = vi.spyOn(crpUtils, 'createSpinner')
-        .mockImplementationOnce(() => ({
-          start: () => Promise.resolve(),
-        } as any)); // eslint-disable-line @typescript-eslint/no-explicit-any
+      const spinnerSpy = vi
+        .spyOn(crpUtils, 'createSpinner')
+        .mockImplementationOnce(() => {
+          return {
+            start: () => Promise.resolve(),
+          } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+        });
 
       await renameFiles();
 
@@ -85,7 +94,9 @@ describe('react-mobile actions', () => {
 
     it('Shows a warning when a script fails', async () => {
       const execAsyncFailSpy = execAsyncSpy.mockRejectedValueOnce(new Error());
-      const warningSpy = vi.spyOn(logger, 'warning').mockImplementation(() => void 0);
+      const warningSpy = vi
+        .spyOn(logger, 'warning')
+        .mockImplementation(() => void 0);
 
       await renameFiles();
 

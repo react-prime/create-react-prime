@@ -4,7 +4,6 @@ import { logger } from '@crp/utils';
 import * as question from '../../questions';
 import * as actions from '../shared/actions';
 
-
 async function installer(): Promise<void> {
   state.answers.renderType = await question.rendering();
   state.answers.cms = await question.cms();

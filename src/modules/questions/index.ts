@@ -5,18 +5,20 @@ import path from 'path';
 import { state, question, listQuestion, checkboxQuestion } from '@crp';
 import { asyncExec } from '@crp/utils';
 
-
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export function entry() {
   return listQuestion<i.Entry>({
     name: 'What would you like to do?',
-    choices: [{
-      name: 'Install a boilerplate',
-      value: 'boilerplate',
-    }, {
-      name: 'Exit',
-      value: null,
-    }],
+    choices: [
+      {
+        name: 'Install a boilerplate',
+        value: 'boilerplate',
+      },
+      {
+        name: 'Exit',
+        value: null,
+      },
+    ],
   });
 }
 
@@ -68,13 +70,16 @@ export function projectName(projectName: string) {
 export function cms() {
   return listQuestion({
     name: 'What CMS will the project use?',
-    choices: [{
-      name: 'Skip',
-      value: null,
-    }, {
-      name: 'Contentful',
-      value: 'contentful',
-    }],
+    choices: [
+      {
+        name: 'Skip',
+        value: null,
+      },
+      {
+        name: 'Contentful',
+        value: 'contentful',
+      },
+    ],
     default: 0,
   });
 }
@@ -82,10 +87,12 @@ export function cms() {
 export function modules() {
   return checkboxQuestion({
     name: 'What extra modules would you like to install?',
-    choices: [{
-      name: 'API Helper',
-      value: 'api',
-    }],
+    choices: [
+      {
+        name: 'API Helper',
+        value: 'api',
+      },
+    ],
     default: 0,
   });
 }

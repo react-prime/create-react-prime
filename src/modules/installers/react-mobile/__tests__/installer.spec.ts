@@ -1,7 +1,6 @@
 import * as question from '../../../questions';
 import installer from '../installer';
 
-
 // Mock shared actions
 vi.mock('../../shared/actions', () => ({
   clone: vi.fn(),
@@ -24,11 +23,14 @@ vi.mock('@crp/utils', () => ({
   },
 }));
 
-
 describe('react-mobile installer', () => {
   it('Opens the editor if user chooses an editor', async () => {
-    vi.spyOn(question, 'openInEditor').mockResolvedValueOnce({ name: 'foo', search: 'bar' });
-    const answerSpy = vi.spyOn(question, 'answerOpenInEditor')
+    vi.spyOn(question, 'openInEditor').mockResolvedValueOnce({
+      name: 'foo',
+      search: 'bar',
+    });
+    const answerSpy = vi
+      .spyOn(question, 'answerOpenInEditor')
       .mockImplementation(() => Promise.resolve());
 
     await installer();

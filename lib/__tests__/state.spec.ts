@@ -1,7 +1,6 @@
 import type * as i from 'types';
 import { createState } from '@crp';
 
-
 describe('State', () => {
   let state: i.State;
 
@@ -50,7 +49,9 @@ describe('State', () => {
 
   it('Exits if important state values are not found with proxy', () => {
     vi.spyOn(console, 'log').mockImplementation(() => void 0);
-    const exitMock = vi.spyOn(process, 'exit').mockImplementation(() => 0 as never);
+    const exitMock = vi
+      .spyOn(process, 'exit')
+      .mockImplementation(() => 0 as never);
 
     expect(state.answers.projectName).toEqual(undefined);
 

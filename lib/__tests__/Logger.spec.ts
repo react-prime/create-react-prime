@@ -3,7 +3,6 @@ import { cli } from '@crp';
 import { logger } from '@crp/utils';
 import { LOG_PREFIX } from '@crp/constants';
 
-
 // Supress console.log output from tests
 const orgLog = console.log;
 
@@ -14,7 +13,6 @@ function mockConsole(): () => void {
     console.log = orgLog;
   };
 }
-
 
 describe('Logger', () => {
   const restoreConsole = mockConsole();
@@ -66,7 +64,9 @@ describe('Logger', () => {
 
   describe('error', () => {
     const errorPrefix = [`\n${LOG_PREFIX}`, logger.errorMsg];
-    const mockProcessExit = vi.spyOn(process, 'exit').mockImplementation(() => 0 as never);
+    const mockProcessExit = vi
+      .spyOn(process, 'exit')
+      .mockImplementation(() => 0 as never);
 
     it('Logs error text with an error prefix and exits with code 1', async () => {
       const result = [[...errorPrefix, 'test'].join(' ')];
@@ -79,7 +79,9 @@ describe('Logger', () => {
 
     it('Shows the error stack when debug is enabled', async () => {
       vi.spyOn(cli, 'opts').mockReturnValueOnce({ debug: true });
-      const traceSpy = vi.spyOn(console, 'trace').mockImplementationOnce(() => void {});
+      const traceSpy = vi
+        .spyOn(console, 'trace')
+        .mockImplementationOnce(() => void {});
 
       await logger.error();
 

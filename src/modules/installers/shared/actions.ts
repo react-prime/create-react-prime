@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import type { PackageJson } from 'type-fest';
+// prettier-ignore
 import { state, logger, createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp';
 import { ERROR_TEXT } from '@crp/constants';
-
 
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
@@ -18,6 +18,7 @@ export async function clone(url: string): Promise<void> {
   }
 
   const spinner = createSpinner(
+    // prettier-ignore
     () => action(),
     {
       name: 'clone',
@@ -29,7 +30,6 @@ export async function clone(url: string): Promise<void> {
 
   await spinner.start();
 }
-
 
 export async function npmInstall(): Promise<void> {
   const { projectName } = state.answers;
@@ -46,7 +46,6 @@ export async function npmInstall(): Promise<void> {
 
   await spinner.start();
 }
-
 
 export async function npmPackageUpdate(): Promise<void> {
   const { projectName } = state.answers;
@@ -95,6 +94,7 @@ export async function npmPackageUpdate(): Promise<void> {
   }
 
   const spinner = createSpinner(
+    // prettier-ignore
     () => updatePackageJson(),
     {
       name: 'package.json update',
@@ -106,7 +106,6 @@ export async function npmPackageUpdate(): Promise<void> {
 
   await spinner.start();
 }
-
 
 export async function cleanup(): Promise<void> {
   const { projectName } = state.answers;

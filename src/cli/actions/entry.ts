@@ -3,13 +3,14 @@ import { state, type cli } from '@crp';
 import * as question from '../../modules/questions';
 import { installerEntry } from './installer';
 
-
 type Options = ReturnType<typeof cli.opts>;
 type Entries = {
   [key in NonNullable<keyof Options>]?: () => Promise<void>;
 };
 
-export async function getActionForOption(options: Options): Promise<() => Promise<void>> {
+export async function getActionForOption(
+  options: Options,
+): Promise<() => Promise<void>> {
   const entries: Entries = {
     boilerplate: installerEntry,
   };

@@ -1,8 +1,7 @@
 import type { Ora } from 'ora';
-import { type SpyInstance, spyOn } from 'vitest';
+import type { SpyInstance } from 'vitest';
 import { createSpinner, logger, type CreateSpinner } from '@crp';
 import { LOG_PREFIX } from '@crp/constants';
-
 
 describe('createSpinner', () => {
   let _spinner: CreateSpinner;
@@ -19,8 +18,12 @@ describe('createSpinner', () => {
       fail: 'fail',
     });
 
-    spinnerStartMock = spyOn(_spinner.spinner, 'start').mockImplementationOnce(() => _spinner.spinner);
-    spinnerSucceedMock = spyOn(_spinner.spinner, 'succeed').mockImplementationOnce(() => _spinner.spinner);
+    spinnerStartMock = vi
+      .spyOn(_spinner.spinner, 'start')
+      .mockImplementationOnce(() => _spinner.spinner);
+    spinnerSucceedMock = vi
+      .spyOn(_spinner.spinner, 'succeed')
+      .mockImplementationOnce(() => _spinner.spinner);
   });
 
   afterAll(() => {
@@ -70,11 +73,14 @@ describe('createSpinner', () => {
       fail: 'fail',
     });
 
-    // @ts-ignore
-    const logMock = spyOn(logger, 'error').mockImplementationOnce(() => void {});
-    spyOn(logger, 'whitespace').mockImplementationOnce(() => void {});
-    spyOn(spinner, 'start').mockImplementationOnce(() => _spinner.spinner);
-    const spinnerFailMock = spyOn(spinner, 'fail').mockImplementationOnce(() => _spinner.spinner);
+    const logMock = vi
+      .spyOn(logger, 'error')
+      .mockImplementationOnce(() => 0 as never);
+    vi.spyOn(logger, 'whitespace').mockImplementationOnce(() => void {});
+    vi.spyOn(spinner, 'start').mockImplementationOnce(() => _spinner.spinner);
+    const spinnerFailMock = vi
+      .spyOn(spinner, 'fail')
+      .mockImplementationOnce(() => _spinner.spinner);
     await start();
     expect(spinnerFailMock).toBeCalled();
     expect(logMock).toBeCalled();

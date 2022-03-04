@@ -1,7 +1,6 @@
 import { cli, bootstrapCLI } from '@crp';
 import { CLI_ARGS } from '@crp/constants';
 
-
 describe('CLI', () => {
   beforeAll(() => {
     bootstrapCLI();

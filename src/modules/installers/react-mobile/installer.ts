@@ -1,11 +1,9 @@
 import { state } from '@crp';
 import { logger } from '@crp/utils';
 
-
 import * as question from '../../questions';
 import * as actions from '../shared/actions';
 import * as moduleActions from './actions';
-
 
 async function installer(): Promise<void> {
   if (!moduleActions.validateProjectName()) {

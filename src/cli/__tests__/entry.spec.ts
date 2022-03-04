@@ -1,8 +1,5 @@
-import { spyOn } from 'vitest';
-
 import { getActionForOption } from '../actions/entry';
 import * as question from '../../modules/questions';
-
 
 describe('Entry', () => {
   it('Finds the entry point of a given option', async () => {
@@ -11,7 +8,9 @@ describe('Entry', () => {
   });
 
   it('Prompts for entry point if entry point is not found', async () => {
-    const promptSpy = spyOn(question, 'entry').mockResolvedValue('boilerplate');
+    const promptSpy = vi
+      .spyOn(question, 'entry')
+      .mockResolvedValue('boilerplate');
 
     let action = await getActionForOption({});
 
@@ -26,8 +25,12 @@ describe('Entry', () => {
   });
 
   it('Exits if user chooses to exit', async () => {
-    const exitSpy = spyOn(process, 'exit').mockImplementationOnce(() => void 0 as never);
-    const promptSpy = spyOn(question, 'entry').mockImplementationOnce(() => Promise.resolve(null));
+    const exitSpy = vi
+      .spyOn(process, 'exit')
+      .mockImplementationOnce(() => void 0 as never);
+    const promptSpy = vi
+      .spyOn(question, 'entry')
+      .mockImplementationOnce(() => Promise.resolve(null));
 
     const action = await getActionForOption({});
 

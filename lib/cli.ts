@@ -5,7 +5,6 @@ import { db } from '@crp/db';
 
 import { addOptions } from '../src/cli/options';
 
-
 const cli = new Command();
 
 export async function bootstrap(): Promise<Command> {
@@ -20,11 +19,12 @@ export async function bootstrap(): Promise<Command> {
 
   // Add new usage to db
   if (process.env.NODE_ENV !== 'test') {
-    db.session.create({
-      data: {
-        gitUsername: gitUsername(),
-      },
-    })
+    db.session
+      .create({
+        data: {
+          gitUsername: gitUsername(),
+        },
+      })
       .then((data) => {
         state.session.id = data.id;
       })

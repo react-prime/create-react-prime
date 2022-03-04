@@ -5,9 +5,13 @@ import { ERROR_TEXT, CLI_ARGS } from '@crp/constants';
 import * as installers from 'src/modules/installers';
 import * as question from 'src/modules/questions';
 
-
-export function getInstaller(boilerplate: string): () => Promise<void> | undefined {
-  const installersMap = installers as Record<string, { default: () => Promise<void> }>;
+export function getInstaller(
+  boilerplate: string,
+): () => Promise<void> | undefined {
+  const installersMap = installers as Record<
+    string,
+    { default: () => Promise<void> }
+  >;
 
   return installersMap[`${camelcase(boilerplate)}Installer`]?.default;
 }
@@ -15,7 +19,8 @@ export function getInstaller(boilerplate: string): () => Promise<void> | undefin
 export async function installerEntry(): Promise<void> {
   // Prompt questions
   state.answers.boilerplate = await question.boilerplate();
-  state.answers.projectName = cli.args[CLI_ARGS.ProjectName] || await question.projectName(state.answers.boilerplate);
+  // prettier-ignore
+  state.answers.projectName = cli.args[CLI_ARGS.ProjectName] || (await question.projectName(state.answers.boilerplate));
 
   // Trigger installer for given answer
   const { boilerplate } = state.answers;

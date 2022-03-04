@@ -1,10 +1,14 @@
 import type * as i from 'types';
 import type {
-  Answers, CheckboxQuestion, InputQuestion, InputQuestionOptions, ListQuestion, NumberQuestion,
+  Answers,
+  CheckboxQuestion,
+  InputQuestion,
+  InputQuestionOptions,
+  ListQuestion,
+  NumberQuestion,
 } from 'inquirer';
 import type { OptionValues } from 'commander';
 import type { JsonPrimitive, SetRequired } from 'type-fest';
-
 
 export * from './state/types';
 
@@ -47,11 +51,12 @@ interface CLIOptionBase<T extends JsonPrimitive> {
   getName(): string | undefined;
 }
 
-export interface CLIOption<T extends JsonPrimitive> extends
-  SetRequired<i.CLIOptionOptions<T>, 'description' | 'defaultValue'>,
-  CLIOptionBase<T> {}
+export interface CLIOption<T extends JsonPrimitive>
+  extends SetRequired<i.CLIOptionOptions<T>, 'description' | 'defaultValue'>,
+    CLIOptionBase<T> {}
 
-export interface CLIOptionClass<T extends JsonPrimitive> extends Partial<CLIOptionBase<T>> {}
+export interface CLIOptionClass<T extends JsonPrimitive>
+  extends Partial<CLIOptionBase<T>> {}
 
 export interface InstallerOptions {
   name: string;
@@ -72,12 +77,8 @@ interface QuestionOptionsBase extends InputQuestionOptions {
   OS?: i.OSNames[];
 }
 
-export type QuestionOptions = QuestionOptionsBase & (
-  | InputQuestion
-  | NumberQuestion
-  | ListQuestion
-  | CheckboxQuestion
-);
+export type QuestionOptions = QuestionOptionsBase &
+  (InputQuestion | NumberQuestion | ListQuestion | CheckboxQuestion);
 
 export interface CLIOptionOptions<T extends JsonPrimitive> {
   flags: `-${string}, --${string}` | `-${string}, --${string} <${string}>`;
@@ -97,7 +98,7 @@ export interface SpinnerOptions {
   message: {
     pending: () => string;
     success: () => string;
-  }
+  };
 }
 
 export type QuestionWhen = 'before' | 'after';

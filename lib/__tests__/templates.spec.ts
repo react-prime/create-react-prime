@@ -2,9 +2,10 @@ import inquirer from 'inquirer';
 
 import { checkboxQuestion, listQuestion, question } from '../templates';
 
-
 describe('Question templates', () => {
-  const promptSpy = vi.spyOn(inquirer, 'prompt').mockResolvedValue({ foo: 'bar' });
+  const promptSpy = vi
+    .spyOn(inquirer, 'prompt')
+    .mockResolvedValue({ foo: 'bar' });
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -48,7 +49,9 @@ describe('Question templates', () => {
 
     it('Returns a single answer as object', async () => {
       const choice = [{ name: 'foo', value: 'foo' }];
-      const promptSpy = vi.spyOn(inquirer, 'prompt').mockResolvedValueOnce({ foo: choice });
+      const promptSpy = vi
+        .spyOn(inquirer, 'prompt')
+        .mockResolvedValueOnce({ foo: choice });
 
       const answer = await checkboxQuestion(options);
 
@@ -58,7 +61,9 @@ describe('Question templates', () => {
 
     it('Returns a single answer as primitive', async () => {
       const choice = ['foo'];
-      const promptSpy = vi.spyOn(inquirer, 'prompt').mockResolvedValueOnce({ foo: choice });
+      const promptSpy = vi
+        .spyOn(inquirer, 'prompt')
+        .mockResolvedValueOnce({ foo: choice });
 
       const answer = await checkboxQuestion(options);
 
@@ -71,7 +76,9 @@ describe('Question templates', () => {
         { name: 'foo', value: 'foo' },
         { name: 'bar', value: 'bar' },
       ];
-      const promptSpy = vi.spyOn(inquirer, 'prompt').mockResolvedValueOnce({ foo: choice });
+      const promptSpy = vi
+        .spyOn(inquirer, 'prompt')
+        .mockResolvedValueOnce({ foo: choice });
 
       const answer = await checkboxQuestion(options);
 
@@ -81,7 +88,9 @@ describe('Question templates', () => {
 
     it('Returns null if nothing was chosen', async () => {
       const choice = null;
-      const promptSpy = vi.spyOn(inquirer, 'prompt').mockResolvedValueOnce({ foo: choice });
+      const promptSpy = vi
+        .spyOn(inquirer, 'prompt')
+        .mockResolvedValueOnce({ foo: choice });
 
       const answer = await checkboxQuestion(options);
 
@@ -107,7 +116,9 @@ describe('Question templates', () => {
 
     it('Returns the answer as object', async () => {
       const choice = { name: 'foo', value: 'foo' };
-      const promptSpy = vi.spyOn(inquirer, 'prompt').mockResolvedValueOnce({ foo: choice });
+      const promptSpy = vi
+        .spyOn(inquirer, 'prompt')
+        .mockResolvedValueOnce({ foo: choice });
 
       const answer = await listQuestion(options);
 
@@ -117,7 +128,9 @@ describe('Question templates', () => {
 
     it('Returns the answer as primitive', async () => {
       const choice = 'foo';
-      const promptSpy = vi.spyOn(inquirer, 'prompt').mockResolvedValueOnce({ foo: choice });
+      const promptSpy = vi
+        .spyOn(inquirer, 'prompt')
+        .mockResolvedValueOnce({ foo: choice });
 
       const answer = await listQuestion(options);
 

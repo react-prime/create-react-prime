@@ -4,7 +4,6 @@ import camelcase from 'camelcase';
 import { state } from '@crp';
 import { logger, createSpinner, asyncExec } from '@crp/utils';
 
-
 export function validateProjectName(): boolean {
   return /^.*[^a-zA-Z0-9].*$/.test(state.answers.projectName) === false;
 }
@@ -27,8 +26,14 @@ export async function renameFiles(): Promise<void> {
   async function action(): Promise<void> {
     const scripts = [
       ['rename files', `npx react-native-rename ${projectName}`],
-      ['replace text', `npx replace 'reactprimenative' '${projectName}' . -r --exclude="package*.json"`],
-      ['replace schemes', `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`],
+      [
+        'replace text',
+        `npx replace 'reactprimenative' '${projectName}' . -r --exclude="package*.json"`,
+      ],
+      [
+        'replace schemes',
+        `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`,
+      ],
     ];
 
     const options: cp.ExecOptions = {
@@ -36,22 +41,20 @@ export async function renameFiles(): Promise<void> {
     };
 
     for await (const [name, script] of scripts) {
-      await asyncExec(script, options)
-        .catch(() => {
-          logger.warning(`Script '${name}' has failed. Manual file renaming is required after installation.`);
-        });
+      await asyncExec(script, options).catch(() => {
+        logger.warning(
+          `Script '${name}' has failed. Manual file renaming is required after installation.`,
+        );
+      });
     }
   }
 
-  const spinner = createSpinner(
-    () => action(),
-    {
-      name: 'rename files',
-      start: `🔤  Renaming project files to '${projectName}'...`,
-      success: `🔤  Renamed project files to '${projectName}'!`,
-      fail: `🔤  Something went wrong while renaming files for '${projectName}'.`,
-    },
-  );
+  const spinner = createSpinner(() => action(), {
+    name: 'rename files',
+    start: `🔤  Renaming project files to '${projectName}'...`,
+    success: `🔤  Renamed project files to '${projectName}'!`,
+    fail: `🔤  Something went wrong while renaming files for '${projectName}'.`,
+  });
 
   await spinner.start();
 }
