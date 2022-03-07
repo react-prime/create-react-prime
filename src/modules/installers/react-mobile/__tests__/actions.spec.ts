@@ -57,7 +57,6 @@ describe('react-mobile actions', () => {
   describe('renameFiles', () => {
     const execAsyncSpy = vi
       .spyOn(crpUtils, 'asyncExec')
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       .mockResolvedValue({} as any);
     const warningSpy = vi
       .spyOn(logger, 'warning')
@@ -77,7 +76,7 @@ describe('react-mobile actions', () => {
         .mockImplementationOnce(() => {
           return {
             start: () => Promise.resolve(),
-          } as any; // eslint-disable-line @typescript-eslint/no-explicit-any
+          } as any;
         });
 
       await renameFiles();

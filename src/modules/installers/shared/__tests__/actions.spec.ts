@@ -16,7 +16,6 @@ vi.mock('ora', () => ({
   })),
 }));
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 describe('shared actions', () => {
   const boilerplate = 'react-web';
   const projectName = 'foo';
@@ -126,4 +125,3 @@ describe('shared actions', () => {
     });
   });
 });
-/* eslint-enable */

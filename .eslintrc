@@ -13,6 +13,14 @@
     "sourceType": "module"
   },
   "ignorePatterns": ["**/*.js"],
+  "overrides": [
+    {
+      "files": ["**/*.spec.ts"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": [0]
+      }
+    }
+  ],
   "rules": {
     "array-bracket-spacing": ["error", "never"],
     "arrow-parens": 2,
