@@ -1,6 +1,15 @@
 import inquirer from 'inquirer';
+import { state } from '@crp';
 
-import { checkboxQuestion, listQuestion, question } from '../templates';
+import {
+  canAskQuestion,
+  checkboxQuestion,
+  listQuestion,
+  question,
+} from '../templates';
+
+// vi.useFakeTimers();
+// vi.spyOn(global, 'setTimeout');
 
 describe('Question templates', () => {
   const promptSpy = vi
@@ -137,5 +146,31 @@ describe('Question templates', () => {
       expect(promptSpy).toHaveBeenCalled();
       expect(answer).toEqual(choice);
     });
+  });
+
+  describe('canAskQuestion', () => {
+    it('Returns true if operation result is not error', async () => {
+      vi.spyOn(state, 'operation', 'get').mockReturnValueOnce({
+        id: 'foo',
+        result: 'unfinished',
+      });
+
+      expect(await canAskQuestion()).toBe(true);
+    });
+
+    /** @TODO faketimers don't seem to work, not sure why */
+    // it('Rejects after some time when operation result is error', async () => {
+    //   vi.useFakeTimers();
+    //   vi.spyOn(state, 'operation', 'get').mockReturnValueOnce({
+    //     id: 'foo',
+    //     result: 'error',
+    //   });
+
+    //   const result = await canAskQuestion();
+
+    //   expect(setTimeout).toHaveBeenCalled();
+    //   expect(setTimeout).toHaveBeenLastCalledWith(expect.any(Function), 5000);
+    //   expect(result).toBe(false);
+    // });
   });
 });
