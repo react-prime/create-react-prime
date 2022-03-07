@@ -20,7 +20,9 @@ export async function question<Q extends AugmentedDistinctQuestion>(
   const answer = await inquirer.prompt(obj);
   const value = answer[obj.name!];
 
-  logAction('question:' + obj.name!, value, { success: true });
+  if (!obj.disableTracking) {
+    logAction('question:' + obj.name!, value, { success: true });
+  }
 
   return value;
 }
@@ -38,7 +40,9 @@ export async function checkboxQuestion<
   const answer = await inquirer.prompt(options);
   const value = answer[obj.name!];
 
-  logAction('question:' + obj.name!, value, { success: true });
+  if (!obj.disableTracking) {
+    logAction('question:' + obj.name!, value, { success: true });
+  }
 
   return value;
 }
@@ -56,17 +60,19 @@ export async function listQuestion<
   const answer = await inquirer.prompt(options);
   const value = answer[obj.name!];
 
-  logAction('question:' + obj.name!, value, { success: true });
+  if (!obj.disableTracking) {
+    logAction('question:' + obj.name!, value, { success: true });
+  }
 
   return value;
 }
 
-type AugmentedDistinctQuestion = SetRequired<DistinctQuestion, 'name'>;
-type AugmentedCheckboxQuestion = Omit<
-  SetRequired<CheckboxQuestion, 'name' | 'choices'>,
-  'type'
->;
-type AugmentedListQuestion = Omit<
-  SetRequired<ListQuestion, 'name' | 'choices'>,
-  'type'
->;
+type CRPQuestion = {
+  disableTracking?: boolean;
+};
+type AugmentedDistinctQuestion = CRPQuestion &
+  SetRequired<DistinctQuestion, 'name'>;
+type AugmentedCheckboxQuestion = CRPQuestion &
+  Omit<SetRequired<CheckboxQuestion, 'name' | 'choices'>, 'type'>;
+type AugmentedListQuestion = CRPQuestion &
+  Omit<SetRequired<ListQuestion, 'name' | 'choices'>, 'type'>;

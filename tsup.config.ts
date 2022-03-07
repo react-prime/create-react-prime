@@ -1,13 +1,13 @@
 import fs from 'fs';
 import type { Options } from 'tsup';
 
-
 const pkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
 const isDev = process.env.NODE_ENV === 'development';
 
 export const tsup: Options = {
   entry: ['src/index.ts'],
   format: ['esm'],
+  target: 'node14',
   banner: {
     js: '#!/usr/bin/env node',
   },

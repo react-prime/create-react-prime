@@ -1,4 +1,5 @@
-import { state, type cli } from '@crp';
+import gitUserName from 'git-user-name';
+import { logger, settings, state, type cli } from '@crp';
 
 import * as question from '../../modules/questions';
 import { installerEntry } from './installer';
@@ -7,6 +8,40 @@ type Options = ReturnType<typeof cli.opts>;
 type Entries = {
   [key in NonNullable<keyof Options>]?: () => Promise<void>;
 };
+
+export async function entry(options: Options): Promise<() => Promise<void>> {
+  await initTracking(options);
+  return getActionForOption(options);
+}
+
+async function initTracking(options: Options): Promise<void> {
+  const trackingSetting = await settings.getSetting('tracking');
+
+  if (trackingSetting == null || options.tracking) {
+    const tracking = await question.tracking();
+    await settings.setSetting('tracking', tracking);
+
+    let name = 'Anonymous';
+    switch (tracking) {
+      case 'choose':
+        name = await question.trackingName();
+        break;
+      case 'git':
+        name = gitUserName()!;
+        break;
+      case 'anonymous':
+        name = 'Anonymous';
+        break;
+    }
+
+    await settings.setSetting('trackingName', name);
+
+    logger.msg(
+      `Tracking enabled and set as '${name}'. To change, run: 'npx create-react-prime --tracking'`,
+    );
+    logger.whitespace();
+  }
+}
 
 export async function getActionForOption(
   options: Options,

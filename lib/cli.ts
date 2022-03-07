@@ -1,7 +1,4 @@
 import { Command } from 'commander';
-import gitUsername from 'git-user-name';
-import { state } from '@crp';
-import { db } from '@crp/db';
 
 import { addOptions } from '../src/cli/options';
 
@@ -16,24 +13,6 @@ export async function bootstrap(): Promise<Command> {
 
   // Parse user input
   cli.parse(process.argv);
-
-  // Add new usage to db
-  if (process.env.NODE_ENV !== 'test') {
-    db.operation
-      .create({
-        data: {
-          gitUsername: gitUsername(),
-        },
-      })
-      .then((data) => {
-        state.operation.id = data.id;
-      })
-      .catch((err) => {
-        if (cli.opts().debug) {
-          console.error(err);
-        }
-      });
-  }
 
   return cli;
 }

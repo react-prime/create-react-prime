@@ -10,6 +10,7 @@ declare global {
 export type CLIOptions = {
   boilerplate?: boolean;
   debug?: boolean;
+  tracking?: boolean;
 };
 
 declare module 'commander' {

@@ -19,8 +19,10 @@ export function getInstaller(
 export async function installerEntry(): Promise<void> {
   // Prompt questions
   state.answers.boilerplate = await question.boilerplate();
-  // prettier-ignore
-  state.answers.projectName = cli.args[CLI_ARGS.ProjectName] || (await question.projectName(state.answers.boilerplate));
+
+  const nameFromCli = cli.args[CLI_ARGS.ProjectName];
+  state.answers.projectName =
+    nameFromCli || (await question.projectName(state.answers.boilerplate));
 
   // Trigger installer for given answer
   const { boilerplate } = state.answers;

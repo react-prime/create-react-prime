@@ -4,6 +4,8 @@ import fs from 'fs';
 import path from 'path';
 import { state, question, listQuestion, checkboxQuestion } from '@crp';
 import { asyncExec } from '@crp/utils';
+import gitUserName from 'git-user-name';
+import kleur from 'kleur';
 
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export function entry() {
@@ -98,7 +100,12 @@ export function modules() {
 }
 
 export function openInEditor() {
-  const choices: i.ChoiceItem[] = [];
+  const choices: i.ChoiceItem[] = [
+    {
+      name: 'Skip',
+      value: null,
+    },
+  ];
   const files = fs.readdirSync('/Applications/');
 
   // Look for editors in the Applications folder
@@ -139,13 +146,7 @@ export function openInEditor() {
 
   return listQuestion<i.EditorSearchItem>({
     name: 'Open project in editor?',
-    choices: [
-      {
-        name: 'Skip',
-        value: null,
-      },
-      ...choices,
-    ],
+    choices,
     when: os.type() === 'Darwin' && choices.length > 0,
   });
 }
@@ -160,5 +161,47 @@ export async function answerOpenInEditor() {
   const dir = path.resolve(projectName);
 
   await asyncExec(`open ${dir} -a ${openInEditor.path}`);
+}
+
+export function tracking() {
+  const choices: i.TrackingItem[] = [];
+
+  if (gitUserName() != null) {
+    const name = gitUserName();
+    const styledName = kleur.dim(`(${name!})`);
+
+    choices.push({
+      name: `Git username ${styledName}`,
+      value: 'git',
+    });
+  }
+
+  const otherChoices: i.TrackingItem[] = [
+    {
+      name: 'Choose my name',
+      value: 'choose',
+    },
+    {
+      name: 'Anonymous',
+      value: 'anonymous',
+    },
+  ];
+
+  choices.push(...otherChoices);
+
+  return listQuestion<i.Tracking>({
+    name: 'We track usage of this tool, how would you like to be identified?',
+    choices,
+    default: 0,
+    disableTracking: true,
+  });
+}
+
+export function trackingName() {
+  return question({
+    type: 'input',
+    name: 'Choose your name',
+    disableTracking: true,
+  });
 }
 /* eslint-enable */

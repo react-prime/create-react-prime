@@ -3,7 +3,7 @@ import color from 'kleur';
 import { state, bootstrapCLI, closeApp } from '@crp';
 import { logger } from '@crp/utils';
 
-import { getActionForOption } from 'src/cli/actions/entry';
+import { entry } from 'src/cli/actions/entry';
 import { npmInstructions } from 'installers/shared/instructions';
 
 async function main() {
@@ -14,7 +14,7 @@ async function main() {
   const cli = await bootstrapCLI();
 
   // Find and run entry point for given CLI option
-  const action = await getActionForOption(cli.opts());
+  const action = await entry(cli.opts());
   await action();
 
   // Show closing text

@@ -14,6 +14,7 @@ export type CRPAnswers = {
   // projectName and boilerplate are secured by proxy
   projectName: string;
   boilerplate: string;
+  tracking: TrackingItem;
   entry?: Entry;
   renderType?: string;
   cms?: string;
@@ -27,7 +28,7 @@ export type OperationResult = 'success' | 'error' | 'exited';
 
 export type ChoiceItem = {
   name: string;
-  value: EditorSearchItem;
+  value: EditorSearchItem | null;
 };
 
 export type EditorSearchItem = {
@@ -35,3 +36,10 @@ export type EditorSearchItem = {
   search: string;
   path?: string;
 };
+
+export type TrackingItem = {
+  name: string;
+  value: Tracking;
+};
+
+export type Tracking = 'anonymous' | 'choose' | 'git';

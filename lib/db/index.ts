@@ -1,6 +1,6 @@
 import type * as i from 'types';
 import prisma, { type Operation } from '@prisma/client';
-import { cli, state } from '@crp';
+import { cli, state, settings } from '@crp';
 const { PrismaClient } = prisma;
 
 export const db = (() => {
@@ -41,10 +41,16 @@ export async function logAction(
             where: {
               id: state.operation.id || '',
             },
-            create: {},
+            create: {
+              username:
+                (await settings.getSetting('trackingName')) || 'Anonymous',
+            },
           },
         },
       },
+    })
+    .then((data) => {
+      state.operation.id = data.operationId;
     })
     .catch((err) => {
       if (cli.opts().debug) {
