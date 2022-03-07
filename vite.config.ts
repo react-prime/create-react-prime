@@ -5,5 +5,8 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     globals: true,
+    coverage: {
+      exclude: ['src/modules/questions/**', 'src/modules/installers/index.ts'],
+    },
   },
 });
