@@ -9,7 +9,7 @@ type Settings = {
   trackingName?: string;
 };
 
-class Jsondb {
+export class Jsondb {
   private readonly db = new Low<Settings>(new JSONFile(SETTINGS_FILE_PATH));
 
   private async init() {
