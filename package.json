@@ -9,11 +9,10 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "rm -rf dist && npm run db:migrate && tsup && npm run copyfiles",
+    "build": "rm -rf dist && tsup && npm run copyfiles",
     "start": "node dist/index.js",
     "dev": "rm -rf react-web/ react-mobile/ reactmobile/ && NODE_ENV=development tsup",
-    "copyfiles": "cp .env dist && cp -r prisma dist && mkdir -p dist/node_modules/{@prisma/client,.prisma/client} && cp node_modules/.prisma/client/{index.js,schema.prisma,libquery_engine-darwin-arm64.dylib.node} dist/node_modules/.prisma/client && cp node_modules/@prisma/client/index.js dist/node_modules/@prisma/client",
-    "postdev": "npm run copyfiles && node dist/index.js -d",
+    "postdev": "node dist/index.js -d",
     "lint": "eslint --ext .ts ./lib ./src",
     "typecheck": "tsc --project tsconfig.tc.json",
     "test:run": "vitest --run",
@@ -24,10 +23,10 @@
     "pub:patch": "npm version patch && npm publish && git push",
     "pub:minor": "npm version minor && npm publish && git push",
     "pub:major": "npm version major && npm publish && git push",
+    "pub:beta": "APP_ENV=beta npm publish --tag beta",
     "cs:add": "npx changeset",
     "cs:ver": "npx changeset version",
-    "prepare": "husky install",
-    "db:migrate": "npx prisma db push"
+    "prepare": "husky install"
   },
   "main": "dist/index.js",
   "bin": {
@@ -46,10 +45,10 @@
     "react-prime"
   ],
   "dependencies": {
-    "@prisma/client": "^3.10.0",
     "camelcase": "6.3.0",
     "commander": "9.0.0",
     "git-user-name": "^2.0.0",
+    "got": "^12.0.1",
     "immer": "9.0.12",
     "inquirer": "8.2.0",
     "kleur": "4.1.4",
@@ -70,7 +69,6 @@
     "husky": "^7.0.4",
     "lint-staged": "^12.3.4",
     "prettier": "^2.5.1",
-    "prisma": "^3.10.0",
     "tempy": "^2.0.0",
     "tsup": "^5.11.13",
     "type-fest": "2.12.0",

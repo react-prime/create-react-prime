@@ -1,5 +1,6 @@
 import gitUserName from 'git-user-name';
 import { logger, settings, state, type cli } from '@crp';
+import { createOperation } from '@crp/db';
 
 import * as question from '../../modules/questions';
 import { installerEntry } from './installer';
@@ -41,6 +42,9 @@ async function initTracking(options: Options): Promise<void> {
     );
     logger.whitespace();
   }
+
+  // Start tracking
+  await createOperation();
 }
 
 export async function getActionForOption(

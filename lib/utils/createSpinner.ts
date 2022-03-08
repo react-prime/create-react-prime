@@ -6,6 +6,7 @@ import { logAction } from '@crp/db';
 export function createSpinner<Action extends ActionFn>(
   action: Action,
   text: SpinnerText,
+  disableTracking = false,
 ): CreateSpinner {
   const spinner = ora(text.start);
   spinner.color = 'yellow';
@@ -18,7 +19,9 @@ export function createSpinner<Action extends ActionFn>(
       await action();
       spinner.succeed(text.success);
 
-      logAction('action:' + text.name, '', { success: true });
+      if (!disableTracking) {
+        logAction('action:' + text.name, '', { success: true });
+      }
     } catch (err) {
       spinner.fail(text.fail);
 

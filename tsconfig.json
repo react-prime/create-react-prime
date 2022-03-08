@@ -18,9 +18,10 @@
       "questions/*": ["src/modules/questions/index.ts"],
       "installers/*": ["src/modules/installers/*"],
       "generated/*": ["lib/generated/*"],
-      "types": ["lib/types.ts"],
+      "types": ["lib/types.ts"]
     },
     "types": ["vitest/globals"]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.d.ts"]
 }

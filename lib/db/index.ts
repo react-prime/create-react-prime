@@ -1,25 +1,31 @@
 import type * as i from 'types';
-import prisma, { type Operation } from '@prisma/client';
-import { cli, state, settings } from '@crp';
-const { PrismaClient } = prisma;
+import { state, settings } from '@crp';
+import got from 'got';
 
-export const db = (() => {
-  if (process.env.NODE_ENV === 'test') {
-    return {} as prisma.PrismaClient;
-  }
-
-  return new PrismaClient();
-})();
-
-// Disconnect from DB when process exits
-process.on('exit', async () => {
+export async function createOperation(): Promise<void> {
   if (process.env.NODE_ENV === 'test') {
     return;
   }
 
-  db.$disconnect();
-  process.exit();
-});
+  try {
+    const username = await settings.getSetting('trackingName');
+
+    const result = await got
+      // @ts-ignore
+      .post(`${__API__}/operation`, {
+        json: {
+          username,
+        },
+      })
+      .json<CreateOperationActionResult>();
+
+    if (result.operationId) {
+      state.operation.id = result.operationId;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 export async function logAction(
   name: string,
@@ -30,61 +36,53 @@ export async function logAction(
     return;
   }
 
-  return db.action
-    .create({
-      data: {
-        name,
-        value: JSON.stringify(value),
-        success: data?.success ?? false,
-        operation: {
-          connectOrCreate: {
-            where: {
-              id: state.operation.id || '',
-            },
-            create: {
-              username:
-                (await settings.getSetting('trackingName')) || 'Anonymous',
-            },
-          },
+  try {
+    const username = await settings.getSetting('trackingName');
+
+    await got
+      // @ts-ignore
+      .post(`${__API__}/operation/${state.operation.id}/action`, {
+        json: {
+          name,
+          value: JSON.stringify(value),
+          success: data?.success,
+          username,
         },
-      },
-    })
-    .then((data) => {
-      state.operation.id = data.operationId;
-    })
-    .catch((err) => {
-      if (cli.opts().debug) {
-        console.error(err);
-      }
-    });
+      })
+      .json<CreateOperationActionResult>();
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-export async function updateOperationResult(
-  result: i.OperationResult,
-  data?: Record<string, unknown>,
-): Promise<Operation | void> {
+export async function updateOperationResult(data: UpdateData): Promise<void> {
   if (process.env.NODE_ENV === 'test') {
     return;
   }
 
-  state.operation.result = result;
+  if (data.result) {
+    state.operation.result = data.result;
+  }
 
-  return db.operation
-    .update({
-      where: {
-        id: state.operation.id,
-      },
-      data: {
-        result,
-        ...data,
-      },
-    })
-    .catch((err) => {
-      if (cli.opts().debug) {
-        console.error(err);
-      }
-    });
+  try {
+    await got
+      // @ts-ignore
+      .put(`${__API__}/operation/${state.operation.id}`, {
+        json: data,
+      });
+  } catch (err) {
+    console.error(err);
+  }
 }
+
+type CreateOperationActionResult = {
+  operationId?: string;
+};
+
+type UpdateData = {
+  result?: i.OperationResult;
+  error?: string;
+};
 
 type ActionData = {
   success?: boolean;

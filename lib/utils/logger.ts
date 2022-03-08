@@ -21,7 +21,8 @@ class Logger {
    * @throws {Error}
    */
   async error(...reason: i.AnyArr): Promise<never> {
-    return updateOperationResult('error', {
+    return updateOperationResult({
+      result: 'error',
       error: reason.join(' '),
     }).then(() => {
       this.log(this.errorMsg, ...reason);
@@ -46,5 +47,4 @@ class Logger {
   }
 }
 
-const logger = new Logger();
-export { logger };
+export const logger = new Logger();

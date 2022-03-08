@@ -1,8 +1,7 @@
-import { db, updateOperationResult } from '@crp/db';
+import { updateOperationResult } from '@crp/db';
 
 export async function closeApp(): Promise<void> {
-  await updateOperationResult('success');
-  await db.$disconnect();
+  await updateOperationResult({ result: 'success' });
 
   process.exit();
 }
