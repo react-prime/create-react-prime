@@ -23,7 +23,7 @@
     "pub:patch": "npm version patch && npm publish && git push",
     "pub:minor": "npm version minor && npm publish && git push",
     "pub:major": "npm version major && npm publish && git push",
-    "pub:beta": "rm -rf dist && APP_ENV=beta tsup && npm publish --tag beta",
+    "pub:beta": "APP_ENV=beta npm publish --tag beta",
     "cs:add": "npx changeset",
     "cs:ver": "npx changeset version",
     "prepare": "husky install"

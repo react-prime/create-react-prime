@@ -2,6 +2,9 @@ import type * as i from 'types';
 import { state, settings } from '@crp';
 import got from 'got';
 
+// @ts-ignore
+const API_URL = __API__;
+
 export async function createOperation(): Promise<void> {
   if (process.env.NODE_ENV === 'test') {
     return;
@@ -11,8 +14,7 @@ export async function createOperation(): Promise<void> {
     const username = await settings.getSetting('trackingName');
 
     const result = await got
-      // @ts-ignore
-      .post(`${__API__}/operation`, {
+      .post(`${API_URL}/operation`, {
         json: {
           username,
         },
@@ -40,8 +42,7 @@ export async function logAction(
     const username = await settings.getSetting('trackingName');
 
     await got
-      // @ts-ignore
-      .post(`${__API__}/operation/${state.operation.id}/action`, {
+      .post(`${API_URL}/operation/${state.operation.id}/action`, {
         json: {
           name,
           value: JSON.stringify(value),
@@ -65,11 +66,9 @@ export async function updateOperationResult(data: UpdateData): Promise<void> {
   }
 
   try {
-    await got
-      // @ts-ignore
-      .put(`${__API__}/operation/${state.operation.id}`, {
-        json: data,
-      });
+    await got.put(`${API_URL}/operation/${state.operation.id}`, {
+      json: data,
+    });
   } catch (err) {
     console.error(err);
   }
