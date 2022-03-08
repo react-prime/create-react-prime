@@ -19,9 +19,9 @@ export async function createOperation(): Promise<void> {
           username,
         },
       })
-      .json<CreateOperationActionResult>();
+      .json<CreateOperationActionResponse>();
 
-    if (result.operationId) {
+    if ('operationId' in result) {
       state.operation.id = result.operationId;
     }
   } catch (err) {
@@ -50,7 +50,7 @@ export async function logAction(
           username,
         },
       })
-      .json<CreateOperationActionResult>();
+      .json<CreateOperationActionResponse>();
   } catch (err) {
     console.error(err);
   }
@@ -74,9 +74,11 @@ export async function updateOperationResult(data: UpdateData): Promise<void> {
   }
 }
 
-type CreateOperationActionResult = {
-  operationId?: string;
-};
+type CreateOperationActionResponse =
+  | ErrorResponse
+  | {
+      operationId?: string;
+    };
 
 type UpdateData = {
   result?: i.OperationResult;
@@ -87,3 +89,20 @@ type ActionData = {
   success?: boolean;
   error?: string;
 };
+
+type ErrorResponse = {
+  errors: Error[];
+};
+
+type Error = {
+  target: Target;
+  property: string;
+  children: unknown[];
+  constraints: Constraints;
+};
+
+type Constraints = {
+  isString: string;
+};
+
+type Target = Record<string, unknown>;
