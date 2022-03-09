@@ -14,6 +14,7 @@ export const tsup: Options = {
   define: {
     'process.env.VERSION': JSON.stringify(pkg.version),
     'process.env.NAME': JSON.stringify(pkg.name),
+    'process.env.APP_ENV': JSON.stringify(process.env.APP_ENV),
   },
   watch: isDev,
   onSuccess: isDev ? 'npm run postdev' : '',
