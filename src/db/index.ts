@@ -1,14 +1,10 @@
 import type * as i from 'types';
 import got from 'got';
-import { state, settings } from '@crp';
+import { state, settings, cli } from '@crp';
 
 import { API_URL } from './url';
 
 export async function createOperation(): Promise<void> {
-  if (process.env.NODE_ENV === 'test') {
-    return;
-  }
-
   try {
     const username = await settings.getSetting('trackingName');
 
@@ -24,7 +20,9 @@ export async function createOperation(): Promise<void> {
       state.operation.id = result.operationId;
     }
   } catch (err) {
-    console.error(err);
+    if (cli.getOptions().debug) {
+      console.error(err);
+    }
   }
 }
 
@@ -32,11 +30,7 @@ export async function logAction(
   name: string,
   value?: unknown,
   data?: ActionData,
-): Promise<unknown> {
-  if (process.env.NODE_ENV === 'test') {
-    return;
-  }
-
+): Promise<void> {
   try {
     const username = await settings.getSetting('trackingName');
 
@@ -51,15 +45,13 @@ export async function logAction(
       })
       .json<CreateOperationActionResponse>();
   } catch (err) {
-    console.error(err);
+    if (cli.getOptions().debug) {
+      console.error(err);
+    }
   }
 }
 
 export async function updateOperationResult(data: UpdateData): Promise<void> {
-  if (process.env.NODE_ENV === 'test') {
-    return;
-  }
-
   if (data.result) {
     state.operation.result = data.result;
   }
@@ -69,7 +61,9 @@ export async function updateOperationResult(data: UpdateData): Promise<void> {
       json: data,
     });
   } catch (err) {
-    console.error(err);
+    if (cli.getOptions().debug) {
+      console.error(err);
+    }
   }
 }
 
