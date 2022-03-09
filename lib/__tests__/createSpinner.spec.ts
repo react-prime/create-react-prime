@@ -3,10 +3,14 @@ import type { SpyInstance } from 'vitest';
 import { createSpinner, logger, type CreateSpinner } from '@crp';
 import { LOG_PREFIX } from '@crp/constants';
 
+import * as db from 'src/db';
+
 describe('createSpinner', () => {
   let _spinner: CreateSpinner;
   let spinnerStartMock: SpyInstance<[text?: string | undefined], Ora>;
   let spinnerSucceedMock: SpyInstance<[text?: string | undefined], Ora>;
+
+  vi.spyOn(db, 'logAction').mockResolvedValue();
 
   beforeEach(() => {
     const fn = () => Promise.resolve();
@@ -27,8 +31,7 @@ describe('createSpinner', () => {
   });
 
   afterAll(() => {
-    spinnerStartMock.mockRestore();
-    spinnerSucceedMock.mockRestore();
+    vi.restoreAllMocks();
   });
 
   it('Returns the spinner and a start function', () => {

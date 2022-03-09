@@ -3,6 +3,8 @@ import { cli } from '@crp';
 import { logger } from '@crp/utils';
 import { LOG_PREFIX } from '@crp/constants';
 
+import * as db from 'src/db';
+
 // Supress console.log output from tests
 const orgLog = console.log;
 
@@ -69,6 +71,7 @@ describe('Logger', () => {
       .mockImplementation(() => 0 as never);
 
     it('Logs error text with an error prefix and exits with code 1', async () => {
+      vi.spyOn(db, 'updateOperationResult').mockResolvedValueOnce();
       const result = [[...errorPrefix, 'test'].join(' ')];
 
       await logger.error('test');
@@ -78,6 +81,7 @@ describe('Logger', () => {
     });
 
     it('Shows the error stack when debug is enabled', async () => {
+      vi.spyOn(db, 'updateOperationResult').mockResolvedValueOnce();
       vi.spyOn(cli.command, 'opts').mockReturnValueOnce({ debug: true });
       const traceSpy = vi
         .spyOn(console, 'trace')

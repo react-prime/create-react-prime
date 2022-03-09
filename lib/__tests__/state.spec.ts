@@ -1,5 +1,6 @@
 import type * as i from 'types';
-import { createState } from '@crp';
+import { createState, logger } from '@crp';
+import { ERROR_TEXT } from '@crp/constants';
 
 describe('State', () => {
   let state: i.State;
@@ -49,14 +50,11 @@ describe('State', () => {
 
   it('Exits if important state values are not found with proxy', () => {
     vi.spyOn(console, 'log').mockImplementation(() => void 0);
-    const exitMock = vi
-      .spyOn(process, 'exit')
-      .mockImplementation(() => 0 as never);
+    const logSpy = vi
+      .spyOn(logger, 'error')
+      .mockImplementationOnce(() => void 0 as never);
 
     expect(state.answers.projectName).toEqual(undefined);
-
-    process.nextTick(() => {
-      expect(exitMock).toHaveBeenCalledWith(1);
-    });
+    expect(logSpy).toHaveBeenCalledWith(ERROR_TEXT.InvalidCLIState);
   });
 });
