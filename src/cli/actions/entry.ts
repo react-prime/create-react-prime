@@ -10,7 +10,7 @@ export async function entry(options: Options): Promise<() => Promise<void>> {
   return getActionForOption(options);
 }
 
-async function initTracking(options: Options): Promise<void> {
+export async function initTracking(options: Options): Promise<void> {
   const trackingSetting = await settings.getSetting('tracking');
 
   if (trackingSetting == null || options.tracking) {
