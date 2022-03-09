@@ -1,6 +1,6 @@
 import camelcase from 'camelcase';
 import { state, cli, logger } from '@crp';
-import { ERROR_TEXT, CLI_ARGS } from '@crp/constants';
+import { ERROR_TEXT } from '@crp/constants';
 
 import * as installers from 'src/modules/installers';
 import * as question from 'src/modules/questions';
@@ -20,13 +20,12 @@ export async function installerEntry(): Promise<void> {
   // Prompt questions
   state.answers.boilerplate = await question.boilerplate();
 
-  const nameFromCli = cli.args[CLI_ARGS.ProjectName];
+  const { boilerplate } = state.answers;
+  const nameFromCli = cli.getArg('ProjectName');
   state.answers.projectName =
-    nameFromCli || (await question.projectName(state.answers.boilerplate));
+    nameFromCli || (await question.projectName(boilerplate));
 
   // Trigger installer for given answer
-  const { boilerplate } = state.answers;
-
   try {
     const installer = getInstaller(boilerplate);
 

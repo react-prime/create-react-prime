@@ -43,7 +43,7 @@ describe('Installer', () => {
   });
 
   it('Uses the CLI argument as project name', async () => {
-    cli.args[CLI_ARGS.ProjectName] = 'foo';
+    cli.command.args[CLI_ARGS.ProjectName] = 'foo';
 
     await installerEntry();
 

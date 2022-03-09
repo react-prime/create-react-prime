@@ -2,8 +2,7 @@ import type * as i from 'types';
 import got from 'got';
 import { state, settings } from '@crp';
 
-// @ts-ignore
-const API_URL = __API__;
+import { API_URL } from './url';
 
 export async function createOperation(): Promise<void> {
   if (process.env.NODE_ENV === 'test') {

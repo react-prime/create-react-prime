@@ -28,7 +28,7 @@ class Logger {
     }).then(() => {
       this.log(this.errorMsg, ...reason);
 
-      if (cli.opts().debug) {
+      if (cli.getOptions().debug) {
         console.trace();
       }
 

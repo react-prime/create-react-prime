@@ -1,20 +1,28 @@
 import { Command } from 'commander';
 
 import { addOptions } from '../src/cli/options';
+import { CLI_ARGS } from './constants';
 
-const cli = new Command();
+export const command = new Command();
 
 export async function bootstrap(): Promise<Command> {
   // Set CLI version to package.json version
-  cli.version(process.env.VERSION!);
+  command.version(process.env.VERSION!);
 
   // Add flags/options to the CLI
-  addOptions(cli);
+  addOptions(command);
 
   // Parse user input
-  cli.parse(process.argv);
+  command.parse(process.argv);
 
-  return cli;
+  return command;
 }
 
-export default cli;
+export function getArg(arg: keyof typeof CLI_ARGS): string {
+  const _arg = CLI_ARGS[arg];
+  return command.args[_arg];
+}
+
+export function getOptions(): ReturnType<typeof command.opts> {
+  return command.opts();
+}

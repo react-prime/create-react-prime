@@ -78,7 +78,7 @@ describe('Logger', () => {
     });
 
     it('Shows the error stack when debug is enabled', async () => {
-      vi.spyOn(cli, 'opts').mockReturnValueOnce({ debug: true });
+      vi.spyOn(cli.command, 'opts').mockReturnValueOnce({ debug: true });
       const traceSpy = vi
         .spyOn(console, 'trace')
         .mockImplementationOnce(() => void {});

@@ -5,8 +5,6 @@ import { createOperation } from 'src/db';
 import * as question from '../../modules/questions';
 import { installerEntry } from './installer';
 
-type Options = ReturnType<typeof cli.opts>;
-
 export async function entry(options: Options): Promise<() => Promise<void>> {
   await initTracking(options);
   return getActionForOption(options);
@@ -79,3 +77,5 @@ export async function getActionForOption(
   // Get action with user's answer
   return getActionForOption({ [entry]: true });
 }
+
+type Options = ReturnType<typeof cli.command.opts>;
