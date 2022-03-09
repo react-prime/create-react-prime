@@ -1,5 +1,5 @@
 import gitUserName from 'git-user-name';
-import { logger, settings, state, type cli } from '@crp';
+import { createSpinner, logger, settings, state, type cli } from '@crp';
 
 import { createOperation } from 'src/db';
 import * as question from '../../modules/questions';
@@ -44,7 +44,19 @@ async function initTracking(options: Options): Promise<void> {
   }
 
   // Start tracking
-  await createOperation();
+  const spinner = createSpinner(
+    () => createOperation(),
+    {
+      name: 'create operation',
+      start: 'Connecting...',
+      success: 'Connected!',
+      fail: 'Failed to connect.',
+    },
+    false,
+  );
+
+  await spinner.start();
+  logger.whitespace();
 }
 
 export async function getActionForOption(
