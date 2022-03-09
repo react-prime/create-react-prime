@@ -2,14 +2,14 @@ import type * as i from 'types';
 import got from 'got';
 import { state, settings, cli } from '@crp';
 
-import { API_URL } from './url';
+import { getApiUrl } from './url';
 
 export async function createOperation(): Promise<void> {
   try {
     const username = await settings.getSetting('trackingName');
 
     const result = await got
-      .post(`${API_URL}/operation`, {
+      .post(`${getApiUrl()}/operation`, {
         json: {
           username,
         },
@@ -35,7 +35,7 @@ export async function logAction(
     const username = await settings.getSetting('trackingName');
 
     await got
-      .post(`${API_URL}/operation/${state.operation.id}/action`, {
+      .post(`${getApiUrl()}/operation/${state.operation.id}/action`, {
         json: {
           name,
           value: JSON.stringify(value),
@@ -57,7 +57,7 @@ export async function updateOperationResult(data: UpdateData): Promise<void> {
   }
 
   try {
-    await got.put(`${API_URL}/operation/${state.operation.id}`, {
+    await got.put(`${getApiUrl()}/operation/${state.operation.id}`, {
       json: data,
     });
   } catch (err) {

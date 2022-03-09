@@ -1,4 +1,4 @@
-export const API_URL = (() => {
+export function getApiUrl(): string {
   if (process.env.APP_ENV === 'beta') {
     return 'https://create-react-prime-dashboard-git-develop-sandervspl.vercel.app/api';
   }
@@ -8,4 +8,4 @@ export const API_URL = (() => {
   }
 
   return 'https://create-react-prime-dashboard.vercel.app/api';
-})();
+}
