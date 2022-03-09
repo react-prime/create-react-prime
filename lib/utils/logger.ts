@@ -3,7 +3,8 @@ import type * as i from 'types';
 import color from 'kleur';
 import { cli } from '@crp';
 import { LOG_PREFIX } from '@crp/constants';
-import { updateOperationResult } from '@crp/db';
+
+import { updateOperationResult } from 'src/db';
 
 class Logger {
   readonly warningMsg = color.yellow('WRN');

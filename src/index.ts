@@ -1,10 +1,11 @@
 import path from 'path';
 import color from 'kleur';
-import { state, bootstrapCLI, closeApp } from '@crp';
+import { state, bootstrapCLI } from '@crp';
 import { logger } from '@crp/utils';
 
 import { entry } from 'src/cli/actions/entry';
 import { npmInstructions } from 'installers/shared/instructions';
+import { updateOperationResult } from './db';
 
 async function main() {
   // Show startup text
@@ -21,7 +22,8 @@ async function main() {
   close();
 
   // Exit application
-  await closeApp();
+  await updateOperationResult({ result: 'success' });
+  process.exit();
 }
 
 export function start(): void {

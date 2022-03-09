@@ -1,7 +1,7 @@
 import gitUserName from 'git-user-name';
 import { logger, settings, state, type cli } from '@crp';
-import { createOperation } from '@crp/db';
 
+import { createOperation } from 'src/db';
 import * as question from '../../modules/questions';
 import { installerEntry } from './installer';
 

@@ -1,6 +1,6 @@
 import type * as i from 'types';
-import { state, settings } from '@crp';
 import got from 'got';
+import { state, settings } from '@crp';
 
 // @ts-ignore
 const API_URL = __API__;

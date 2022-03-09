@@ -1,7 +1,8 @@
 import ora, { type Ora } from 'ora';
 import { logger } from '@crp';
 import { ERROR_TEXT, LOG_PREFIX } from '@crp/constants';
-import { logAction } from '@crp/db';
+
+import { logAction } from 'src/db';
 
 export function createSpinner<Action extends ActionFn>(
   action: Action,

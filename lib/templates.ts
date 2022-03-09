@@ -3,7 +3,8 @@ import type { SetRequired } from 'type-fest';
 import type { CheckboxQuestion, DistinctQuestion, ListQuestion } from 'inquirer';
 import inquirer from 'inquirer';
 import { state } from '@crp';
-import { logAction } from '@crp/db';
+
+import { logAction } from 'src/db';
 
 export async function canAskQuestion(): Promise<void | true> {
   if (state.operation.result === 'error') {
