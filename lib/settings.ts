@@ -1,7 +1,7 @@
 import type * as i from 'types';
 import { Low, JSONFile } from 'lowdb';
 
-import { SETTINGS_FILE_PATH, ERROR_TEXT } from './constants';
+import { SETTINGS_FILE_PATH } from './constants';
 import { logger } from './utils';
 
 type Settings = {
@@ -27,7 +27,10 @@ export class Jsondb {
 
       return this.db.data?.[key];
     } catch (e) {
-      logger.error(ERROR_TEXT.GenericError, JSON.stringify(e));
+      logger.error(
+        'Something went wrong reading from the CRP settings.',
+        JSON.stringify(e),
+      );
     }
   }
 
@@ -41,7 +44,10 @@ export class Jsondb {
       }
       await this.db.write();
     } catch (e) {
-      logger.error(ERROR_TEXT.GenericError, JSON.stringify(e));
+      logger.error(
+        'Something went wrong updating the CRP settings.',
+        JSON.stringify(e),
+      );
     }
   }
 }
