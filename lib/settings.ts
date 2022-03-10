@@ -16,7 +16,7 @@ export class Jsondb {
     await this.db.read();
 
     // Defaults
-    this.db.data ||= {};
+    this.db.data = this.db.data || {};
   }
 
   async getSetting<K extends keyof Settings>(key: K): Promise<Settings[K]> {
