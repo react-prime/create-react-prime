@@ -9,12 +9,12 @@ export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
   async function action() {
-    // Check if directory already exists
-    if (await asyncExists(projectName)) {
-      logger.error(ERROR_TEXT.DirectoryExists, projectName);
+    // Check if a prime-monorepo directory already exists
+    if (await asyncExists('prime-monorepo')) {
+      logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
     }
 
-    await asyncExec(`git clone ${url} ${projectName}`);
+    await asyncExec(`git clone ${url}`);
   }
 
   const spinner = createSpinner(
@@ -121,4 +121,13 @@ export async function cleanup(): Promise<void> {
   );
 
   await spinner.start();
+}
+
+export async function copyBoilerplate(): Promise<void> {
+  const { boilerplate, projectName } = state.answers;
+
+  await asyncExec(
+    `cp -r ./prime-monorepo/boilerplates/${boilerplate} ${projectName}`,
+  );
+  await asyncExec('rm -rf ./prime-monorepo');
 }

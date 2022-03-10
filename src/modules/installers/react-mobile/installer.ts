@@ -11,7 +11,8 @@ async function installer(): Promise<void> {
   }
 
   // Installation process
-  await actions.clone('https://github.com/react-prime/react-prime-native.git');
+  await actions.clone('https://github.com/sandervspl/prime-monorepo.git');
+  await actions.copyBoilerplate();
   await moduleActions.renameFiles();
   await actions.npmInstall();
   await actions.npmPackageUpdate();
