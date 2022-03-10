@@ -39,7 +39,7 @@ export async function logAction(
         json: {
           name,
           value: JSON.stringify(value),
-          success: data?.success,
+          success: data?.success || false,
           username,
         },
       })
