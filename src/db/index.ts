@@ -57,7 +57,7 @@ export async function updateOperationResult(data: UpdateData): Promise<void> {
   }
 
   try {
-    await got.put(`${getApiUrl()}/operation/${state.operation.id}`, {
+    await got.patch(`${getApiUrl()}/operation/${state.operation.id}`, {
       json: data,
     });
   } catch (err) {

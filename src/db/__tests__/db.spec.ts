@@ -11,7 +11,9 @@ describe('db', () => {
       operationId: 'operation-test-id',
     }),
   } as any);
-  const putSpy = vi.spyOn(got, 'put').mockImplementation(() => void {} as any);
+  const patchSpy = vi
+    .spyOn(got, 'patch')
+    .mockImplementation(() => void {} as any);
   const settingsSpy = vi
     .spyOn(settings, 'getSetting')
     .mockResolvedValue('test-name');
@@ -91,7 +93,7 @@ describe('db', () => {
         result: 'success',
       });
 
-      expect(putSpy).toHaveBeenCalledWith(
+      expect(patchSpy).toHaveBeenCalledWith(
         `${API_URL}/operation/${state.operation.id}`,
         {
           json: {
