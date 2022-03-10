@@ -63,8 +63,9 @@ export function projectName(projectName: string) {
       }
 
       const hasIllegalChars = illegalChars.test(input);
+      const validLength = input.length >= 2 && input.length < 30;
 
-      return !hasIllegalChars;
+      return !hasIllegalChars && validLength;
     },
   });
 }
@@ -201,6 +202,9 @@ export function trackingName() {
   return question({
     type: 'input',
     name: 'Choose your name',
+    validate: (input: string) => {
+      return input.length >= 2 && input.length < 20;
+    },
     disableTracking: true,
   });
 }
