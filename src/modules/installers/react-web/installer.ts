@@ -12,11 +12,13 @@ async function installer(): Promise<void> {
   logger.whitespace();
 
   // Installation process
-  await actions.clone('https://github.com/sandervspl/prime-monorepo.git');
+  await actions.downloadMonorepo();
   await actions.copyBoilerplate();
+  await actions.installModules();
   await actions.npmInstall();
   await actions.npmPackageUpdate();
   await actions.cleanup();
+  await actions.removeMonorepo();
 
   logger.whitespace();
 

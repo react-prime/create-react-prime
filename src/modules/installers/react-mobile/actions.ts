@@ -13,7 +13,6 @@ export function renameProject(): void {
   state.answers.projectName = camelcase(state.answers.projectName);
 
   // Let user know we renamed the project
-  logger.whitespace();
   logger.warning(
     `Project name has been renamed to '${state.answers.projectName}'.\n`,
     'Read more: https://github.com/facebook/react-native/issues/213.\n',

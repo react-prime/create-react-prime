@@ -92,7 +92,7 @@ export function modules() {
     choices: [
       {
         name: 'API Helper',
-        value: 'api',
+        value: 'api-helper',
       },
     ],
     default: 0,
@@ -202,6 +202,14 @@ export function trackingName() {
     type: 'input',
     name: 'Choose your name',
     disableTracking: true,
+  });
+}
+
+export function apiHelperBaseUrl() {
+  return question({
+    type: 'input',
+    name: 'API base url (optional)',
+    default: '',
   });
 }
 /* eslint-enable */

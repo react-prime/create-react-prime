@@ -26,10 +26,13 @@ class Logger {
       result: 'error',
       error: reason.join(' '),
     }).then(() => {
+      this.whitespace();
       this.log(this.errorMsg, ...reason);
+      this.whitespace();
 
       if (cli.getOptions().debug) {
         console.trace();
+        this.whitespace();
       }
 
       process.exit(1);
