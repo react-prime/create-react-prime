@@ -88,12 +88,16 @@ export function cms() {
 }
 
 export function modules() {
-  return checkboxQuestion({
+  return checkboxQuestion<i.Modules[]>({
     name: 'What extra modules would you like to install?',
     choices: [
       {
         name: 'API Helper',
         value: 'api-helper',
+      },
+      {
+        name: 'Manual Deploy',
+        value: 'manual-deploy',
       },
     ],
     default: 0,

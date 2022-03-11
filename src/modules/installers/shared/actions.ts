@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import util from 'util';
 import type { PackageJson } from 'type-fest';
 // prettier-ignore
 import { state, logger, createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp';
@@ -147,6 +148,9 @@ export async function installModules(): Promise<void> {
       case 'api-helper':
         await installApiHelper();
         break;
+      case 'manual-deploy':
+        await installDeployScript();
+        break;
     }
   }
 }
@@ -209,4 +213,36 @@ export async function installApiHelper(): Promise<void> {
   }
 
   logger.whitespace();
+}
+
+export async function installDeployScript(): Promise<void> {
+  // Make sure monorepo is present
+  if (!fs.existsSync('prime-monorepo')) {
+    await downloadMonorepo();
+  }
+
+  const { projectName } = state.answers;
+
+  const spinner = createSpinner(
+    async () => {
+      await asyncExec(
+        `npx add-dependencies ${projectName}/package.json @labela/deploy --dev`,
+      );
+      await util.promisify(fs.copyFile)(
+        './prime-monorepo/packages/deploy-script/deploy.sh',
+        `${projectName}/deploy.sh`,
+      );
+      await asyncExec(`chmod +x ${projectName}/deploy.sh`);
+    },
+    {
+      name: 'deploy script install',
+      /* eslint-disable quotes */
+      start: " 🚀  Installing 'deploy-script'...",
+      success: " 🚀  Installed 'deploy-script'!",
+      fail: " 🚀  Something went wrong while installing the 'deploy-script'.",
+      /* eslint-enable */
+    },
+  );
+
+  await spinner.start();
 }

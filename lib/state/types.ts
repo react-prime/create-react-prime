@@ -18,7 +18,7 @@ export type CRPAnswers = {
   entry?: Entry;
   renderType?: string;
   cms?: string;
-  modules?: string[];
+  modules?: Modules[];
   openInEditor?: EditorSearchItem;
 };
 
@@ -43,3 +43,13 @@ export type TrackingItem = {
 };
 
 export type Tracking = 'anonymous' | 'choose' | 'git';
+
+export type Modules =
+  | 'api-helper'
+  | 'manual-deploy'
+  | 'continuous-deploy'
+  | 'sentry';
+export type ModuleItem = {
+  name: string;
+  value: Modules;
+};

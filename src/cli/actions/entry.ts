@@ -47,7 +47,7 @@ export async function initTracking(options: Options): Promise<void> {
       success: 'Connected!',
       fail: 'Failed to connect.',
     },
-    false,
+    true,
   );
 
   await spinner.start();
