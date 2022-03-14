@@ -151,6 +151,9 @@ export async function installModules(): Promise<void> {
       case 'manual-deploy':
         await installDeployScript();
         break;
+      case 'continuous-deploy':
+        await installContinuousDeployScript();
+        break;
     }
   }
 }
@@ -221,28 +224,54 @@ export async function installDeployScript(): Promise<void> {
     await downloadMonorepo();
   }
 
-  const { projectName } = state.answers;
+  async function action() {
+    const { projectName } = state.answers;
 
-  const spinner = createSpinner(
-    async () => {
-      await asyncExec(
-        `npx add-dependencies ${projectName}/package.json @labela/deploy --dev`,
-      );
-      await util.promisify(fs.copyFile)(
-        './prime-monorepo/packages/deploy-script/deploy.sh',
-        `${projectName}/deploy.sh`,
-      );
-      await asyncExec(`chmod +x ${projectName}/deploy.sh`);
-    },
-    {
-      name: 'deploy script install',
-      /* eslint-disable quotes */
-      start: " 🚀  Installing 'deploy-script'...",
-      success: " 🚀  Installed 'deploy-script'!",
-      fail: " 🚀  Something went wrong while installing the 'deploy-script'.",
-      /* eslint-enable */
-    },
-  );
+    await asyncExec(
+      `npx add-dependencies ${projectName}/package.json @labela/deploy --dev`,
+    );
+    await util.promisify(fs.copyFile)(
+      './prime-monorepo/packages/deploy-script/deploy.sh',
+      `${projectName}/deploy.sh`,
+    );
+    await asyncExec(`chmod +x ${projectName}/deploy.sh`);
+  }
+
+  const spinner = createSpinner(() => action(), {
+    name: 'deploy script install',
+    /* eslint-disable quotes */
+    start: " 🚀  Installing 'deploy-script'...",
+    success: " 🚀  Installed 'deploy-script'!",
+    fail: " 🚀  Something went wrong while installing the 'deploy-script'.",
+    /* eslint-enable */
+  });
 
   await spinner.start();
+}
+
+export async function installContinuousDeployScript(): Promise<void> {
+  async function action() {
+    const { projectName } = state.answers;
+
+    await asyncExec(
+      `npx add-dependencies ${projectName}/package.json @labela/continuous-deploy --dev`,
+    );
+  }
+
+  const spinner = createSpinner(() => action(), {
+    name: 'continuous-deploy script install',
+    /* eslint-disable quotes */
+    start: " 🚀  Installing 'continuous-deploy-script'...",
+    success: " 🚀  Installed 'continuous-deploy-script'!",
+    fail: " 🚀  Something went wrong while installing the 'continuous-deploy-script'.",
+    /* eslint-enable */
+  });
+
+  await spinner.start();
+
+  logger.msg(
+    // eslint-disable-next-line max-len
+    'Continuous-deploy script has been installed but requires some manual steps! Make sure to follow the instructions at https://github.com/sandervspl/prime-monorepo/tree/main/packages/continuous-deploy-script#readme',
+  );
+  logger.whitespace();
 }

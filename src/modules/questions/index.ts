@@ -99,6 +99,14 @@ export function modules() {
         name: 'Manual Deploy',
         value: 'manual-deploy',
       },
+      {
+        name: 'Continuous Deploy',
+        value: 'continuous-deploy',
+      },
+      {
+        name: 'Sentry',
+        value: 'sentry',
+      },
     ],
     default: 0,
   });
