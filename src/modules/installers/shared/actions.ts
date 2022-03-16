@@ -355,7 +355,9 @@ export async function installSentry(): Promise<void> {
       await fs.writeFile(`${projectName}/next.config.js`, nextConfigFile);
 
       // Fix formatting
-      await asyncExec(`npx prettier --write ${projectName}/next.config.js`);
+      await asyncExec(
+        `npx prettier --single-quote --trailing-comma all --write ${projectName}/next.config.js`,
+      );
     }
 
     /** @TODO */
