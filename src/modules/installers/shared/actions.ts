@@ -1,9 +1,10 @@
-import fs from 'fs';
+import fs from 'fs/promises';
+import cp from 'child_process';
+import { existsSync } from 'fs';
 import path from 'path';
-import util from 'util';
 import type { PackageJson } from 'type-fest';
 // prettier-ignore
-import { state, logger, createSpinner, asyncExec, asyncExists, asyncWrite } from '@crp';
+import { state, logger, createSpinner, asyncExec } from '@crp';
 import { ERROR_TEXT } from '@crp/constants';
 
 import * as question from '../../questions';
@@ -13,7 +14,7 @@ export async function clone(url: string): Promise<void> {
 
   async function action() {
     // Check if a prime-monorepo directory already exists
-    if (await asyncExists('prime-monorepo')) {
+    if (existsSync('prime-monorepo')) {
       logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
     }
 
@@ -51,12 +52,14 @@ export async function npmPackageUpdate(): Promise<void> {
   const { projectName } = state.answers;
 
   // Helper to get path to the project's package.json + JS object of its content
-  function getPackageJson(): never | { path: string; json: PackageJson } {
+  async function getPackageJson(): Promise<
+    never | { path: string; json: PackageJson }
+  > {
     const projectPkgPath = path.resolve(`${projectName}/package.json`);
-    const pkgStr = (() => {
+    const pkgStr = await (async () => {
       // Silently fail if package.json doesn't exist
       try {
-        const raw = fs.readFileSync(projectPkgPath, 'utf8');
+        const raw = await fs.readFile(projectPkgPath, 'utf8');
         const parsed = JSON.parse(raw) as PackageJson;
         const copy = { ...parsed };
 
@@ -76,7 +79,7 @@ export async function npmPackageUpdate(): Promise<void> {
 
   // The action that will update the content of the project's package.json
   async function action(): Promise<void> {
-    const { path, json: pkg } = getPackageJson();
+    const { path, json: pkg } = await getPackageJson();
 
     // Overwrite boilerplate defaults
     pkg.name = projectName;
@@ -91,7 +94,7 @@ export async function npmPackageUpdate(): Promise<void> {
     };
 
     // Write to package.json
-    await asyncWrite(path, JSON.stringify(pkg, null, 2));
+    await fs.writeFile(path, JSON.stringify(pkg, null, 2));
   }
 
   const spinner = createSpinner(() => action(), {
@@ -125,7 +128,7 @@ export async function copyBoilerplate(): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
   // Check if a directory with this name already exists
-  if (await asyncExists(projectName)) {
+  if (existsSync(projectName)) {
     logger.error(ERROR_TEXT.DirectoryExists, projectName);
   }
 
@@ -154,6 +157,9 @@ export async function installModules(): Promise<void> {
       case 'continuous-deploy':
         await installContinuousDeployScript();
         break;
+      case 'sentry':
+        await installSentry();
+        break;
     }
   }
 }
@@ -163,7 +169,7 @@ export async function installApiHelper(): Promise<void> {
 
   async function action() {
     // Make sure monorepo is present
-    if (!fs.existsSync('prime-monorepo')) {
+    if (!existsSync('prime-monorepo')) {
       await downloadMonorepo();
     }
 
@@ -200,10 +206,10 @@ export async function installApiHelper(): Promise<void> {
   const configPath = `${projectName}/src/services/api/config.ts`;
 
   if (baseUrl && baseUrl.length > 0) {
-    const raw = fs.readFileSync(configPath, 'utf8');
+    const raw = await fs.readFile(configPath, 'utf8');
     // eslint-disable-next-line quotes
     const next = raw.replace("apiUrl: ''", `apiUrl: '${baseUrl}'`);
-    fs.writeFileSync(configPath, next);
+    await fs.writeFile(configPath, next);
 
     logger.msg(
       `Updated the 'api-helper' config to use '${baseUrl}' as base URL`,
@@ -219,18 +225,18 @@ export async function installApiHelper(): Promise<void> {
 }
 
 export async function installDeployScript(): Promise<void> {
-  // Make sure monorepo is present
-  if (!fs.existsSync('prime-monorepo')) {
-    await downloadMonorepo();
-  }
-
   async function action() {
+    // Make sure monorepo is present
+    if (!existsSync('prime-monorepo')) {
+      await downloadMonorepo();
+    }
+
     const { projectName } = state.answers;
 
     await asyncExec(
       `npx add-dependencies ${projectName}/package.json @labela/deploy --dev`,
     );
-    await util.promisify(fs.copyFile)(
+    await fs.copyFile(
       './prime-monorepo/packages/deploy-script/deploy.sh',
       `${projectName}/deploy.sh`,
     );
@@ -274,4 +280,94 @@ export async function installContinuousDeployScript(): Promise<void> {
     'Continuous-deploy script has been installed but requires some manual steps! Make sure to follow the instructions at https://github.com/sandervspl/prime-monorepo/tree/main/packages/continuous-deploy-script#readme',
   );
   logger.whitespace();
+}
+
+export async function installSentry(): Promise<void> {
+  async function action() {
+    // Make sure monorepo is present
+    if (!existsSync('prime-monorepo')) {
+      await downloadMonorepo();
+    }
+
+    const { projectName, boilerplate } = state.answers;
+
+    await asyncExec(
+      `npx add-dependencies ${projectName}/package.json @sentry/nextjs`,
+    );
+
+    if (boilerplate === 'react-web') {
+      // await asyncExec('npx @sentry/wizard -i nextjs', { cwd: projectName });
+      cp.execSync('npx @sentry/wizard -i nextjs', {
+        cwd: projectName,
+        stdio: 'inherit',
+      });
+
+      // Remove unnecessary files
+      const projectFiles = await fs.readdir(projectName, {
+        withFileTypes: true,
+      });
+
+      // The Sentry wizard creates copy files if certain files already exist. Remove those files
+      const wizardFiles = projectFiles
+        .filter((dir) => dir.name.endsWith('wizardcopy.js'))
+        .map((dir) => dir.name);
+
+      await asyncExec(
+        // prettier-ignore
+        `rm -rf {${wizardFiles.join(',')},sentry.properties,src/pages/_error.js}`,
+        {
+          cwd: projectName,
+        },
+      );
+
+      // Copy the error pages
+      await asyncExec(
+        `cp -r -n ./prime-monorepo/packages/sentry-setup/pages ${projectName}/src`,
+      );
+
+      // Edit NextJS config file
+      const configFile = await fs.readFile(
+        `${projectName}/next.config.js`,
+        'utf8',
+      );
+
+      /* eslint-disable quotes */
+      const nextConfigFile = configFile
+        .replace(
+          "next/constants');",
+          `next/constants');
+        const { withSentryConfig } = require('@sentry/nextjs');`,
+        )
+        .replace(
+          'module.exports = config;',
+          `module.exports = withSentryConfig(config, {
+          silent: true,
+          debug: ['development', 'test'].includes(APP_ENV),
+          release: \`\${process.env.npm_package_name}@\${process.env.npm_package_version}\`,
+        });`,
+        );
+      /* eslint-enable */
+
+      await fs.writeFile(`${projectName}/next.config.js`, nextConfigFile);
+
+      // Fix formatting
+      await asyncExec(`npx prettier --write ${projectName}/next.config.js`);
+    }
+
+    /** @TODO */
+    if (boilerplate === 'react-mobile') {
+      /** @TODO */
+    }
+  }
+
+  const spinner = createSpinner(() => action(), {
+    name: 'sentry install',
+    /* eslint-disable quotes */
+    start: ' ▲  Setting up Sentry...',
+    success: ' ▲  Sentry was set up succesfully!',
+    fail: ' ▲  Something went wrong while setting up Sentry.',
+    /* eslint-enable */
+  });
+
+  await spinner.start();
 }

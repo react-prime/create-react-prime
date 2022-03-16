@@ -2,7 +2,8 @@ import type * as i from 'types';
 import os from 'os';
 import fs from 'fs';
 import path from 'path';
-import { state, question, listQuestion, checkboxQuestion } from '@crp';
+import open from 'open';
+import { state, question, listQuestion, checkboxQuestion, logger } from '@crp';
 import { asyncExec } from '@crp/utils';
 import gitUserName from 'git-user-name';
 import kleur from 'kleur';
@@ -87,8 +88,8 @@ export function cms() {
   });
 }
 
-export function modules() {
-  return checkboxQuestion<i.Modules[]>({
+export async function modules() {
+  const answers = await checkboxQuestion<i.Modules[]>({
     name: 'What extra modules would you like to install?',
     choices: [
       {
@@ -110,6 +111,28 @@ export function modules() {
     ],
     default: 0,
   });
+
+  // Confirm if user has created the project in Sentry before continuing
+  // The Sentry wizard asks to link a project, which might not be available
+  if (answers.includes('sentry')) {
+    const confirmed = await confirmSentryProjectCreated();
+
+    if (!confirmed) {
+      await open('https://sentry.io');
+      logger.msg(
+        'Create your project in Sentry and confirm once the project is created.',
+      );
+
+      const confirmed = await confirmSentryProjectCreated();
+
+      // Exit if user refuses to create Sentry project
+      if (!confirmed) {
+        process.exit(0);
+      }
+    }
+  }
+
+  return answers;
 }
 
 export function openInEditor() {
@@ -226,6 +249,14 @@ export function apiHelperBaseUrl() {
     type: 'input',
     name: 'API base url (optional)',
     default: '',
+  });
+}
+
+export function confirmSentryProjectCreated() {
+  return question({
+    type: 'confirm',
+    name: 'Have you created the project in Sentry?',
+    default: false,
   });
 }
 /* eslint-enable */

@@ -45,9 +45,7 @@ describe('shared actions', () => {
 
   describe('clone', () => {
     it('Checks if the directory already exists', async () => {
-      const existsSpy = vi
-        .spyOn(utils, 'asyncExists')
-        .mockResolvedValueOnce(true);
+      const existsSpy = vi.spyOn(fs, 'existsSync').mockResolvedValueOnce(true);
 
       await clone('github.com/url');
 
@@ -59,7 +57,7 @@ describe('shared actions', () => {
     });
 
     it('Runs the exec script', async () => {
-      vi.spyOn(utils, 'asyncExists').mockResolvedValueOnce(false);
+      vi.spyOn(fs, 'existsSync').mockResolvedValueOnce(false);
 
       await clone('github.com/url');
 
