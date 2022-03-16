@@ -283,6 +283,10 @@ export async function installContinuousDeployScript(): Promise<void> {
 }
 
 export async function installSentry(): Promise<void> {
+  if (state.answers.boilerplate === 'react-mobile') {
+    return;
+  }
+
   async function action() {
     // Make sure monorepo is present
     if (!existsSync('prime-monorepo')) {
@@ -356,7 +360,6 @@ export async function installSentry(): Promise<void> {
 
     /** @TODO */
     if (boilerplate === 'react-mobile') {
-      /** @TODO */
     }
   }
 

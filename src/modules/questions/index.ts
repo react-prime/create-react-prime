@@ -89,13 +89,17 @@ export function cms() {
 }
 
 export async function modules() {
-  const answers = await checkboxQuestion<i.Modules[]>({
-    name: 'What extra modules would you like to install?',
-    choices: [
-      {
-        name: 'API Helper',
-        value: 'api-helper',
-      },
+  const { boilerplate } = state.answers;
+
+  const choices: i.ModuleItem[] = [
+    {
+      name: 'API Helper',
+      value: 'api-helper',
+    },
+  ];
+
+  if (boilerplate === 'react-web') {
+    choices.push(
       {
         name: 'Manual Deploy',
         value: 'manual-deploy',
@@ -104,11 +108,17 @@ export async function modules() {
         name: 'Continuous Deploy',
         value: 'continuous-deploy',
       },
+      /** @TODO Move to default choices when react-mobile is supported */
       {
         name: 'Sentry',
         value: 'sentry',
       },
-    ],
+    );
+  }
+
+  const answers = await checkboxQuestion<i.Modules[]>({
+    name: 'What extra modules would you like to install?',
+    choices,
     default: 0,
   });
 
