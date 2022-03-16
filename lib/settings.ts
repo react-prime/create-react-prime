@@ -27,7 +27,7 @@ export class Jsondb {
 
       return this.db.data?.[key];
     } catch (e) {
-      logger.error(
+      await logger.error(
         'Something went wrong reading from the CRP settings.',
         JSON.stringify(e),
       );
@@ -44,7 +44,7 @@ export class Jsondb {
       }
       await this.db.write();
     } catch (e) {
-      logger.error(
+      await logger.error(
         'Something went wrong updating the CRP settings.',
         JSON.stringify(e),
       );

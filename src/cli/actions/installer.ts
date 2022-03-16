@@ -36,9 +36,9 @@ export async function installerEntry(): Promise<void> {
     await installer();
   } catch (err) {
     if (err) {
-      logger.error(err, boilerplate);
+      await logger.error(err, boilerplate);
     } else {
-      logger.error(ERROR_TEXT.GenericError, boilerplate);
+      await logger.error(ERROR_TEXT.GenericError, boilerplate);
     }
   }
 }

@@ -32,7 +32,7 @@ export function createSpinner<Action extends ActionFn>(
       });
 
       logger.whitespace();
-      logger.error(ERROR_TEXT.GenericError, err);
+      await logger.error(ERROR_TEXT.GenericError, err);
     }
   }
 

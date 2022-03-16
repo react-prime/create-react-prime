@@ -15,7 +15,7 @@ export const ERROR_TEXT = {
   ProjectName: 'Invalid project name. Name contains illegal characters.',
   DirectoryExists: "directory '%s' already exists.",
   PkgNotFound: 'No package.json found in %s.',
-  GenericError: "Something went wrong during the installation of '%s'.",
+  GenericError: 'Something went wrong during the installation.',
   InvalidCLIState: 'Something is wrong with the CLI state.',
   InstallerNotFound: "Installer for '%s' not found.",
 } as const;

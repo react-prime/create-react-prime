@@ -13,6 +13,11 @@ export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
   async function action() {
+    // Check if a directory with this name already exists
+    if (existsSync(projectName)) {
+      throw new Error(ERROR_TEXT.DirectoryExists.replace('%s', projectName));
+    }
+
     await asyncExec(`git clone ${url}`);
   }
 
@@ -63,7 +68,7 @@ export async function npmPackageUpdate(): Promise<void> {
     })();
 
     if (!pkgStr) {
-      logger.error(ERROR_TEXT.PkgNotFound, projectPkgPath);
+      await logger.error(ERROR_TEXT.PkgNotFound, projectPkgPath);
     }
 
     return {
@@ -122,11 +127,6 @@ export async function cleanup(): Promise<void> {
 export async function copyBoilerplate(): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
-  // Check if a directory with this name already exists
-  if (existsSync(projectName)) {
-    logger.error(ERROR_TEXT.DirectoryExists, projectName);
-  }
-
   await asyncExec(
     `cp -r ./prime-monorepo/boilerplates/${boilerplate} ${projectName}`,
   );
@@ -135,7 +135,7 @@ export async function copyBoilerplate(): Promise<void> {
 export async function downloadMonorepo(): Promise<void> {
   // Check if a prime-monorepo directory already exists
   if (existsSync('prime-monorepo')) {
-    logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
+    await logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
   }
 
   await clone('https://github.com/sandervspl/prime-monorepo.git');
