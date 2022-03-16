@@ -44,27 +44,13 @@ describe('shared actions', () => {
   });
 
   describe('clone', () => {
-    it('Checks if the directory already exists', async () => {
-      const existsSpy = vi.spyOn(fs, 'existsSync').mockResolvedValueOnce(true);
-
-      await clone('github.com/url');
-
-      expect(existsSpy).toHaveBeenCalledWith(projectName);
-      expect(loggerErrorSpy).toHaveBeenCalledWith(
-        ERROR_TEXT.DirectoryExists,
-        projectName,
-      );
-    });
-
     it('Runs the exec script', async () => {
-      vi.spyOn(fs, 'existsSync').mockResolvedValueOnce(false);
+      vi.spyOn(fs, 'existsSync').mockReturnValue(false);
 
       await clone('github.com/url');
 
       expect(loggerErrorSpy).not.toHaveBeenCalled();
-      expect(execSpy).toHaveBeenCalledWith(
-        `git clone github.com/url ${projectName}`,
-      );
+      expect(execSpy).toHaveBeenCalledWith('git clone github.com/url');
     });
   });
 

@@ -22,21 +22,21 @@ class Logger {
    * @throws {Error}
    */
   async error(...reason: i.AnyArr): Promise<never> {
-    return updateOperationResult({
+    await updateOperationResult({
       result: 'error',
       error: reason.join(' '),
-    }).then(() => {
-      this.whitespace();
-      this.log(this.errorMsg, ...reason);
-      this.whitespace();
-
-      if (cli.getOptions().debug) {
-        console.trace();
-        this.whitespace();
-      }
-
-      process.exit(1);
     });
+
+    this.whitespace();
+    this.log(this.errorMsg, ...reason);
+    this.whitespace();
+
+    if (cli.getOptions().debug) {
+      console.trace();
+      this.whitespace();
+    }
+
+    process.exit(1);
   }
 
   whitespace(): void {

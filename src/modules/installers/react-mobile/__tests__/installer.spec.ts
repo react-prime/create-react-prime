@@ -2,24 +2,19 @@ import * as question from '../../../questions';
 import installer from '../installer';
 
 // Mock shared actions
-vi.mock('../../shared/actions', () => ({
-  clone: vi.fn(),
-  npmInstall: vi.fn(),
-  npmPackageUpdate: vi.fn(),
-  cleanup: vi.fn(),
-}));
+vi.mock('../../shared/actions');
 
 // Mock module actions
-vi.mock('../actions', () => ({
-  validateProjectName: vi.fn(),
-  renameProject: vi.fn(),
-  renameFiles: vi.fn(),
-}));
+vi.mock('../actions');
+
+// Mock questions
+vi.mock('../../../questions');
 
 // Mock logger
 vi.mock('@crp/utils', () => ({
   logger: {
     whitespace: vi.fn(),
+    error: vi.fn(),
   },
 }));
 

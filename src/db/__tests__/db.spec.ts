@@ -57,7 +57,7 @@ describe('db', () => {
           json: {
             name: 'test-action',
             value: JSON.stringify('test-value'),
-            success: undefined,
+            success: false,
             username: 'test-name',
           },
         },

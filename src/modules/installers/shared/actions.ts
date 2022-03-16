@@ -13,11 +13,6 @@ export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
   async function action() {
-    // Check if a prime-monorepo directory already exists
-    if (existsSync('prime-monorepo')) {
-      logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
-    }
-
     await asyncExec(`git clone ${url}`);
   }
 
@@ -138,6 +133,11 @@ export async function copyBoilerplate(): Promise<void> {
 }
 
 export async function downloadMonorepo(): Promise<void> {
+  // Check if a prime-monorepo directory already exists
+  if (existsSync('prime-monorepo')) {
+    logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
+  }
+
   await clone('https://github.com/sandervspl/prime-monorepo.git');
 }
 
