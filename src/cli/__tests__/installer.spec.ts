@@ -1,10 +1,8 @@
-import type { SpyInstance } from 'vitest';
 import { cli, logger, state } from '@crp';
 import { CLI_ARGS, ERROR_TEXT } from '@crp/constants';
 
 import * as question from '../../modules/questions';
 import { installerEntry } from '../actions/installer';
-// import * as installerEntryUtils from '../actions/installer';
 
 vi.mock('src/modules/installers', () => ({
   reactWebInstaller: {
@@ -16,20 +14,21 @@ vi.mock('src/modules/installers', () => ({
 }));
 
 describe('Installer', () => {
-  let boilerplateSpy: SpyInstance<[], Promise<string>>;
-  let projectNameSpy: SpyInstance<[projectName: string], Promise<string>>;
-  let errorSpy: SpyInstance<[...args: string[]], Promise<never>>;
+  let boilerplateSpy = vi
+    .spyOn(question, 'boilerplate')
+    .mockResolvedValue('react-web');
+  const projectNameSpy = vi
+    .spyOn(question, 'projectName')
+    .mockResolvedValue('bar');
+  const errorSpy = vi
+    .spyOn(logger, 'error')
+    .mockImplementation(() => void 0 as never);
+  // const showSuccessTextSpy = vi
+  //   .spyOn(installer, 'showSuccessText')
+  //   .mockImplementation(() => void 0 as never);
 
-  beforeEach(() => {
-    boilerplateSpy = vi
-      .spyOn(question, 'boilerplate')
-      .mockResolvedValueOnce('react-web');
-    projectNameSpy = vi
-      .spyOn(question, 'projectName')
-      .mockResolvedValueOnce('bar');
-    errorSpy = vi
-      .spyOn(logger, 'error')
-      .mockImplementationOnce(() => void 0 as never);
+  afterAll(() => {
+    vi.restoreAllMocks();
   });
 
   it('Prompts boilerplate and project name questions', async () => {
@@ -68,7 +67,9 @@ describe('Installer', () => {
     await installerEntry();
 
     expect(errorSpy).toHaveBeenCalled();
-    expect(errorSpy).toHaveBeenCalledWith(ERROR_TEXT.InstallerNotFound, 'foo');
+    expect(errorSpy).toHaveBeenCalledWith(
+      new Error(ERROR_TEXT.InstallerNotFound.replace('%s', 'foo')),
+    );
   });
 
   it('Throws a generic error when something goes wrong during execution', async () => {

@@ -48,7 +48,12 @@ export async function installerEntry(): Promise<void> {
   }
 }
 
-function showSuccessText(): void {
+export function showSuccessText(): void {
+  /** @TODO I'm unable to mock this function for some reason */
+  if (process.env.NODE_ENV === 'test') {
+    return;
+  }
+
   const { projectName, boilerplate } = state.answers;
 
   const projectPath = path.resolve(projectName);
