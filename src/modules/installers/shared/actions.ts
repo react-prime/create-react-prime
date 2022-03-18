@@ -138,7 +138,7 @@ export async function downloadMonorepo(): Promise<void> {
     await logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
   }
 
-  await clone('https://github.com/sandervspl/prime-monorepo.git');
+  await clone('https://github.com/LabelA/prime-monorepo.git');
 }
 
 export async function removeMonorepo(): Promise<void> {
