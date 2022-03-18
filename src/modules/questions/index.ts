@@ -18,6 +18,10 @@ export function entry() {
         value: 'boilerplate',
       },
       {
+        name: 'Install modules',
+        value: 'modules',
+      },
+      {
         name: 'Exit',
         value: null,
       },

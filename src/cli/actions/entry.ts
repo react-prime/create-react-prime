@@ -4,6 +4,7 @@ import { createSpinner, logger, settings, state, type cli } from '@crp';
 import { createOperation } from 'src/db';
 import * as question from '../../modules/questions';
 import { installerEntry } from './installer';
+import { modulesEntry } from './modules';
 
 export async function entry(options: Options): Promise<() => Promise<void>> {
   await initTracking(options);
@@ -61,6 +62,11 @@ export async function getActionForOption(
   if (options.boilerplate) {
     return installerEntry;
   }
+
+  if (options.modules) {
+    return modulesEntry;
+  }
+
   // if (options.components) {
   //   return componentsEntry;
   // }

@@ -5,6 +5,7 @@ import path from 'path';
 import type { PackageJson } from 'type-fest';
 // prettier-ignore
 import { state, logger, createSpinner, asyncExec } from '@crp';
+import * as cli from '@crp/cli';
 import { ERROR_TEXT } from '@crp/constants';
 
 import * as question from '../../questions';
@@ -14,19 +15,33 @@ export async function clone(url: string): Promise<void> {
 
   async function action() {
     // Check if a directory with this name already exists
-    if (existsSync(projectName)) {
+    if (projectName !== '.' && existsSync(projectName)) {
+      // Throw so that spinner fails and shows this error
       throw new Error(ERROR_TEXT.DirectoryExists.replace('%s', projectName));
     }
 
     await asyncExec(`git clone ${url}`);
   }
 
-  const spinner = createSpinner(() => action(), {
-    name: 'clone',
-    start: `🚚  Cloning '${boilerplate}' into '${projectName}'...`,
-    success: `🚚  Cloned '${boilerplate}' into '${projectName}'!`,
-    fail: `🚚  Something went wrong while cloning '${boilerplate}' into '${projectName}'.`,
-  });
+  const text = (() => {
+    if (cli.getOptions().modules) {
+      return {
+        name: 'clone',
+        start: '🚚  Cloning modules into project...',
+        success: '🚚  Cloned modules!',
+        fail: '🚚  Something went wrong while cloning modules into project.',
+      };
+    }
+
+    return {
+      name: 'clone',
+      start: `🚚  Cloning '${boilerplate}' into '${projectName}'...`,
+      success: `🚚  Cloned '${boilerplate}' into '${projectName}'!`,
+      fail: `🚚  Something went wrong while cloning '${boilerplate}' into '${projectName}'.`,
+    };
+  })();
+
+  const spinner = createSpinner(() => action(), text);
 
   await spinner.start();
 }
@@ -174,10 +189,10 @@ export async function installApiHelper(): Promise<void> {
     }
 
     // Generate services folder path
-    let servicesFolderPath = `${projectName}/src/services`;
-    if (boilerplate === 'react-mobile') {
-      servicesFolderPath = `${projectName}/src/app/services`;
-    }
+    const servicesFolderPath =
+      boilerplate === 'react-web'
+        ? `${projectName}/src/services`
+        : `${projectName}/src/app/services`;
 
     // Copy api-helper code to project's services folder
     await asyncExec(
