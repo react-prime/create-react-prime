@@ -145,6 +145,17 @@ export async function copyBoilerplate(): Promise<void> {
   await asyncExec(
     `cp -r ./prime-monorepo/boilerplates/${boilerplate} ${projectName}`,
   );
+
+  // Update eslint config base path
+  await fs.copyFile(
+    './prime-monorepo/.eslintrc',
+    `${projectName}/.eslintrc.base.json`,
+  );
+
+  const raw = await fs.readFile(`${projectName}/.eslintrc`, 'utf8');
+  const next = raw.replace('../../.eslintrc', '.eslintrc.base.json');
+
+  await fs.writeFile(`${projectName}/.eslintrc`, next);
 }
 
 export async function downloadMonorepo(): Promise<void> {
