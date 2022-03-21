@@ -1,6 +1,5 @@
 import type cp from 'child_process';
 import path from 'path';
-import camelcase from 'camelcase';
 import { state } from '@crp';
 import { logger, createSpinner, asyncExec } from '@crp/utils';
 
@@ -9,8 +8,10 @@ export function validateProjectName(): boolean {
 }
 
 export function renameProject(): void {
-  // Remove non-alphanumeric characters + camelcase name
-  state.answers.projectName = camelcase(state.answers.projectName);
+  // Remove non-alphanumeric characters + lower cased name
+  state.answers.projectName = state.answers.projectName
+    .replace(/\W/g, '')
+    .toLowerCase();
 
   // Let user know we renamed the project
   logger.warning(
