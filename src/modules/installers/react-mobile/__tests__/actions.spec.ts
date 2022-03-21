@@ -36,11 +36,11 @@ describe('react-mobile actions', () => {
   });
 
   describe('renameProject', () => {
-    it('Correctly renames the project name with camelCase', () => {
+    it('Correctly renames the project name with no special chars and lower case', () => {
       state.answers.projectName = 'foo-bar';
       renameProject();
 
-      expect(state.answers.projectName).toBe('fooBar');
+      expect(state.answers.projectName).toBe('foobar');
     });
 
     it('Shows a warning message that the project was renamed', () => {
