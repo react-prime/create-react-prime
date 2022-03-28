@@ -3,6 +3,7 @@ import { logger } from '@crp/utils';
 
 import * as question from '../../questions';
 import * as actions from '../shared/actions';
+import * as moduleActions from './actions';
 
 async function installer(): Promise<void> {
   // state.answers.renderType = await question.rendering();
@@ -14,7 +15,7 @@ async function installer(): Promise<void> {
   // Installation process
   await actions.downloadMonorepo();
   await actions.copyBoilerplate();
-  await actions.installModules();
+  await moduleActions.installModules();
   await actions.npmInstall();
   await actions.npmPackageUpdate();
   await actions.cleanup();

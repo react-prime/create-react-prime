@@ -16,7 +16,7 @@ async function installer(): Promise<void> {
   await actions.downloadMonorepo();
   await actions.copyBoilerplate();
   await moduleActions.renameFiles();
-  await actions.installModules();
+  // await actions.installModules();
   await actions.npmInstall();
   await actions.npmPackageUpdate();
   await actions.cleanup();

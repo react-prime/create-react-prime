@@ -3,6 +3,8 @@ import { logger, state } from '@crp';
 
 import * as question from 'src/modules/questions';
 import * as actions from 'src/modules/installers/shared/actions';
+import { installModules as WebInstallModules } from 'src/modules/installers/react-web/actions';
+// import { installModules as MobileInstallModules } from 'src/modules/installers/react-mobile/actions';
 
 export async function modulesEntry(): Promise<void> {
   if (!fs.existsSync('src')) {
@@ -28,7 +30,14 @@ export async function modulesEntry(): Promise<void> {
 
   logger.whitespace();
 
-  await actions.installModules();
+  switch (state.answers.boilerplate) {
+    case 'react-web':
+      await WebInstallModules();
+      break;
+    /** @TODO */
+    // case 'react-mobile': await MobileInstallModules(); break;
+  }
+
   await actions.npmInstall();
   await actions.removeMonorepo();
 }
