@@ -1,5 +1,6 @@
 import type cp from 'child_process';
 import path from 'path';
+import { readdirSync, renameSync } from 'fs';
 import { state } from '@crp';
 import { logger, createSpinner, asyncExec } from '@crp/utils';
 
@@ -15,7 +16,7 @@ export function renameProject(): void {
 
   // Let user know we renamed the project
   logger.warning(
-    `Project name has been renamed to '${state.answers.projectName}'.\n`,
+    `Project name insufficient, it has been renamed to '${state.answers.projectName}'.\n`,
     'Read more: https://github.com/facebook/react-native/issues/213.\n',
   );
 }
@@ -26,14 +27,7 @@ export async function renameFiles(): Promise<void> {
   async function action(): Promise<void> {
     const scripts = [
       ['rename files', `npx react-native-rename ${projectName}`],
-      [
-        'replace text',
-        `npx replace 'reactprimenative' '${projectName}' . -r --exclude="package*.json"`,
-      ],
-      [
-        'replace schemes',
-        `npx renamer -d --find "/reactprimenative/g" --replace "${projectName}" "**"`,
-      ],
+      ['replace text', `npx replace 'reactmobile' '${projectName}' . -r`],
     ];
 
     const options: cp.ExecOptions = {
@@ -46,6 +40,16 @@ export async function renameFiles(): Promise<void> {
           `Script '${name}' has failed. Manual file renaming is required after installation.`,
         );
       });
+    }
+
+    // Rename schemes in iOS folder
+    const schemeFolder = `${projectName}/ios/${projectName}.xcodeproj/xcshareddata/xcschemes`;
+    for await (const oldFile of readdirSync(schemeFolder)) {
+      const newFile = oldFile.replace('reactmobile', projectName);
+      renameSync(
+        path.join(schemeFolder, oldFile),
+        path.join(schemeFolder, newFile),
+      );
     }
   }
 
