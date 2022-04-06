@@ -3,9 +3,7 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
-import { downloadMonorepo } from '../shared/actions';
-
-import * as question from '../../questions';
+import { downloadMonorepo, installApiHelper } from '../shared/actions';
 
 export async function installModules(): Promise<void> {
   for await (const module of state.answers.modules || []) {
@@ -24,66 +22,6 @@ export async function installModules(): Promise<void> {
         break;
     }
   }
-}
-
-export async function installApiHelper(): Promise<void> {
-  const { boilerplate, projectName } = state.answers;
-
-  async function action() {
-    // Make sure monorepo is present
-    if (!existsSync('prime-monorepo')) {
-      await downloadMonorepo();
-    }
-
-    // Generate services folder path
-    const servicesFolderPath =
-      boilerplate === 'react-web'
-        ? `${projectName}/src/services`
-        : `${projectName}/src/app/services`;
-
-    // Copy api-helper code to project's services folder
-    await asyncExec(
-      `cp -r ./prime-monorepo/packages/api-helper/src ${servicesFolderPath}/api`,
-    );
-    // Add api-helper dependencies without installing
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json isomorphic-fetch`,
-    );
-  }
-
-  const spinner = createSpinner(() => action(), {
-    /* eslint-disable quotes */
-    name: 'api-helper install',
-    start: "📡  Installing 'api-helper'...",
-    success: "📡  Installed 'api-helper'!",
-    fail: "📡  Something went wrong while installing the 'api-helper'.",
-    /* eslint-enable */
-  });
-
-  await spinner.start();
-
-  // Ask user for the API base URL
-  logger.whitespace();
-  const baseUrl = await question.apiHelperBaseUrl();
-  const configPath = `${projectName}/src/services/api/config.ts`;
-
-  if (baseUrl && baseUrl.length > 0) {
-    const raw = await fs.readFile(configPath, 'utf8');
-    // eslint-disable-next-line quotes
-    const next = raw.replace("apiUrl: ''", `apiUrl: '${baseUrl}'`);
-    await fs.writeFile(configPath, next);
-
-    logger.msg(
-      `Updated the 'api-helper' config to use '${baseUrl}' as base URL`,
-    );
-  } else {
-    logger.msg(
-      // eslint-disable-next-line quotes
-      "You can change the base URL of the 'api-helper' config in 'services/api/config.ts' later when needed",
-    );
-  }
-
-  logger.whitespace();
 }
 
 export async function installDeployScript(): Promise<void> {
