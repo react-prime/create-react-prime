@@ -6,7 +6,10 @@ import { ERROR_TEXT } from '@crp/constants';
 
 import * as installers from 'src/modules/installers';
 import * as question from 'src/modules/questions';
-import { npmInstructions } from 'installers/shared/instructions';
+import {
+  npmInstructions,
+  npmInstructionsMobile,
+} from 'installers/shared/instructions';
 
 export function getInstaller(
   boilerplate: string,
@@ -75,7 +78,10 @@ export function showSuccessText(): void {
 
   console.info(`  cd ${projectName}`);
 
-  for (const str of npmInstructions.quickstart) {
+  const instructions =
+    boilerplate === 'react-web' ? npmInstructions : npmInstructionsMobile;
+
+  for (const str of instructions.quickstart) {
     console.info(`  ${str}`);
   }
 
@@ -83,7 +89,7 @@ export function showSuccessText(): void {
   logger.msg(`${color.bold().underline('All commands')}`);
   logger.whitespace();
 
-  for (const str of npmInstructions.allCommands) {
+  for (const str of instructions.allCommands) {
     console.info(formatText(str.cmd, str.desc));
   }
 }

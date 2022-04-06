@@ -15,3 +15,17 @@ export const npmInstructions = {
     },
   ],
 };
+
+export const npmInstructionsMobile = {
+  quickstart: ['npm start'],
+  allCommands: [
+    {
+      cmd: 'npm run ios',
+      desc: 'Run app in iOS emulator',
+    },
+    {
+      cmd: 'npm run android',
+      desc: 'Run app in Android emulator',
+    },
+  ],
+};
