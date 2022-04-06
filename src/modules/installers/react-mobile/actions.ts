@@ -4,6 +4,35 @@ import { readdirSync, renameSync } from 'fs';
 import { state } from '@crp';
 import { logger, createSpinner, asyncExec } from '@crp/utils';
 
+import { installApiHelper } from '../shared/actions';
+
+export async function installModules(): Promise<void> {
+  for await (const module of state.answers.modules || []) {
+    switch (module) {
+      case 'api-helper':
+        await installApiHelper();
+        break;
+    }
+  }
+}
+
+export async function podInstall(): Promise<void> {
+  const { projectName } = state.answers;
+
+  async function action(): Promise<void> {
+    await asyncExec(`cd ${projectName}/ios && pod install`);
+  }
+
+  const spinner = createSpinner(() => action(), {
+    name: 'pod install',
+    start: `🔤  Installing iOS Podfile for '${projectName}'...`,
+    success: `🔤  Installed iOS dependencies for '${projectName}'!`,
+    fail: `🔤  Something went wrong while installing Podfile for '${projectName}'.`,
+  });
+
+  await spinner.start();
+}
+
 export function validateProjectName(): boolean {
   return /^.*[^a-zA-Z0-9].*$/.test(state.answers.projectName) === false;
 }
