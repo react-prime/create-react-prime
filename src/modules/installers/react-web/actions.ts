@@ -1,9 +1,14 @@
+import type * as i from 'types';
 import cp from 'child_process';
 import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
-import { downloadMonorepo, installApiHelper } from '../shared/actions';
+import {
+  downloadMonorepo,
+  getPackageJson,
+  installApiHelper,
+} from '../shared/actions';
 
 export async function installModules(): Promise<void> {
   for await (const module of state.answers.modules || []) {
@@ -19,6 +24,19 @@ export async function installModules(): Promise<void> {
         break;
       case 'sentry':
         await installSentry();
+        break;
+    }
+  }
+}
+
+export async function installComponents(): Promise<void> {
+  for await (const component of state.answers.components || []) {
+    switch (component) {
+      case 'form/Checkbox':
+        await installComponent('form/Checkbox');
+        break;
+      case 'form/DatePicker':
+        await installComponent('form/DatePicker');
         break;
     }
   }
@@ -167,4 +185,55 @@ export async function installSentry(): Promise<void> {
   });
 
   await spinner.start();
+}
+
+export async function installComponent(component: i.Components): Promise<void> {
+  async function action() {
+    const { projectName } = state.answers;
+
+    // Add dependencies without installing
+    const componentPath = `./prime-monorepo/components/web-components/${component}`;
+    if (existsSync(`${componentPath}/package.json`)) {
+      const { json: pkg } = await getPackageJson(
+        `${componentPath}/package.json`,
+      );
+
+      const dependencies = pkg.dependencies
+        ? Object.keys(pkg.dependencies as object).join(' ')
+        : null;
+
+      if (dependencies) {
+        await asyncExec(
+          `npx add-dependencies ${projectName}/package.json ${dependencies}`,
+        );
+      }
+
+      const devDependencies = pkg.devDependencies
+        ? Object.keys(pkg.devDependencies as object).join(' ')
+        : null;
+
+      if (devDependencies) {
+        await asyncExec(
+          `npx add-dependencies ${projectName}/package.json ${devDependencies} -D`,
+        );
+      }
+    }
+
+    // Copy files to project
+    const destinationFolder = `${projectName}/src/components/common/${component}`;
+    await asyncExec(
+      `mkdir -p ${destinationFolder} && cp -a ${componentPath}/src/. ${destinationFolder}`,
+    );
+  }
+
+  const spinner = createSpinner(() => action(), {
+    name: `${component} script install`,
+    start: ` 🚀  Installing '${component}'...`,
+    success: ` 🚀  Installed '${component}'!`,
+    fail: ` 🚀  Something went wrong while installing the '${component}'.`,
+  });
+
+  await spinner.start();
+
+  logger.whitespace();
 }
