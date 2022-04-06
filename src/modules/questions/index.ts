@@ -149,6 +149,33 @@ export async function modules() {
   return answers;
 }
 
+export async function components() {
+  const { boilerplate } = state.answers;
+
+  const choices: i.ComponentItem[] = [];
+
+  if (boilerplate === 'react-web') {
+    choices.push(
+      {
+        name: 'form/Checkbox',
+        value: 'form/Checkbox',
+      },
+      {
+        name: 'form/DatePicker',
+        value: 'form/DatePicker',
+      },
+    );
+  }
+
+  const answers = await checkboxQuestion<i.Components[]>({
+    name: 'What extra components would you like to install?',
+    choices,
+    default: 0,
+  });
+
+  return answers;
+}
+
 export function openInEditor() {
   const choices: i.ChoiceItem[] = [
     {

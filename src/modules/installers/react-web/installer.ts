@@ -9,6 +9,7 @@ async function installer(): Promise<void> {
   // state.answers.renderType = await question.rendering();
   // state.answers.cms = await question.cms();
   state.answers.modules = await question.modules();
+  state.answers.components = await question.components();
 
   logger.whitespace();
 
@@ -16,6 +17,7 @@ async function installer(): Promise<void> {
   await actions.downloadMonorepo();
   await actions.copyBoilerplate();
   await moduleActions.installModules();
+  await moduleActions.installComponents();
   await actions.npmInstall();
   await actions.npmPackageUpdate();
   await actions.cleanup();
