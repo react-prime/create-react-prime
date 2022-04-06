@@ -186,15 +186,12 @@ export async function installApiHelper(): Promise<void> {
 
     // Generate services folder path
     const servicesFolderPath = `${projectName}/src/services`;
+    const packagePath = `./prime-monorepo/packages/${apiPackage}`;
 
     // Copy api-helper code to project's services folder
-    await asyncExec(
-      `cp -r ./prime-monorepo/packages/${apiPackage}/src ${servicesFolderPath}/api`,
-    );
+    await asyncExec(`cp -r ${packagePath}/src ${servicesFolderPath}/api`);
 
-    const { json: pkg } = await getPackageJson(
-      `./prime-monorepo/packages/${apiPackage}/package.json`,
-    );
+    const { json: pkg } = await getPackageJson(`${packagePath}/package.json`);
     const dependencies = Object.keys(pkg.dependencies as object).join(' ');
     const devDependencies = Object.keys(pkg.devDependencies as object).join(
       ' ',
