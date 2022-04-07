@@ -1,7 +1,8 @@
 import type * as i from 'types';
 import cp from 'child_process';
 import fs from 'fs/promises';
-import { existsSync } from 'fs';
+import path from 'path';
+import { existsSync, readdirSync } from 'fs';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
 import {
@@ -186,9 +187,10 @@ export async function installComponent(component: i.Components): Promise<void> {
     const { projectName } = state.answers;
 
     // Add dependencies without installing
-    let extraInternalDependencies = null;
     const webComponentsPath = './prime-monorepo/components/web-components';
     const componentPath = `${webComponentsPath}/${component}`;
+
+    let extraInternalDependencies = null;
 
     if (existsSync(`${componentPath}/package.json`)) {
       const { json: pkg } = await getPackageJson(
@@ -202,12 +204,16 @@ export async function installComponent(component: i.Components): Promise<void> {
     // Copy files to project
     const commonFolder = `${projectName}/src/components/common`;
     const destFolder = `${commonFolder}/${component}`;
-    await asyncExec(
-      `mkdir -p ${destFolder} && cp -r -n ${componentPath}/src/. ${destFolder}`,
-    );
 
-    // Rename component Storybook resolvers to valid project resolvers
-    await renameStorybookResolvers(destFolder);
+    // Component could be already installed of extraDependency (e.g. FormField)
+    if (!existsSync(destFolder)) {
+      await asyncExec(
+        `mkdir -p ${destFolder} && cp -r -n ${componentPath}/src/. ${destFolder}`,
+      );
+
+      // Rename component Storybook resolvers to valid project resolvers
+      await renameStorybookResolvers(destFolder);
+    }
 
     // Add extra labela dependencies (e.g. DatePicker is dependend on FormField)
     if (extraInternalDependencies && extraInternalDependencies.length > 0) {
@@ -252,34 +258,20 @@ export async function installComponent(component: i.Components): Promise<void> {
 export async function renameStorybookResolvers(
   componentFolder: string,
 ): Promise<void> {
-  // Rename Storybook internal resolvers to project resolvers
-  const indexPathTsx = `${componentFolder}/index.tsx`;
-  const indexPathTs = `${componentFolder}/index.ts`;
-  const styledPathTs = `${componentFolder}/styled.ts`;
+  // Loop all files in the component folder with .tsx or .ts extension
+  // Rename Storybook internal resolvers to project related resolvers
+  for await (const file of readdirSync(componentFolder)) {
+    const filePath = `${componentFolder}/${file}`;
 
-  const replaceText = (filePath: string) => {
-    return filePath
+    const ext = path.extname(filePath);
+    if (ext !== '.tsx' && ext !== 'ts') return;
+
+    const fileData = await fs.readFile(filePath, 'utf8');
+    const replacedFileData = fileData
       .replaceAll('@labela/common/', 'common/')
       .replaceAll('src/', '')
       .replaceAll("/src'", "'");
-  };
 
-  if (existsSync(indexPathTsx)) {
-    const indexFile = await fs.readFile(indexPathTsx, 'utf8');
-    const newIndexFile = replaceText(indexFile);
-
-    await fs.writeFile(indexPathTsx, newIndexFile);
-  } else if (existsSync(indexPathTs)) {
-    const indexFile = await fs.readFile(indexPathTs, 'utf8');
-    const newIndexFile = replaceText(indexFile);
-
-    await fs.writeFile(indexPathTs, newIndexFile);
-  }
-
-  if (existsSync(styledPathTs)) {
-    const styledFile = await fs.readFile(styledPathTs, 'utf8');
-    const newStyledFile = replaceText(styledFile);
-
-    await fs.writeFile(styledPathTs, newStyledFile);
+    await fs.writeFile(filePath, replacedFileData);
   }
 }
