@@ -186,20 +186,55 @@ export async function installComponent(component: i.Components): Promise<void> {
     const { projectName } = state.answers;
 
     // Add dependencies without installing
-    const componentPath = `./prime-monorepo/components/web-components/${component}`;
+    let extraInternalDependencies = null;
+    const webComponentsPath = './prime-monorepo/components/web-components';
+    const componentPath = `${webComponentsPath}/${component}`;
+
     if (existsSync(`${componentPath}/package.json`)) {
       const { json: pkg } = await getPackageJson(
         `${componentPath}/package.json`,
       );
 
-      await addDependenciesFromPackage(pkg);
+      const { labelaDependencies } = await addDependenciesFromPackage(pkg);
+      extraInternalDependencies = labelaDependencies;
     }
 
     // Copy files to project
-    const destinationFolder = `${projectName}/src/components/common/${component}`;
+    const commonFolder = `${projectName}/src/components/common`;
+    const destFolder = `${commonFolder}/${component}`;
     await asyncExec(
-      `mkdir -p ${destinationFolder} && cp -r -n ${componentPath}/src/. ${destinationFolder}`,
+      `mkdir -p ${destFolder} && cp -r -n ${componentPath}/src/. ${destFolder}`,
     );
+
+    // Rename component Storybook resolvers to valid project resolvers
+    await renameStorybookResolvers(destFolder);
+
+    // Add extra labela dependencies (e.g. DatePicker is dependend on FormField)
+    if (extraInternalDependencies && extraInternalDependencies.length > 0) {
+      for (const dependency of extraInternalDependencies) {
+        const extraComponent = dependency.replace('@labela/', '');
+        const extraComponentPath = `${webComponentsPath}/${extraComponent}`;
+        const extraDestFolder = `${commonFolder}/${extraComponent}`;
+
+        if (!existsSync(extraDestFolder)) {
+          // Find package.json as extra internal component and add external dependencies
+          if (existsSync(`${extraComponentPath}/package.json`)) {
+            const { json: extraPkg } = await getPackageJson(
+              `${extraComponentPath}/package.json`,
+            );
+
+            await addDependenciesFromPackage(extraPkg);
+          }
+
+          // Copy files and rename Storybook internal resolvers to project resolvers
+          await asyncExec(
+            `mkdir -p ${extraDestFolder} && cp -r -n ${extraComponentPath}/src/. ${extraDestFolder}`,
+          );
+
+          await renameStorybookResolvers(extraDestFolder);
+        }
+      }
+    }
   }
 
   const spinner = createSpinner(() => action(), {
@@ -212,4 +247,39 @@ export async function installComponent(component: i.Components): Promise<void> {
   await spinner.start();
 
   logger.whitespace();
+}
+
+export async function renameStorybookResolvers(
+  componentFolder: string,
+): Promise<void> {
+  // Rename Storybook internal resolvers to project resolvers
+  const indexPathTsx = `${componentFolder}/index.tsx`;
+  const indexPathTs = `${componentFolder}/index.ts`;
+  const styledPathTs = `${componentFolder}/styled.ts`;
+
+  const replaceText = (filePath: string) => {
+    return filePath
+      .replaceAll('@labela/common/', 'common/')
+      .replaceAll('src/', '')
+      .replaceAll("/src'", "'");
+  };
+
+  if (existsSync(indexPathTsx)) {
+    const indexFile = await fs.readFile(indexPathTsx, 'utf8');
+    const newIndexFile = replaceText(indexFile);
+
+    await fs.writeFile(indexPathTsx, newIndexFile);
+  } else if (existsSync(indexPathTs)) {
+    const indexFile = await fs.readFile(indexPathTs, 'utf8');
+    const newIndexFile = replaceText(indexFile);
+
+    await fs.writeFile(indexPathTs, newIndexFile);
+  }
+
+  if (existsSync(styledPathTs)) {
+    const styledFile = await fs.readFile(styledPathTs, 'utf8');
+    const newStyledFile = replaceText(styledFile);
+
+    await fs.writeFile(styledPathTs, newStyledFile);
+  }
 }
