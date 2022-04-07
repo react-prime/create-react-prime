@@ -56,7 +56,7 @@ export type ModuleItem = {
   value: Modules;
 };
 
-export type Components = 'form/Checkbox' | 'form/DatePicker';
+export type Components = string;
 
 export type ComponentItem = {
   name: string;

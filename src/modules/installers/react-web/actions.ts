@@ -5,6 +5,7 @@ import { existsSync } from 'fs';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
 import {
+  addDependenciesFromPackage,
   downloadMonorepo,
   getPackageJson,
   installApiHelper,
@@ -31,14 +32,7 @@ export async function installModules(): Promise<void> {
 
 export async function installComponents(): Promise<void> {
   for await (const component of state.answers.components || []) {
-    switch (component) {
-      case 'form/Checkbox':
-        await installComponent('form/Checkbox');
-        break;
-      case 'form/DatePicker':
-        await installComponent('form/DatePicker');
-        break;
-    }
+    await installComponent(component);
   }
 }
 
@@ -198,25 +192,7 @@ export async function installComponent(component: i.Components): Promise<void> {
         `${componentPath}/package.json`,
       );
 
-      const dependencies = pkg.dependencies
-        ? Object.keys(pkg.dependencies as object).join(' ')
-        : null;
-
-      if (dependencies) {
-        await asyncExec(
-          `npx add-dependencies ${projectName}/package.json ${dependencies}`,
-        );
-      }
-
-      const devDependencies = pkg.devDependencies
-        ? Object.keys(pkg.devDependencies as object).join(' ')
-        : null;
-
-      if (devDependencies) {
-        await asyncExec(
-          `npx add-dependencies ${projectName}/package.json ${devDependencies} -D`,
-        );
-      }
+      await addDependenciesFromPackage(pkg);
     }
 
     // Copy files to project
