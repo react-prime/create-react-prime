@@ -185,26 +185,21 @@ export async function installComponent(component: string): Promise<void> {
   async function action() {
     const { projectName } = state.answers;
 
-    const webComponentsPath = './prime-monorepo/components/web-components';
-    const componentPath = `${webComponentsPath}/${component}`;
-    const commonFolder = `${projectName}/src/components/common`;
-
     const installAndCopyComponent = async (
       path: string,
-      comp: string,
+      destFolder: string,
     ): Promise<string[] | null> => {
       // If the component folder already exists (previously installed, skip)
-      const destFolder = `${commonFolder}/${comp}`;
       if (existsSync(destFolder)) return null;
 
-      let extraInternalDependencies = null;
+      let peerDependencies = null;
       // Read component package.json and add dependencies to project
       if (existsSync(`${path}/package.json`)) {
         const { json: pkg } = await getPackageJson(`${path}/package.json`);
 
         // Save extra Label A components, so these can also be installed
         const { labelaDependencies } = await addDependenciesFromPackage(pkg);
-        extraInternalDependencies = labelaDependencies;
+        peerDependencies = labelaDependencies;
       }
 
       // Create component folder and copy /src folder from monorepo
@@ -215,25 +210,30 @@ export async function installComponent(component: string): Promise<void> {
       // Rename component Storybook resolvers to valid project resolvers
       await renameStorybookResolvers(destFolder);
 
-      return extraInternalDependencies;
+      return peerDependencies;
     };
+
+    const monorepoComponentsRoot = './prime-monorepo/components/web-components';
+    const destCommonFolder = `${projectName}/src/components/common`;
 
     // Add extra Label A dependencies (e.g. DatePicker is dependend on FormField), if any are
     // returned from the initial installed component, loop over these and install + copy
-    let extraInternalDependencies = null;
-    extraInternalDependencies = await installAndCopyComponent(
-      componentPath,
-      component,
+    let peerDependencies = null;
+    peerDependencies = await installAndCopyComponent(
+      `${monorepoComponentsRoot}/${component}`,
+      `${destCommonFolder}/${component}`,
     );
 
-    if (extraInternalDependencies && extraInternalDependencies.length > 0) {
-      for (const dependency of extraInternalDependencies) {
+    if (peerDependencies && peerDependencies.length > 0) {
+      for (const dependency of peerDependencies) {
         // Internal dependencies in the monorepo are linked via package.json with the @label prefix
         // e.g. "@labela/form/FormField" where the suffix is the folder name
         const extraComponent = dependency.replace('@labela/', '');
-        const extraComponentPath = `${webComponentsPath}/${extraComponent}`;
 
-        await installAndCopyComponent(extraComponentPath, extraComponent);
+        await installAndCopyComponent(
+          `${monorepoComponentsRoot}/${extraComponent}`,
+          `${destCommonFolder}/${extraComponent}`,
+        );
       }
     }
   }
@@ -249,12 +249,12 @@ export async function installComponent(component: string): Promise<void> {
 }
 
 export async function renameStorybookResolvers(
-  componentFolder: string,
+  destCommonFolder: string,
 ): Promise<void> {
   // Loop all files in the component folder with .tsx or .ts extension
   // Rename Storybook internal resolvers to project related resolvers
-  for await (const file of readdirSync(componentFolder)) {
-    const filePath = `${componentFolder}/${file}`;
+  for await (const file of readdirSync(destCommonFolder)) {
+    const filePath = `${destCommonFolder}/${file}`;
 
     const ext = path.extname(filePath);
     if (ext !== '.tsx' && ext !== 'ts') return;
