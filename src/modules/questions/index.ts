@@ -152,19 +152,11 @@ export async function modules() {
 export async function components() {
   const { boilerplate } = state.answers;
 
-  const choices: i.ComponentItem[] = [];
+  const choices: string[] = [];
 
   if (boilerplate === 'react-web') {
-    choices.push(
-      {
-        name: 'form/Checkbox',
-        value: 'form/Checkbox',
-      },
-      {
-        name: 'form/DatePicker',
-        value: 'form/DatePicker',
-      },
-    );
+    const components = ['form/Checkbox', 'form/DatePicker'];
+    components.map((c) => choices.push(c));
   }
 
   const answers = await checkboxQuestion<i.Components[]>({
