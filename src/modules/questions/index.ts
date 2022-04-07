@@ -183,7 +183,7 @@ export async function components() {
     choices.push(...components);
   }
 
-  const answers = await checkboxQuestion<i.Components[]>({
+  const answers = await checkboxQuestion<string[]>({
     name: 'What extra components would you like to install?',
     choices,
     default: 0,

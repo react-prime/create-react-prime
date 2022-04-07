@@ -1,4 +1,3 @@
-import type * as i from 'types';
 import cp from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
@@ -182,63 +181,59 @@ export async function installSentry(): Promise<void> {
   await spinner.start();
 }
 
-export async function installComponent(component: i.Components): Promise<void> {
+export async function installComponent(component: string): Promise<void> {
   async function action() {
     const { projectName } = state.answers;
 
-    // Add dependencies without installing
     const webComponentsPath = './prime-monorepo/components/web-components';
     const componentPath = `${webComponentsPath}/${component}`;
-
-    let extraInternalDependencies = null;
-
-    if (existsSync(`${componentPath}/package.json`)) {
-      const { json: pkg } = await getPackageJson(
-        `${componentPath}/package.json`,
-      );
-
-      const { labelaDependencies } = await addDependenciesFromPackage(pkg);
-      extraInternalDependencies = labelaDependencies;
-    }
-
-    // Copy files to project
     const commonFolder = `${projectName}/src/components/common`;
-    const destFolder = `${commonFolder}/${component}`;
 
-    // Component could be already installed of extraDependency (e.g. FormField)
-    if (!existsSync(destFolder)) {
+    const installAndCopyComponent = async (
+      path: string,
+      comp: string,
+    ): Promise<string[] | null> => {
+      // If the component folder already exists (previously installed, skip)
+      const destFolder = `${commonFolder}/${comp}`;
+      if (existsSync(destFolder)) return null;
+
+      let extraInternalDependencies = null;
+      // Read component package.json and add dependencies to project
+      if (existsSync(`${path}/package.json`)) {
+        const { json: pkg } = await getPackageJson(`${path}/package.json`);
+
+        // Save extra Label A components, so these can also be installed
+        const { labelaDependencies } = await addDependenciesFromPackage(pkg);
+        extraInternalDependencies = labelaDependencies;
+      }
+
+      // Create component folder and copy /src folder from monorepo
       await asyncExec(
-        `mkdir -p ${destFolder} && cp -r -n ${componentPath}/src/. ${destFolder}`,
+        `mkdir -p ${destFolder} && cp -r -n ${path}/src/. ${destFolder}`,
       );
 
       // Rename component Storybook resolvers to valid project resolvers
       await renameStorybookResolvers(destFolder);
-    }
 
-    // Add extra labela dependencies (e.g. DatePicker is dependend on FormField)
+      return extraInternalDependencies;
+    };
+
+    // Add extra Label A dependencies (e.g. DatePicker is dependend on FormField), if any are
+    // returned from the initial installed component, loop over these and install + copy
+    let extraInternalDependencies = null;
+    extraInternalDependencies = await installAndCopyComponent(
+      componentPath,
+      component,
+    );
+
     if (extraInternalDependencies && extraInternalDependencies.length > 0) {
       for (const dependency of extraInternalDependencies) {
+        // Internal dependencies in the monorepo are linked via package.json with the @label prefix
+        // e.g. "@labela/form/FormField" where the suffix is the folder name
         const extraComponent = dependency.replace('@labela/', '');
         const extraComponentPath = `${webComponentsPath}/${extraComponent}`;
-        const extraDestFolder = `${commonFolder}/${extraComponent}`;
 
-        if (!existsSync(extraDestFolder)) {
-          // Find package.json as extra internal component and add external dependencies
-          if (existsSync(`${extraComponentPath}/package.json`)) {
-            const { json: extraPkg } = await getPackageJson(
-              `${extraComponentPath}/package.json`,
-            );
-
-            await addDependenciesFromPackage(extraPkg);
-          }
-
-          // Copy files and rename Storybook internal resolvers to project resolvers
-          await asyncExec(
-            `mkdir -p ${extraDestFolder} && cp -r -n ${extraComponentPath}/src/. ${extraDestFolder}`,
-          );
-
-          await renameStorybookResolvers(extraDestFolder);
-        }
+        await installAndCopyComponent(extraComponentPath, extraComponent);
       }
     }
   }
@@ -251,8 +246,6 @@ export async function installComponent(component: i.Components): Promise<void> {
   });
 
   await spinner.start();
-
-  logger.whitespace();
 }
 
 export async function renameStorybookResolvers(

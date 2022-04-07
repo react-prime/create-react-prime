@@ -91,11 +91,12 @@ export async function getPackageJson(
 // Helper to add dependencies to a package.json (without installing)
 export async function addDependenciesFromPackage(
   pkg: PackageJson,
-): Promise<{ labelaDependencies: string[] | undefined }> {
+): Promise<{ labelaDependencies: string[] | null }> {
   const { projectName } = state.answers;
 
   const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
 
+  // Filter out dependencies that are LabelA internal
   const npmDependencies = dependencies?.filter((d) => !d.includes('@labela'));
   const labelaDependencies = dependencies?.filter((d) => d.includes('@labela'));
 
@@ -120,7 +121,7 @@ export async function addDependenciesFromPackage(
   }
 
   return {
-    labelaDependencies,
+    labelaDependencies: labelaDependencies || null,
   };
 }
 
