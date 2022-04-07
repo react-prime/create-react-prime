@@ -88,6 +88,33 @@ export async function getPackageJson(
   };
 }
 
+// Helper to add dependencies to a package.json (without installing)
+export async function addDependenciesFromPackage(
+  pkg: PackageJson,
+): Promise<void> {
+  const { projectName } = state.answers;
+
+  const dependencies = pkg.dependencies
+    ? Object.keys(pkg.dependencies).join(' ')
+    : null;
+
+  if (dependencies) {
+    await asyncExec(
+      `npx add-dependencies ${projectName}/package.json ${dependencies}`,
+    );
+  }
+
+  const devDependencies = pkg.devDependencies
+    ? Object.keys(pkg.devDependencies).join(' ')
+    : null;
+
+  if (devDependencies) {
+    await asyncExec(
+      `npx add-dependencies ${projectName}/package.json ${devDependencies} -D`,
+    );
+  }
+}
+
 export async function npmPackageUpdate(): Promise<void> {
   const { projectName } = state.answers;
 
@@ -192,18 +219,7 @@ export async function installApiHelper(): Promise<void> {
     await asyncExec(`cp -r ${packagePath}/src ${servicesFolderPath}/api`);
 
     const { json: pkg } = await getPackageJson(`${packagePath}/package.json`);
-    const dependencies = Object.keys(pkg.dependencies as object).join(' ');
-    const devDependencies = Object.keys(pkg.devDependencies as object).join(
-      ' ',
-    );
-
-    // Add dependencies without installing
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json ${dependencies}`,
-    );
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json ${devDependencies} -D`,
-    );
+    await addDependenciesFromPackage(pkg);
   }
 
   const spinner = createSpinner(() => action(), {
