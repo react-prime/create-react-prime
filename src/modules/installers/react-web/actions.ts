@@ -198,7 +198,7 @@ export async function installComponent(component: i.Components): Promise<void> {
     // Copy files to project
     const destinationFolder = `${projectName}/src/components/common/${component}`;
     await asyncExec(
-      `mkdir -p ${destinationFolder} && cp -a ${componentPath}/src/. ${destinationFolder}`,
+      `mkdir -p ${destinationFolder} && cp -r -n ${componentPath}/src/. ${destinationFolder}`,
     );
   }
 
