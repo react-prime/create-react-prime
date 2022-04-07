@@ -99,7 +99,7 @@ export async function addDependenciesFromPackage(
   const npmDependencies = dependencies?.filter((d) => !d.includes('@labela'));
   const labelaDependencies = dependencies?.filter((d) => d.includes('@labela'));
 
-  if (npmDependencies) {
+  if (npmDependencies && npmDependencies.length > 0) {
     await asyncExec(
       `npx add-dependencies ${projectName}/package.json ${npmDependencies.join(
         ' ',
@@ -111,7 +111,7 @@ export async function addDependenciesFromPackage(
     ? Object.keys(pkg.devDependencies)
     : null;
 
-  if (devDependencies) {
+  if (devDependencies && devDependencies.length > 0) {
     await asyncExec(
       `npx add-dependencies ${projectName}/package.json ${devDependencies.join(
         ' ',
