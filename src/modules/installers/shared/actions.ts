@@ -91,28 +91,37 @@ export async function getPackageJson(
 // Helper to add dependencies to a package.json (without installing)
 export async function addDependenciesFromPackage(
   pkg: PackageJson,
-): Promise<void> {
+): Promise<{ labelaDependencies: string[] | undefined }> {
   const { projectName } = state.answers;
 
-  const dependencies = pkg.dependencies
-    ? Object.keys(pkg.dependencies).join(' ')
-    : null;
+  const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
 
-  if (dependencies) {
+  const npmDependencies = dependencies?.filter((d) => !d.includes('@labela'));
+  const labelaDependencies = dependencies?.filter((d) => d.includes('@labela'));
+
+  if (npmDependencies) {
     await asyncExec(
-      `npx add-dependencies ${projectName}/package.json ${dependencies}`,
+      `npx add-dependencies ${projectName}/package.json ${npmDependencies.join(
+        ' ',
+      )}`,
     );
   }
 
   const devDependencies = pkg.devDependencies
-    ? Object.keys(pkg.devDependencies).join(' ')
+    ? Object.keys(pkg.devDependencies)
     : null;
 
   if (devDependencies) {
     await asyncExec(
-      `npx add-dependencies ${projectName}/package.json ${devDependencies} -D`,
+      `npx add-dependencies ${projectName}/package.json ${devDependencies.join(
+        ' ',
+      )} -D`,
     );
   }
+
+  return {
+    labelaDependencies,
+  };
 }
 
 export async function npmPackageUpdate(): Promise<void> {
