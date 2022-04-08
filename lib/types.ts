@@ -7,8 +7,8 @@ import type {
   ListQuestion,
   NumberQuestion,
 } from 'inquirer';
+import type { PackageJson, JsonPrimitive, SetRequired } from 'type-fest';
 import type { OptionValues } from 'commander';
-import type { JsonPrimitive, SetRequired } from 'type-fest';
 
 export * from './state/types';
 
@@ -113,3 +113,9 @@ export interface Opts extends OptionValues {
 export interface Settings {
   labela: boolean;
 }
+
+export type LabelAPackageJson = PackageJson & {
+  labela: {
+    components: string[];
+  };
+};

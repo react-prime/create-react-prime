@@ -1,14 +1,13 @@
+import type * as i from 'types';
 import cp from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
 import { existsSync, readdirSync } from 'fs';
-import type { PackageJson } from 'type-fest';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
 import {
   addDependenciesFromPackage,
   downloadMonorepo,
-  getLabelAPeerDependencies,
   getPackageJson,
   installApiHelper,
 } from '../shared/actions';
@@ -191,18 +190,21 @@ export async function installComponent(component: string): Promise<void> {
   async function action() {
     const { projectName } = state.answers;
 
-    const installAndCopyComponent = async (
+    // Read component package.json and add dependencies to project
+    async function installAndCopyComponent(
       path: string,
       destFolder: string,
-    ): Promise<PackageJson | null> => {
-      // If the component folder already exists (previously installed, skip)
-      if (existsSync(destFolder)) return null;
+    ): Promise<i.LabelAPackageJson | null> {
+      let pkg: i.LabelAPackageJson | null = null;
 
-      let pkg = null;
-      // Read component package.json and add dependencies to project
+      // If the component folder already exists (previously installed, skip)
+      if (existsSync(destFolder)) {
+        return null;
+      }
+
       if (existsSync(`${path}/package.json`)) {
         const { json } = await getPackageJson(`${path}/package.json`);
-        pkg = json;
+        pkg = json as i.LabelAPackageJson;
 
         // Save extra Label A components, so these can also be installed
         await addDependenciesFromPackage(pkg);
@@ -217,7 +219,7 @@ export async function installComponent(component: string): Promise<void> {
       await renameStorybookResolvers(destFolder);
 
       return pkg;
-    };
+    }
 
     const monorepoComponentsRoot = './prime-monorepo/components/web-components';
     const destCommonFolder = `${projectName}/src/components/common`;
@@ -229,17 +231,14 @@ export async function installComponent(component: string): Promise<void> {
       `${destCommonFolder}/${component}`,
     );
 
-    if (pkg) {
-      const peerDependencies = await getLabelAPeerDependencies(pkg);
+    if (pkg && pkg?.labela?.components) {
+      const peerDependencies = pkg?.labela?.components;
+
       if (peerDependencies && peerDependencies.length > 0) {
         for (const dependency of peerDependencies) {
-          // Monorepo peer dependencies are linked via the package.json with the @label/components/
-          // prefix e.g. "@labela/form/FormField" where the suffix is the folder name
-          const extraComponent = dependency.replace('@labela/components/', '');
-
           await installAndCopyComponent(
-            `${monorepoComponentsRoot}/${extraComponent}`,
-            `${destCommonFolder}/${extraComponent}`,
+            `${monorepoComponentsRoot}/${dependency}`,
+            `${destCommonFolder}/${dependency}`,
           );
         }
       }
@@ -263,7 +262,6 @@ export async function renameStorybookResolvers(
   // Rename Storybook internal resolvers to project related resolvers
   for await (const file of readdirSync(destCommonFolder)) {
     const filePath = `${destCommonFolder}/${file}`;
-
     const ext = path.extname(filePath);
     if (ext !== '.tsx' && ext !== 'ts') {
       return;
