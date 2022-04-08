@@ -135,12 +135,15 @@ export async function getLabelAPeerDependencies(
 }
 
 export async function npmPackageUpdate(): Promise<void> {
-  const { projectName } = state.answers;
+  const { projectName, boilerplate } = state.answers;
 
   // The action that will update the content of the project's package.json
   async function action(): Promise<void> {
     const { path, json: pkg } = await getPackageJson(
       `${projectName}/package.json`,
+    );
+    const { json: boilerplatePkg } = await getPackageJson(
+      `./prime-monorepo/boilerplates/${boilerplate}/package.json`,
     );
 
     // Overwrite boilerplate defaults
@@ -153,6 +156,12 @@ export async function npmPackageUpdate(): Promise<void> {
     pkg.repository = {
       type: 'git',
       url: '',
+    };
+    pkg.labela = {
+      boilerplate: {
+        name: boilerplate,
+        version: boilerplatePkg.version || '1.0.0',
+      },
     };
 
     // Write to package.json

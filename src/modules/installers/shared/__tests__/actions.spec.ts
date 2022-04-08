@@ -82,6 +82,10 @@ describe('shared actions', () => {
       expect(parsed.description).toEqual(`Repository of ${projectName}`);
       expect(parsed.version).toEqual('0.1.0');
       expect(parsed.private).toEqual(true);
+      expect(parsed.labela).toEqual({
+        name: boilerplate,
+        version: '0.1.0',
+      });
       // All other fields are not important enough to test
     });
 
