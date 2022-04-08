@@ -226,9 +226,9 @@ export async function installComponent(component: string): Promise<void> {
 
     if (peerDependencies && peerDependencies.length > 0) {
       for (const dependency of peerDependencies) {
-        // Internal dependencies in the monorepo are linked via package.json with the @label prefix
-        // e.g. "@labela/form/FormField" where the suffix is the folder name
-        const extraComponent = dependency.replace('@labela/', '');
+        // Monorepo peer dependencies are linked via the package.json with the @label/components/
+        // prefix e.g. "@labela/form/FormField" where the suffix is the folder name
+        const extraComponent = dependency.replace('@labela/components/', '');
 
         await installAndCopyComponent(
           `${monorepoComponentsRoot}/${extraComponent}`,
@@ -261,7 +261,7 @@ export async function renameStorybookResolvers(
 
     const fileData = await fs.readFile(filePath, 'utf8');
     const replacedFileData = fileData
-      .replaceAll('@labela/common/', 'common/')
+      .replaceAll('@labela/components/', 'common/')
       .replaceAll('src/', '')
       .replaceAll("/src'", "'");
 

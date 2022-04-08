@@ -97,8 +97,12 @@ export async function addDependenciesFromPackage(
   const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
 
   // Filter out dependencies that are LabelA internal
-  const npmDependencies = dependencies?.filter((d) => !d.includes('@labela'));
-  const labelaDependencies = dependencies?.filter((d) => d.includes('@labela'));
+  const npmDependencies = dependencies?.filter(
+    (d) => !d.includes('@labela/components'),
+  );
+  const labelaDependencies = dependencies?.filter((d) =>
+    d.includes('@labela/components'),
+  );
 
   if (npmDependencies && npmDependencies.length > 0) {
     await asyncExec(
