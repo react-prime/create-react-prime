@@ -2,11 +2,13 @@ import cp from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
 import { existsSync, readdirSync } from 'fs';
+import type { PackageJson } from 'type-fest';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
 import {
   addDependenciesFromPackage,
   downloadMonorepo,
+  getLabelAPeerDependencies,
   getPackageJson,
   installApiHelper,
 } from '../shared/actions';
@@ -192,18 +194,18 @@ export async function installComponent(component: string): Promise<void> {
     const installAndCopyComponent = async (
       path: string,
       destFolder: string,
-    ): Promise<string[] | null> => {
+    ): Promise<PackageJson | null> => {
       // If the component folder already exists (previously installed, skip)
       if (existsSync(destFolder)) return null;
 
-      let peerDependencies = null;
+      let pkg = null;
       // Read component package.json and add dependencies to project
       if (existsSync(`${path}/package.json`)) {
-        const { json: pkg } = await getPackageJson(`${path}/package.json`);
+        const { json } = await getPackageJson(`${path}/package.json`);
+        pkg = json;
 
         // Save extra Label A components, so these can also be installed
-        const { labelaDependencies } = await addDependenciesFromPackage(pkg);
-        peerDependencies = labelaDependencies;
+        await addDependenciesFromPackage(pkg);
       }
 
       // Create component folder and copy /src folder from monorepo
@@ -214,7 +216,7 @@ export async function installComponent(component: string): Promise<void> {
       // Rename component Storybook resolvers to valid project resolvers
       await renameStorybookResolvers(destFolder);
 
-      return peerDependencies;
+      return pkg;
     };
 
     const monorepoComponentsRoot = './prime-monorepo/components/web-components';
@@ -222,22 +224,24 @@ export async function installComponent(component: string): Promise<void> {
 
     // Add extra Label A dependencies (e.g. DatePicker is dependend on FormField), if any are
     // returned from the initial installed component, loop over these and install + copy
-    let peerDependencies = null;
-    peerDependencies = await installAndCopyComponent(
+    const pkg = await installAndCopyComponent(
       `${monorepoComponentsRoot}/${component}`,
       `${destCommonFolder}/${component}`,
     );
 
-    if (peerDependencies && peerDependencies.length > 0) {
-      for (const dependency of peerDependencies) {
-        // Monorepo peer dependencies are linked via the package.json with the @label/components/
-        // prefix e.g. "@labela/form/FormField" where the suffix is the folder name
-        const extraComponent = dependency.replace('@labela/components/', '');
+    if (pkg) {
+      const peerDependencies = await getLabelAPeerDependencies(pkg);
+      if (peerDependencies && peerDependencies.length > 0) {
+        for (const dependency of peerDependencies) {
+          // Monorepo peer dependencies are linked via the package.json with the @label/components/
+          // prefix e.g. "@labela/form/FormField" where the suffix is the folder name
+          const extraComponent = dependency.replace('@labela/components/', '');
 
-        await installAndCopyComponent(
-          `${monorepoComponentsRoot}/${extraComponent}`,
-          `${destCommonFolder}/${extraComponent}`,
-        );
+          await installAndCopyComponent(
+            `${monorepoComponentsRoot}/${extraComponent}`,
+            `${destCommonFolder}/${extraComponent}`,
+          );
+        }
       }
     }
   }

@@ -91,17 +91,13 @@ export async function getPackageJson(
 // Helper to add dependencies to a package.json (without installing)
 export async function addDependenciesFromPackage(
   pkg: PackageJson,
-): Promise<{ labelaDependencies: string[] | null }> {
+): Promise<void> {
   const { projectName } = state.answers;
-
   const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
 
-  // Filter out dependencies that are LabelA internal
+  // Filter out dependencies that are LabelA components
   const npmDependencies = dependencies?.filter(
     (d) => !d.includes('@labela/components'),
-  );
-  const labelaDependencies = dependencies?.filter((d) =>
-    d.includes('@labela/components'),
   );
 
   if (npmDependencies && npmDependencies.length > 0) {
@@ -123,10 +119,19 @@ export async function addDependenciesFromPackage(
       )} -D`,
     );
   }
+}
 
-  return {
-    labelaDependencies: labelaDependencies || null,
-  };
+// Helper to extract LabelA component dependencies from package.json
+export async function getLabelAPeerDependencies(
+  pkg: PackageJson,
+): Promise<string[] | null> {
+  const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
+
+  const labelaDependencies = dependencies?.filter((d) =>
+    d.includes('@labela/components'),
+  );
+
+  return labelaDependencies || null;
 }
 
 export async function npmPackageUpdate(): Promise<void> {
