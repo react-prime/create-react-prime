@@ -1,12 +1,14 @@
-import type * as i from 'types';
 import cp from 'child_process';
 import fs from 'fs/promises';
-import { existsSync } from 'fs';
+import path from 'path';
+import { existsSync, readdirSync } from 'fs';
+import type { PackageJson } from 'type-fest';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
 import {
   addDependenciesFromPackage,
   downloadMonorepo,
+  getLabelAPeerDependencies,
   getPackageJson,
   installApiHelper,
 } from '../shared/actions';
@@ -45,11 +47,13 @@ export async function installDeployScript(): Promise<void> {
 
     const { projectName } = state.answers;
 
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json @labela/deploy --dev`,
-    );
+    if (existsSync(`${projectName}/package.json`)) {
+      const { json: pkg } = await getPackageJson(`${projectName}/package.json`);
+      await addDependenciesFromPackage(pkg);
+    }
+
     await fs.copyFile(
-      './prime-monorepo/packages/deploy-script/deploy.sh',
+      './prime-monorepo/packages/web-packages/deploy-script/src/deploy.sh',
       `${projectName}/deploy.sh`,
     );
     await asyncExec(`chmod +x ${projectName}/deploy.sh`);
@@ -71,9 +75,10 @@ export async function installContinuousDeployScript(): Promise<void> {
   async function action() {
     const { projectName } = state.answers;
 
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json @labela/continuous-deploy --dev`,
-    );
+    if (existsSync(`${projectName}/package.json`)) {
+      const { json: pkg } = await getPackageJson(`${projectName}/package.json`);
+      await addDependenciesFromPackage(pkg);
+    }
   }
 
   const spinner = createSpinner(() => action(), {
@@ -89,7 +94,7 @@ export async function installContinuousDeployScript(): Promise<void> {
 
   logger.msg(
     // eslint-disable-next-line max-len
-    'Continuous-deploy script has been installed but requires some manual steps! Make sure to follow the instructions at https://github.com/sandervspl/prime-monorepo/tree/main/packages/continuous-deploy-script#readme',
+    'Continuous-deploy script has been installed but requires some manual steps! Make sure to follow the instructions at https://github.com/LabelA/prime-monorepo/blob/main/packages/web-packages/continuous-deploy-script/README.md',
   );
   logger.whitespace();
 }
@@ -103,9 +108,10 @@ export async function installSentry(): Promise<void> {
 
     const { projectName, boilerplate } = state.answers;
 
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json @sentry/nextjs`,
-    );
+    if (existsSync(`${projectName}/package.json`)) {
+      const { json: pkg } = await getPackageJson(`${projectName}/package.json`);
+      await addDependenciesFromPackage(pkg);
+    }
 
     if (boilerplate === 'react-web') {
       // await asyncExec('npx @sentry/wizard -i nextjs', { cwd: projectName });
@@ -134,7 +140,7 @@ export async function installSentry(): Promise<void> {
 
       // Copy the error pages
       await asyncExec(
-        `cp -r -n ./prime-monorepo/packages/sentry-setup/pages ${projectName}/src`,
+        `cp -r -n ./prime-monorepo/packages/web-packages/sentry-setup/src/pages ${projectName}/src`,
       );
 
       // Edit NextJS config file
@@ -181,25 +187,63 @@ export async function installSentry(): Promise<void> {
   await spinner.start();
 }
 
-export async function installComponent(component: i.Components): Promise<void> {
+export async function installComponent(component: string): Promise<void> {
   async function action() {
     const { projectName } = state.answers;
 
-    // Add dependencies without installing
-    const componentPath = `./prime-monorepo/components/web-components/${component}`;
-    if (existsSync(`${componentPath}/package.json`)) {
-      const { json: pkg } = await getPackageJson(
-        `${componentPath}/package.json`,
+    const installAndCopyComponent = async (
+      path: string,
+      destFolder: string,
+    ): Promise<PackageJson | null> => {
+      // If the component folder already exists (previously installed, skip)
+      if (existsSync(destFolder)) return null;
+
+      let pkg = null;
+      // Read component package.json and add dependencies to project
+      if (existsSync(`${path}/package.json`)) {
+        const { json } = await getPackageJson(`${path}/package.json`);
+        pkg = json;
+
+        // Save extra Label A components, so these can also be installed
+        await addDependenciesFromPackage(pkg);
+      }
+
+      // Create component folder and copy /src folder from monorepo
+      await asyncExec(
+        `mkdir -p ${destFolder} && cp -r -n ${path}/src/. ${destFolder}`,
       );
 
-      await addDependenciesFromPackage(pkg);
-    }
+      // Rename component Storybook resolvers to valid project resolvers
+      await renameStorybookResolvers(destFolder);
 
-    // Copy files to project
-    const destinationFolder = `${projectName}/src/components/common/${component}`;
-    await asyncExec(
-      `mkdir -p ${destinationFolder} && cp -r -n ${componentPath}/src/. ${destinationFolder}`,
+      return pkg;
+    };
+
+    const monorepoComponentsRoot = './prime-monorepo/components/web-components';
+    const destCommonFolder = `${projectName}/src/components/common`;
+
+    // Add extra Label A dependencies (e.g. DatePicker is dependend on FormField), if any are
+    // returned from the initial installed component, loop over these and install + copy
+    const pkg = await installAndCopyComponent(
+      `${monorepoComponentsRoot}/${component}`,
+      `${destCommonFolder}/${component}`,
     );
+
+    if (pkg) {
+      const peerDependencies = await getLabelAPeerDependencies(pkg);
+      if (peerDependencies && peerDependencies.length > 0) {
+        for (const dependency of peerDependencies) {
+          // Monorepo peer dependencies are linked via the package.json with the @label/components/
+          // prefix e.g. "@labela/form/FormField" where the suffix is the folder name
+          const extraComponent = dependency.replace('@labela/components/', '');
+
+          await installAndCopyComponent(
+            `${monorepoComponentsRoot}/${extraComponent}`,
+            `${destCommonFolder}/${extraComponent}`,
+          );
+        }
+      }
+    }
   }
 
   const spinner = createSpinner(() => action(), {
@@ -210,6 +254,27 @@ export async function installComponent(component: i.Components): Promise<void> {
   });
 
   await spinner.start();
+}
 
-  logger.whitespace();
+export async function renameStorybookResolvers(
+  destCommonFolder: string,
+): Promise<void> {
+  // Loop all files in the component folder with .tsx or .ts extension
+  // Rename Storybook internal resolvers to project related resolvers
+  for await (const file of readdirSync(destCommonFolder)) {
+    const filePath = `${destCommonFolder}/${file}`;
+
+    const ext = path.extname(filePath);
+    if (ext !== '.tsx' && ext !== 'ts') {
+      return;
+    }
+
+    const fileData = await fs.readFile(filePath, 'utf8');
+    const replacedFileData = fileData
+      .replaceAll('@labela/components/', 'common/')
+      .replaceAll('src/', '')
+      .replaceAll("/src'", "'");
+
+    await fs.writeFile(filePath, replacedFileData);
+  }
 }

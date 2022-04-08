@@ -155,11 +155,35 @@ export async function components() {
   const choices: string[] = [];
 
   if (boilerplate === 'react-web') {
-    const components = ['form/Checkbox', 'form/DatePicker'];
+    const components = [
+      'form/Checkbox',
+      'form/DatePicker',
+      'form/FieldArray',
+      'form/FormContainer',
+      'form/FormField',
+      'form/Input',
+      'form/InputCheckbox',
+      'form/InputCheckboxArray',
+      'form/InputPassword',
+      'form/InputRadio',
+      'form/Label',
+      'form/SelectDropdown',
+      'form/Textarea',
+      'form/Upload',
+
+      'interaction/Accordion',
+      'interaction/Button',
+      'interaction/Modal',
+      'interaction/Tabs',
+
+      'typography/Heading',
+      'typography/Paragraph',
+    ];
+
     choices.push(...components);
   }
 
-  const answers = await checkboxQuestion<i.Components[]>({
+  const answers = await checkboxQuestion<string[]>({
     name: 'What extra components would you like to install?',
     choices,
     default: 0,

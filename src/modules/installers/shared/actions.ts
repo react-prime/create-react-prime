@@ -93,26 +93,45 @@ export async function addDependenciesFromPackage(
   pkg: PackageJson,
 ): Promise<void> {
   const { projectName } = state.answers;
+  const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
 
-  const dependencies = pkg.dependencies
-    ? Object.keys(pkg.dependencies).join(' ')
-    : null;
+  // Filter out dependencies that are LabelA components
+  const npmDependencies = dependencies?.filter(
+    (d) => !d.includes('@labela/components'),
+  );
 
-  if (dependencies) {
+  if (npmDependencies && npmDependencies.length > 0) {
     await asyncExec(
-      `npx add-dependencies ${projectName}/package.json ${dependencies}`,
+      `npx add-dependencies ${projectName}/package.json ${npmDependencies.join(
+        ' ',
+      )}`,
     );
   }
 
   const devDependencies = pkg.devDependencies
-    ? Object.keys(pkg.devDependencies).join(' ')
+    ? Object.keys(pkg.devDependencies)
     : null;
 
-  if (devDependencies) {
+  if (devDependencies && devDependencies.length > 0) {
     await asyncExec(
-      `npx add-dependencies ${projectName}/package.json ${devDependencies} -D`,
+      `npx add-dependencies ${projectName}/package.json ${devDependencies.join(
+        ' ',
+      )} -D`,
     );
   }
+}
+
+// Helper to extract LabelA component dependencies from package.json
+export async function getLabelAPeerDependencies(
+  pkg: PackageJson,
+): Promise<string[] | null> {
+  const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
+
+  const labelaDependencies = dependencies?.filter((d) =>
+    d.includes('@labela/components'),
+  );
+
+  return labelaDependencies || null;
 }
 
 export async function npmPackageUpdate(): Promise<void> {
@@ -203,7 +222,9 @@ export async function installApiHelper(): Promise<void> {
   const { projectName, boilerplate } = state.answers;
 
   const isMobile = boilerplate === 'react-mobile';
-  const apiPackage = isMobile ? 'api-helper-mobile' : 'api-helper';
+  const apiPackage = isMobile
+    ? 'mobile-packages/api-helper'
+    : 'web-packages/api-helper';
 
   async function action() {
     // Make sure monorepo is present
