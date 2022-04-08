@@ -261,7 +261,9 @@ export async function renameStorybookResolvers(
     const filePath = `${destCommonFolder}/${file}`;
 
     const ext = path.extname(filePath);
-    if (ext !== '.tsx' && ext !== 'ts') return;
+    if (ext !== '.tsx' && ext !== 'ts') {
+      return;
+    }
 
     const fileData = await fs.readFile(filePath, 'utf8');
     const replacedFileData = fileData
