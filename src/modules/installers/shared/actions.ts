@@ -95,14 +95,9 @@ export async function addDependenciesFromPackage(
   const { projectName } = state.answers;
   const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
 
-  // Filter out dependencies that are LabelA components
-  const npmDependencies = dependencies?.filter(
-    (d) => !d.includes('@labela/components'),
-  );
-
-  if (npmDependencies && npmDependencies.length > 0) {
+  if (dependencies && dependencies.length > 0) {
     await asyncExec(
-      `npx add-dependencies ${projectName}/package.json ${npmDependencies.join(
+      `npx add-dependencies ${projectName}/package.json ${dependencies.join(
         ' ',
       )}`,
     );
@@ -119,19 +114,6 @@ export async function addDependenciesFromPackage(
       )} -D`,
     );
   }
-}
-
-// Helper to extract LabelA component dependencies from package.json
-export async function getLabelAPeerDependencies(
-  pkg: PackageJson,
-): Promise<string[] | null> {
-  const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
-
-  const labelaDependencies = dependencies?.filter((d) =>
-    d.includes('@labela/components'),
-  );
-
-  return labelaDependencies || null;
 }
 
 export async function npmPackageUpdate(): Promise<void> {
