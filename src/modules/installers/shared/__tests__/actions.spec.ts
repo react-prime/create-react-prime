@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import type { PackageJson } from 'type-fest';
 import tempy from 'tempy';
+import semver from 'semver';
 import { logger, state } from '@crp';
 import { ERROR_TEXT } from '@crp/constants';
 import * as utils from '@crp/utils';
@@ -82,10 +83,10 @@ describe('shared actions', () => {
       expect(parsed.description).toEqual(`Repository of ${projectName}`);
       expect(parsed.version).toEqual('0.1.0');
       expect(parsed.private).toEqual(true);
-      expect(parsed.labela).toEqual({
-        name: boilerplate,
-        version: '0.1.0',
-      });
+      expect(parsed.labela.boilerplate?.name).toEqual(boilerplate);
+      expect(
+        semver.valid(parsed.labela.boilerplate?.version || ''),
+      ).toBeTruthy();
       // All other fields are not important enough to test
     });
 
