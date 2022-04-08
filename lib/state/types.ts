@@ -19,6 +19,7 @@ export type CRPAnswers = {
   renderType?: string;
   cms?: string;
   modules?: Modules[];
+  components?: Components[];
   openInEditor?: EditorSearchItem;
 };
 
@@ -49,7 +50,15 @@ export type Modules =
   | 'manual-deploy'
   | 'continuous-deploy'
   | 'sentry';
+
 export type ModuleItem = {
   name: string;
   value: Modules;
+};
+
+export type Components = string;
+
+export type ComponentItem = {
+  name: string;
+  value: Components;
 };

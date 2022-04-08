@@ -7,6 +7,8 @@ import { state, logger, createSpinner, asyncExec } from '@crp';
 import * as cli from '@crp/cli';
 import { ERROR_TEXT } from '@crp/constants';
 
+import * as question from '../../questions';
+
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 
@@ -60,38 +62,67 @@ export async function npmInstall(): Promise<void> {
   await spinner.start();
 }
 
+// Helper to get path to the project's package.json + JS object of its content
+export async function getPackageJson(
+  pkgFile: string,
+): Promise<never | { path: string; json: PackageJson }> {
+  const projectPkgPath = path.resolve(pkgFile);
+  const pkgStr = await (async () => {
+    // Silently fail if package.json doesn't exist
+    try {
+      const raw = await fs.readFile(projectPkgPath, 'utf8');
+      const parsed = JSON.parse(raw) as PackageJson;
+      const copy = { ...parsed };
+
+      return copy;
+    } catch (err) {}
+  })();
+
+  if (!pkgStr) {
+    await logger.error(ERROR_TEXT.PkgNotFound, projectPkgPath);
+  }
+
+  return {
+    path: projectPkgPath,
+    json: pkgStr!,
+  };
+}
+
+// Helper to add dependencies to a package.json (without installing)
+export async function addDependenciesFromPackage(
+  pkg: PackageJson,
+): Promise<void> {
+  const { projectName } = state.answers;
+
+  const dependencies = pkg.dependencies
+    ? Object.keys(pkg.dependencies).join(' ')
+    : null;
+
+  if (dependencies) {
+    await asyncExec(
+      `npx add-dependencies ${projectName}/package.json ${dependencies}`,
+    );
+  }
+
+  const devDependencies = pkg.devDependencies
+    ? Object.keys(pkg.devDependencies).join(' ')
+    : null;
+
+  if (devDependencies) {
+    await asyncExec(
+      `npx add-dependencies ${projectName}/package.json ${devDependencies} -D`,
+    );
+  }
+}
+
 export async function npmPackageUpdate(): Promise<void> {
   const { projectName } = state.answers;
 
-  // Helper to get path to the project's package.json + JS object of its content
-  async function getPackageJson(): Promise<
-    never | { path: string; json: PackageJson }
-  > {
-    const projectPkgPath = path.resolve(`${projectName}/package.json`);
-    const pkgStr = await (async () => {
-      // Silently fail if package.json doesn't exist
-      try {
-        const raw = await fs.readFile(projectPkgPath, 'utf8');
-        const parsed = JSON.parse(raw) as PackageJson;
-        const copy = { ...parsed };
-
-        return copy;
-      } catch (err) {}
-    })();
-
-    if (!pkgStr) {
-      await logger.error(ERROR_TEXT.PkgNotFound, projectPkgPath);
-    }
-
-    return {
-      path: projectPkgPath,
-      json: pkgStr!,
-    };
-  }
-
   // The action that will update the content of the project's package.json
   async function action(): Promise<void> {
-    const { path, json: pkg } = await getPackageJson();
+    const { path, json: pkg } = await getPackageJson(
+      `${projectName}/package.json`,
+    );
 
     // Overwrite boilerplate defaults
     pkg.name = projectName;
@@ -166,4 +197,62 @@ export async function downloadMonorepo(): Promise<void> {
 
 export async function removeMonorepo(): Promise<void> {
   await asyncExec('rm -rf ./prime-monorepo');
+}
+
+export async function installApiHelper(): Promise<void> {
+  const { projectName, boilerplate } = state.answers;
+
+  const isMobile = boilerplate === 'react-mobile';
+  const apiPackage = isMobile ? 'api-helper-mobile' : 'api-helper';
+
+  async function action() {
+    // Make sure monorepo is present
+    if (!existsSync('prime-monorepo')) {
+      await downloadMonorepo();
+    }
+
+    // Generate services folder path
+    const servicesFolderPath = `${projectName}/src/services`;
+    const packagePath = `./prime-monorepo/packages/${apiPackage}`;
+
+    // Copy api-helper code to project's services folder
+    await asyncExec(`cp -r ${packagePath}/src ${servicesFolderPath}/api`);
+
+    const { json: pkg } = await getPackageJson(`${packagePath}/package.json`);
+    await addDependenciesFromPackage(pkg);
+  }
+
+  const spinner = createSpinner(() => action(), {
+    /* eslint-disable quotes */
+    name: `${apiPackage} install`,
+    start: `📡  Installing '${apiPackage}'...`,
+    success: `📡  Installed '${apiPackage}'!`,
+    fail: `📡  Something went wrong while installing the '${apiPackage}'.`,
+    /* eslint-enable */
+  });
+
+  await spinner.start();
+
+  // Ask user for the API base URL
+  logger.whitespace();
+  const baseUrl = await question.apiHelperBaseUrl();
+  const configPath = `${projectName}/src/services/api/config.ts`;
+
+  if (baseUrl && baseUrl.length > 0) {
+    const raw = await fs.readFile(configPath, 'utf8');
+    // eslint-disable-next-line quotes
+    const next = raw.replace("apiUrl: ''", `apiUrl: '${baseUrl}'`);
+    await fs.writeFile(configPath, next);
+
+    logger.msg(
+      `Updated the '${apiPackage}' config to use '${baseUrl}' as base URL`,
+    );
+  } else {
+    logger.msg(
+      // eslint-disable-next-line quotes
+      `You can change the base URL of the '${apiPackage}' config in 'services/api/config.ts' later when needed`,
+    );
+  }
+
+  logger.whitespace();
 }
