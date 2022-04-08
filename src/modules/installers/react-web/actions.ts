@@ -45,11 +45,13 @@ export async function installDeployScript(): Promise<void> {
 
     const { projectName } = state.answers;
 
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json @labela/deploy --dev`,
-    );
+    if (existsSync(`${projectName}/package.json`)) {
+      const { json: pkg } = await getPackageJson(`${projectName}/package.json`);
+      await addDependenciesFromPackage(pkg);
+    }
+
     await fs.copyFile(
-      './prime-monorepo/packages/deploy-script/deploy.sh',
+      './prime-monorepo/packages/web-packages/deploy-script/src/deploy.sh',
       `${projectName}/deploy.sh`,
     );
     await asyncExec(`chmod +x ${projectName}/deploy.sh`);
@@ -71,9 +73,10 @@ export async function installContinuousDeployScript(): Promise<void> {
   async function action() {
     const { projectName } = state.answers;
 
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json @labela/continuous-deploy --dev`,
-    );
+    if (existsSync(`${projectName}/package.json`)) {
+      const { json: pkg } = await getPackageJson(`${projectName}/package.json`);
+      await addDependenciesFromPackage(pkg);
+    }
   }
 
   const spinner = createSpinner(() => action(), {
@@ -89,7 +92,7 @@ export async function installContinuousDeployScript(): Promise<void> {
 
   logger.msg(
     // eslint-disable-next-line max-len
-    'Continuous-deploy script has been installed but requires some manual steps! Make sure to follow the instructions at https://github.com/sandervspl/prime-monorepo/tree/main/packages/continuous-deploy-script#readme',
+    'Continuous-deploy script has been installed but requires some manual steps! Make sure to follow the instructions at https://github.com/LabelA/prime-monorepo/blob/main/packages/web-packages/continuous-deploy-script/README.md',
   );
   logger.whitespace();
 }
@@ -103,9 +106,10 @@ export async function installSentry(): Promise<void> {
 
     const { projectName, boilerplate } = state.answers;
 
-    await asyncExec(
-      `npx add-dependencies ${projectName}/package.json @sentry/nextjs`,
-    );
+    if (existsSync(`${projectName}/package.json`)) {
+      const { json: pkg } = await getPackageJson(`${projectName}/package.json`);
+      await addDependenciesFromPackage(pkg);
+    }
 
     if (boilerplate === 'react-web') {
       // await asyncExec('npx @sentry/wizard -i nextjs', { cwd: projectName });
@@ -134,7 +138,7 @@ export async function installSentry(): Promise<void> {
 
       // Copy the error pages
       await asyncExec(
-        `cp -r -n ./prime-monorepo/packages/sentry-setup/pages ${projectName}/src`,
+        `cp -r -n ./prime-monorepo/packages/web-packages/sentry-setup/src/pages ${projectName}/src`,
       );
 
       // Edit NextJS config file

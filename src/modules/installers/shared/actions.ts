@@ -217,7 +217,9 @@ export async function installApiHelper(): Promise<void> {
   const { projectName, boilerplate } = state.answers;
 
   const isMobile = boilerplate === 'react-mobile';
-  const apiPackage = isMobile ? 'api-helper-mobile' : 'api-helper';
+  const apiPackage = isMobile
+    ? 'mobile-packages/api-helper'
+    : 'web-packages/api-helper';
 
   async function action() {
     // Make sure monorepo is present
