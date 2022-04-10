@@ -113,9 +113,3 @@ export interface Opts extends OptionValues {
 export interface Settings {
   labela: boolean;
 }
-
-export type LabelAPackageJson = PackageJson & {
-  labela: {
-    components: string[];
-  };
-};
