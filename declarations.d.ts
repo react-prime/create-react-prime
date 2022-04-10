@@ -20,3 +20,18 @@ declare module 'commander' {
     action(fn: (flags: CLIOptions) => void | Promise<void>): this;
   }
 }
+
+// Merge package.json type with labela property type
+declare module 'type-fest' {
+  declare namespace PackageJson {
+    interface PackageJsonStandard {
+      labela: {
+        boilerplate?: {
+          name: string;
+          version: string;
+        };
+        components?: string[];
+      };
+    }
+  }
+}
