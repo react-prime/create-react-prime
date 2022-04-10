@@ -1,8 +1,8 @@
-import type * as i from 'types';
 import cp from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
 import { existsSync, readdirSync } from 'fs';
+import type { PackageJson } from 'type-fest';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
 import {
@@ -194,8 +194,8 @@ export async function installComponent(component: string): Promise<void> {
     async function installAndCopyComponent(
       path: string,
       destFolder: string,
-    ): Promise<i.LabelAPackageJson | null> {
-      let pkg: i.LabelAPackageJson | null = null;
+    ): Promise<PackageJson | null> {
+      let pkg: PackageJson | null = null;
 
       // If the component folder already exists (previously installed, skip)
       if (existsSync(destFolder)) {
@@ -204,7 +204,7 @@ export async function installComponent(component: string): Promise<void> {
 
       if (existsSync(`${path}/package.json`)) {
         const { json } = await getPackageJson(`${path}/package.json`);
-        pkg = json as i.LabelAPackageJson;
+        pkg = json;
 
         // Save extra Label A components, so these can also be installed
         await addDependenciesFromPackage(pkg);
