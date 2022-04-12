@@ -9,7 +9,6 @@ import { installModules as WebInstallModules } from 'src/modules/installers/reac
 export async function modulesEntry(): Promise<void> {
   if (!fs.existsSync('src')) {
     logger.error(
-      // eslint-disable-next-line quotes
       "No 'src' folder found. Please run this command from the root of your project.",
     );
   }
