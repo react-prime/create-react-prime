@@ -1,4 +1,3 @@
-/* eslint-disable quotes */
 import path from 'path';
 import os from 'os';
 
@@ -19,4 +18,3 @@ export const ERROR_TEXT = {
   InvalidCLIState: 'Something is wrong with the CLI state.',
   InstallerNotFound: "Installer for '%s' not found.",
 } as const;
-/* eslint-enable */

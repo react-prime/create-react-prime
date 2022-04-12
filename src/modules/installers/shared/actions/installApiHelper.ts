@@ -34,12 +34,10 @@ export async function installApiHelper(): Promise<void> {
   }
 
   const spinner = createSpinner(() => action(), {
-    /* eslint-disable quotes */
     name: `${apiPackage} install`,
     start: `📡  Installing '${apiPackage}'...`,
     success: `📡  Installed '${apiPackage}'!`,
     fail: `📡  Something went wrong while installing the '${apiPackage}'.`,
-    /* eslint-enable */
   });
 
   await spinner.start();
@@ -51,7 +49,6 @@ export async function installApiHelper(): Promise<void> {
 
   if (baseUrl && baseUrl.length > 0) {
     const raw = await fs.readFile(configPath, 'utf8');
-    // eslint-disable-next-line quotes
     const next = raw.replace("apiUrl: ''", `apiUrl: '${baseUrl}'`);
     await fs.writeFile(configPath, next);
 
@@ -60,7 +57,6 @@ export async function installApiHelper(): Promise<void> {
     );
   } else {
     logger.msg(
-      // eslint-disable-next-line quotes
       `You can change the base URL of the '${apiPackage}' config in 'services/api/config.ts' later when needed`,
     );
   }

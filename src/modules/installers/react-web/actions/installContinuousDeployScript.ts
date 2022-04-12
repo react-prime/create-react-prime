@@ -18,11 +18,9 @@ export async function installContinuousDeployScript(): Promise<void> {
 
   const spinner = createSpinner(() => action(), {
     name: 'continuous-deploy script install',
-    /* eslint-disable quotes */
     start: " 🚀  Installing 'continuous-deploy-script'...",
     success: " 🚀  Installed 'continuous-deploy-script'!",
     fail: " 🚀  Something went wrong while installing the 'continuous-deploy-script'.",
-    /* eslint-enable */
   });
 
   await spinner.start();

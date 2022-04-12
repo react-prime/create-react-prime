@@ -59,7 +59,6 @@ export async function installSentry(): Promise<void> {
         'utf8',
       );
 
-      /* eslint-disable quotes */
       const nextConfigFile = configFile
         .replace(
           "next/constants');",
@@ -74,7 +73,6 @@ export async function installSentry(): Promise<void> {
           release: \`\${process.env.npm_package_name}@\${process.env.npm_package_version}\`,
         });`,
         );
-      /* eslint-enable */
 
       await fs.writeFile(`${projectName}/next.config.js`, nextConfigFile);
 
@@ -87,11 +85,9 @@ export async function installSentry(): Promise<void> {
 
   const spinner = createSpinner(() => action(), {
     name: 'sentry install',
-    /* eslint-disable quotes */
     start: ' ▲  Setting up Sentry...',
     success: ' ▲  Sentry was set up succesfully!',
     fail: ' ▲  Something went wrong while setting up Sentry.',
-    /* eslint-enable */
   });
 
   await spinner.start();

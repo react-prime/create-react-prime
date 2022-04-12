@@ -31,11 +31,9 @@ export async function installDeployScript(): Promise<void> {
 
   const spinner = createSpinner(() => action(), {
     name: 'deploy script install',
-    /* eslint-disable quotes */
     start: " 🚀  Installing 'deploy-script'...",
     success: " 🚀  Installed 'deploy-script'!",
     fail: " 🚀  Something went wrong while installing the 'deploy-script'.",
-    /* eslint-enable */
   });
 
   await spinner.start();

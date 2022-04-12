@@ -156,7 +156,6 @@ describe('Entry', () => {
       await entry.initTracking({});
 
       expect(loggerMsgSpy).toHaveBeenCalledWith(
-        // eslint-disable-next-line quotes
         "Tracking enabled and set as 'John Doe'. To change, run: 'npx create-react-prime --tracking'",
       );
     });
