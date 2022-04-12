@@ -170,6 +170,7 @@ export async function components() {
       'form/SelectDropdown',
       'form/Textarea',
       'form/Upload',
+      'form/Wysiwyg',
 
       'interaction/Accordion',
       'interaction/Button',
