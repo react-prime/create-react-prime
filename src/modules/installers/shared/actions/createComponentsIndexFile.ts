@@ -24,6 +24,6 @@ export function createComponentsIndexFile(): void {
 
   Object.entries(componentsByFolder).forEach(([folder, components]) => {
     const indexFile = `${projectName}/src/components/common/${folder}/index.ts`;
-    fs.writeFile(indexFile, components.join('\n'));
+    fs.writeFile(indexFile, components.join('\n') + '\n');
   });
 }
