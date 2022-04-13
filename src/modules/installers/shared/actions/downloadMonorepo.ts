@@ -3,6 +3,7 @@ import { state, logger, createSpinner, asyncExec } from '@crp';
 import * as cli from '@crp/cli';
 import { ERROR_TEXT } from '@crp/constants';
 
+// Export because it's used in tests
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
 

@@ -1,6 +1,9 @@
 import { state } from '@crp';
 
-import { installApiHelper } from '../../shared/actions';
+import {
+  installApiHelper,
+  createComponentsIndexFile,
+} from '../../shared/actions';
 import { installComponent } from './installComponent';
 import { installContinuousDeployScript } from './installContinuousDeployScript';
 import { installDeployScript } from './installDeployScript';
@@ -29,4 +32,6 @@ export async function installComponents(): Promise<void> {
   for await (const component of state.answers.components || []) {
     await installComponent(component);
   }
+
+  createComponentsIndexFile();
 }

@@ -6,7 +6,12 @@ export async function addDependenciesFromPackage(
   pkg: PackageJson,
 ): Promise<void> {
   const { projectName } = state.answers;
-  const dependencies = pkg.dependencies ? Object.keys(pkg.dependencies) : null;
+
+  const dependencies = pkg.dependencies
+    ? Object.entries(pkg.dependencies).map(
+        ([name, version]) => `${name}@${version}`,
+      )
+    : null;
 
   if (dependencies && dependencies.length > 0) {
     await asyncExec(

@@ -82,6 +82,17 @@ export async function installComponent(component: string): Promise<void> {
 
       if (peerDependencies && peerDependencies.length > 0) {
         for (const dependency of peerDependencies) {
+          // Push peer dependency to state components, so it can be used in createComponentsIndexFile
+          if (
+            state.answers.components &&
+            !state.answers.components?.includes(dependency)
+          ) {
+            state.answers.components = [
+              ...state.answers.components,
+              dependency,
+            ];
+          }
+
           await installAndCopyComponent(
             `${monorepoComponentsRoot}/${dependency}`,
             `${destCommonFolder}/${dependency}`,
