@@ -1,6 +1,7 @@
 export * from './addDependenciesFromPackage';
 export * from './cleanup';
 export * from './copyBoilerplate';
+export * from './createComponentsIndexFile';
 export * from './downloadMonorepo';
 export * from './getPackageJson';
 export * from './installApiHelper';
