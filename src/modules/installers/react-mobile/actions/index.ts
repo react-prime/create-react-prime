@@ -1,6 +1,7 @@
 import { state } from '@crp';
 
 import { installApiHelper } from '../../shared/actions';
+import { installUseAuthentication } from './installUseAuthentication';
 
 export * from './podInstall';
 export * from './renameFiles';
@@ -12,6 +13,9 @@ export async function installModules(): Promise<void> {
     switch (module) {
       case 'api-helper':
         await installApiHelper();
+        break;
+      case 'use-authentication':
+        await installUseAuthentication();
         break;
     }
   }

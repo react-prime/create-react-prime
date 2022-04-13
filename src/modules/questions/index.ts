@@ -118,6 +118,11 @@ export async function modules() {
         value: 'sentry',
       },
     );
+  } else if (boilerplate === 'react-mobile') {
+    choices.push({
+      name: 'Authentication hook',
+      value: 'use-authentication',
+    });
   }
 
   const answers = await checkboxQuestion<i.Modules[]>({
