@@ -8,22 +8,19 @@ export function createComponentsIndexFile(): void {
     return;
   }
 
-  const componentsByFolder = state.answers.components.reduce(
-    (acc, component) => {
-      const [folder, componentWithoutFolder] = component.split('/');
+  const componentsByFolder = {} as { [folder: string]: string[] };
+  for (const component of state.answers.components) {
+    const [folder, nameWithoutFolder] = component.split('/');
 
-      if (!acc[folder]) {
-        acc[folder] = [];
-      }
+    if (!componentsByFolder[folder]) {
+      componentsByFolder[folder] = [];
+    }
 
-      acc[folder].push(`export * from './${componentWithoutFolder}';`);
-      return acc;
-    },
-    {} as { [folder: string]: string[] },
-  );
+    componentsByFolder[folder].push(`export * from './${nameWithoutFolder}';`);
+  }
 
-  Object.entries(componentsByFolder).forEach(([folder, components]) => {
+  for (const [folder, components] of Object.entries(componentsByFolder)) {
     const indexFile = `${projectName}/src/components/common/${folder}/index.ts`;
     fs.writeFile(indexFile, components.join('\n') + '\n');
-  });
+  }
 }
