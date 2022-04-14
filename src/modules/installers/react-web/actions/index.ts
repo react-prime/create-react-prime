@@ -2,9 +2,9 @@ import { state } from '@crp';
 
 import {
   installApiHelper,
+  installComponent,
   createComponentsIndexFile,
 } from '../../shared/actions';
-import { installComponent } from './installComponent';
 import { installContinuousDeployScript } from './installContinuousDeployScript';
 import { installDeployScript } from './installDeployScript';
 import { installSentry } from './installSentry';
@@ -30,7 +30,7 @@ export async function installModules(): Promise<void> {
 
 export async function installComponents(): Promise<void> {
   for await (const component of state.answers.components || []) {
-    await installComponent(component);
+    await installComponent(component, 'web');
   }
 
   createComponentsIndexFile();

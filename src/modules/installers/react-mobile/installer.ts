@@ -7,6 +7,7 @@ import * as moduleActions from './actions';
 
 async function installer(): Promise<void> {
   state.answers.modules = await question.modules();
+  state.answers.components = await question.components();
 
   if (!moduleActions.validateProjectName()) {
     moduleActions.renameProject();
@@ -16,9 +17,10 @@ async function installer(): Promise<void> {
   await actions.downloadMonorepo();
   await actions.copyBoilerplate();
   await moduleActions.renameFiles();
-  await actions.npmInstall();
-  await moduleActions.podInstall();
   await moduleActions.installModules();
+  await moduleActions.installComponents();
+  await actions.npmInstall();
+  // await moduleActions.podInstall();
   await actions.npmPackageUpdate();
   await actions.cleanup();
   await actions.removeMonorepo();
