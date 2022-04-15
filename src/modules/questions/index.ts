@@ -162,7 +162,7 @@ export async function components() {
   const { boilerplate } = state.answers;
 
   const choices: string[] =
-    boilerplate === 'react-web' ? [...webComponents] : [...mobileComponents];
+    boilerplate === 'react-mobile' ? [...mobileComponents] : [...webComponents];
 
   const answers = await checkboxQuestion<string[]>({
     name: 'What extra components would you like to install?',
