@@ -1,4 +1,5 @@
 import fs from 'fs/promises';
+import { existsSync, readFileSync } from 'fs';
 import { state } from '@crp';
 
 export function createComponentsIndexFile(): void {
@@ -21,6 +22,14 @@ export function createComponentsIndexFile(): void {
 
   for (const [folder, components] of Object.entries(componentsByFolder)) {
     const indexFile = `${projectName}/src/components/common/${folder}/index.ts`;
-    fs.writeFile(indexFile, components.join('\n') + '\n');
+
+    // If index file exists, append components to existing exports
+    if (existsSync(indexFile)) {
+      const buffer = readFileSync(indexFile);
+      const fileContent = buffer.toString();
+      fs.writeFile(indexFile, fileContent + components.join('\n') + '\n');
+    } else {
+      fs.writeFile(indexFile, components.join('\n') + '\n');
+    }
   }
 }
