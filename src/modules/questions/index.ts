@@ -122,10 +122,11 @@ export async function modules() {
       },
     );
   } else if (boilerplate === 'react-mobile') {
-    choices.push({
-      name: 'Authentication hook',
-      value: 'use-authentication',
-    });
+    // WIP
+    // choices.push({
+    //   name: 'Authentication hook',
+    //   value: 'use-authentication',
+    // });
   }
 
   const answers = await checkboxQuestion<i.Modules[]>({
