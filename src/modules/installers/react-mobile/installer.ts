@@ -20,7 +20,7 @@ async function installer(): Promise<void> {
   await moduleActions.installModules();
   await moduleActions.installComponents();
   await actions.npmInstall();
-  // await moduleActions.podInstall();
+  await moduleActions.podInstall();
   await actions.npmPackageUpdate();
   await actions.cleanup();
   await actions.removeMonorepo();
