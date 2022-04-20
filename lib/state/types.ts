@@ -49,6 +49,7 @@ export type Modules =
   | 'api-helper'
   | 'manual-deploy'
   | 'continuous-deploy'
+  | 'use-authentication'
   | 'sentry';
 
 export type ModuleItem = {

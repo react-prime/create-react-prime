@@ -8,6 +8,8 @@ import { asyncExec } from '@crp/utils';
 import gitUserName from 'git-user-name';
 import kleur from 'kleur';
 
+import { webComponents, mobileComponents } from './components';
+
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export function entry() {
   return listQuestion<i.Entry>({
@@ -21,6 +23,7 @@ export function entry() {
         name: 'Install modules',
         value: 'modules',
       },
+      /** @TODO Add support for installing components separately */
       {
         name: 'Exit',
         value: null,
@@ -118,6 +121,12 @@ export async function modules() {
         value: 'sentry',
       },
     );
+  } else if (boilerplate === 'react-mobile') {
+    /** @TODO WIP */
+    // choices.push({
+    //   name: 'Authentication hook',
+    //   value: 'use-authentication',
+    // });
   }
 
   const answers = await checkboxQuestion<i.Modules[]>({
@@ -152,37 +161,8 @@ export async function modules() {
 export async function components() {
   const { boilerplate } = state.answers;
 
-  const choices: string[] = [];
-
-  if (boilerplate === 'react-web') {
-    const components = [
-      'form/Checkbox',
-      'form/DatePicker',
-      'form/FieldArray',
-      'form/FormContainer',
-      'form/FormField',
-      'form/Input',
-      'form/InputCheckbox',
-      'form/InputCheckboxArray',
-      'form/InputPassword',
-      'form/InputRadio',
-      'form/Label',
-      'form/SelectDropdown',
-      'form/Textarea',
-      'form/Upload',
-      'form/Wysiwyg',
-
-      'interaction/Accordion',
-      'interaction/Button',
-      'interaction/Modal',
-      'interaction/Tabs',
-
-      'typography/Heading',
-      'typography/Paragraph',
-    ];
-
-    choices.push(...components);
-  }
+  const choices: string[] =
+    boilerplate === 'react-mobile' ? [...mobileComponents] : [...webComponents];
 
   const answers = await checkboxQuestion<string[]>({
     name: 'What extra components would you like to install?',

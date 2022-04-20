@@ -1,6 +1,11 @@
 import { state } from '@crp';
 
-import { installApiHelper } from '../../shared/actions';
+import {
+  installApiHelper,
+  installComponent,
+  createComponentsIndexFile,
+} from '../../shared/actions';
+import { installUseAuthentication } from './installUseAuthentication';
 
 export * from './podInstall';
 export * from './renameFiles';
@@ -13,6 +18,17 @@ export async function installModules(): Promise<void> {
       case 'api-helper':
         await installApiHelper();
         break;
+      case 'use-authentication':
+        await installUseAuthentication();
+        break;
     }
   }
+}
+
+export async function installComponents(): Promise<void> {
+  for await (const component of state.answers.components || []) {
+    await installComponent(component, 'mobile');
+  }
+
+  createComponentsIndexFile();
 }

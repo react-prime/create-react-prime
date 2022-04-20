@@ -63,11 +63,14 @@ async function installAndCopyComponent(
 }
 
 // Main action to install a component
-export async function installComponent(component: string): Promise<void> {
+export async function installComponent(
+  component: string,
+  type: 'web' | 'mobile',
+): Promise<void> {
   async function action() {
     const { projectName } = state.answers;
 
-    const monorepoComponentsRoot = './prime-monorepo/components/web-components';
+    const monorepoComponentsRoot = `./prime-monorepo/components/${type}-components`;
     const destCommonFolder = `${projectName}/src/components/common`;
 
     // Add extra Label A dependencies (e.g. DatePicker is dependend on FormField), if any are
