@@ -4,6 +4,7 @@ import { existsSync, readdirSync } from 'fs';
 import type { PackageJson } from 'type-fest';
 import { state, createSpinner, asyncExec } from '@crp';
 
+import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
 import {
   addDependenciesFromPackage,
   getPackageJson,
@@ -70,7 +71,7 @@ export async function installComponent(
   async function action() {
     const { projectName } = state.answers;
 
-    const monorepoComponentsRoot = `./prime-monorepo/components/${type}-components`;
+    const monorepoComponentsRoot = `./${DOWNLOADED_MONOREPO_FOLDER_NAME}/components/${type}-components`;
     const destCommonFolder = `${projectName}/src/components/common`;
 
     // Add extra Label A dependencies (e.g. DatePicker is dependend on FormField), if any are

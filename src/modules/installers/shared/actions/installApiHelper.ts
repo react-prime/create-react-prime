@@ -2,8 +2,9 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import { state, logger, createSpinner, asyncExec } from '@crp';
 
-import * as question from '../../../questions';
+import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
 
+import * as question from '../../../questions';
 import { addDependenciesFromPackage } from './addDependenciesFromPackage';
 import { downloadMonorepo } from './downloadMonorepo';
 import { getPackageJson } from './getPackageJson';
@@ -18,13 +19,13 @@ export async function installApiHelper(): Promise<void> {
 
   async function action() {
     // Make sure monorepo is present
-    if (!existsSync('prime-monorepo')) {
+    if (!existsSync(DOWNLOADED_MONOREPO_FOLDER_NAME)) {
       await downloadMonorepo();
     }
 
     // Generate services folder path
     const servicesFolderPath = `${projectName}/src/services`;
-    const packagePath = `./prime-monorepo/packages/${apiPackage}`;
+    const packagePath = `./${DOWNLOADED_MONOREPO_FOLDER_NAME}/packages/${apiPackage}`;
 
     // Copy api-helper code to project's services folder
     await asyncExec(`cp -r ${packagePath}/src ${servicesFolderPath}/api`);

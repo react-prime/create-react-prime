@@ -3,6 +3,8 @@ import { state, logger, createSpinner, asyncExec } from '@crp';
 import * as cli from '@crp/cli';
 import { ERROR_TEXT } from '@crp/constants';
 
+import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
+
 // Export because it's used in tests
 export async function clone(url: string): Promise<void> {
   const { boilerplate, projectName } = state.answers;
@@ -42,9 +44,12 @@ export async function clone(url: string): Promise<void> {
 
 export async function downloadMonorepo(): Promise<void> {
   // Check if a prime-monorepo directory already exists
-  if (existsSync('prime-monorepo')) {
-    await logger.error(ERROR_TEXT.DirectoryExists, 'prime-monorepo');
+  if (existsSync(DOWNLOADED_MONOREPO_FOLDER_NAME)) {
+    await logger.error(
+      ERROR_TEXT.DirectoryExists,
+      DOWNLOADED_MONOREPO_FOLDER_NAME,
+    );
   }
 
-  await clone('https://github.com/LabelA/prime-monorepo.git');
+  await clone('https://github.com/LabelA/prime-monorepo.git .prime-monorepo');
 }
