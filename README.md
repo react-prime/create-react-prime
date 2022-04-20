@@ -2,7 +2,7 @@
   <img src="https://github.com/LabelA/prime-monorepo/blob/main/prime-logo.png?raw=true" alt="prime-logo" width="250px" />
 </p>
 
-This package allows you to easily install and setup [react-web](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-web) and [react-mobile](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-mobile). check their repositories for more information.
+This CLI tool allows you to easily install and setup [react-web](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-web) and [react-mobile](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-mobile). check their repositories for more information.
 
 # Create React Prime
 
@@ -142,4 +142,14 @@ Passing options to the CLI is optional! The CLI will prompt questions for any mi
 
 ## Development
 
-🚧 WIP
+Make sure to read further before you start developing on the create-react-prime CLI tool!
+
+### create-react-prime
+
+The internals are located in the [lib](https://github.com/react-prime/create-react-prime/tree/master/lib) folder. This folder acts as an internal NPM package that can be referenced with `@crp` anywhere in this project. Make sure to discuss with the team beforehand if you want to add changes to the internal code.
+
+### Modules
+
+Modules are located in the [src](https://github.com/react-prime/create-react-prime/tree/master/src) folder. Here you can find the logic for every installation process that this CLI tool has to offer. It's not necessary to request for changes in this section of the codebase, but it's always good to discuss your plans with the team beforehand.
+
+Make sure to familiarize yourself with the code style and folder/file structure before you start writing code!
