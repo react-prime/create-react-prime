@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import { state, createSpinner, asyncExec } from '@crp';
 
+import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
 import {
   addDependenciesFromPackage,
   downloadMonorepo,
@@ -11,7 +12,7 @@ import {
 export async function installDeployScript(): Promise<void> {
   async function action() {
     // Make sure monorepo is present
-    if (!existsSync('prime-monorepo')) {
+    if (!existsSync(DOWNLOADED_MONOREPO_FOLDER_NAME)) {
       await downloadMonorepo();
     }
 
@@ -23,7 +24,7 @@ export async function installDeployScript(): Promise<void> {
     }
 
     await fs.copyFile(
-      './prime-monorepo/packages/web-packages/deploy-script/src/deploy.sh',
+      `./${DOWNLOADED_MONOREPO_FOLDER_NAME}/packages/web-packages/deploy-script/src/deploy.sh`,
       `${projectName}/deploy.sh`,
     );
     await asyncExec(`chmod +x ${projectName}/deploy.sh`);

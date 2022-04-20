@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import { state, createSpinner, asyncExec } from '@crp';
 
+import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
 import {
   addDependenciesFromPackage,
   downloadMonorepo,
@@ -12,7 +13,7 @@ import {
 export async function installSentry(): Promise<void> {
   async function action() {
     // Make sure monorepo is present
-    if (!existsSync('prime-monorepo')) {
+    if (!existsSync(DOWNLOADED_MONOREPO_FOLDER_NAME)) {
       await downloadMonorepo();
     }
 
@@ -50,7 +51,7 @@ export async function installSentry(): Promise<void> {
 
       // Copy the error pages
       await asyncExec(
-        `cp -r -n ./prime-monorepo/packages/web-packages/sentry-setup/src/pages ${projectName}/src`,
+        `cp -r -n ./${DOWNLOADED_MONOREPO_FOLDER_NAME}/packages/web-packages/sentry-setup/src/pages ${projectName}/src`,
       );
 
       // Edit NextJS config file

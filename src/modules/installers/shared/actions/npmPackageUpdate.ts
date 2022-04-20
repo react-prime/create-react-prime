@@ -1,6 +1,8 @@
 import fs from 'fs/promises';
 import { state, createSpinner } from '@crp';
 
+import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
+
 import { getPackageJson } from './getPackageJson';
 
 export async function npmPackageUpdate(): Promise<void> {
@@ -12,7 +14,7 @@ export async function npmPackageUpdate(): Promise<void> {
       `${projectName}/package.json`,
     );
     const { json: boilerplatePkg } = await getPackageJson(
-      `./prime-monorepo/boilerplates/${boilerplate}/package.json`,
+      `./${DOWNLOADED_MONOREPO_FOLDER_NAME}/boilerplates/${boilerplate}/package.json`,
     );
 
     // Overwrite boilerplate defaults

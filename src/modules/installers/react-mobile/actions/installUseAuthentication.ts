@@ -1,8 +1,6 @@
-import fs from 'fs/promises';
-import path from 'path';
-import { existsSync, readdirSync } from 'fs';
-import type { PackageJson } from 'type-fest';
 import { state, createSpinner, asyncExec } from '@crp';
+
+import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
 
 export async function installUseAuthentication(): Promise<void> {
   async function action() {
@@ -10,9 +8,7 @@ export async function installUseAuthentication(): Promise<void> {
 
     const hookFolderName = 'useAuthentication';
 
-    const monorepoRoot =
-      './prime-monorepo/packages/mobile-packages/use-authentication';
-    const destHooksFolder = `${projectName}/src/services/hooks`;
+    const monorepoRoot = `./${DOWNLOADED_MONOREPO_FOLDER_NAME}/packages/mobile-packages/use-authentication`;
     const destFolder = `${projectName}/src/services/hooks/${hookFolderName}`;
 
     // Create component folder and copy /src folder from monorepo

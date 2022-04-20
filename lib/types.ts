@@ -7,7 +7,7 @@ import type {
   ListQuestion,
   NumberQuestion,
 } from 'inquirer';
-import type { PackageJson, JsonPrimitive, SetRequired } from 'type-fest';
+import type { JsonPrimitive, SetRequired } from 'type-fest';
 import type { OptionValues } from 'commander';
 
 export * from './state/types';
