@@ -3,10 +3,10 @@ import { logger, state } from '@crp';
 
 import * as question from 'src/modules/questions';
 import * as actions from 'src/modules/installers/shared/actions';
-import { installModules as webInstallModules } from 'src/modules/installers/react-web/actions';
-// import { installModules as mobileInstallModules } from 'src/modules/installers/react-mobile/actions';
+import { installComponents as webInstallComponents } from 'src/modules/installers/react-web/actions';
+import { installComponents as mobileInstallComponents } from 'src/modules/installers/react-mobile/actions';
 
-export async function modulesEntry(): Promise<void> {
+export async function componentsEntry(): Promise<void> {
   if (!fs.existsSync('src')) {
     logger.error(
       "No 'src' folder found. Please run this command from the root of your project.",
@@ -22,8 +22,8 @@ export async function modulesEntry(): Promise<void> {
   // Set project to be current folder
   state.answers.projectName = '.';
 
-  state.answers.modules = await question.modules();
-  if (state.answers.modules.length === 0) {
+  state.answers.components = await question.components();
+  if (state.answers.components.length === 0) {
     process.exit();
   }
 
@@ -31,12 +31,11 @@ export async function modulesEntry(): Promise<void> {
 
   switch (state.answers.boilerplate) {
     case 'react-web':
-      await webInstallModules();
+      await webInstallComponents();
       break;
-    /** @TODO */
-    // case 'react-mobile':
-    //   await mobileInstallModules();
-    //   break;
+    case 'react-mobile':
+      await mobileInstallComponents();
+      break;
   }
 
   await actions.npmInstall();

@@ -20,10 +20,13 @@ export function entry() {
         value: 'boilerplate',
       },
       {
-        name: 'Install modules',
+        name: 'Install module(s)',
         value: 'modules',
       },
-      /** @TODO Add support for installing components separately */
+      {
+        name: 'Install component(s)',
+        value: 'components',
+      },
       {
         name: 'Exit',
         value: null,

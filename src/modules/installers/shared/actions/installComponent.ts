@@ -16,7 +16,7 @@ async function renameStorybookResolvers(
   destCommonFolder: string,
 ): Promise<void> {
   for await (const file of readdirSync(destCommonFolder)) {
-    const filePath = `${destCommonFolder}/${file}`;
+    const filePath = path.resolve(`${destCommonFolder}/${file}`);
     const ext = path.extname(filePath);
     if (ext !== '.tsx' && ext !== 'ts') {
       return;
@@ -34,7 +34,7 @@ async function renameStorybookResolvers(
 
 // Read component package.json and add dependencies to project
 async function installAndCopyComponent(
-  path: string,
+  componentPath: string,
   destFolder: string,
 ): Promise<PackageJson | null> {
   let pkg: PackageJson | null = null;
@@ -44,8 +44,8 @@ async function installAndCopyComponent(
     return null;
   }
 
-  if (existsSync(`${path}/package.json`)) {
-    const { json } = await getPackageJson(`${path}/package.json`);
+  if (existsSync(`${componentPath}/package.json`)) {
+    const { json } = await getPackageJson(`${componentPath}/package.json`);
     pkg = json;
 
     // Save extra Label A components, so these can also be installed
@@ -54,7 +54,7 @@ async function installAndCopyComponent(
 
   // Create component folder and copy /src folder from monorepo
   await asyncExec(
-    `mkdir -p ${destFolder} && cp -r -n ${path}/src/. ${destFolder}`,
+    `mkdir -p ${destFolder} && cp -r -n ${componentPath}/src/. ${destFolder}`,
   );
 
   // Rename component Storybook resolvers to valid project resolvers
@@ -71,14 +71,18 @@ export async function installComponent(
   async function action() {
     const { projectName } = state.answers;
 
-    const monorepoComponentsRoot = `./${DOWNLOADED_MONOREPO_FOLDER_NAME}/components/${type}-components`;
-    const destCommonFolder = `${projectName}/src/components/common`;
+    const monorepoComponentsRoot = path.resolve(
+      `./${DOWNLOADED_MONOREPO_FOLDER_NAME}/components/${type}-components`,
+    );
+    const destCommonFolder = path.resolve(
+      `${projectName}/src/components/common`,
+    );
 
     // Add extra Label A dependencies (e.g. DatePicker is dependend on FormField), if any are
     // returned from the initial installed component, loop over these and install + copy
     const pkg = await installAndCopyComponent(
-      `${monorepoComponentsRoot}/${component}`,
-      `${destCommonFolder}/${component}`,
+      path.resolve(`${monorepoComponentsRoot}/${component}`),
+      path.resolve(`${destCommonFolder}/${component}`),
     );
 
     if (pkg && pkg?.labela?.components) {
@@ -98,8 +102,8 @@ export async function installComponent(
           }
 
           await installAndCopyComponent(
-            `${monorepoComponentsRoot}/${dependency}`,
-            `${destCommonFolder}/${dependency}`,
+            path.resolve(`${monorepoComponentsRoot}/${dependency}`),
+            path.resolve(`${destCommonFolder}/${dependency}`),
           );
         }
       }

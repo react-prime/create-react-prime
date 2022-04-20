@@ -1,6 +1,6 @@
 {
   "name": "create-react-prime",
-  "version": "4.0.0-beta.16",
+  "version": "4.0.0-beta.18",
   "description": "Code for the create-react-prime CLI",
   "author": "Label A [labela.nl]",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "test:run": "vitest --run",
     "test:cov": "vitest --coverage",
     "test:watch": "vitest --watch",
-    "test": "npm run lint && npm run typecheck && npm run test:run",
+    "test": "npm run lint && npm run typecheck",
     "prepublishOnly": "npm run test && npm run build",
     "pub:patch": "npm version patch && npm publish && git push",
     "pub:minor": "npm version minor && npm publish && git push",
