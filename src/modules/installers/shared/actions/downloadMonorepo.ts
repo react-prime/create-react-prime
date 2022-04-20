@@ -51,5 +51,7 @@ export async function downloadMonorepo(): Promise<void> {
     );
   }
 
-  await clone('https://github.com/LabelA/prime-monorepo.git .prime-monorepo');
+  await clone(
+    `https://github.com/LabelA/prime-monorepo.git ${DOWNLOADED_MONOREPO_FOLDER_NAME}`,
+  );
 }
