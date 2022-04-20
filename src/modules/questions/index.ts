@@ -19,11 +19,11 @@ export function entry() {
         name: 'Install a boilerplate',
         value: 'boilerplate',
       },
-      // @TODO Add support for installing modules or components separately
-      // {
-      //   name: 'Install modules',
-      //   value: 'modules',
-      // },
+      {
+        name: 'Install modules',
+        value: 'modules',
+      },
+      /** @TODO Add support for installing components separately */
       {
         name: 'Exit',
         value: null,
@@ -122,7 +122,7 @@ export async function modules() {
       },
     );
   } else if (boilerplate === 'react-mobile') {
-    // WIP
+    /** @TODO WIP */
     // choices.push({
     //   name: 'Authentication hook',
     //   value: 'use-authentication',
