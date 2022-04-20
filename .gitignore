@@ -2,11 +2,8 @@
 .gitattributes
 
 node_modules
-reactprime
-reactprimessr
-reactprimenative
+react-web
 reactmobile
-prime-monorepo
 .prime-monorepo
 dist
 coverage
