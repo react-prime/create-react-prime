@@ -4,7 +4,7 @@ import { logger, state } from '@crp';
 import * as question from 'src/modules/questions';
 import * as actions from 'src/modules/installers/shared/actions';
 import { installComponents as webInstallComponents } from 'src/modules/installers/react-web/actions';
-import { installComponents as MobileInstallComponents } from 'src/modules/installers/react-mobile/actions';
+import { installComponents as mobileInstallComponents } from 'src/modules/installers/react-mobile/actions';
 
 export async function componentsEntry(): Promise<void> {
   if (!fs.existsSync('src')) {
@@ -34,7 +34,7 @@ export async function componentsEntry(): Promise<void> {
       await webInstallComponents();
       break;
     case 'react-mobile':
-      await MobileInstallComponents();
+      await mobileInstallComponents();
       break;
   }
 

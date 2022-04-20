@@ -3,8 +3,8 @@ import { logger, state } from '@crp';
 
 import * as question from 'src/modules/questions';
 import * as actions from 'src/modules/installers/shared/actions';
-import { installModules as WebInstallModules } from 'src/modules/installers/react-web/actions';
-// import { installModules as MobileInstallModules } from 'src/modules/installers/react-mobile/actions';
+import { installModules as webInstallModules } from 'src/modules/installers/react-web/actions';
+// import { installModules as mobileInstallModules } from 'src/modules/installers/react-mobile/actions';
 
 export async function modulesEntry(): Promise<void> {
   if (!fs.existsSync('src')) {
@@ -31,10 +31,12 @@ export async function modulesEntry(): Promise<void> {
 
   switch (state.answers.boilerplate) {
     case 'react-web':
-      await WebInstallModules();
+      await webInstallModules();
       break;
     /** @TODO */
-    // case 'react-mobile': await MobileInstallModules(); break;
+    // case 'react-mobile':
+    //   await mobileInstallModules();
+    //   break;
   }
 
   await actions.npmInstall();
