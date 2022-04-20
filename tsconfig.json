@@ -1,30 +1,27 @@
 {
   "compilerOptions": {
-      "noEmit": true,
-      "module": "esnext",
-      "lib": ["esnext"],
-      "moduleResolution": "node",
-      "removeComments": true,
-      "esModuleInterop": true,
-      "skipLibCheck": true,
-      "strict": true,
-      "resolveJsonModule": true,
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-      "exactOptionalPropertyTypes": true,
-      "baseUrl": ".",
-      "paths": {
-          "cli/*": ["cli/*"],
-          "core/*": ["core/*"],
-          "modules/*": ["modules/*"],
-          "types": ["core/types.ts"],
-          "generated/*": ["core/generated/*"]
-      }
+    "noEmit": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["esnext"],
+    "moduleResolution": "node",
+    "removeComments": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "exactOptionalPropertyTypes": true,
+    "baseUrl": ".",
+    "paths": {
+      "@crp": ["lib/index.ts"],
+      "@crp/*": ["lib/*"],
+      "questions/*": ["src/modules/questions/index.ts"],
+      "installers/*": ["src/modules/installers/*"],
+      "generated/*": ["lib/generated/*"],
+      "types": ["lib/types.ts"]
+    },
+    "types": ["vitest/globals"]
   },
-  "include": [
-    "core",
-    "modules",
-    "cli"
-  ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["**/*.ts", "**/*.d.ts"]
 }

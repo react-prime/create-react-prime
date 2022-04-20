@@ -1,15 +1,15 @@
 .DS_Store
 .gitattributes
-.progress-estimations
 
 node_modules
-reactprime
-reactprimessr
-reactprimenative
+react-web
+reactmobile
+.prime-monorepo
 dist
 coverage
-core/generated
+generated/
 
 testing*
 crptest*
-core/scripts/**.js
+lib/**/*.js
+.env
