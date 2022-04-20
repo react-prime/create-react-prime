@@ -23,7 +23,7 @@ export type CRPAnswers = {
   openInEditor?: EditorSearchItem;
 };
 
-export type Entry = 'boilerplate' | null;
+export type Entry = 'boilerplate' | 'modules' | 'components' | null;
 
 export type OperationResult = 'success' | 'error' | 'exited';
 

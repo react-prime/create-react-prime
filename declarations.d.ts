@@ -10,6 +10,7 @@ declare global {
 export type CLIOptions = {
   boilerplate?: boolean;
   modules?: boolean;
+  components?: boolean;
   debug?: boolean;
   tracking?: boolean;
 };

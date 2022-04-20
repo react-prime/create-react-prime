@@ -1,3 +1,4 @@
+import path from 'path';
 import { state, createSpinner, asyncExec } from '@crp';
 
 import { DOWNLOADED_MONOREPO_FOLDER_NAME } from 'src/modules/constants';
@@ -13,7 +14,9 @@ export async function installUseAuthentication(): Promise<void> {
 
     // Create component folder and copy /src folder from monorepo
     await asyncExec(
-      `mkdir -p ${destFolder} && cp -r -n ${monorepoRoot}/src. ${destFolder}`,
+      path.resolve(
+        `mkdir -p ${destFolder} && cp -r -n ${monorepoRoot}/src. ${destFolder}`,
+      ),
     );
   }
 

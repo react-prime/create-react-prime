@@ -20,12 +20,19 @@ export async function clone(url: string): Promise<void> {
   }
 
   const text = (() => {
-    if (cli.getOptions().modules) {
+    const { modules, components } = cli.getOptions();
+    const { entry } = state.answers;
+
+    if (
+      modules ||
+      components ||
+      ['components', 'modules'].includes(entry as string)
+    ) {
       return {
         name: 'clone',
-        start: '🚚  Cloning modules into project...',
-        success: '🚚  Cloned modules!',
-        fail: '🚚  Something went wrong while cloning modules into project.',
+        start: '🚚  Cloning...',
+        success: '🚚  Cloned!',
+        fail: '🚚  Something went wrong while cloning the code into project.',
       };
     }
 

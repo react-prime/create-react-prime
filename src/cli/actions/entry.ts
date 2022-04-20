@@ -5,6 +5,7 @@ import { createOperation } from 'src/db';
 import * as question from '../../modules/questions';
 import { installerEntry } from './installer';
 import { modulesEntry } from './modules';
+import { componentsEntry } from './components';
 
 export async function entry(options: Options): Promise<() => Promise<void>> {
   await initTracking(options);
@@ -62,14 +63,12 @@ export async function getActionForOption(
   if (options.boilerplate) {
     return installerEntry;
   }
-
   if (options.modules) {
     return modulesEntry;
   }
-
-  // if (options.components) {
-  //   return componentsEntry;
-  // }
+  if (options.components) {
+    return componentsEntry;
+  }
 
   // No entry found, ask for entry
   state.answers.entry = await question.entry();
