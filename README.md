@@ -1,11 +1,13 @@
 <p align="center">
-  <img src="https://github.com/JBostelaar/react-prime/blob/master/src/static/images/prime-logo.png" alt="prime-logo" width="250px" />
+  <img src="https://github.com/LabelA/prime-monorepo/blob/main/prime-logo.png?raw=true" alt="prime-logo" width="250px" />
 </p>
 
-This package allows you to easily install and setup [react-prime](https://github.com/react-prime/react-prime) and [react-prime-native](https://github.com/react-prime/react-prime-native). check their repositories for more information.
+This package allows you to easily install and setup [react-web](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-web) and [react-mobile](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-mobile). check their repositories for more information.
 
 # Create React Prime
+
 ## Quick start
+
 ```shell
 npx create-react-prime@latest
 cd <project name>
@@ -88,10 +90,38 @@ Passing options to the CLI is optional! The CLI will prompt questions for any mi
       -
     </td>
     <td>
-      false
+      -
     </td>
     <td>
       Start installation process for boilerplates
+    </td>
+  </tr>
+  <tr>
+    <td>
+      -m, --modules
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      Start installation process for modules
+    </td>
+  </tr>
+  <tr>
+    <td>
+      -c, --components
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      Start installation process for components
     </td>
   </tr>
   <tr>
