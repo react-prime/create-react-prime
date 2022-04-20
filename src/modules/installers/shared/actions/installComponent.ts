@@ -24,9 +24,9 @@ async function renameStorybookResolvers(
 
     const fileData = await fs.readFile(filePath, 'utf8');
     const replacedFileData = fileData
-      .replaceAll('@labela/components/', 'common/')
-      .replaceAll('src/', '')
-      .replaceAll("/src'", "'");
+      .replace(/@labela\/components\//g, 'common/')
+      .replace(/src\//g, '')
+      .replace(/\/src'/g, "'");
 
     await fs.writeFile(filePath, replacedFileData);
   }
