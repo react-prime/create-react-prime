@@ -2,9 +2,9 @@
   <img src="https://github.com/LabelA/prime-monorepo/blob/main/prime-logo.png?raw=true" alt="prime-logo" width="250px" />
 </p>
 
-This CLI tool allows you to easily install and setup [react-web](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-web) and [react-mobile](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-mobile). check their repositories for more information.
-
 # Create React Prime
+
+This CLI tool allows you to easily install and setup [react-web](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-web) and [react-mobile](https://github.com/LabelA/prime-monorepo/tree/main/boilerplates/react-mobile). check their repositories for more information.
 
 ## Quick start
 
