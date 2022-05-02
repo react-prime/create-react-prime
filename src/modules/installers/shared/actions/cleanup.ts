@@ -4,7 +4,7 @@ export async function cleanup(): Promise<void> {
   const { projectName } = state.answers;
 
   async function action() {
-    await asyncExec(`rm -rf ${projectName}/.git ${projectName}/.travis.yml`);
+    await asyncExec(`rm -rf ${projectName}/.git ${projectName}/CHANGELOG.md`);
   }
 
   const spinner = createSpinner(() => action(), {
