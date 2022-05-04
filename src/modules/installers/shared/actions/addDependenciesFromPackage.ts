@@ -22,7 +22,9 @@ export async function addDependenciesFromPackage(
   }
 
   const devDependencies = pkg.devDependencies
-    ? Object.keys(pkg.devDependencies)
+    ? Object.entries(pkg.devDependencies).map(
+        ([name, version]) => `${name}@${version}`,
+      )
     : null;
 
   if (devDependencies && devDependencies.length > 0) {
