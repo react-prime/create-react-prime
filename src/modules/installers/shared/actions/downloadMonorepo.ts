@@ -52,7 +52,7 @@ export async function clone(url: string): Promise<void> {
 export async function downloadMonorepo(): Promise<void> {
   // Check if a prime-monorepo directory already exists
   if (existsSync(DOWNLOADED_MONOREPO_FOLDER_NAME)) {
-    asyncExec(`rm -rf ${DOWNLOADED_MONOREPO_FOLDER_NAME}`);
+    await asyncExec(`rm -rf ${DOWNLOADED_MONOREPO_FOLDER_NAME}`);
   }
 
   await clone(
