@@ -51,11 +51,11 @@ export function rendering() {
   });
 }
 
-export function projectName(projectName: string) {
-  return question({
+export async function projectName(defaultName: string): Promise<string> {
+  const answer = await question({
     type: 'input',
     name: 'Project name',
-    default: projectName,
+    default: defaultName,
     validate: (input: string) => {
       // source: https://kb.acronis.com/content/39790
       let illegalChars = new RegExp('');
@@ -79,6 +79,19 @@ export function projectName(projectName: string) {
       return !hasIllegalChars && validLength;
     },
   });
+
+  // Check if a directory with this name already exists
+  // If it does, ask for a name again
+  if (fs.existsSync(answer)) {
+    logger.warning(
+      `Directory '${answer}' already exists. Remove this directory or choose another name.`,
+    );
+    logger.whitespace();
+
+    return await projectName(defaultName);
+  }
+
+  return answer;
 }
 
 export function cms() {
