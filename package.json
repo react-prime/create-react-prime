@@ -12,7 +12,7 @@
     "build": "rm -rf dist && tsup",
     "start": "node dist/index.js",
     "dev": "rm -rf react-web/ react-mobile/ reactMobile/ .prime-monorepo/ && NODE_ENV=development tsup",
-    "postdev": "node dist/index.js -d",
+    "postdev": "node dist/index.js",
     "lint": "eslint --ext .ts ./lib ./src",
     "typecheck": "tsc --project tsconfig.tc.json",
     "test:run": "vitest --run",
